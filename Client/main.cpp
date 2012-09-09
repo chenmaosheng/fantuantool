@@ -26,7 +26,7 @@ unsigned int WINAPI RecvThread(void* s)
 		}
 		else
 		{
-			printf("server: %s\n", recvBuf);
+			printf("output: %s\n", recvBuf);
 		}
 	}
 
@@ -56,25 +56,18 @@ int __cdecl main(int argc, char **argv)
         return -1;
     }
 
-	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addr.sin_addr.s_addr = inet_addr("192.168.1.4");
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(5150);
     rc = connect(s, (SOCKADDR*)&addr, sizeof(addr));
     
-	char buf[] = "Hello, World";
 	recvHandler = (HANDLE)_beginthreadex(NULL, 0, RecvThread, &s, 0, NULL);
 
     while (true)
 	{
-		static DWORD dwStart = GetTickCount();
-		DWORD dwEnd = GetTickCount();
-		if (dwEnd - dwStart >= 1000)
-		{
-			send(s, buf, strlen(buf)+1, 0);
-			dwStart = dwEnd;
-		}
-
-		Sleep(50);
+		char buf[128] = {0};
+		gets(buf);
+		send(s, buf, strlen(buf)+1, 0);
 	}
 
 	CloseHandle(recvHandler);

@@ -6,19 +6,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include "connection.h"
 
 #pragma   comment(lib,   "ws2_32.lib")  
 
-
+void SendToAll(const std::vector<Connection>& clients, char* buf, size_t size)
+{
+	std::vector<Connection>::const_iterator it = clients.begin();
+	while (it != clients.end())
+	{
+		send((*it).socket, buf, size, 0);
+		++it;
+	}
+}
 
 int __cdecl main(int argc, char **argv)
 {
     WSADATA          wsd;
     SOCKET		     s;
-	SOCKET		     client = INVALID_SOCKET;
-    int              rc;
+	std::vector<Connection> clients;
+	int              rc;
     struct fd_set    fdread, fdsend, fdexcept;
 	struct timeval   timeout;
+	int				 i = 0;
     
     if (WSAStartup(MAKEWORD(2,2), &wsd) != 0)
     {
@@ -47,11 +57,14 @@ int __cdecl main(int argc, char **argv)
 		FD_SET(s, &fdsend);
 		FD_SET(s, &fdexcept);
 
-		if (client != INVALID_SOCKET)
+		std::vector<Connection>::iterator it = clients.begin();
+		while (it != clients.end())
 		{
-			FD_SET(client, &fdread);
-			FD_SET(client, &fdsend);
-			FD_SET(client, &fdexcept);
+			FD_SET((*it).socket, &fdread);
+			FD_SET((*it).socket, &fdsend);
+			FD_SET((*it).socket, &fdexcept);
+
+			++it;
 		}
 
         timeout.tv_sec = 5;
@@ -68,59 +81,76 @@ int __cdecl main(int argc, char **argv)
             if (FD_ISSET(s, &fdread))
             {
 				SOCKADDR_IN clientAddr;
+				Connection client;
+				client.index = ++i;
 				int clientAddrLen = sizeof(clientAddr);
-                client = accept(s, (SOCKADDR *)&clientAddr, &clientAddrLen);
-                if (client == INVALID_SOCKET)
+				client.socket = accept(s, (SOCKADDR *)&clientAddr, &clientAddrLen);
+				if (client.socket == INVALID_SOCKET)
                 {
                     fprintf(stderr, "accept failed: %d\n", WSAGetLastError());
                     return -1;
                 }
-				printf("new client connected\n");
+
+				clients.push_back(client);
+				printf("new client connected, index=%d\n", client.index);
             }
 
 			if (FD_ISSET(s, &fdsend))
 			{
-				printf("s what?\n");
 			}
 
 			if (FD_ISSET(s, &fdexcept))
 			{
-				printf("1client disconnected\n");
+				printf("client disconnected\n");
 			}
 
-			if (client != INVALID_SOCKET)
+			std::vector<Connection>::iterator it = clients.begin();
+			while (it != clients.end())
 			{
-				if (FD_ISSET(client, &fdread))
+				bool bErase = false;
+				Connection& client = (*it);
+				if (FD_ISSET(client.socket, &fdread))
 				{
 					char buf[128] = {0};
-					int ret = recv(client, buf, 128, 0);
+					int ret = recv(client.socket, buf, 128, 0);
 					if (ret == 0)
 					{
-						closesocket(client);
-						client = INVALID_SOCKET;
-						printf("client disconnected\n");
+						printf("client %d disconnected\n", client.index);
+						closesocket(client.socket);
+						it = clients.erase(it);
+						bErase = true;
 					}
 					else
 					if (ret == SOCKET_ERROR)
 					{
-						closesocket(client);
-						client = INVALID_SOCKET;
-						printf("client force disconnected\n");
+						printf("client %d force disconnected\n", client.index);
+						closesocket(client.socket);
+						it = clients.erase(it);
+						bErase = true;
 					}
 					else
 					{
-						printf("client: %s\n", buf);
-						send(client, buf, strlen(buf)+1, 0);
+						printf("client %d: %s\n", client.index, buf);
+						//send(client.socket, buf, strlen(buf)+1, 0);
+						SendToAll(clients, buf, strlen(buf)+1);
 					}
 				}
 
-				if (FD_ISSET(client, &fdsend))
+				if (FD_ISSET(client.socket, &fdsend))
 				{
 				}
 
-				if (FD_ISSET(client, &fdexcept))
+				if (FD_ISSET(client.socket, &fdexcept))
 				{
-					printf("client disconnected\n");
+					printf("client %d disconnected\n", client.index);
+					closesocket(client.socket);
+					it = clients.erase(it);
+					bErase = true;
+				}
+
+				if (!bErase)
+				{
+					++it;
 				}
 			}
         }

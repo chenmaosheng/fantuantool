@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include "connection.h"
+#include "..\Common\Packet.h"
 
 #pragma   comment(lib,   "ws2_32.lib")  
 
@@ -16,6 +17,7 @@ void SendToAll(const std::vector<Connection>& clients, char* buf, size_t size)
 	while (it != clients.end())
 	{
 		send((*it).socket, buf, size, 0);
+		printf("send all to %d\n", (*it).socket);
 		++it;
 	}
 }
@@ -116,23 +118,58 @@ int __cdecl main(int argc, char **argv)
 					if (ret == 0)
 					{
 						printf("client %d disconnected\n", client.index);
+						LogoutPkt pkt;
+						pkt.index = client.index;
+						pkt.len = sizeof(pkt.index);
 						closesocket(client.socket);
 						it = clients.erase(it);
 						bErase = true;
+
+						SendToAll(clients, (char*)&pkt, pkt.len + sizeof(Header));
 					}
 					else
 					if (ret == SOCKET_ERROR)
 					{
 						printf("client %d force disconnected\n", client.index);
+						LogoutPkt pkt;
+						pkt.index = client.index;
+						pkt.len = sizeof(pkt.index);
 						closesocket(client.socket);
 						it = clients.erase(it);
 						bErase = true;
+
+						SendToAll(clients, (char*)&pkt, pkt.len + sizeof(Header));
 					}
 					else
 					{
 						printf("client %d: %s\n", client.index, buf);
-						//send(client.socket, buf, strlen(buf)+1, 0);
-						SendToAll(clients, buf, strlen(buf)+1);
+						Header* header = (Header*)buf;
+						if (header->type == LOGIN)
+						{
+							LoginPkt* pkt = (LoginPkt*)header;
+							pkt->index = client.index;
+							strncpy(client.nickname, pkt->nickname, sizeof(client.nickname));
+							for (size_t i = 0; i < clients.size(); ++i)
+							{
+								if (clients.at(i).socket != client.socket)
+								{
+									LoginPkt newPkt;
+									strncpy(newPkt.nickname, clients.at(i).nickname, sizeof(newPkt.nickname));
+									newPkt.nickname[strlen(clients.at(i).nickname)+1] = '\0';
+									newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.index);
+									newPkt.index = clients.at(i).index;
+									send(client.socket, (char*)&newPkt, newPkt.len + sizeof(Header), 0);
+									printf("send to %d\n", client.socket);
+								}
+							}
+
+							SendToAll(clients, (char*)pkt, header->len + sizeof(Header));
+						}
+						else
+						{
+							SendToAll(clients, buf, header->len + sizeof(Header));
+						}
+						
 					}
 				}
 

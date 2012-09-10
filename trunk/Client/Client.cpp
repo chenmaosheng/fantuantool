@@ -4,14 +4,8 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "ClientDlg.h"
-#include <winsock2.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <process.h>
-
-#pragma   comment(lib,   "ws2_32.lib") 
-
-unsigned int WINAPI RecvThread(void* s);
+#include "ClientSocket.h"
+#include "LoginDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,20 +23,6 @@ END_MESSAGE_MAP()
 
 CClientApp::CClientApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-	// Load Winsock
-    WSAStartup(MAKEWORD(2,2), &wsd);
-
-    // create the socket
-    s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	addr.sin_addr.s_addr = inet_addr("192.168.1.4");
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(5150);
-    rc = connect(s, (SOCKADDR*)&addr, sizeof(addr));
-
-	recvHandler = (HANDLE)_beginthreadex(NULL, 0, RecvThread, &s, 0, NULL);
 }
 
 
@@ -67,6 +47,12 @@ BOOL CClientApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+	if (!AfxSocketInit())
+	{
+		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
+		return FALSE;
+	}
+
 	AfxEnableControlContainer();
 
 	// Standard initialization
@@ -78,7 +64,20 @@ BOOL CClientApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	dlg = new CClientDlg();
+	CClientSocket* clientSocket = new CClientSocket;
+	CLoginDlg* loginDlg = new CLoginDlg(clientSocket);
+	if (loginDlg->DoModal() == IDCANCEL)
+	{
+		delete clientSocket;
+		delete loginDlg;
+		return false;
+	}
+	else
+	{
+		delete loginDlg;
+	}
+
+	CClientDlg* dlg = new CClientDlg(clientSocket);
 	m_pMainWnd = dlg;
 	INT_PTR nResponse = dlg->DoModal();
 	if (nResponse == IDOK)
@@ -95,42 +94,4 @@ BOOL CClientApp::InitInstance()
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
 	return FALSE;
-}
-
-void CClientApp::SendToServer(const TCHAR* message, size_t length)
-{
-	char buf[128] = {0};
-	WideCharToMultiByte(CP_UTF8, 0, message, length, buf, 128, 0, 0);
-	send(s, buf, strlen(buf)+1, 0);
-}
-
-unsigned int WINAPI RecvThread(void* s)
-{
-	SOCKET* recvSocket = (SOCKET*)s;
-	int rc = 0;
-	char recvBuf[128] = {0};
-	while (1)
-	{
-		rc = recv(*recvSocket, recvBuf, 128, 0);
-		if (rc == 0)
-		{
-			//printf("server closed\n");
-			theApp.dlg->Write("Server closed", 20);
-			break;
-		}
-		else
-		if (rc == SOCKET_ERROR)
-		{
-			//printf("socket error\n");
-			theApp.dlg->Write("Socket error", 20);
-			break;
-		}
-		else
-		{
-			//printf("output: %s\n", recvBuf);
-			theApp.dlg->Write(recvBuf, strlen(recvBuf)+1);
-		}
-	}
-
-	return 0;
 }

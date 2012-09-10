@@ -17,25 +17,16 @@ class CClientDlg;
 class CClientApp : public CWinApp
 {
 public:
+	CString m_strName;
 	CClientApp();
 
 // Overrides
 public:
 	virtual BOOL InitInstance();
-	void SendToServer(const TCHAR* message, size_t length);
-
+	
 // Implementation
 
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CClientDlg*		 dlg;
-private:
-	WSADATA          wsd;
-    SOCKET           s;
-    int              rc;                            // return code
-	SOCKADDR_IN		 addr;
-	HANDLE			 recvHandler;
 };
 
 extern CClientApp theApp;

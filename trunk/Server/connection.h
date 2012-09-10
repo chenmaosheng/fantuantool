@@ -5,6 +5,7 @@ struct Connection
 {
 	SOCKET socket;
 	int index;
+	char nickname[64];
 };
 
 #endif

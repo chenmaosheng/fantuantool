@@ -45,6 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\common"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -92,6 +93,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy $(OutDir)\$(ProjectName).exe ..\Fantuan.exe"
 			/>
 		</Configuration>
 		<Configuration
@@ -125,6 +127,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\common"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -174,6 +177,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy $(OutDir)\$(ProjectName).exe ..\Fantuan.exe"
 			/>
 		</Configuration>
 	</Configurations>
@@ -191,6 +195,14 @@
 			</File>
 			<File
 				RelativePath=".\ClientDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ClientSocket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LoginDlg.cpp"
 				>
 			</File>
 			<File
@@ -225,6 +237,18 @@
 			</File>
 			<File
 				RelativePath=".\ClientDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ClientSocket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LoginDlg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Common\Packet.h"
 				>
 			</File>
 			<File

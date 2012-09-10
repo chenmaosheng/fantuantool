@@ -5,7 +5,7 @@
 #include "Client.h"
 #include "ClientDlg.h"
 #include "ClientSocket.h"
-#include "Packet.h"
+#include "Command.h"
 
 #define WM_SHOWTASK (WM_USER + 1986)
 

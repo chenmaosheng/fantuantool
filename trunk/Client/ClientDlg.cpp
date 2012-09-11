@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CClientDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_SEND_BUTTON, &CClientDlg::OnBnClickedSendButton)
 	ON_MESSAGE(WM_SHOWTASK, &CClientDlg::OnNotifyIcon)
+	ON_BN_CLICKED(IDC_CLOSE_BUTTON, &CClientDlg::OnBnClickedCloseButton)
 END_MESSAGE_MAP()
 
 
@@ -126,7 +127,7 @@ void CClientDlg::OnSysCommand(UINT nID, LPARAM lParam)
 		dlgAbout.DoModal();
 	}
 	else 
-	if(nID==SC_MINIMIZE || nID==SC_CLOSE) 
+	if(nID==SC_CLOSE) 
 	{
 		ToTray();
 	}
@@ -340,4 +341,10 @@ BOOL CClientDlg::PreTranslateMessage(MSG*   pMsg)
 	} 
 
 	return   CDialog::PreTranslateMessage(pMsg); 
+}
+
+void CClientDlg::OnBnClickedCloseButton()
+{
+	// TODO: Add your control notification handler code here
+	OnCancel();
 }

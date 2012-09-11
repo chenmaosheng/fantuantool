@@ -14,6 +14,8 @@
 #define IDC_SEND_BUTTON                 1003
 #define IDC_USER_LIST                   1004
 #define IDC_NICKNAME_EDIT               1005
+#define IDC_SEND_BUTTON2                1005
+#define IDC_CLOSE_BUTTON                1005
 #define IDC_SERVERIP_EDIT               1006
 #define ID_LOGIN_BUTTON                 1007
 

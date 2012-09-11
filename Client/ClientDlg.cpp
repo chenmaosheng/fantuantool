@@ -215,7 +215,7 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	strTemp += _T("\r\n");
 	m_MessageList.ReplaceSel(strTemp);
 
-	if (!IsIconic())
+	if (IsIconic())
 	{
 		nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
 		wcscpy(nid.szTip, TEXT("Fantuan"));
@@ -283,6 +283,7 @@ void CClientDlg::ToTray()
 	wcscpy(nid.szTip, _T("Fantuan notification"));
 
 	Shell_NotifyIcon(NIM_ADD,&nid);
+	ShowWindow(SW_MINIMIZE);
 	ShowWindow(SW_HIDE);
 }
 

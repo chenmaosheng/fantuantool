@@ -318,3 +318,26 @@ LRESULT CClientDlg::OnNotifyIcon(WPARAM wParam,LPARAM lParam)
 	return 0; 
 
 }
+
+BOOL CClientDlg::PreTranslateMessage(MSG*   pMsg)
+{
+	if(pMsg->message==WM_KEYUP) 
+	{ 
+		if(pMsg->wParam == VK_CONTROL)
+		{ 
+			CString strTemp = m_strMessage;
+			strTemp += _T("\r\n");
+			CEdit* pEdit = (CEdit*)GetDlgItem(IDC_MESSAGE_EDIT);
+			pEdit->ReplaceSel(strTemp);
+			return TRUE; 
+		}
+
+		if(pMsg->wParam == VK_RETURN)
+		{
+			OnBnClickedSendButton();
+			return TRUE;
+		}
+	} 
+	return   CDialog::PreTranslateMessage(pMsg); 
+
+}

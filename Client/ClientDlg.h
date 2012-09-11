@@ -31,6 +31,7 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	BOOL PreTranslateMessage(MSG*   pMsg);
 
 
 // Implementation

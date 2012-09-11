@@ -6,7 +6,7 @@
 #include "LoginDlg.h"
 #include "ClientSocket.h"
 #include "targetver.h"
-#include "Packet.h"
+#include "Command.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -64,7 +64,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 		m_pSocket->Close();
 		return;
 	}
-	if(!m_pSocket->Connect(m_strServer,5150))
+	if(!m_pSocket->Connect(m_strServer,5151))
 	{
 		AfxMessageBox(_T("Server is not started:-("));
 		m_pSocket->Close();

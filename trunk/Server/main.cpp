@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include "connection.h"
-#include "..\Common\Packet.h"
+#include "..\Common\Command.h"
 
 #pragma   comment(lib,   "ws2_32.lib")  
 
@@ -45,7 +45,7 @@ int __cdecl main(int argc, char **argv)
 	SOCKADDR_IN addr;
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(5150);
+	addr.sin_port = htons(5151);
     rc = bind(s, (sockaddr*)&addr, sizeof(addr));
     rc = listen(s, 5);
     

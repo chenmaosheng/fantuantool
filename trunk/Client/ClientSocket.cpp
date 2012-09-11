@@ -6,7 +6,7 @@
 #include "ClientSocket.h"
 #include "ClientDlg.h"
 #include "targetver.h"
-#include "Packet.h"
+#include "Command.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

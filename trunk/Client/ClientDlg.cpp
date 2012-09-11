@@ -126,7 +126,7 @@ void CClientDlg::OnSysCommand(UINT nID, LPARAM lParam)
 		dlgAbout.DoModal();
 	}
 	else 
-	if(nID==SC_MINIMIZE) 
+	if(nID==SC_MINIMIZE || nID==SC_CLOSE) 
 	{
 		ToTray();
 	}
@@ -213,20 +213,19 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 
 	CString strTemp = chatMessage;
 	strTemp += _T("\r\n");
+	m_MessageList.SetSel(-1);
 	m_MessageList.ReplaceSel(strTemp);
 
-	if (IsIconic())
-	{
-		nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
-		wcscpy(nid.szTip, TEXT("Fantuan"));
-		wcscpy(nid.szInfo, strTemp);
-		wcscpy(nid.szInfoTitle, _T("Fantuan Chat"));
-		nid.uTimeout = 2000;
-		nid.dwState=NIS_SHAREDICON;
-		nid.dwStateMask=0;
-		nid.dwInfoFlags=NIF_TIP;
-		Shell_NotifyIcon(NIM_MODIFY, &nid);
-	}
+	nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
+	wcscpy(nid.szTip, TEXT("Fantuan"));
+	wcscpy(nid.szInfo, strTemp);
+	wcscpy(nid.szInfoTitle, _T("Fantuan Chat"));
+	nid.uTimeout = 2000;
+	nid.dwState=NIS_SHAREDICON;
+	nid.dwStateMask=0;
+	nid.dwInfoFlags=NIF_TIP;
+	Shell_NotifyIcon(NIM_MODIFY, &nid);
+	
 	return TRUE;
 }
 
@@ -283,7 +282,6 @@ void CClientDlg::ToTray()
 	wcscpy(nid.szTip, _T("Fantuan notification"));
 
 	Shell_NotifyIcon(NIM_ADD,&nid);
-	ShowWindow(SW_MINIMIZE);
 	ShowWindow(SW_HIDE);
 }
 
@@ -322,23 +320,24 @@ LRESULT CClientDlg::OnNotifyIcon(WPARAM wParam,LPARAM lParam)
 
 BOOL CClientDlg::PreTranslateMessage(MSG*   pMsg)
 {
-	if(pMsg->message==WM_KEYUP) 
+	if(pMsg->message==WM_KEYDOWN) 
 	{ 
-		if(pMsg->wParam == VK_CONTROL)
-		{ 
-			CString strTemp = m_strMessage;
-			strTemp += _T("\r\n");
-			CEdit* pEdit = (CEdit*)GetDlgItem(IDC_MESSAGE_EDIT);
-			pEdit->ReplaceSel(strTemp);
-			return TRUE; 
-		}
-
 		if(pMsg->wParam == VK_RETURN)
 		{
-			OnBnClickedSendButton();
+			if (GetKeyState(VK_CONTROL) < 0)
+			{
+				CString strTemp = m_strMessage;
+				strTemp += _T("\r\n");
+				CEdit* pEdit = (CEdit*)GetDlgItem(IDC_MESSAGE_EDIT);
+				pEdit->ReplaceSel(strTemp);
+			}
+			else
+			{
+				OnBnClickedSendButton();
+			}
 			return TRUE;
 		}
 	} 
-	return   CDialog::PreTranslateMessage(pMsg); 
 
+	return   CDialog::PreTranslateMessage(pMsg); 
 }

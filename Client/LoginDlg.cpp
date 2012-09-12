@@ -79,7 +79,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 	LoginPkt pkt;
 	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), pkt.nickname, sizeof(pkt.nickname), 0, 0);
 
-	pkt.len = (int)strlen(pkt.nickname)+1+sizeof(pkt.index);
+	pkt.len = (int)strlen(pkt.nickname)+1+sizeof(pkt.connID);
 	m_pSocket->Send((char *)&pkt,sizeof(LoginPkt));
 
 	theApp.m_strName = m_strName;

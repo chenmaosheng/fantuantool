@@ -11,14 +11,30 @@
 
 HANDLE ghCompletionPort;
 std::vector<Connection*> clients;
+std::vector< std::pair<Connection*, std::string > > nicknames;
 
 unsigned int WINAPI WorkerThread(void*);
 
+std::string GetNickName(Connection* pConnection)
+{
+	std::vector< std::pair<Connection*, std::string > >::iterator it = nicknames.begin();
+	while (it != nicknames.end())
+	{
+		if ((*it).first == pConnection)
+		{
+			return (*it).second;
+		}
+
+		++it;
+	}
+
+	return "";
+}
 void DeleteClient(SOCKET sock)
 {
 	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if ((*it)->socket == sock)
+		if ((*it)->socket_ == sock)
 		{
 			delete (*it);
 			clients.erase(it);
@@ -31,7 +47,7 @@ void SendToAll(char* buf, int len)
 {
 	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		(*it)->Send(len, buf);
+		(*it)->AsyncSend(len, buf);
 	}
 }
 
@@ -80,14 +96,15 @@ int __cdecl main(int argc, char **argv)
 		}
 
 		Connection* client = new Connection;
-		client->index = ++i;
-		client->socket = sock;
+		client->socket_ = sock;
+		client->connected_ = 1;
+		client->sockAddr_ = clientAddr;
 
 		clients.push_back(client);
-		printf("new client connected, index=%d\n", client->index);
+		printf("new client connected, addr=%s\n", inet_ntoa(clientAddr.sin_addr));
 
-		CreateIoCompletionPort((HANDLE)client->socket, ghCompletionPort, (ULONG_PTR)client, 0);
-		client->Recv();
+		CreateIoCompletionPort((HANDLE)client->socket_, ghCompletionPort, (ULONG_PTR)client, 0);
+		client->AsyncRecv();
 	}
 
 	
@@ -99,50 +116,51 @@ unsigned int WINAPI WorkerThread(void*)
 {
 	BOOL bResult;
 	DWORD dwNumRead;
-	Connection* pConnection;
+	Connection* pConnection = NULL;;
 	LPOVERLAPPED lpOverlapped = NULL;
+	Context* pContext = NULL;
 
 	while (true)
 	{
 		bResult = GetQueuedCompletionStatus(ghCompletionPort, &dwNumRead, (ULONG_PTR*)&pConnection, &lpOverlapped, INFINITE);
 		if (lpOverlapped)
 		{
-			Context* pContext = CtxOfOlap(lpOverlapped);
-			switch(pContext->operation)
+			pContext = (Context*)((char*)lpOverlapped - CTXOFFSET);
+			switch(pContext->operation_type_)
 			{
-			case RECV:
+			case OPERATION_RECV:
 				{
 					if (dwNumRead == 0)
 					{
-						printf("client %d disconnected\n", pConnection->index);
-
+						printf("client %s disconnected\n", inet_ntoa(pConnection->sockAddr_.sin_addr));
+						
 						LogoutPkt pkt;
-						pkt.index = pConnection->index;
-						pkt.len = sizeof(pkt.index);
+						pkt.connID = (int)pConnection;
+						pkt.len = sizeof(pkt.connID);
+						
+						DeleteClient(pConnection->socket_);
+						closesocket(pConnection->socket_);
+
 						SendToAll((char*)&pkt, pkt.len + sizeof(Header));
-						DeleteClient(pConnection->socket);
-						closesocket(pConnection->socket);
 					}
 					else
 					{
-						printf("client %d: %s\n", pConnection->index, pContext->buffer);
-						Header* header = (Header*)pContext->buffer;
+						printf("client %s send something\n", inet_ntoa(pConnection->sockAddr_.sin_addr));
+						Header* header = (Header*)pContext->buffer_;
 						if (header->type == LOGIN)
 						{
 							LoginPkt* pkt = (LoginPkt*)header;
-							pkt->index = pConnection->index;
-							strncpy(pConnection->nickname, pkt->nickname, sizeof(pConnection->nickname));
+							nicknames.push_back( std::pair<Connection*, std::string>(pConnection, pkt->nickname) );
 							for (size_t i = 0; i < clients.size(); ++i)
 							{
-								if (clients.at(i)->socket != pConnection->socket)
+								if (clients.at(i)->socket_ != pConnection->socket_)
 								{
 									LoginPkt newPkt;
-									strncpy(newPkt.nickname, clients.at(i)->nickname, sizeof(newPkt.nickname));
-									newPkt.nickname[strlen(clients.at(i)->nickname)+1] = '\0';
-									newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.index);
-									newPkt.index = clients.at(i)->index;
-									pConnection->Send(newPkt.len + sizeof(Header), (char*)&newPkt);
-									printf("send to %d\n", pConnection->socket);
+									strcpy_s(newPkt.nickname, sizeof(newPkt.nickname), GetNickName(clients.at(i)).c_str());
+									newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.connID);
+									newPkt.connID = (int)(clients.at(i));
+									pConnection->AsyncSend(newPkt.len + sizeof(Header), (char*)&newPkt);
+									printf("send to %d\n", pConnection->socket_);
 								}
 							}
 
@@ -150,16 +168,16 @@ unsigned int WINAPI WorkerThread(void*)
 						}
 						else
 						{
-							SendToAll(pContext->buffer, header->len + sizeof(Header));
+							SendToAll(pContext->buffer_, header->len + sizeof(Header));
 						}
 
-						pConnection->Recv();
+						pConnection->AsyncRecv();
 					}
 					
 				}
 				break;
 
-			case SEND:
+			case OPERATION_SEND:
 				{
 					
 				}

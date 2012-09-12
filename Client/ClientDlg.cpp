@@ -231,7 +231,7 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	}
 	else
 	{
-		SetForegroundWindow();
+		FlashWindow(TRUE);
 	}
 	
 	return TRUE;

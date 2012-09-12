@@ -28,8 +28,8 @@ CLoginDlg::CLoginDlg(CClientSocket *p_Socket, CWnd* pParent /*=NULL*/)
 	ASSERT(p_Socket);
 	m_pSocket = p_Socket;
 	//{{AFX_DATA_INIT(CLoginDlg)
-	m_strName = _T("tsubasa");
-	m_strServer = _T("192.168.1.4");
+	m_strName = _T("Your name");
+	m_strServer = _T("10.20.20.50");
 	//}}AFX_DATA_INIT
 }
 
@@ -58,6 +58,11 @@ void CLoginDlg::OnBnClickedLoginButton()
 	// TODO: Add your control notification handler code here
 	// TODO: Add extra validation here
 	UpdateData();
+	if (m_strName == _T("Your name"))
+	{
+		AfxMessageBox(_T("Input your own name"));
+		return;
+	}
 	//	m_pSocket->m_strName = this->m_strName;
 	if(!m_pSocket->Create())
 	{

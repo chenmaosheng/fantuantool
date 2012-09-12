@@ -89,7 +89,7 @@ struct LoginPkt : public Header
 		index = 0;
 	}
 	int index;
-	char nickname[32];
+	char nickname[64];
 };
 
 struct LogoutPkt : public Header

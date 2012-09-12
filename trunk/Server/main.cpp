@@ -10,16 +10,17 @@
 #pragma   comment(lib,   "ws2_32.lib")  
 
 HANDLE ghCompletionPort;
-std::vector<Connection> clients;
+std::vector<Connection*> clients;
 
 unsigned int WINAPI WorkerThread(void*);
 
 void DeleteClient(SOCKET sock)
 {
-	for (std::vector<Connection>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if ((*it).socket == sock)
+		if ((*it)->socket == sock)
 		{
+			delete (*it);
 			clients.erase(it);
 			break;
 		}
@@ -28,9 +29,9 @@ void DeleteClient(SOCKET sock)
 
 void SendToAll(char* buf, int len)
 {
-	for (std::vector<Connection>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		(*it).Send(len, buf);
+		(*it)->Send(len, buf);
 	}
 }
 
@@ -78,15 +79,15 @@ int __cdecl main(int argc, char **argv)
 			return -1;
 		}
 
-		Connection client;
-		client.index = ++i;
-		client.socket = sock;
+		Connection* client = new Connection;
+		client->index = ++i;
+		client->socket = sock;
 
 		clients.push_back(client);
-		printf("new client connected, index=%d\n", client.index);
+		printf("new client connected, index=%d\n", client->index);
 
-		CreateIoCompletionPort((HANDLE)client.socket, ghCompletionPort, (ULONG_PTR)&client, 0);
-		client.Recv();
+		CreateIoCompletionPort((HANDLE)client->socket, ghCompletionPort, (ULONG_PTR)client, 0);
+		client->Recv();
 	}
 
 	
@@ -133,13 +134,13 @@ unsigned int WINAPI WorkerThread(void*)
 							strncpy(pConnection->nickname, pkt->nickname, sizeof(pConnection->nickname));
 							for (size_t i = 0; i < clients.size(); ++i)
 							{
-								if (clients.at(i).socket != pConnection->socket)
+								if (clients.at(i)->socket != pConnection->socket)
 								{
 									LoginPkt newPkt;
-									strncpy(newPkt.nickname, clients.at(i).nickname, sizeof(newPkt.nickname));
-									newPkt.nickname[strlen(clients.at(i).nickname)+1] = '\0';
+									strncpy(newPkt.nickname, clients.at(i)->nickname, sizeof(newPkt.nickname));
+									newPkt.nickname[strlen(clients.at(i)->nickname)+1] = '\0';
 									newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.index);
-									newPkt.index = clients.at(i).index;
+									newPkt.index = clients.at(i)->index;
 									pConnection->Send(newPkt.len + sizeof(Header), (char*)&newPkt);
 									printf("send to %d\n", pConnection->socket);
 								}

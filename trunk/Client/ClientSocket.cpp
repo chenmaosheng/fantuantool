@@ -49,7 +49,7 @@ void CClientSocket::OnReceive(int nErrorCode)
 		if (header->type == LOGIN)
 		{
 			LoginPkt* pkt = (LoginPkt*)header;
-			chatDlg->UpdateUser(pkt->nickname, pkt->index, pkt->len-sizeof(pkt->index));
+			chatDlg->UpdateUser(pkt->nickname, pkt->connID, pkt->len-sizeof(pkt->connID));
 		}
 		else
 		if (header->type == SEND_MESSAGE)
@@ -61,7 +61,7 @@ void CClientSocket::OnReceive(int nErrorCode)
 		if (header->type == LOGOUT)
 		{
 			LogoutPkt* pkt = (LogoutPkt*)header;
-			chatDlg->DeleteUser(pkt->index);
+			chatDlg->DeleteUser(pkt->connID);
 		}
 
 		p = p + (header->len + sizeof(Header));

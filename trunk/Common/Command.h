@@ -86,9 +86,9 @@ struct LoginPkt : public Header
 	{
 		type = LOGIN;
 		memset(nickname, 0, sizeof(nickname));
-		index = 0;
+		connID = 0;
 	}
-	int index;
+	int connID;
 	char nickname[64];
 };
 
@@ -97,9 +97,9 @@ struct LogoutPkt : public Header
 	LogoutPkt()
 	{
 		type = LOGOUT;
-		index = 0;
+		connID = 0;
 	}
-	int index;
+	int connID;
 };
 
 struct SendMessagePkt : public Header

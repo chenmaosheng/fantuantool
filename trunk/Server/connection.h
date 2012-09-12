@@ -1,61 +1,32 @@
 #ifndef _H_CONNECTION
 #define _H_CONNECTION
 
-#include <winsock2.h>
+#include "context.h"
 
-enum
-{
-	SEND,
-	RECV,
-};
-
-struct Connection;
-struct Context
-{
-	int operation;
-	WSAOVERLAPPED	overlapped;
-	char buffer[1024];
-	WSABUF wsabuf;
-	Connection* connection;
-
-	Context()
-	{
-		memset(buffer, 0, sizeof(buffer));
-		ZeroMemory(&overlapped, sizeof(WSAOVERLAPPED));
-		wsabuf.buf = buffer;
-	}
-
-	void Set()
-	{
-		ZeroMemory(&overlapped, sizeof(WSAOVERLAPPED));
-		wsabuf.buf = buffer;
-	}
-};
-
-#define	CtxOfOlap(olap)	((Context*)((LPBYTE)(olap)-FIELD_OFFSET(Context, overlapped)))
+typedef HANDLE	ConnID;
 
 struct Connection
 {
-	SOCKET socket;
-	int index;
-	char nickname[64];
-	Context sendContext;
-	Context recvContext;
-
+	SOCKET			socket_;
+	SOCKADDR_IN		sockAddr_;
+	Context			sendContext_;
+	Context			recvContext_;
+	LONG			connected_;							// 是否连接上
+	
 	Connection()
 	{
-		sendContext.operation = SEND;
-		sendContext.connection = this;
-		recvContext.operation = RECV;
-		recvContext.connection = this;
+		connected_ = 0;
+		sendContext_.operation_type_ = OPERATION_SEND;
+		recvContext_.operation_type_ = OPERATION_RECV;
 	}
 
-	void Recv()
+	void AsyncRecv()
 	{
-		recvContext.Set();
-		recvContext.wsabuf.len = 1024;
+		recvContext_.Reset();
+		recvContext_.connection_ = this;
+		recvContext_.wsabuf_.len = 1024;
 		DWORD dwXfer, dwFlag = 0;
-		if (WSARecv(socket, &recvContext.wsabuf, 1, &dwXfer, &dwFlag, &recvContext.overlapped, NULL) == SOCKET_ERROR)
+		if (WSARecv(socket_, &recvContext_.wsabuf_, 1, &dwXfer, &dwFlag, &recvContext_.overlapped_, NULL) == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
@@ -64,15 +35,16 @@ struct Connection
 		}
 	}
 
-	void Send(int len, char* buf)
+	void AsyncSend(int len, char* buf)
 	{
-		sendContext.Set();
-		memcpy(sendContext.buffer, buf, len);
-		sendContext.buffer[strlen(sendContext.buffer)] = '\0';
-		sendContext.wsabuf.len = len;
-		sendContext.wsabuf.buf = sendContext.buffer;
+		sendContext_.Reset();
+		sendContext_.connection_ = this;
+		memcpy(sendContext_.buffer_, buf, len);
+		sendContext_.buffer_[strlen(sendContext_.buffer_)] = '\0';
+		sendContext_.wsabuf_.len = len;
+		sendContext_.wsabuf_.buf = sendContext_.buffer_;
 		DWORD dwXfer;
-		if (WSASend(socket, &sendContext.wsabuf, 1, &dwXfer, 0, &sendContext.overlapped, NULL) == SOCKET_ERROR)
+		if (WSASend(socket_, &sendContext_.wsabuf_, 1, &dwXfer, 0, &sendContext_.overlapped_, NULL) == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{

@@ -217,26 +217,33 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	m_MessageList.SetSel(-1);
 	m_MessageList.ReplaceSel(strTemp);
 
-	nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
-	wcscpy(nid.szTip, TEXT("Fantuan"));
-	wcscpy(nid.szInfo, strTemp);
-	wcscpy(nid.szInfoTitle, _T("Fantuan Chat"));
-	nid.uTimeout = 2000;
-	nid.dwState=NIS_SHAREDICON;
-	nid.dwStateMask=0;
-	nid.dwInfoFlags=NIF_TIP;
-	Shell_NotifyIcon(NIM_MODIFY, &nid);
+	if (!IsIconic())
+	{
+		nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
+		wcscpy_s(nid.szTip, sizeof(nid.szTip)/sizeof(TCHAR), TEXT("Fantuan"));
+		wcscpy_s(nid.szInfo, sizeof(nid.szInfo)/sizeof(TCHAR), strTemp);
+		wcscpy_s(nid.szInfoTitle, sizeof(nid.szInfoTitle)/sizeof(TCHAR), _T("Fantuan Chat"));
+		nid.uTimeout = 2000;
+		nid.dwState=NIS_SHAREDICON;
+		nid.dwStateMask=0;
+		nid.dwInfoFlags=NIF_TIP;
+		Shell_NotifyIcon(NIM_MODIFY, &nid);
+	}
+	else
+	{
+		SetForegroundWindow();
+	}
 	
 	return TRUE;
 }
 
-void CClientDlg::UpdateUser(char* nickname, int index, int length)
+void CClientDlg::UpdateUser(char* nickname, int connID, int length)
 {
 	TCHAR user[128] = {0};
 	MultiByteToWideChar(CP_UTF8, 0, nickname, length, user, 128);
 	CString user_info = user;
 
-	m_users.push_back( std::pair<int, CString>(index, user_info) );
+	m_users.push_back( std::pair<int, CString>(connID, user_info) );
 
 	m_UserList.ResetContent();
 	for(int j=0; j<int(m_users.size()); j++)
@@ -245,12 +252,12 @@ void CClientDlg::UpdateUser(char* nickname, int index, int length)
 	}
 }
 
-void CClientDlg::DeleteUser(int index)
+void CClientDlg::DeleteUser(int connID)
 {
 	std::vector< std::pair<int, CString> >::iterator it = m_users.begin();
 	while (it != m_users.end())
 	{
-		if ((*it).first == index)
+		if ((*it).first == connID)
 		{
 			m_users.erase(it);
 			break;
@@ -276,11 +283,11 @@ void CClientDlg::ToTray()
 	nid.hIcon = LoadIcon( AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
 	nid.dwInfoFlags = NIF_INFO;
 	nid.uTimeout=2000; 
-	wcscpy(nid.szTip,_T("Fantuan"));  
-	wcscpy(nid.szInfo,_T("See you later"));  
-	wcscpy(nid.szInfoTitle,_T("Fantuan Chat"));  
+	wcscpy_s(nid.szTip, sizeof(nid.szTip) / sizeof(TCHAR), _T("Fantuan"));  
+	wcscpy_s(nid.szInfo, sizeof(nid.szTip) / sizeof(TCHAR), _T("See you later"));  
+	wcscpy_s(nid.szInfoTitle, sizeof(nid.szInfoTitle) / sizeof(TCHAR), _T("Fantuan Chat"));  
 
-	wcscpy(nid.szTip, _T("Fantuan notification"));
+	wcscpy_s(nid.szTip, sizeof(nid.szTip) / sizeof(TCHAR), _T("Fantuan notification"));
 
 	Shell_NotifyIcon(NIM_ADD,&nid);
 	ShowWindow(SW_HIDE);

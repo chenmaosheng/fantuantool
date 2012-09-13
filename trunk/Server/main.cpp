@@ -30,11 +30,20 @@ std::string GetNickName(Connection* pConnection)
 
 	return "";
 }
-void DeleteClient(SOCKET sock)
+void DeleteClient(Connection* pConnection)
 {
+	for (std::vector< std::pair<Connection*, std::string > >::iterator it2 = nicknames.begin(); it2 != nicknames.end(); ++it2)
+	{
+		if ((*it2).first == pConnection)
+		{
+			nicknames.erase(it2);
+			break;
+		}
+	}
+
 	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if ((*it)->socket_ == sock)
+		if ((*it) == pConnection)
 		{
 			delete (*it);
 			clients.erase(it);
@@ -138,7 +147,7 @@ unsigned int WINAPI WorkerThread(void*)
 						pkt.connID = (int)pConnection;
 						pkt.len = sizeof(pkt.connID);
 						
-						DeleteClient(pConnection->socket_);
+						DeleteClient(pConnection);
 						closesocket(pConnection->socket_);
 
 						SendToAll((char*)&pkt, pkt.len + sizeof(Header));
@@ -150,6 +159,7 @@ unsigned int WINAPI WorkerThread(void*)
 						if (header->type == LOGIN)
 						{
 							LoginPkt* pkt = (LoginPkt*)header;
+							pkt->connID = (int)pConnection;
 							nicknames.push_back( std::pair<Connection*, std::string>(pConnection, pkt->nickname) );
 							for (size_t i = 0; i < clients.size(); ++i)
 							{

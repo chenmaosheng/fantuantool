@@ -1,7 +1,6 @@
 #include "worker.h"
 #include "connection.h"
 #include "context.h"
-#include "Command.h"
 #include <process.h>
 
 Worker::Worker()
@@ -51,45 +50,13 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					if (dwNumRead == 0)
 					{
 						printf("client %s disconnected\n", inet_ntoa(pConnection->sockAddr_.sin_addr));
-						
-						LogoutPkt pkt;
-						pkt.connID = int(pConnection);
-						pkt.len = sizeof(pkt.connID);
-						
-						pWorker->DeleteClient(pConnection);
-						closesocket(pConnection->socket_);
-
-						pWorker->SendToAll((char*)&pkt, pkt.len + sizeof(Header));
+						pConnection->handler_.OnDisconnect((ConnID)pConnection);
 					}
 					else
 					{
 						printf("client %s send something\n", inet_ntoa(pConnection->sockAddr_.sin_addr));
-						Header* header = (Header*)pContext->buffer_;
-						if (header->type == LOGIN)
-						{
-							LoginPkt* pkt = (LoginPkt*)header;
-							pkt->connID = (int)pConnection;
-							pWorker->nicknames.push_back( std::pair<Connection*, std::string>(pConnection, pkt->nickname) );
-							for (size_t i = 0; i < pWorker->clients.size(); ++i)
-							{
-								if (pWorker->clients.at(i)->socket_ != pConnection->socket_)
-								{
-									LoginPkt newPkt;
-									strcpy_s(newPkt.nickname, sizeof(newPkt.nickname), pWorker->GetNickName(pWorker->clients.at(i)).c_str());
-									newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.connID);
-									newPkt.connID = (int)(pWorker->clients.at(i));
-									pConnection->AsyncSend(newPkt.len + sizeof(Header), (char*)&newPkt);
-									printf("send to %d\n", pConnection->socket_);
-								}
-							}
-
-							pWorker->SendToAll((char*)pkt, header->len + sizeof(Header));
-						}
-						else
-						{
-							pWorker->SendToAll(pContext->buffer_, header->len + sizeof(Header));
-						}
-
+						
+						pConnection->handler_.OnData((ConnID)pConnection, (uint16)dwNumRead, pContext->buffer_);
 						pConnection->AsyncRecv();
 					}
 					
@@ -109,47 +76,3 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 	}
 }
 
-std::string Worker::GetNickName(Connection* pConnection)
-{
-	std::vector< std::pair<Connection*, std::string > >::iterator it = nicknames.begin();
-	while (it != nicknames.end())
-	{
-		if ((*it).first == pConnection)
-		{
-			return (*it).second;
-		}
-
-		++it;
-	}
-
-	return "";
-}
-void Worker::DeleteClient(Connection* pConnection)
-{
-	for (std::vector< std::pair<Connection*, std::string > >::iterator it2 = nicknames.begin(); it2 != nicknames.end(); ++it2)
-	{
-		if ((*it2).first == pConnection)
-		{
-			nicknames.erase(it2);
-			break;
-		}
-	}
-
-	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
-		if ((*it) == pConnection)
-		{
-			delete (*it);
-			clients.erase(it);
-			break;
-		}
-	}
-}
-
-void Worker::SendToAll(char* buf, int len)
-{
-	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
-		(*it)->AsyncSend(len, buf);
-	}
-}

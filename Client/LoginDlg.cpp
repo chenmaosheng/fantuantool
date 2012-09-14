@@ -29,7 +29,7 @@ CLoginDlg::CLoginDlg(CClientSocket *p_Socket, CWnd* pParent /*=NULL*/)
 	m_pSocket = p_Socket;
 	//{{AFX_DATA_INIT(CLoginDlg)
 	m_strName = _T("Your name");
-	m_strServer = _T("192.168.1.4");
+	m_strServer = _T("10.20.20.50");
 	//}}AFX_DATA_INIT
 }
 
@@ -69,7 +69,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 		m_pSocket->Close();
 		return;
 	}
-	if(!m_pSocket->Connect(m_strServer,5151))
+	if(!m_pSocket->Connect(m_strServer,5150))
 	{
 		AfxMessageBox(_T("Server is not started:-("));
 		m_pSocket->Close();

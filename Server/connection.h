@@ -2,6 +2,7 @@
 #define _H_CONNECTION
 
 #include "context.h"
+#include "handler.h"
 
 typedef HANDLE	ConnID;
 
@@ -12,6 +13,7 @@ struct Connection
 	Context			sendContext_;
 	Context			recvContext_;
 	LONG			connected_;							// 是否连接上
+	Handler			handler_;
 	
 	Connection()
 	{

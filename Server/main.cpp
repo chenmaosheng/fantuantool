@@ -1,9 +1,6 @@
-#include "common.h"
 #include <cstdio>
-#include <vector>
-#include <process.h>
-#include "Command.h"
 #include "worker.h"
+#include "server.h"
 
 int __cdecl main(int argc, char **argv)
 {
@@ -18,9 +15,6 @@ int __cdecl main(int argc, char **argv)
 		return -1;
 	}
 
-	Worker* pWorker = new Worker;
-	pWorker->Init();
-
 	// create the socket
 	s = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
@@ -33,6 +27,9 @@ int __cdecl main(int argc, char **argv)
 	printf("Listen to port: %d\n", 5151);
 
 	rc = listen(s, 5);
+
+	Server server;
+	server.Init();
 
 	while (true)
 	{
@@ -48,13 +45,14 @@ int __cdecl main(int argc, char **argv)
 
 		Connection* client = new Connection;
 		client->socket_ = sock;
-		client->connected_ = 1;
 		client->sockAddr_ = clientAddr;
+		client->handler_ = server.handler_;
+		CreateIoCompletionPort((HANDLE)client->socket_, server.worker_->iocp_, (ULONG_PTR)client, 0);
 
-		pWorker->clients.push_back(client);
 		printf("new client connected, addr=%s\n", inet_ntoa(clientAddr.sin_addr));
+		client->handler_.OnConnection((ConnID)client);
+		client->connected_ = 1;
 
-		CreateIoCompletionPort((HANDLE)client->socket_, pWorker->iocp_, (ULONG_PTR)client, 0);
 		client->AsyncRecv();
 	}
 	

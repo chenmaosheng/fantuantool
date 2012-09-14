@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "connection.h"
 #include "worker.h"
+#include "acceptor.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
@@ -15,7 +16,7 @@ Server::~Server()
 
 }
 
-void Server::Init()
+void Server::Init(uint16 port)
 {
 	handler_.OnConnection = &OnConnection;
 	handler_.OnDisconnect = &OnDisconnect;
@@ -24,6 +25,18 @@ void Server::Init()
 
 	worker_ = new Worker;
 	worker_->Init();
+
+	SOCKADDR_IN addr;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	addr.sin_port = htons(port);
+	acceptor_ = new Acceptor;
+	acceptor_->Init(&addr, worker_, &handler_);
+}
+
+void Server::Start()
+{
+	acceptor_->Start();
 }
 
 bool CALLBACK Server::OnConnection(ConnID connID)

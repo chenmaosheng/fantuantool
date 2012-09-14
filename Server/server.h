@@ -8,13 +8,15 @@
 
 struct Connection;
 class Worker;
+class Acceptor;
 class Server
 {
 public:
 	Server();
 	virtual ~Server();
 
-	void Init();
+	void Init(uint16 port);
+	void Start();
 
 	static bool CALLBACK OnConnection(ConnID connID);
 	static void CALLBACK OnDisconnect(ConnID connID);
@@ -27,6 +29,7 @@ public:
 	static void SendToAll(char* buf, int len);
 
 public:
+	Acceptor* acceptor_;
 	Handler handler_;
 	Worker* worker_;
 	static std::vector<Connection*> clients;

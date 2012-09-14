@@ -3,14 +3,17 @@
 
 #include "common.h"
 
-class Connection;
-class Handler
+typedef bool (CALLBACK* ON_CONNECTION)(ConnID);
+typedef void (CALLBACK* ON_DISCONNECT)(ConnID);
+typedef void (CALLBACK* ON_DATA)(ConnID, uint16, char*);
+typedef void (CALLBACK* ON_CONNECT_FAILED)(void*);
+
+struct Handler
 {
-public:
-	virtual bool	OnConnection(ConnID iConnID) = 0;
-	virtual void	OnDisconnect(ConnID iConnID) = 0;
-	virtual void	OnData(ConnID iConnID, uint16 length, LPBYTE buffer) = 0;
-	virtual void	OnConnectFailed(void) = 0;
+	ON_CONNECTION OnConnection;
+	ON_DISCONNECT OnDisconnect;
+	ON_DATA OnData;
+	ON_CONNECT_FAILED OnConnectFailed;
 };
 
 #endif

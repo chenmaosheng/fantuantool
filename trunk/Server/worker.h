@@ -16,14 +16,6 @@ public:
 
 	static uint32 WINAPI WorkerThread(PVOID);
 
-	std::vector<Connection*> clients;
-	std::vector< std::pair<Connection*, std::string > > nicknames;
-
-	std::string GetNickName(Connection* pConnection);
-	void DeleteClient(Connection* pConnection);
-
-	void SendToAll(char* buf, int len);
-
 public:
 	HANDLE	iocp_;
 };

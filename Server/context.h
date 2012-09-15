@@ -13,17 +13,20 @@ enum
 	OPERATION_SEND,			// send data operation
 };
 
-#define CTXOFFSET	FIELD_OFFSET(Context, overlapped_)	// overlapped_相对于类的偏移
+#define CTXOFFSET	FIELD_OFFSET(Context, overlapped_)	// overlapped_ offset
+#define BUFOFFSET	FIELD_OFFSET(Context, buffer_)		// buffer_ offset
 
 struct Connection;
-struct Context
+class ContextPool;
+struct Context : SLIST_ENTRY
 {
 	WSAOVERLAPPED	overlapped_;		// overlapped io
 	WSABUF			wsabuf_;			// overlapped buf
 	int				operation_type_;	// overlapped operation type
-	Connection*		connection_;		// context对应的connection	
+	Connection*		connection_;		// context's connection
+	ContextPool*	context_pool_;		// the pool which is based on
 
-	char			buffer_[1024];		// 收到的buffer
+	char			buffer_[1024];		// received buffer
 
 	void Reset()
 	{

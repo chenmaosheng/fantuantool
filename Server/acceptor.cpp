@@ -2,18 +2,9 @@
 #include <cstdio>
 #include "connection.h"
 #include "worker.h"
+#include "context_pool.h"
 
-Acceptor::Acceptor()
-{
-
-}
-
-Acceptor::~Acceptor()
-{
-
-}
-
-void Acceptor::Init(PSOCKADDR_IN addr, Worker* pWorker, Handler* pHandler)
+void Acceptor::Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler)
 {
 	int rc = 0;
 	socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -22,6 +13,7 @@ void Acceptor::Init(PSOCKADDR_IN addr, Worker* pWorker, Handler* pHandler)
 
 	worker_ = pWorker;
 	handler_ = *pHandler;
+	context_pool_ = pContextPool;
 }
 
 void Acceptor::Destroy()
@@ -44,6 +36,7 @@ void Acceptor::Accept()
 	client->socket_ = sock;
 	client->sockAddr_ = clientAddr;
 	client->handler_ = handler_;
+	//client->context_pool_ = context_pool_;
 	CreateIoCompletionPort((HANDLE)client->socket_, worker_->iocp_, (ULONG_PTR)client, 0);
 
 	printf("new client connected, addr=%s\n", inet_ntoa(clientAddr.sin_addr));

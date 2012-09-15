@@ -9,6 +9,7 @@
 struct Connection;
 class Worker;
 class Acceptor;
+class ContextPool;
 class Server
 {
 public:
@@ -32,6 +33,7 @@ public:
 	Acceptor* acceptor_;
 	Handler handler_;
 	Worker* worker_;
+	ContextPool* context_pool_;
 	static std::vector<Connection*> clients;
 	static std::vector< std::pair<Connection*, std::string > > nicknames;
 };

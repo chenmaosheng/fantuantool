@@ -3,6 +3,7 @@
 #include "connection.h"
 #include "worker.h"
 #include "acceptor.h"
+#include "context_pool.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
@@ -26,12 +27,14 @@ void Server::Init(uint16 port)
 	worker_ = new Worker;
 	worker_->Init();
 
+	context_pool_ = ContextPool::CreateContextPool(65000, 65000);
+
 	SOCKADDR_IN addr;
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	addr.sin_port = htons(port);
 	acceptor_ = new Acceptor;
-	acceptor_->Init(&addr, worker_, &handler_);
+	acceptor_->Init(&addr, worker_, context_pool_, &handler_);
 }
 
 void Server::Start()

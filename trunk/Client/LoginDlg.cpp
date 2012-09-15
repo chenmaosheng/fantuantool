@@ -29,7 +29,7 @@ CLoginDlg::CLoginDlg(CClientSocket *p_Socket, CWnd* pParent /*=NULL*/)
 	m_pSocket = p_Socket;
 	//{{AFX_DATA_INIT(CLoginDlg)
 	m_strName = _T("Your name");
-	m_strServer = _T("10.20.20.50");
+	m_strServer = _T("192.168.1.2");
 	//}}AFX_DATA_INIT
 }
 

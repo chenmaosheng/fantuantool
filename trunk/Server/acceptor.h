@@ -4,13 +4,14 @@
 #include "handler.h"
 
 class Worker;
+class ContextPool;
 class Acceptor
 {
 public:
-	Acceptor();
-	~Acceptor();
+	Acceptor(){}
+	~Acceptor(){}
 
-	void Init(PSOCKADDR_IN addr, Worker* pWorker, Handler* pHandler);
+	void Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
 	void Destroy();
 	void Accept();
 
@@ -20,6 +21,7 @@ public:
 	SOCKET	socket_;
 	Handler	handler_;
 	Worker*	worker_;
+	ContextPool* context_pool_;
 };
 
 #endif

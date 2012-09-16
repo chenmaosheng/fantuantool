@@ -90,7 +90,7 @@ void CALLBACK Server::OnData(ConnID connID, uint16 iLen, char* pBuf)
 				strcpy_s(newPkt.nickname, sizeof(newPkt.nickname), GetNickName(clients.at(i)).c_str());
 				newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.connID);
 				newPkt.connID = (int)(clients.at(i));
-				pConnection->AsyncSend(newPkt.len + sizeof(Header), (char*)&newPkt);
+				//pConnection->AsyncSend(newPkt.len + sizeof(Header), (char*)&newPkt);
 				printf("send to %d\n", pConnection->socket_);
 			}
 		}
@@ -151,6 +151,6 @@ void Server::SendToAll(char* buf, int len)
 {
 	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		(*it)->AsyncSend(len, buf);
+		//(*it)->AsyncSend(len, buf);
 	}
 }

@@ -9,7 +9,7 @@ struct Context;
 class Acceptor
 {
 public:
-	void Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
+	int32 Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
 	void Destroy();
 	void Accept();
 

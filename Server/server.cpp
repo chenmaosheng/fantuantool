@@ -18,7 +18,7 @@ Server::~Server()
 
 }
 
-void Server::Init(uint16 port)
+int32 Server::Init()
 {
 	int32 iRet = 0;
 	static Handler handler;
@@ -27,13 +27,26 @@ void Server::Init(uint16 port)
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
-	iRet = InitAcceptor(0, port, &handler);
+	iRet = ServerBase::Init();
 	if (iRet != 0)
 	{
-		return;
+		return -1;
+	}
+
+	iRet = InitAcceptor(0, 5150, &handler);
+	if (iRet != 0)
+	{
+		return -2;
 	}
 
 	//StartAcceptor();
+
+	return 0;
+}
+
+void Server::Destroy()
+{
+	ServerBase::Destroy();
 }
 
 void Server::Start()

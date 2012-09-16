@@ -10,6 +10,9 @@ struct Handler;
 class ServerBase
 {
 public:
+	virtual int32 Init();
+	virtual void Destroy();
+
 	ContextPool* GetContextPool();
 	
 protected:

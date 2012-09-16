@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\starnet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\worker.cpp"
 				>
 			</File>
@@ -244,6 +248,10 @@
 			</File>
 			<File
 				RelativePath=".\server_base.h"
+				>
+			</File>
+			<File
+				RelativePath=".\starnet.h"
 				>
 			</File>
 			<File

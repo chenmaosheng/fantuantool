@@ -3,6 +3,7 @@
 #include "connection.h"
 #include "worker.h"
 #include "context_pool.h"
+#include "context.h"
 
 void Acceptor::Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler)
 {
@@ -48,7 +49,20 @@ void Acceptor::Accept()
 
 void Acceptor::Start()
 {
-	Accept();
+	/*if (!InterlockedCompareExchange(&running, 1, 0))
+	{
+		while (iorefs_)
+		{
+			Sleep(100);
+		}*/
+
+		Accept();
+	//}
+}
+
+void Acceptor::Stop()
+{
+	running_ = 0;
 }
 
 Acceptor* Acceptor::CreateAcceptor(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler)

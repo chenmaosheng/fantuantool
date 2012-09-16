@@ -27,4 +27,7 @@ typedef HANDLE				ConnID;
 
 #define SAFE_DELETE(ptr)	if (ptr) {delete (ptr); (ptr) = NULL;}
 
+#define MAX_INPUT_BUFFER	1024
+#define MAX_OUTPUT_BUFFER	65500
+
 #endif

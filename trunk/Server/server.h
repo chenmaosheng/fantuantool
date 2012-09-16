@@ -1,16 +1,12 @@
 #ifndef _H_SERVER
 #define _H_SERVER
 
-#include "common.h"
-#include "handler.h"
+#include "server_base.h"
 #include <string>
 #include <vector>
 
 struct Connection;
-class Worker;
-class Acceptor;
-class ContextPool;
-class Server
+class Server : public ServerBase
 {
 public:
 	Server();
@@ -30,10 +26,6 @@ public:
 	static void SendToAll(char* buf, int len);
 
 public:
-	Acceptor* acceptor_;
-	Handler handler_;
-	Worker* worker_;
-	ContextPool* context_pool_;
 	static std::vector<Connection*> clients;
 	static std::vector< std::pair<Connection*, std::string > > nicknames;
 };

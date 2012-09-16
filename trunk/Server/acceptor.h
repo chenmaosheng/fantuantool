@@ -17,6 +17,9 @@ public:
 
 	void Start();
 
+	static Acceptor* CreateAcceptor(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
+	static void DestroyAcceptor(Acceptor*);
+
 public:
 	SOCKET	socket_;
 	Handler	handler_;

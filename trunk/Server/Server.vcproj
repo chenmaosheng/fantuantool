@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\server_base.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\worker.cpp"
 				>
 			</File>
@@ -236,6 +240,10 @@
 			</File>
 			<File
 				RelativePath=".\server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\server_base.h"
 				>
 			</File>
 			<File

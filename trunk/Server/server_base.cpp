@@ -3,6 +3,7 @@
 #include "worker.h"
 #include "acceptor.h"
 #include "context_pool.h"
+#include "starnet.h"
 
 ServerBase::ServerBase()
 {
@@ -13,6 +14,24 @@ ServerBase::ServerBase()
 
 ServerBase::~ServerBase()
 {
+}
+
+int32 ServerBase::Init()
+{
+	int32 iRet = 0;
+	
+	iRet = StarNet::Init();
+	if (iRet != 0)
+	{
+		return -1;
+	}
+
+	return 0;
+}
+
+void ServerBase::Destroy()
+{
+	StarNet::Destroy();
 }
 
 int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler)

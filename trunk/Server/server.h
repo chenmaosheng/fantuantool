@@ -12,7 +12,9 @@ public:
 	Server();
 	virtual ~Server();
 
-	void Init(uint16 port);
+	int32 Init();
+	void Destroy();
+
 	void Start();
 
 	static bool CALLBACK OnConnection(ConnID connID);

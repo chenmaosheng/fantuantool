@@ -1,0 +1,31 @@
+#ifndef _H_SERVER_BASE
+#define _H_SERVER_BASE
+
+#include "common.h"
+
+class Worker;
+class Acceptor;
+class ContextPool;
+struct Handler;
+class ServerBase
+{
+public:
+	ContextPool* GetContextPool();
+	
+protected:
+	ServerBase();
+	virtual ~ServerBase();
+
+	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler);
+	void DestroyAcceptor();
+
+	void StartAcceptor();
+	void StopAcceptor();
+
+private:
+	Acceptor* acceptor_;
+	Worker* worker_;
+	ContextPool* context_pool_;
+};
+
+#endif

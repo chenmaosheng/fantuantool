@@ -4,11 +4,12 @@
 #include "worker.h"
 #include "acceptor.h"
 #include "context_pool.h"
+#include "handler.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
 
-Server::Server() : worker_(NULL)
+Server::Server()
 {
 }
 
@@ -19,27 +20,25 @@ Server::~Server()
 
 void Server::Init(uint16 port)
 {
-	handler_.OnConnection = &OnConnection;
-	handler_.OnDisconnect = &OnDisconnect;
-	handler_.OnData = &OnData;
-	handler_.OnConnectFailed = &OnConnectFailed;
+	int32 iRet = 0;
+	static Handler handler;
+	handler.OnConnection = &OnConnection;
+	handler.OnDisconnect = &OnDisconnect;
+	handler.OnData = &OnData;
+	handler.OnConnectFailed = &OnConnectFailed;
 
-	worker_ = new Worker;
-	worker_->Init();
+	iRet = InitAcceptor(0, port, &handler);
+	if (iRet != 0)
+	{
+		return;
+	}
 
-	context_pool_ = ContextPool::CreateContextPool(65000, 65000);
-
-	SOCKADDR_IN addr;
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(port);
-	acceptor_ = new Acceptor;
-	acceptor_->Init(&addr, worker_, context_pool_, &handler_);
+	//StartAcceptor();
 }
 
 void Server::Start()
 {
-	acceptor_->Start();
+	StartAcceptor();
 }
 
 bool CALLBACK Server::OnConnection(ConnID connID)

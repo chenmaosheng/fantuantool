@@ -50,3 +50,20 @@ void Acceptor::Start()
 {
 	Accept();
 }
+
+Acceptor* Acceptor::CreateAcceptor(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler)
+{
+	Acceptor* pAcceptor = (Acceptor*)_aligned_malloc(sizeof(Acceptor), MEMORY_ALLOCATION_ALIGNMENT);
+	if (pAcceptor)
+	{
+		pAcceptor->Init(addr, pWorker, pContextPool, pHandler);
+	}
+
+	return pAcceptor;
+}
+
+void Acceptor::DestroyAcceptor(Acceptor* pAcceptor)
+{
+	pAcceptor->Destroy();
+	_aligned_free(pAcceptor);
+}

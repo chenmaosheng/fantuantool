@@ -14,6 +14,9 @@ public:
 	void Init();
 	void Destroy();
 
+	static Worker* CreateWorker();
+	static void DestroyWorker(Worker*);
+
 	static uint32 WINAPI WorkerThread(PVOID);
 
 public:

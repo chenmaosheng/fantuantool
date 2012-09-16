@@ -27,6 +27,23 @@ void Worker::Destroy()
 	}
 }
 
+Worker* Worker::CreateWorker()
+{
+	Worker* pWorker = (Worker*)_aligned_malloc(sizeof(Worker), MEMORY_ALLOCATION_ALIGNMENT);
+	if (pWorker)
+	{
+		pWorker->Init();
+	}
+
+	return pWorker;
+}
+
+void Worker::DestroyWorker(Worker* pWorker)
+{
+	pWorker->Destroy();
+	_aligned_free(pWorker);
+}
+
 uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 {
 	BOOL bResult;

@@ -25,8 +25,6 @@ public:
 	static std::string GetNickName(Connection* pConnection);
 	static void DeleteClient(Connection* pConnection);
 
-	static void SendToAll(char* buf, int len);
-
 public:
 	static std::vector<Connection*> clients;
 	static std::vector< std::pair<Connection*, std::string > > nicknames;

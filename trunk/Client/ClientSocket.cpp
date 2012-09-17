@@ -40,7 +40,7 @@ END_MESSAGE_MAP()
 void CClientSocket::OnReceive(int nErrorCode) 
 {
 	// TODO: Add your specialized code here and/or call the base class
-	char buf[256] = {0};
+	char buf[1024] = {0};
 	char* p = buf;
 	Receive(buf, sizeof(buf));
 	while ((*p) != 0)

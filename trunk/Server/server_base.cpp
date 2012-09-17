@@ -58,6 +58,8 @@ int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler)
 		return -3;
 	}
 
+	acceptor_->SetServer(this);
+
 	return 0;
 }
 

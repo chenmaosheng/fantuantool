@@ -39,7 +39,7 @@ int32 Server::Init()
 		return -2;
 	}
 
-	//StartAcceptor();
+	StartAcceptor();
 
 	return 0;
 }
@@ -51,7 +51,6 @@ void Server::Destroy()
 
 void Server::Start()
 {
-	StartAcceptor();
 }
 
 bool CALLBACK Server::OnConnection(ConnID connID)
@@ -64,19 +63,24 @@ bool CALLBACK Server::OnConnection(ConnID connID)
 void CALLBACK Server::OnDisconnect(ConnID connID)
 {
 	Connection* pConnection = (Connection*)connID;
-	LogoutPkt pkt;
-	pkt.connID = (int)connID;
-	pkt.len = sizeof(pkt.connID);
-
+	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	DeleteClient(pConnection);
 	
-	SendToAll((char*)&pkt, pkt.len + sizeof(Header));
+	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		LogoutPkt* pkt = (LogoutPkt*)pServer->context_pool_->PopOutputBuffer();
+		pkt->type = LOGOUT;
+		pkt->connID = (int)connID;
+		pkt->len = sizeof(pkt->connID);
+		(*it)->AsyncSend(pkt->len + sizeof(Header), (char*)pkt);
+	}
 }
 
 void CALLBACK Server::OnData(ConnID connID, uint16 iLen, char* pBuf)
 {
 	Connection* pConnection = (Connection*)connID;
 	Header* header = (Header*)pBuf;
+	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	if (header->type == LOGIN)
 	{
 		LoginPkt* pkt = (LoginPkt*)header;
@@ -86,20 +90,31 @@ void CALLBACK Server::OnData(ConnID connID, uint16 iLen, char* pBuf)
 		{
 			if (clients.at(i)->socket_ != pConnection->socket_)
 			{
-				LoginPkt newPkt;
-				strcpy_s(newPkt.nickname, sizeof(newPkt.nickname), GetNickName(clients.at(i)).c_str());
-				newPkt.len = (int)strlen(newPkt.nickname) + sizeof(newPkt.connID);
-				newPkt.connID = (int)(clients.at(i));
-				//pConnection->AsyncSend(newPkt.len + sizeof(Header), (char*)&newPkt);
+				LoginPkt* newPkt = (LoginPkt*)pServer->context_pool_->PopOutputBuffer();
+				newPkt->type = LOGIN;
+				strcpy_s(newPkt->nickname, sizeof(newPkt->nickname), GetNickName(clients.at(i)).c_str());
+				newPkt->len = (int)strlen(newPkt->nickname) + sizeof(newPkt->connID);
+				newPkt->connID = (int)(clients.at(i));
+				pConnection->AsyncSend(newPkt->len + sizeof(Header), (char*)newPkt);
 				printf("send to %d\n", pConnection->socket_);
 			}
 		}
 
-		SendToAll((char*)pkt, header->len + sizeof(Header));
+		for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
+		{
+			char* newBuf = pServer->context_pool_->PopOutputBuffer();
+			memcpy(newBuf, pBuf, iLen);
+			(*it)->AsyncSend(iLen, newBuf);
+		}
 	}
 	else
 	{
-		SendToAll(pBuf, header->len + sizeof(Header));
+		for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
+		{
+			char* newBuf = pServer->context_pool_->PopOutputBuffer();
+			memcpy(newBuf, pBuf, iLen);
+			(*it)->AsyncSend(iLen, newBuf);
+		}
 	}
 }
 
@@ -138,19 +153,10 @@ void Server::DeleteClient(Connection* pConnection)
 	{
 		if ((*it) == pConnection)
 		{
-			delete (*it);
+			Connection::Close(*it);
 			clients.erase(it);
 			break;
 		}
 	}
-
-	closesocket(pConnection->socket_);
 }
 
-void Server::SendToAll(char* buf, int len)
-{
-	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
-		//(*it)->AsyncSend(len, buf);
-	}
-}

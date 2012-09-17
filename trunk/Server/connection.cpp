@@ -5,7 +5,7 @@
 #include "acceptor.h"
 #include "starnet.h"
 
-int32 Connection::Connect(PSOCKADDR_IN addr, void* client)
+int32 Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
 {
 	int32 rc = 0;
 	client_ = client;
@@ -27,7 +27,7 @@ int32 Connection::Connect(PSOCKADDR_IN addr, void* client)
 	return 0;
 }
 
-void Connection::Disconnect()
+void Connection::AsyncDisconnect()
 {
 	int32 rc = 0;
 	if (InterlockedCompareExchange(&connected_, 0, 1))
@@ -50,7 +50,7 @@ void Connection::AsyncSend(Context* pContext)
 	if (iorefs_ > iorefmax_)
 	{
 		context_pool_->PushOutputContext(pContext);
-		Disconnect();
+		AsyncDisconnect();
 	}
 
 	InterlockedIncrement(&iorefs_);
@@ -60,7 +60,7 @@ void Connection::AsyncSend(Context* pContext)
 		if (WSAGetLastError() != ERROR_IO_PENDING)
 		{
 			context_pool_->PushOutputContext(pContext);
-			Disconnect();
+			AsyncDisconnect();
 			InterlockedDecrement(&iorefs_);
 		}
 	}
@@ -77,10 +77,47 @@ void Connection::AsyncRecv(Context* pContext)
 		if (WSAGetLastError() != ERROR_IO_PENDING)
 		{
 			context_pool_->PushInputContext(pContext);
-			Disconnect();
+			AsyncDisconnect();
 			InterlockedDecrement(&iorefs_);
 		}
 	}
+}
+
+void Connection::AsyncSend(uint16 len, char* buf)
+{
+	Context* pContext = (Context*)((char*)buf - BUFOFFSET);
+	if (pContext->operation_type_ != OPERATION_SEND)
+	{
+		return;
+	}
+
+	if (pContext->context_pool_->output_buffer_size_ < len)
+	{
+		return;
+	}
+
+	pContext->wsabuf_.len = len;
+	AsyncSend(pContext);
+}
+
+void Connection::SetClient(void* pClient)
+{
+	client_ = pClient;
+}
+
+void* Connection::GetClient()
+{
+	return client_;
+}
+
+void Connection::SetRefMax(uint16 iMax)
+{
+	iorefmax_ = iMax;
+}
+
+bool Connection::IsConnected()
+{
+	return connected_ ? true : false;
 }
 
 Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, Acceptor* pAcceptor)
@@ -91,17 +128,66 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 		pConnection->socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (pConnection->socket_ != INVALID_SOCKET)
 		{
+			// the 3rd param is the key of getqueued
 			if (CreateIoCompletionPort((HANDLE)pConnection->socket_, pWorker->iocp_, (ULONG_PTR)pConnection, 0))
 			{
-				
+				DWORD val = 0;
+
+				// set snd buf and recv buf to 0, it's said that it must improve the performance
+				setsockopt(pConnection->socket_, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val));
+				setsockopt(pConnection->socket_, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val));
+
+				val = 1;
+				setsockopt(pConnection->socket_, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val));
+				setsockopt(pConnection->socket_, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val));
+
+				pConnection->context_ = (Context*)_aligned_malloc(sizeof(Context), MEMORY_ALLOCATION_ALIGNMENT);
+				if (pConnection->context_)
+				{
+					pConnection->context_->operation_type_ = OPERATION_ACCEPT;
+					pConnection->handler_ = *pHandler;
+					pConnection->context_pool_ = pContextPool;
+					pConnection->worker_ = pWorker;
+					pConnection->acceptor_ = pAcceptor;
+					pConnection->context_->connection_ = pConnection;
+					pConnection->connected_ = 0;
+					pConnection->iorefs_ = 0;
+					pConnection->iorefmax_ = 65536;
+					ZeroMemory(&pConnection->context_->overlapped_, sizeof(WSAOVERLAPPED));
+
+					return pConnection;
+				}
+			}
+			else
+			{
+				closesocket(pConnection->socket_);
 			}
 		}
+
+		_aligned_free(pConnection);
 	}
 
-	return pConnection;
+	return NULL;
 }
 
 void Connection::Close(Connection* pConnection)
+{
+	if (pConnection->iorefs_ || pConnection->connected_)
+	{
+		return;
+	}
+
+	if (pConnection->acceptor_)
+	{
+		InterlockedPushEntrySList(pConnection->acceptor_->free_connection_, pConnection);
+	}
+	else
+	{
+		Delete(pConnection);
+	}
+}
+
+void Connection::Delete(Connection* pConnection)
 {
 	closesocket(pConnection->socket_);
 	_aligned_free(pConnection->context_);

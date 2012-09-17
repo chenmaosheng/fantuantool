@@ -73,6 +73,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					if (bResult)
 					{
 						int32 rc = 0;
+						SOCKADDR_IN* addr = (SOCKADDR_IN*)pContext->buffer_;
 						pAcceptor->Accept();
 						rc = setsockopt(pConnection->socket_, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char*)&pAcceptor->socket_, sizeof(pAcceptor->socket_));
 						if (rc == 0)
@@ -85,7 +86,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 							}
 							else
 							{
-								pConnection->Disconnect();
+								pConnection->AsyncDisconnect();
 							}
 						}
 
@@ -111,7 +112,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 							}
 							else
 							{
-								pConnection->Disconnect();
+								pConnection->AsyncDisconnect();
 							}
 						}
 					}
@@ -142,7 +143,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					{
 						printf("client %s disconnected\n", inet_ntoa(pConnection->sockaddr_.sin_addr));
 						pConnection->context_pool_->PushInputContext(pContext);
-						pConnection->Disconnect();
+						pConnection->AsyncDisconnect();
 					}
 					else
 					{

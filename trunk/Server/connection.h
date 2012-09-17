@@ -3,8 +3,6 @@
 
 #include "handler.h"
 
-typedef HANDLE	ConnID;
-
 struct Context;
 class ContextPool;
 class Worker;

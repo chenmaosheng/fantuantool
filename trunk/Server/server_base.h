@@ -19,7 +19,7 @@ protected:
 	ServerBase();
 	virtual ~ServerBase();
 
-	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler);
+	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler, uint32 iThreadCount);
 	void DestroyAcceptor();
 
 	void StartAcceptor();

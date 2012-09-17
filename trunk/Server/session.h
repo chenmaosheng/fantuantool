@@ -24,6 +24,7 @@ union SessionId
 #pragma pack()
 
 class ServerBase;
+struct Connection;
 class Session
 {
 public:
@@ -34,18 +35,26 @@ public:
 
 	virtual int32 OnConnection(ConnID connId);
 	virtual void OnDisconnect();
-	//virtual void OnData(uint16 len, char* buf);
-	//virtual void Disconnect();
+	virtual void OnData(uint16 iLen, char* pBuf);
+	virtual void Disconnect();
 	// filterId means the key point of each packet, the first byte means todo, the second byte means todo
-	//virtual int32 SendData(uint16 filterId, uint16 len, const char* data);
+	virtual int32 SendData(uint16 iFilterId, uint16 iLen, const char* pData);
 
 	static void Initialize(ServerBase* pServer);
 
+protected:
+	int32 HandleData(uint16 iLen, char* pBuf);
+	void SaveSendData(uint16 iFilterId, uint16 iLen, char* pBuf);
+
 public:
-	uint32 sessionId_;
-	ConnID connId_;
+	uint32 m_iSessionId;
+	Connection* m_pConnection;
 
 protected:
-	static ServerBase* server_;
+	uint16 m_iRecvBufLen;
+	char m_RecvBuf[MAX_INPUT_BUFFER];
+
+protected:
+	static ServerBase* m_pServer;
 };
 #endif

@@ -237,13 +237,13 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	return TRUE;
 }
 
-void CClientDlg::UpdateUser(char* nickname, int connID, int length)
+void CClientDlg::UpdateUser(char* nickname, int connId, int length)
 {
 	TCHAR user[128] = {0};
 	MultiByteToWideChar(CP_UTF8, 0, nickname, length, user, 128);
 	CString user_info = user;
 
-	m_users.push_back( std::pair<int, CString>(connID, user_info) );
+	m_users.push_back( std::pair<int, CString>(connId, user_info) );
 
 	m_UserList.ResetContent();
 	for(int j=0; j<int(m_users.size()); j++)
@@ -252,12 +252,12 @@ void CClientDlg::UpdateUser(char* nickname, int connID, int length)
 	}
 }
 
-void CClientDlg::DeleteUser(int connID)
+void CClientDlg::DeleteUser(int connId)
 {
 	std::vector< std::pair<int, CString> >::iterator it = m_users.begin();
 	while (it != m_users.end())
 	{
-		if ((*it).first == connID)
+		if ((*it).first == connId)
 		{
 			m_users.erase(it);
 			break;

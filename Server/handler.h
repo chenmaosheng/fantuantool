@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+
 typedef bool (CALLBACK* ON_CONNECTION)(ConnID);
 typedef void (CALLBACK* ON_DISCONNECT)(ConnID);
 typedef void (CALLBACK* ON_DATA)(ConnID, uint16, char*);

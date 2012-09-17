@@ -5,36 +5,39 @@
 #include "acceptor.h"
 #include "context_pool.h"
 
-Worker::Worker()
+void Worker::Init(uint32 iCount)
 {
-}
-
-Worker::~Worker()
-{
-}
-
-void Worker::Init()
-{
+	thread_count_ = 0;
 	iocp_ = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-	HANDLE hWorkerThread = (HANDLE)_beginthreadex(NULL, 0, &Worker::WorkerThread, this, 0, NULL);
-	CloseHandle(hWorkerThread);
+	while (thread_count_ < iCount)
+	{
+		HANDLE hWorkerThread = (HANDLE)_beginthreadex(NULL, 0, &Worker::WorkerThread, this, 0, NULL);
+		CloseHandle(hWorkerThread);
+
+		++thread_count_;
+	}
 }
 
 void Worker::Destroy()
 {
-	PostQueuedCompletionStatus(iocp_, 0, 0, NULL);
+	while (thread_count_)
+	{
+		PostQueuedCompletionStatus(iocp_, 0, 0, NULL);
+		Sleep(100);
+	}
+
 	if (iocp_)
 	{
 		CloseHandle(iocp_);
 	}
 }
 
-Worker* Worker::CreateWorker()
+Worker* Worker::CreateWorker(uint32 iCount)
 {
 	Worker* pWorker = (Worker*)_aligned_malloc(sizeof(Worker), MEMORY_ALLOCATION_ALIGNMENT);
 	if (pWorker)
 	{
-		pWorker->Init();
+		pWorker->Init(iCount);
 	}
 
 	return pWorker;
@@ -173,6 +176,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 		}
 	}while(true);
 
+	InterlockedDecrement((LONG*)&pWorker->thread_count_);
 	return 0;
 }
 

@@ -5,6 +5,8 @@
 #include "acceptor.h"
 #include "context_pool.h"
 #include "handler.h"
+#include "log.h"
+#include "log_device_console.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
@@ -27,13 +29,17 @@ int32 Server::Init()
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
+	LogDevice* pDevice = new LogDeviceConsole(NULL);
+	Log::Instance().AddLogDevice(pDevice);
+	Log::Instance().Start();
+
 	iRet = ServerBase::Init();
 	if (iRet != 0)
 	{
 		return -1;
 	}
 
-	iRet = InitAcceptor(0, 5150, &handler);
+	iRet = InitAcceptor(0, 5150, &handler, 2);
 	if (iRet != 0)
 	{
 		return -2;
@@ -41,6 +47,8 @@ int32 Server::Init()
 
 	StartAcceptor();
 
+	TCHAR dummy[] = TEXT("Hello, World");
+	Log::Instance().Push(dummy, wcslen(dummy));
 	return 0;
 }
 

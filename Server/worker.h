@@ -8,19 +8,17 @@
 class Worker
 {
 public:
-	Worker();
-	~Worker();
-
-	void Init();
+	void Init(uint32 iCount);
 	void Destroy();
 
-	static Worker* CreateWorker();
+	static Worker* CreateWorker(uint32 iCount);
 	static void DestroyWorker(Worker*);
 
 	static uint32 WINAPI WorkerThread(PVOID);
 
 public:
 	HANDLE	iocp_;
+	uint32	thread_count_;
 };
 
 #endif

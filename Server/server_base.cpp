@@ -34,9 +34,9 @@ void ServerBase::Destroy()
 	StarNet::Destroy();
 }
 
-int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler)
+int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler, uint32 iThreadCount)
 {
-	worker_ = Worker::CreateWorker();
+	worker_ = Worker::CreateWorker(iThreadCount);
 	if (!worker_)
 	{
 		return -1;

@@ -26,13 +26,7 @@ struct Context : SLIST_ENTRY
 	Connection*		connection_;		// context's connection
 	ContextPool*	context_pool_;		// the pool which is based on
 
-	char			buffer_[1024];		// received buffer
-
-	void Reset()
-	{
-		ZeroMemory(&overlapped_, sizeof(WSAOVERLAPPED));
-		wsabuf_.buf = buffer_;
-	}
+	char			buffer_[(sizeof(SOCKADDR)+16)*2];		// received buffer
 };
 
 #endif

@@ -10,7 +10,7 @@ int __cdecl main(int argc, char **argv)
 	
 	while (true)
 	{
-		server.Start();
+		Sleep(1);
 	}
 	
 	server.Destroy();

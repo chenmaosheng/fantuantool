@@ -11,10 +11,12 @@ class Acceptor
 public:
 	int32 Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
 	void Destroy();
-	void Accept();
 
 	void Start();
 	void Stop();
+	void Accept();
+	void SetServer(void*);
+	void* GetServer();
 
 	static Acceptor* CreateAcceptor(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
 	static void DestroyAcceptor(Acceptor*);

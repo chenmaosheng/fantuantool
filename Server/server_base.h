@@ -25,7 +25,7 @@ protected:
 	void StartAcceptor();
 	void StopAcceptor();
 
-private:
+protected:
 	Acceptor* acceptor_;
 	Worker* worker_;
 	ContextPool* context_pool_;

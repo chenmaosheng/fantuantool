@@ -13,8 +13,8 @@ class CClientDlg : public CDialog
 public:
 	CClientDlg(CClientSocket *p_Socket,CWnd* pParent = NULL);	// standard constructor
 	BOOL GetMessage(char* message, int length);
-	void UpdateUser(char* nickname, int connID, int length);
-	void DeleteUser(int connID);
+	void UpdateUser(char* nickname, int connId, int length);
+	void DeleteUser(int connId);
 
 	void ToTray();
 

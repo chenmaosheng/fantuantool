@@ -53,16 +53,16 @@ void Server::Start()
 {
 }
 
-bool CALLBACK Server::OnConnection(ConnID connID)
+bool CALLBACK Server::OnConnection(ConnID connId)
 {
-	Connection* pConnection = (Connection*)connID;
+	Connection* pConnection = (Connection*)connId;
 	clients.push_back(pConnection);
 	return true;
 }
 
-void CALLBACK Server::OnDisconnect(ConnID connID)
+void CALLBACK Server::OnDisconnect(ConnID connId)
 {
-	Connection* pConnection = (Connection*)connID;
+	Connection* pConnection = (Connection*)connId;
 	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	DeleteClient(pConnection);
 	
@@ -70,21 +70,21 @@ void CALLBACK Server::OnDisconnect(ConnID connID)
 	{
 		LogoutPkt* pkt = (LogoutPkt*)pServer->context_pool_->PopOutputBuffer();
 		pkt->type = LOGOUT;
-		pkt->connID = (int)connID;
-		pkt->len = sizeof(pkt->connID);
+		pkt->connId = (int)connId;
+		pkt->len = sizeof(pkt->connId);
 		(*it)->AsyncSend(pkt->len + sizeof(Header), (char*)pkt);
 	}
 }
 
-void CALLBACK Server::OnData(ConnID connID, uint16 iLen, char* pBuf)
+void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 {
-	Connection* pConnection = (Connection*)connID;
+	Connection* pConnection = (Connection*)connId;
 	Header* header = (Header*)pBuf;
 	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	if (header->type == LOGIN)
 	{
 		LoginPkt* pkt = (LoginPkt*)header;
-		pkt->connID = (int)connID;
+		pkt->connId = (int)connId;
 		nicknames.push_back( std::pair<Connection*, std::string>(pConnection, pkt->nickname) );
 		for (size_t i = 0; i < clients.size(); ++i)
 		{
@@ -93,8 +93,8 @@ void CALLBACK Server::OnData(ConnID connID, uint16 iLen, char* pBuf)
 				LoginPkt* newPkt = (LoginPkt*)pServer->context_pool_->PopOutputBuffer();
 				newPkt->type = LOGIN;
 				strcpy_s(newPkt->nickname, sizeof(newPkt->nickname), GetNickName(clients.at(i)).c_str());
-				newPkt->len = (int)strlen(newPkt->nickname) + sizeof(newPkt->connID);
-				newPkt->connID = (int)(clients.at(i));
+				newPkt->len = (int)strlen(newPkt->nickname) + sizeof(newPkt->connId);
+				newPkt->connId = (int)(clients.at(i));
 				pConnection->AsyncSend(newPkt->len + sizeof(Header), (char*)newPkt);
 				printf("send to %d\n", pConnection->socket_);
 			}

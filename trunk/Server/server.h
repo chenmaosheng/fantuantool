@@ -17,9 +17,9 @@ public:
 
 	void Start();
 
-	static bool CALLBACK OnConnection(ConnID connID);
-	static void CALLBACK OnDisconnect(ConnID connID);
-	static void CALLBACK OnData(ConnID connID, uint16 iLen, char* pBuf);
+	static bool CALLBACK OnConnection(ConnID connId);
+	static void CALLBACK OnDisconnect(ConnID connId);
+	static void CALLBACK OnData(ConnID connId, uint16 iLen, char* pBuf);
 	static void CALLBACK OnConnectFailed(void*);
 
 	static std::string GetNickName(Connection* pConnection);

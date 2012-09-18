@@ -6,7 +6,7 @@ int __cdecl main(int argc, char **argv)
 {
 	Server server;
 	server.Init();
-	printf("Listen to port: %d\n", 5150);
+	LOG_STT(_T("Server"), _T("Listen to port: %d"), 5150);
 	
 	while (true)
 	{

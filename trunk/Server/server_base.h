@@ -7,6 +7,7 @@ class Worker;
 class Acceptor;
 class ContextPool;
 struct Handler;
+class Log;
 class ServerBase
 {
 public:
@@ -19,6 +20,9 @@ protected:
 	ServerBase();
 	virtual ~ServerBase();
 
+	int32 InitLog(int32 iLowLogLevel, int32 iLogTypeMask, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
+	void DestroyLog();
+
 	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler, uint32 iThreadCount);
 	void DestroyAcceptor();
 
@@ -26,9 +30,11 @@ protected:
 	void StopAcceptor();
 
 protected:
-	Acceptor* acceptor_;
-	Worker* worker_;
-	ContextPool* context_pool_;
+	Acceptor* m_pAcceptor;
+	Worker* m_pWorker;
+	ContextPool* m_pContextPool;
+
+	Log* m_pLogSystem;
 };
 
 #endif

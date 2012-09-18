@@ -11,6 +11,7 @@
 #include <windows.h>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
+#include <tchar.h>
 
 typedef char				int8;
 typedef unsigned char		uint8;
@@ -29,5 +30,7 @@ typedef HANDLE				ConnID;
 
 #define MAX_INPUT_BUFFER	1024
 #define MAX_OUTPUT_BUFFER	65500
+
+#define STARNET _T("StarNet")
 
 #endif

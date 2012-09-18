@@ -159,6 +159,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\log_device_file.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\log_device_impl.cpp"
 				>
 			</File>
@@ -181,11 +185,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\log_device_impl.h"
+				RelativePath=".\log_device_file.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Common\single_buffer.h"
+				RelativePath=".\log_device_impl.h"
 				>
 			</File>
 		</Filter>

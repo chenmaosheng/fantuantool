@@ -5,8 +5,6 @@
 #include "acceptor.h"
 #include "context_pool.h"
 #include "handler.h"
-#include "log.h"
-#include "log_device_console.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
@@ -29,10 +27,6 @@ int32 Server::Init()
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
-	LogDevice* pDevice = new LogDeviceConsole(NULL);
-	Log::Instance().AddLogDevice(pDevice);
-	Log::Instance().Start();
-
 	iRet = ServerBase::Init();
 	if (iRet != 0)
 	{
@@ -47,8 +41,6 @@ int32 Server::Init()
 
 	StartAcceptor();
 
-	TCHAR dummy[] = TEXT("Hello, World");
-	Log::Instance().Push(dummy, wcslen(dummy));
 	return 0;
 }
 
@@ -76,7 +68,7 @@ void CALLBACK Server::OnDisconnect(ConnID connId)
 	
 	for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		LogoutPkt* pkt = (LogoutPkt*)pServer->context_pool_->PopOutputBuffer();
+		LogoutPkt* pkt = (LogoutPkt*)pServer->m_pContextPool->PopOutputBuffer();
 		pkt->type = LOGOUT;
 		pkt->connId = (int)connId;
 		pkt->len = sizeof(pkt->connId);
@@ -98,7 +90,7 @@ void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 		{
 			if (clients.at(i)->socket_ != pConnection->socket_)
 			{
-				LoginPkt* newPkt = (LoginPkt*)pServer->context_pool_->PopOutputBuffer();
+				LoginPkt* newPkt = (LoginPkt*)pServer->m_pContextPool->PopOutputBuffer();
 				newPkt->type = LOGIN;
 				strcpy_s(newPkt->nickname, sizeof(newPkt->nickname), GetNickName(clients.at(i)).c_str());
 				newPkt->len = (int)strlen(newPkt->nickname) + sizeof(newPkt->connId);
@@ -110,7 +102,7 @@ void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 
 		for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 		{
-			char* newBuf = pServer->context_pool_->PopOutputBuffer();
+			char* newBuf = pServer->m_pContextPool->PopOutputBuffer();
 			memcpy(newBuf, pBuf, iLen);
 			(*it)->AsyncSend(iLen, newBuf);
 		}
@@ -119,7 +111,7 @@ void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 	{
 		for (std::vector<Connection*>::iterator it = clients.begin(); it != clients.end(); ++it)
 		{
-			char* newBuf = pServer->context_pool_->PopOutputBuffer();
+			char* newBuf = pServer->m_pContextPool->PopOutputBuffer();
 			memcpy(newBuf, pBuf, iLen);
 			(*it)->AsyncSend(iLen, newBuf);
 		}

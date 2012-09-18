@@ -6,10 +6,13 @@
 class LogDeviceConsole : public LogDeviceImpl
 {
 public:
-	LogDeviceConsole(HANDLE pHandle);
+	LogDeviceConsole(HANDLE pHandle = NULL);
 	~LogDeviceConsole();
 
 	void LogOutput(TCHAR* strBuffer);
+
+private:
+	void _SetColor(TCHAR* strBuffer);
 
 private:
 	HANDLE	m_pHandle;

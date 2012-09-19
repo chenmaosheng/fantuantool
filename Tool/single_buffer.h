@@ -36,7 +36,6 @@ public:
 	}
 
 	// 从Buffer中读出一定长度的数据
-	
 	bool	Pop(void* pItem, size_t iLength)
 	{
 		if (pItem == NULL)
@@ -56,10 +55,16 @@ public:
 		return true;
 	}
 
-	// 获得当前的大小
+	// get current size
 	size_t	GetCurrSize()	const
 	{
 		return m_iCurrSize;
+	}
+
+	// get the last length of buffer
+	size_t	GetLastSize()	const
+	{
+		return m_iSize - m_iCurrSize;
 	}
 
 private:

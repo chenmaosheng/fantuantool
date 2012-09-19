@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Server"
-	ProjectGUID="{1F71A8C5-9D9D-4753-8812-59271EA4E4B4}"
-	RootNamespace="Server"
+	Name="ServerUtil"
+	ProjectGUID="{DDF13B26-3D16-4802-B5F1-862AC7A64438}"
+	RootNamespace="ServerUtil"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,15 +41,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="false"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -62,18 +60,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies=" Dbghelp.lib Psapi.lib"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -85,18 +75,14 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\$(ProjectName).exe ..\Server.exe"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -119,14 +105,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\tool;..\log"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="false"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -139,20 +123,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies=" Dbghelp.lib Psapi.lib"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -164,11 +138,7 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\$(ProjectName).exe ..\Server.exe"
 			/>
 		</Configuration>
 	</Configurations>
@@ -181,11 +151,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\logic_command.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\server.cpp"
+				RelativePath=".\server_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\session.cpp"
 				>
 			</File>
 		</Filter>
@@ -195,7 +169,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\server.h"
+				RelativePath=".\logic_command.h"
+				>
+			</File>
+			<File
+				RelativePath=".\logic_loop.h"
+				>
+			</File>
+			<File
+				RelativePath=".\packet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\server_base.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session.h"
 				>
 			</File>
 		</Filter>

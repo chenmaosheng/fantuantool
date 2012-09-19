@@ -6,6 +6,7 @@
 #include <vector>
 
 struct Connection;
+class Session;
 class Server : public ServerBase
 {
 public:

@@ -31,6 +31,12 @@ typedef HANDLE				ConnID;
 #define MAX_INPUT_BUFFER	1024
 #define MAX_OUTPUT_BUFFER	65500
 
-#define STARNET _T("StarNet")
+enum
+{
+	LOG_STARNET,
+	LOG_SERVER,
+
+	LOG_TYPE_MAX = LOG_SERVER + 1,
+};
 
 #endif

@@ -1,10 +1,75 @@
 #include "log.h"
-#include "single_buffer.h"
 #include "log_device.h"
+#include "log_device_console.h"
+#include "log_device_file.h"
+
 #include <process.h>
 #include <cstdio>
+#include <vector>
 
-Log::Log() : 
+#include "singleton.h"
+#include "single_buffer.h"
+
+class Log_Impl : public Log, 
+				public Singleton<Log_Impl>
+{
+public:
+	enum { DELAY_MAX_SIZE = 128, BUFFER_MAX_SIZE = 65535, LOGTYPE_MAX_SIZE = LOG_TYPE_MAX, LOGTYPE_NAME_MAX = 256};
+
+	Log_Impl();
+	~Log_Impl();
+
+	void Init(int32 iLogLevel);
+	void Destroy();
+	void Start();
+	LogDevice* CreateAndAddLogDevice(int32 iLogDeviceType);
+	void SetLogTypeString(int32 iLogType, TCHAR* strLogTypeString);
+	bool Push(int32 iLogLevel, TCHAR* strFormat, ...);
+
+	int32 GetLogLevel() const
+	{
+		return m_iLogLevel;
+	}
+
+	const TCHAR* GetLogTypeString(int32 iLogType) const
+	{
+		if (iLogType < LOGTYPE_MAX_SIZE)
+		{
+			return m_strLogType[iLogType];
+		}
+
+		return _T("");
+	}
+
+private:
+	static uint32 WINAPI _LogOutput(PVOID);
+	void _Tick();
+	void _Output(TCHAR* strBuffer);
+	LogDevice* _AddLogDevice(LogDevice*);
+
+	// get string of loglevel
+	TCHAR*	_Level2String(int32 iLogLevel);
+	bool _Push(TCHAR* buffer, int32 iLength);
+
+private:
+	TCHAR m_strBuffer[BUFFER_MAX_SIZE];
+	SingleBuffer* m_pBuffer;
+	std::vector<LogDevice*> m_vLogDeviceList;
+	CRITICAL_SECTION m_cs;
+	HANDLE m_hOutputEvent;
+	HANDLE m_hThread;
+
+	int32 m_iLogLevel;
+	int32 m_iLogTypeMask;	// need binary mask, defined by app layer
+	TCHAR m_strLogType[LOGTYPE_MAX_SIZE][LOGTYPE_NAME_MAX];
+};
+
+Log* Log::GetInstance()
+{
+	return Log_Impl::Instance();
+}
+
+Log_Impl::Log_Impl() : 
 	m_hThread(NULL),
 	m_iLogLevel(LOG_DEBUG_LEVEL),
 	m_iLogTypeMask(0)
@@ -17,7 +82,7 @@ Log::Log() :
 	memset(m_strLogType, 0, sizeof(m_strLogType));
 }
 
-Log::~Log()
+Log_Impl::~Log_Impl()
 {
 	::DeleteCriticalSection(&m_cs);
 	SAFE_DELETE(m_pBuffer);
@@ -25,13 +90,20 @@ Log::~Log()
 	CloseHandle(m_hThread);
 }
 
-void Log::Init(int32 iLogLevel, int32 iLogTypeMask)
+void Log_Impl::Init(int32 iLogLevel)
 {
-	m_iLogLevel = 0;
-	m_iLogTypeMask = 0;
+	m_iLogLevel = iLogLevel;
 }
 
-void Log::Destroy()
+void Log_Impl::SetLogTypeString(int32 iLogType, TCHAR* strLogTypeString)
+{
+	if (iLogType)
+	{
+		wcscpy_s(m_strLogType[iLogType], strLogTypeString);
+	}
+}
+
+void Log_Impl::Destroy()
 {
 	for (std::vector<LogDevice*>::iterator it = m_vLogDeviceList.begin(); it != m_vLogDeviceList.end(); ++it)
 	{
@@ -41,12 +113,22 @@ void Log::Destroy()
 	m_vLogDeviceList.clear();
 }
 
-void Log::AddLogDevice(LogDevice* pDevice)
+LogDevice* Log_Impl::CreateAndAddLogDevice(int32 iLogDeviceType)
 {
-	m_vLogDeviceList.push_back(pDevice);
+	LogDevice* pDevice = NULL;
+	switch(iLogDeviceType)
+	{
+	case LOG_DEVICE_CONSOLE:
+		return _AddLogDevice(new LogDeviceConsole);
+
+	case LOG_DEVICE_FILE:
+		return _AddLogDevice(new LogDeviceFile);
+	}
+
+	return NULL;
 }
 
-bool Log::Push(int32 iLogLevel, int32 iLogType, TCHAR* strFormat, ...)
+bool Log_Impl::Push(int32 iLogLevel, TCHAR* strFormat, ...)
 {
 	TCHAR Buffer[BUFFER_MAX_SIZE] = {0};
 	TCHAR RealBuffer[BUFFER_MAX_SIZE] = {0};
@@ -68,19 +150,25 @@ bool Log::Push(int32 iLogLevel, int32 iLogType, TCHAR* strFormat, ...)
 	return false;
 }
 
-void Log::Start()
+void Log_Impl::Start()
 {
 	for (std::vector<LogDevice*>::iterator it = m_vLogDeviceList.begin(); it != m_vLogDeviceList.end(); ++it)
 	{
 		(*it)->Start();
 	}
 
-	m_hThread = (HANDLE)::_beginthreadex(NULL, 0, &Log::_LogOutput, this, 0, NULL);
+	m_hThread = (HANDLE)::_beginthreadex(NULL, 0, &Log_Impl::_LogOutput, this, 0, NULL);
 }
 
-uint32 WINAPI Log::_LogOutput(PVOID pParam)
+LogDevice* Log_Impl::_AddLogDevice(LogDevice* pDevice)
 {
-	Log* pLog = (Log*)pParam;
+	m_vLogDeviceList.push_back(pDevice);
+	return pDevice;
+}
+
+uint32 WINAPI Log_Impl::_LogOutput(PVOID pParam)
+{
+	Log_Impl* pLog = (Log_Impl*)pParam;
 	while (true)
 	{
 		pLog->_Tick();
@@ -89,7 +177,7 @@ uint32 WINAPI Log::_LogOutput(PVOID pParam)
 	return 0;
 }
 
-void Log::_Tick()
+void Log_Impl::_Tick()
 {
 	if (m_hOutputEvent)
 	{
@@ -109,7 +197,7 @@ void Log::_Tick()
 	}
 }
 
-void Log::_Output(TCHAR* strBuffer)
+void Log_Impl::_Output(TCHAR* strBuffer)
 {
 	std::vector<LogDevice*>::iterator it = m_vLogDeviceList.begin();
 	while (it != m_vLogDeviceList.end())
@@ -123,7 +211,7 @@ void Log::_Output(TCHAR* strBuffer)
 	}
 }
 
-TCHAR* Log::_Level2String(int32 iLogLevel)
+TCHAR* Log_Impl::_Level2String(int32 iLogLevel)
 {
 	switch(iLogLevel)
 	{
@@ -144,7 +232,7 @@ TCHAR* Log::_Level2String(int32 iLogLevel)
 	}
 }
 
-bool Log::_Push(TCHAR *buffer, int32 iLength)
+bool Log_Impl::_Push(TCHAR *buffer, int32 iLength)
 {
 	bool bRet = false;
 	::EnterCriticalSection(&m_cs);

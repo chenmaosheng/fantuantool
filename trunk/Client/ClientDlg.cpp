@@ -196,7 +196,7 @@ void CClientDlg::OnBnClickedSendButton()
 	CTime time = CTime::GetCurrentTime();
 	CString t = time.Format("%H:%M:%S");
 	CString str = theApp.m_strName + _T("   ") + t + _T("\r\n") + _T("   ") + m_strMessage;
-	char buf[256] = {0};
+	char buf[1024] = {0};
 	WideCharToMultiByte(CP_UTF8, 0, str, str.GetLength(), pkt.message, sizeof(pkt.message), 0, 0);
 	pkt.len = (int)strlen(pkt.message)+1;
 	m_pSocket->Send((char *)&pkt,sizeof(SendMessagePkt));
@@ -209,8 +209,8 @@ void CClientDlg::OnBnClickedSendButton()
 
 BOOL CClientDlg::GetMessage(char* message, int length)
 {
-	TCHAR chatMessage[128] = {0};
-	MultiByteToWideChar(CP_UTF8, 0, message, length, chatMessage, 128);
+	TCHAR chatMessage[1024] = {0};
+	MultiByteToWideChar(CP_UTF8, 0, message, length, chatMessage, sizeof(chatMessage)/sizeof(TCHAR));
 
 	CString strTemp = chatMessage;
 	strTemp += _T("\r\n");
@@ -221,7 +221,11 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	{
 		nid.uFlags = NIF_INFO | NIF_ICON | NIF_TIP | NIF_MESSAGE;
 		wcscpy_s(nid.szTip, sizeof(nid.szTip)/sizeof(TCHAR), TEXT("Fantuan"));
-		wcscpy_s(nid.szInfo, sizeof(nid.szInfo)/sizeof(TCHAR), strTemp);
+		if (wcslen(chatMessage) < sizeof(nid.szInfo)/sizeof(TCHAR))
+		{
+			wcscpy_s(nid.szInfo, sizeof(nid.szInfo)/sizeof(TCHAR), strTemp);
+		}
+		
 		wcscpy_s(nid.szInfoTitle, sizeof(nid.szInfoTitle)/sizeof(TCHAR), _T("Fantuan Chat"));
 		nid.uTimeout = 2000;
 		nid.dwState=NIS_SHAREDICON;

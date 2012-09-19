@@ -8,11 +8,13 @@ class LogDeviceFile : public LogDeviceImpl
 public:
 	enum { FILENAME_MAXSIZE = 1<<8, };
 
+	LogDeviceFile();
 	LogDeviceFile(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize = 1<<20);
 	~LogDeviceFile();
 
+	void Init(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize /* = 1<20 */);
 	void LogOutput(TCHAR* strBuffer);
-
+	
 private:
 	void _FileOpen(const TCHAR* strPath, const TCHAR* strFileName);
 	void _FileClose();

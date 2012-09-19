@@ -15,10 +15,10 @@ public:
 	static LPFN_DISCONNECTEX disconnectex_;
 };
 
-#define SN_LOG_DBG(Expression, ...) LOG_DBG(STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_WAR(Expression, ...) LOG_WAR(STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_ERR(Expression, ...) LOG_ERR(STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_STT(Expression, ...) LOG_STT(STARNET, Expression, __VA_ARGS__)
+#define SN_LOG_DBG(Expression, ...) LOG_DBG(LOG_STARNET, Expression, __VA_ARGS__)
+#define SN_LOG_WAR(Expression, ...) LOG_WAR(LOG_STARNET, Expression, __VA_ARGS__)
+#define SN_LOG_ERR(Expression, ...) LOG_ERR(LOG_STARNET, Expression, __VA_ARGS__)
+#define SN_LOG_STT(Expression, ...) LOG_STT(LOG_STARNET, Expression, __VA_ARGS__)
 
 
 #endif

@@ -14,6 +14,11 @@ LogDeviceConsole::~LogDeviceConsole()
 {
 }
 
+void LogDeviceConsole::Init(HANDLE pHandle)
+{
+	m_pHandle = pHandle;
+}
+
 void LogDeviceConsole::LogOutput(TCHAR* strBuffer)
 {
 	fprintf_s((FILE*)m_pHandle, "%ls", strBuffer);

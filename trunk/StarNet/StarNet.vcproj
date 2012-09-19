@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\tool;..\log"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="ws2_32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -79,8 +81,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -104,6 +106,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\tool;..\log"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -122,6 +125,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="ws2_32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -148,6 +152,26 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\acceptor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\connection.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\context_pool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\starnet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\worker.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -155,7 +179,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\packet.h"
+				RelativePath=".\acceptor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\connection.h"
+				>
+			</File>
+			<File
+				RelativePath=".\context.h"
+				>
+			</File>
+			<File
+				RelativePath=".\context_pool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\handler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\starnet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\worker.h"
 				>
 			</File>
 		</Filter>
@@ -165,10 +213,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

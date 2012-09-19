@@ -9,6 +9,9 @@ public:
 	LogDeviceImpl();
 	virtual ~LogDeviceImpl();
 
+	virtual void Init(HANDLE pHandle){}
+	virtual void Init(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize){}
+
 	void Start();
 	void Stop();
 	bool IsRunning() const;

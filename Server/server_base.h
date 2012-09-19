@@ -20,7 +20,7 @@ protected:
 	ServerBase();
 	virtual ~ServerBase();
 
-	int32 InitLog(int32 iLowLogLevel, int32 iLogTypeMask, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
+	int32 InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
 	void DestroyLog();
 
 	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler, uint32 iThreadCount);

@@ -9,6 +9,7 @@ public:
 	LogDeviceConsole(HANDLE pHandle = NULL);
 	~LogDeviceConsole();
 
+	void Init(HANDLE pHandle);
 	void LogOutput(TCHAR* strBuffer);
 
 private:

@@ -109,7 +109,7 @@ struct SendMessagePkt : public Header
 		type = SEND_MESSAGE;
 		memset(message, 0, sizeof(message));
 	}
-	char message[256];
+	char message[1024];
 };
 
 #endif

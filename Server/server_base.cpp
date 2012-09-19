@@ -25,13 +25,16 @@ int32 ServerBase::Init()
 {
 	int32 iRet = 0;
 	
-	iRet = InitLog(Log::LOG_DEBUG_LEVEL, 1, _T("Log"), _T("Test"), 0);
+	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
 	{
 		return -2;
 	}
 
-	LOG_DBG(_T("Server"), _T("Log Loaded"));
+	m_pLogSystem->SetLogTypeString(LOG_STARNET, _T("StarNet"));
+	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Server"));
+
+	LOG_DBG(LOG_SERVER, _T("Log Loaded"));
 
 	iRet = StarNet::Init();
 	if (iRet != 0)
@@ -39,10 +42,10 @@ int32 ServerBase::Init()
 		return -1;
 	}
 
-	LOG_DBG(_T("Server"), _T("StarNet Loaded"));
+	LOG_DBG(LOG_SERVER, _T("StarNet Loaded"));
 
-	LOG_DBG(_T("Server"), _T("Server start!"));
-	LOG_DBG(_T("Server"), _T("Initialize success!"));
+	LOG_DBG(LOG_SERVER, _T("Server start!"));
+	LOG_DBG(LOG_SERVER, _T("Initialize success!"));
 
 	return 0;
 }
@@ -52,16 +55,20 @@ void ServerBase::Destroy()
 	StarNet::Destroy();
 }
 
-int32 ServerBase::InitLog(int32 iLowLogLevel, int32 iLogTypeMask, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize)
+int32 ServerBase::InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize)
 {
-	m_pLogSystem = Log::Instance();
-	m_pLogSystem->Init(iLowLogLevel, iLogTypeMask);
+	m_pLogSystem = Log::GetInstance();
+	m_pLogSystem->Init(iLowLogLevel);
 	
+	LogDevice* pDevice = NULL;
 	// screen log
-	m_pLogSystem->AddLogDevice(new LogDeviceConsole);
-
+	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_CONSOLE);
 	// file log
-	m_pLogSystem->AddLogDevice(new LogDeviceFile(strPath, strLogFileName));
+	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_FILE);
+	if (pDevice)
+	{
+		pDevice->Init(strPath, strLogFileName);
+	}
 
 	// start log system
 	m_pLogSystem->Start();

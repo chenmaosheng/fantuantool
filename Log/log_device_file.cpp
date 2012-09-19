@@ -2,6 +2,12 @@
 #include <cstdio>
 #include <io.h>
 
+LogDeviceFile::LogDeviceFile()
+: m_pFile(NULL)
+{
+	ZeroMemory(m_strFileName, sizeof(m_strFileName));
+}
+
 LogDeviceFile::LogDeviceFile(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize)
 : m_pFile(NULL)
 {
@@ -19,6 +25,17 @@ LogDeviceFile::LogDeviceFile(const TCHAR* strPath, const TCHAR* strFileNamePrefi
 LogDeviceFile::~LogDeviceFile()
 {
 	_FileClose();
+}
+
+void LogDeviceFile::Init(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize )
+{
+	SYSTEMTIME now;
+	GetLocalTime(&now);
+
+	_FileClose();
+
+	_stprintf_s(m_strFileName, _T("%s_%04d%02d%02d_%d.log"), strFileNamePrefix, now.wYear, now.wMonth, now.wDay, now.wHour*3600+now.wMinute*60+now.wSecond);
+	_FileOpen(strPath, m_strFileName);
 }
 
 void LogDeviceFile::LogOutput(TCHAR *strBuffer)

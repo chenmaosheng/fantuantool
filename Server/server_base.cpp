@@ -7,6 +7,7 @@
 #include "log.h"
 #include "log_device_console.h"
 #include "log_device_file.h"
+#include "minidump.h"
 
 ServerBase::ServerBase()
 {
@@ -25,6 +26,8 @@ int32 ServerBase::Init()
 {
 	int32 iRet = 0;
 	
+	Minidump::Init(_T("log"));
+
 	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
 	{

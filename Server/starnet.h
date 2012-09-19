@@ -13,6 +13,7 @@ public:
 	static LPFN_ACCEPTEX acceptex_;
 	static LPFN_CONNECTEX connectex_;
 	static LPFN_DISCONNECTEX disconnectex_;
+	static LPFN_GETACCEPTEXSOCKADDRS getacceptexsockaddrs_;
 };
 
 #define SN_LOG_DBG(Expression, ...) LOG_DBG(LOG_STARNET, Expression, __VA_ARGS__)

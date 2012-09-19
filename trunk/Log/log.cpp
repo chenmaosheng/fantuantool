@@ -14,7 +14,7 @@ class Log_Impl : public Log,
 				public Singleton<Log_Impl>
 {
 public:
-	enum { DELAY_MAX_SIZE = 128, BUFFER_MAX_SIZE = 65535, LOGTYPE_MAX_SIZE = LOG_TYPE_MAX, LOGTYPE_NAME_MAX = 256};
+	enum { DELAY_MAX_SIZE = 128, BUFFER_MAX_SIZE = 65535, LOGTYPE_MAX_SIZE = LOG_TYPE_MAX, LOGTYPE_NAME_MAX = MAX_PATH};
 
 	Log_Impl();
 	~Log_Impl();

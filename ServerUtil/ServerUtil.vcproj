@@ -155,6 +155,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\logic_loop.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\server_base.cpp"
 				>
 			</File>

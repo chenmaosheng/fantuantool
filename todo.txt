@@ -1,0 +1,5 @@
+1, session功能完成
+2, logicloop概念
+3, logiccommand概念
+4, sessionserver概念
+5, minidump release版bug解决

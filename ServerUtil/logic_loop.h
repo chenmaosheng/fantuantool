@@ -2,7 +2,9 @@
 #define _H_LOGIC_LOOP
 
 #include "common.h"
+#include <list>
 
+class LogicCommand;
 class LogicLoop
 {
 public:
@@ -20,7 +22,19 @@ public:
 	virtual void Pause();
 	virtual void Resume();
 
-	virtual void PushCommand(
+	virtual void PushCommand(LogicCommand*);
+
+protected:
+	virtual DWORD _Loop() = 0;
+	virtual bool _OnCommand(LogicCommand*);
+
+private:
+	static uint32 WINAPI _ThreadMain(PVOID);
+
+private:
+	static LogicLoop* m_pLogicLoop;
+	HANDLE m_hThread;
+	std::list<LogicCommand*> m_CommandList;
 };
 
 #endif

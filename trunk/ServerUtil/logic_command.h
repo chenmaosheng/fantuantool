@@ -10,24 +10,28 @@ enum
 	COMMAND_ONDATA,
 };
 
-template<uint16 iCmdId>
 class LogicCommand
+{
+public:
+	LogicCommand(){}
+
+public:
+	int m_iCmdId;
+};
+
+template<uint16 iCmdId>
+class LogicCommandT : public LogicCommand
 {
 public:
 	const static uint16 CmdId = iCmdId;
 
-	LogicCommand()
+	LogicCommandT()
 	{
 		m_iCmdId = CmdId;
 	}
-
-	virtual ~LogicCommand(){}
-
-public:
-	int		m_iCmdId;
 };
 
-class LogicCommandOnConnect : public LogicCommand<COMMAND_ONCONNECT>
+class LogicCommandOnConnect : public LogicCommandT<COMMAND_ONCONNECT>
 {
 public:
 	LogicCommandOnConnect()
@@ -39,7 +43,7 @@ public:
 	ConnID m_ConnId;
 };
 
-class LogicCommandOnDisconnect : public LogicCommand<COMMAND_ONDISCONNECT>
+class LogicCommandOnDisconnect : public LogicCommandT<COMMAND_ONDISCONNECT>
 {
 public:
 	LogicCommandOnDisconnect()
@@ -51,12 +55,12 @@ public:
 	ConnID m_ConnId;
 };
 
-class LogicCommandOnData : public LogicCommand<COMMAND_ONDATA>
+class LogicCommandOnData : public LogicCommandT<COMMAND_ONDATA>
 {
 public:
 	LogicCommandOnData();
 	~LogicCommandOnData();
-	int32 CopyData(uint16 iLen, const char* pData);
+	bool CopyData(uint16 iLen, const char* pData);
 	
 public:
 	ConnID m_ConnId;

@@ -8,71 +8,10 @@ enum
 	SEND_MESSAGE,
 };
 
-template<unsigned short cmdId>
-class Command
-{
-public:
-	static const unsigned short ID = cmdId;
-
-	Command()
-	{
-		m_iCmdId = ID;
-	}
-
-	virtual ~Command()
-	{
-	}
-
-public:
-	int		m_iCmdId;
-};
-
-class LoginCommand : public Command<LOGIN>
-{
-public:
-	LoginCommand()
-	{
-	}
-
-	~LoginCommand()
-	{
-	}
-
-public:
-};
-
-class LogoutCommand : public Command<LOGOUT>
-{
-public:
-	LogoutCommand()
-	{
-	}
-
-	~LogoutCommand()
-	{
-	}
-
-public:
-};
-
-class SendMessageCommand : public Command<SEND_MESSAGE>
-{
-public:
-	SendMessageCommand()
-	{
-	}
-
-	~SendMessageCommand()
-	{
-	}
-
-public:
-};
-
 struct Header
 {
-	char type;
-	int  len;
+	unsigned short len;
+	unsigned short type;
 
 	Header()
 	{

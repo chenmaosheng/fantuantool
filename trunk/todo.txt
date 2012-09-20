@@ -3,3 +3,7 @@
 3, logiccommand¸ÅÄî
 4, sessionserver¸ÅÄî
 5, minidump release°æbug½â¾ö
+6, server id
+7, data stream(in/out)
+8, memory management
+9, packet_buffer concept, similar to single buffer

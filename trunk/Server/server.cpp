@@ -5,9 +5,13 @@
 #include "acceptor.h"
 #include "context_pool.h"
 #include "handler.h"
+#include "server_loop.h"
+#include "logic_command.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
+
+Server* g_pServer = NULL;
 
 Server::Server()
 {
@@ -27,19 +31,23 @@ int32 Server::Init()
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
+	g_pServer = this;
+
 	iRet = ServerBase::Init();
 	if (iRet != 0)
 	{
 		return -1;
 	}
 
-	iRet = InitAcceptor(0, 5150, &handler, 2);
+	iRet = InitAcceptor(0, 5151, &handler, 2);
 	if (iRet != 0)
 	{
 		return -2;
 	}
 
 	StartAcceptor();
+
+	StartMainLoop();
 
 	return 0;
 }
@@ -55,14 +63,26 @@ void Server::Start()
 
 bool CALLBACK Server::OnConnection(ConnID connId)
 {
-	Connection* pConnection = (Connection*)connId;
-	clients.push_back(pConnection);
+	//Connection* pConnection = (Connection*)connId;
+	//clients.push_back(pConnection);
+	Server* pServer = (Server*)((Connection*)connId)->acceptor_->server_;
+
+	LogicCommandOnConnect* pCommand = NULL;
+
+	if (!pServer->m_pMainLoop)
+	{
+		return false;
+	}
+
+	pCommand = new LogicCommandOnConnect;
+	pCommand->m_ConnId = connId;
+	pServer->m_pMainLoop->PushCommand(pCommand);
 	return true;
 }
 
 void CALLBACK Server::OnDisconnect(ConnID connId)
 {
-	Connection* pConnection = (Connection*)connId;
+	/*Connection* pConnection = (Connection*)connId;
 	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	DeleteClient(pConnection);
 	
@@ -73,12 +93,24 @@ void CALLBACK Server::OnDisconnect(ConnID connId)
 		pkt->connId = (int)connId;
 		pkt->len = sizeof(pkt->connId);
 		(*it)->AsyncSend(pkt->len + sizeof(Header), (char*)pkt);
+	}*/
+	Server* pServer = (Server*)((Connection*)connId)->acceptor_->server_;
+
+	LogicCommandOnDisconnect* pCommand = NULL;
+
+	if (!pServer->m_pMainLoop)
+	{
+		return;
 	}
+
+	pCommand = new LogicCommandOnDisconnect;
+	pCommand->m_ConnId = connId;
+	pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
 void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 {
-	Connection* pConnection = (Connection*)connId;
+	/*Connection* pConnection = (Connection*)connId;
 	Header* header = (Header*)pBuf;
 	Server* pServer = (Server*)pConnection->acceptor_->GetServer();
 	if (header->type == LOGIN)
@@ -115,12 +147,30 @@ void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
 			memcpy(newBuf, pBuf, iLen);
 			(*it)->AsyncSend(iLen, newBuf);
 		}
+	}*/
+
+	Server* pServer = (Server*)((Connection*)connId)->acceptor_->server_;
+
+	LogicCommandOnData* pCommand = NULL;
+
+	if (!pServer->m_pMainLoop)
+	{
+		return;
 	}
+
+	pCommand = new LogicCommandOnData;
+	pCommand->m_ConnId = connId;
+	if (!pCommand->CopyData(iLen, pBuf))
+	{
+		SAFE_DELETE(pCommand);
+		return;
+	}
+
+	pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
 void CALLBACK Server::OnConnectFailed(void*)
 {
-
 }
 
 std::string Server::GetNickName(Connection* pConnection)
@@ -160,3 +210,17 @@ void Server::DeleteClient(Connection* pConnection)
 	}
 }
 
+int32 Server::InitMainLoop()
+{
+	m_pMainLoop = new ServerLoop;
+	return m_pMainLoop->Init();
+}
+
+void Server::DestroyMainLoop()
+{
+	if (m_pMainLoop)
+	{
+		m_pMainLoop->Destroy();
+		SAFE_DELETE(m_pMainLoop);
+	}
+}

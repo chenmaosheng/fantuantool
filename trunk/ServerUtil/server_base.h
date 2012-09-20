@@ -8,6 +8,7 @@ class Acceptor;
 class ContextPool;
 struct Handler;
 class Log;
+class LogicLoop;
 class ServerBase
 {
 public:
@@ -26,8 +27,14 @@ protected:
 	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler, uint32 iThreadCount);
 	void DestroyAcceptor();
 
+	virtual int32 InitMainLoop() = 0;
+	virtual void DestroyMainLoop() = 0;
+
 	void StartAcceptor();
 	void StopAcceptor();
+	
+	int32 StartMainLoop();
+	void StopMainLoop();
 
 protected:
 	Acceptor* m_pAcceptor;
@@ -35,6 +42,7 @@ protected:
 	ContextPool* m_pContextPool;
 
 	Log* m_pLogSystem;
+	LogicLoop* m_pMainLoop;
 };
 
 #endif

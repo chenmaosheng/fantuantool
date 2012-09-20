@@ -25,6 +25,7 @@ union SessionId
 
 class ServerBase;
 struct Connection;
+struct ServerPacket;
 class Session
 {
 public:
@@ -42,8 +43,10 @@ public:
 
 	static void Initialize(ServerBase* pServer);
 
+	void LoginNtf(const char* strNickname);
+
 protected:
-	int32 HandleData(uint16 iLen, char* pBuf);
+	int32 HandlePacket(ServerPacket*);
 	void SaveSendData(uint16 iFilterId, uint16 iLen, char* pBuf);
 
 public:

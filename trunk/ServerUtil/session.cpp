@@ -6,7 +6,6 @@
 #include "single_buffer.h"
 #include "command.h"
 #include "data_stream.h"
-#include <malloc.h>
 
 ServerBase* Session::m_pServer = NULL;
 
@@ -98,6 +97,7 @@ void Session::OnDisconnect()
 void Session::OnData(uint16 iLen, char* pBuf)
 {
 	uint16 iCopyLen = 0;
+	int32 iRet = 0;
 
 	do
 	{
@@ -124,12 +124,17 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
 			if (m_iRecvBufLen >= iFullLength)
 			{
-				OutputStream stream(pServerPacket->m_iLen, pServerPacket->m_Buf);
+				/*OutputStream stream(pServerPacket->m_iLen, pServerPacket->m_Buf);
 				uint16 iLength = 0;
 				stream.Serialize(iLength);
 				char* nickname = (char*)alloca(iLength + 1);
 				stream.Serialize(iLength, nickname);
-				nickname[iLength] = '\0';
+				nickname[iLength] = '\0';*/
+				iRet = HandlePacket(pServerPacket);
+				if (iRet != 0)
+				{
+					return;
+				}
 				
 				if (m_iRecvBufLen > iFullLength)
 				{
@@ -261,11 +266,17 @@ int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
 	return 0;
 }
 
-int32 Session::HandleData(uint16 iLen, char *pBuf)
+int32 Session::HandlePacket(ServerPacket* pPacket)
 {
+	OnPacketReceived(this, pPacket->m_iFilterId, pPacket->m_iLen, pPacket->m_Buf);
 	return 0;
 }
 
 void Session::SaveSendData(uint16 iFilterId, uint16 iLen, char *pBuf)
+{
+	// todo: if need to transfer to other server
+}
+
+void Session::LoginNtf(const char* strNickname)
 {
 }

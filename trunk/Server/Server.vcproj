@@ -192,6 +192,10 @@
 				RelativePath=".\server_loop.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\ServerUtil\test_packet_handler.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -204,6 +208,10 @@
 			</File>
 			<File
 				RelativePath=".\server_loop.h"
+				>
+			</File>
+			<File
+				RelativePath="..\ServerUtil\test_packet_handler.h"
 				>
 			</File>
 		</Filter>

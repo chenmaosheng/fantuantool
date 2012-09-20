@@ -4,10 +4,10 @@
 #include "common.h"
 
 template<size_t DataLength>
-class _InputStream
+class _OutputStream
 {
 public:
-	_InputStream() : m_iDataLength(0)
+	_OutputStream() : m_iDataLength(0)
 	{
 		memset(m_DataBuffer, 0, sizeof(m_DataBuffer));
 	}
@@ -54,13 +54,13 @@ private:
 	char m_DataBuffer[DataLength];
 };
 
-typedef _InputStream<MAX_INPUT_BUFFER> InputStream;
-typedef _InputStream<MAX_OUTPUT_BUFFER> PeerInputStream;
+typedef _OutputStream<MAX_INPUT_BUFFER> OutputStream;
+typedef _OutputStream<MAX_OUTPUT_BUFFER> PeerOutputStream;
 
-class OutputStream
+class InputStream
 {
 public:
-	OutputStream(uint32 iLength, char* pBuf) : m_iDataLength(iLength), m_iDataIndex(0), m_DataBuffer(pBuf)
+	InputStream(uint32 iLength, const char* pBuf) : m_iDataLength(iLength), m_iDataIndex(0), m_DataBuffer(pBuf)
 	{
 	}
 
@@ -104,7 +104,7 @@ public:
 private:
 	uint16 m_iDataLength;
 	uint16 m_iDataIndex;
-	char* m_DataBuffer;
+	const char* m_DataBuffer;
 };
 
 #endif

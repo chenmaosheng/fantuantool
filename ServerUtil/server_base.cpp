@@ -8,6 +8,7 @@
 #include "log_device_console.h"
 #include "log_device_file.h"
 #include "minidump.h"
+#include "logic_loop.h"
 
 ServerBase::ServerBase()
 {
@@ -16,6 +17,7 @@ ServerBase::ServerBase()
 	m_pContextPool= NULL;
 
 	m_pLogSystem = NULL;
+	m_pMainLoop = NULL;
 }
 
 ServerBase::~ServerBase()
@@ -31,7 +33,7 @@ int32 ServerBase::Init()
 	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
 	{
-		return -2;
+		return -1;
 	}
 
 	m_pLogSystem->SetLogTypeString(LOG_STARNET, _T("StarNet"));
@@ -42,7 +44,13 @@ int32 ServerBase::Init()
 	iRet = StarNet::Init();
 	if (iRet != 0)
 	{
-		return -1;
+		return -2;
+	}
+
+	iRet = InitMainLoop();
+	if (iRet != 0)
+	{
+		return -3;
 	}
 
 	LOG_DBG(LOG_SERVER, _T("StarNet Loaded"));
@@ -55,7 +63,14 @@ int32 ServerBase::Init()
 
 void ServerBase::Destroy()
 {
+	DestroyMainLoop();
 	StarNet::Destroy();
+	DestroyLog();
+}
+
+ContextPool* ServerBase::GetContextPool()
+{
+	return m_pContextPool;
 }
 
 int32 ServerBase::InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize)
@@ -143,7 +158,21 @@ void ServerBase::StopAcceptor()
 {
 }
 
-ContextPool* ServerBase::GetContextPool()
+int32 ServerBase::StartMainLoop()
 {
-	return m_pContextPool;
+	if (m_pMainLoop)
+	{
+		return m_pMainLoop->Start();
+	}
+
+	return -1;
+}
+
+void ServerBase::StopMainLoop()
+{
+	if (m_pMainLoop)
+	{
+		m_pMainLoop->Stop();
+		m_pMainLoop->Join();
+	}
 }

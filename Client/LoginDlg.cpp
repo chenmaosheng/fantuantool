@@ -6,7 +6,8 @@
 #include "LoginDlg.h"
 #include "ClientSocket.h"
 #include "targetver.h"
-#include "Command.h"
+#include "basic_packet.h"
+#include "command.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -69,18 +70,24 @@ void CLoginDlg::OnBnClickedLoginButton()
 		m_pSocket->Close();
 		return;
 	}
-	if(!m_pSocket->Connect(m_strServer,5150))
+	if(!m_pSocket->Connect(m_strServer,5151))
 	{
 		AfxMessageBox(_T("Server is not started:-("));
 		m_pSocket->Close();
 		return;	
 	}
 
-	LoginPkt pkt;
-	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), pkt.nickname, sizeof(pkt.nickname), 0, 0);
+	char outBuf[1024] = {0};
+	RawPacket* pRawPacket = (RawPacket*)outBuf;
+	pRawPacket->m_iLen += SERVER_PACKET_HEAD;
+	
+	LoginPkt* pkt = new LoginPkt;
+	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), pkt->nickname, sizeof(pkt->nickname), 0, 0);
+	pkt->len = (short)strlen(pkt->nickname)+1+sizeof(pkt->connId);
+	memcpy(pRawPacket->m_Buf, (char*)pkt, pkt->len + sizeof(Header));
+	pRawPacket->m_iLen += pkt->len + sizeof(Header);
 
-	pkt.len = (int)strlen(pkt.nickname)+1+sizeof(pkt.connId);
-	m_pSocket->Send((char *)&pkt,sizeof(LoginPkt));
+	m_pSocket->Send(outBuf,pRawPacket->m_iLen);
 
 	theApp.m_strName = m_strName;
 

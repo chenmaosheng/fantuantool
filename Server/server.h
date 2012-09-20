@@ -26,9 +26,15 @@ public:
 	static std::string GetNickName(Connection* pConnection);
 	static void DeleteClient(Connection* pConnection);
 
+private:
+	int32 InitMainLoop();
+	void DestroyMainLoop();
+
 public:
 	static std::vector<Connection*> clients;
 	static std::vector< std::pair<Connection*, std::string > > nicknames;
 };
+
+extern Server* g_pServer;
 
 #endif

@@ -4,9 +4,9 @@
 #include "packet.h"
 #include "context_pool.h"
 #include "single_buffer.h"
+#include "command.h"
 
 ServerBase* Session::m_pServer = NULL;
-
 
 void Session::Initialize(ServerBase* pServer)
 {
@@ -122,6 +122,13 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			if (m_iRecvBufLen >= pPacket->m_iLen)
 			{
 				// todo: process packet
+				Header* header = (Header*)pPacket->m_Buf;
+				if (header->type == LOGIN)
+				{
+					LoginPkt* pkt = (LoginPkt*)header;
+					SendData(0, pkt->len + sizeof(Header), (char*)pkt);
+				}
+				
 				if (m_iRecvBufLen > pPacket->m_iLen)
 				{
 					memmove(m_RecvBuf, m_RecvBuf + pPacket->m_iLen, m_iRecvBufLen - pPacket->m_iLen);
@@ -241,18 +248,19 @@ int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
 		return -1;
 	}
 
-	CS_Packet* pPacket = (CS_Packet*)buf;
+	/*CS_Packet* pPacket = (CS_Packet*)buf;
 	pPacket->m_iLen = len;
 	pPacket->m_iFilterId = filterId;
-	memcpy(pPacket->m_Buf, data, len);
-	m_pConnection->AsyncSend(pPacket->m_iLen, buf);
+	memcpy(pPacket->m_Buf, data, len);*/
+
+	memcpy(buf, data, len);
+	m_pConnection->AsyncSend(len, buf);
 
 	return 0;
 }
 
 int32 Session::HandleData(uint16 iLen, char *pBuf)
 {
-	
 	return 0;
 }
 

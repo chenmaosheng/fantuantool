@@ -11,15 +11,15 @@ LogicCommandOnData::~LogicCommandOnData()
 	_aligned_free(m_pData);
 }
 
-int32 LogicCommandOnData::CopyData(uint16 iLen, const char *pData)
+bool LogicCommandOnData::CopyData(uint16 iLen, const char *pData)
 {
 	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
 	if (m_pData)
 	{
 		m_iLen = iLen;
 		memcpy(m_pData, pData, iLen);
-		return 0;
+		return true;
 	}
 
-	return -1;
+	return false;
 }

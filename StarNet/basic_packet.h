@@ -1,7 +1,7 @@
 #ifndef _H_BASIC_PACKET
 #define _H_BASIC_PACKET
 
-#include "common.h"
+#include "..\tool\common.h"
 
 struct RawPacket
 {

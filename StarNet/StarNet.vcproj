@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\data_stream.h"
+				>
+			</File>
+			<File
 				RelativePath=".\handler.h"
 				>
 			</File>

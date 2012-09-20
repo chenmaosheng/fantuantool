@@ -8,6 +8,7 @@
 #include "targetver.h"
 #include "basic_packet.h"
 #include "command.h"
+#include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -77,16 +78,21 @@ void CLoginDlg::OnBnClickedLoginButton()
 		return;	
 	}
 
+	DataStream<MAX_INPUT_BUFFER> pkt;
+	char nickname[64] = {0};
+	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
+	uint16 iLength = (uint16)strlen(nickname) + 1;
+	pkt.SerializeTo(iLength);
+	pkt.SerializeTo(nickname);
+
 	char outBuf[1024] = {0};
 	RawPacket* pRawPacket = (RawPacket*)outBuf;
-	pRawPacket->m_iLen += SERVER_PACKET_HEAD;
+	ServerPacket* pServerPacket = (ServerPacket*)pRawPacket->m_Buf;
+	pServerPacket->m_iLen = pkt.GetDataLength();
+	pServerPacket->m_iFilterId = LOGIN;
+	memcpy(pServerPacket->m_Buf, pkt.GetBuffer(), pServerPacket->m_iLen);
+	pRawPacket->m_iLen = sizeof(pServerPacket->m_iLen) + sizeof(pServerPacket->m_iFilterId) + sizeof(pRawPacket->m_iLen)+pkt.GetDataLength();
 	
-	LoginPkt* pkt = new LoginPkt;
-	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), pkt->nickname, sizeof(pkt->nickname), 0, 0);
-	pkt->len = (short)strlen(pkt->nickname)+1+sizeof(pkt->connId);
-	memcpy(pRawPacket->m_Buf, (char*)pkt, pkt->len + sizeof(Header));
-	pRawPacket->m_iLen += pkt->len + sizeof(Header);
-
 	m_pSocket->Send(outBuf,pRawPacket->m_iLen);
 
 	theApp.m_strName = m_strName;

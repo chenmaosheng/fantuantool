@@ -1,10 +1,12 @@
 #include "session.h"
 #include "server_base.h"
 #include "connection.h"
-#include "packet.h"
+#include "basic_packet.h"
 #include "context_pool.h"
 #include "single_buffer.h"
 #include "command.h"
+#include "data_stream.h"
+#include <malloc.h>
 
 ServerBase* Session::m_pServer = NULL;
 
@@ -118,16 +120,17 @@ void Session::OnData(uint16 iLen, char* pBuf)
 
 		while (m_iRecvBufLen > sizeof(uint16))
 		{
-			Packet* pPacket = (Packet*)m_RecvBuf;
+			RawPacket* pPacket = (RawPacket*)m_RecvBuf;
 			if (m_iRecvBufLen >= pPacket->m_iLen)
 			{
-				// todo: process packet
-				Header* header = (Header*)pPacket->m_Buf;
-				if (header->type == LOGIN)
-				{
-					LoginPkt* pkt = (LoginPkt*)header;
-					SendData(0, pkt->len + sizeof(Header), (char*)pkt);
-				}
+				ServerPacket* pServerPacket = (ServerPacket*)pPacket->m_Buf;
+				uint16 iServerPacketLen = pPacket->m_iLen - sizeof(pPacket->m_iLen);
+				DataStream<0> pkt(pServerPacket->m_iLen, pServerPacket->m_Buf);
+				uint16 iLength = 0;
+				pkt.SerializeFrom(iLength);
+				char* nickname = (char*)alloca(iLength + 1);
+				pkt.SerializeFrom(iLength, nickname);
+				nickname[iLength] = '\0';
 				
 				if (m_iRecvBufLen > pPacket->m_iLen)
 				{

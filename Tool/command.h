@@ -3,7 +3,7 @@
 
 enum
 {
-	LOGIN = 1,
+	LOGIN,
 	LOGOUT,
 	SEND_MESSAGE,
 };

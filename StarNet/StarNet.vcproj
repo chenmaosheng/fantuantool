@@ -157,11 +157,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\basic_packet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\connection.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\context_pool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\packet_handler.cpp"
 				>
 			</File>
 			<File
@@ -204,6 +212,10 @@
 			</File>
 			<File
 				RelativePath=".\handler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\packet_handler.h"
 				>
 			</File>
 			<File

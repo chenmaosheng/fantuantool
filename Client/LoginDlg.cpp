@@ -31,7 +31,7 @@ CLoginDlg::CLoginDlg(CClientSocket *p_Socket, CWnd* pParent /*=NULL*/)
 	m_pSocket = p_Socket;
 	//{{AFX_DATA_INIT(CLoginDlg)
 	m_strName = _T("Your name");
-	m_strServer = _T("10.20.20.50");
+	m_strServer = _T("127.0.0.1");
 	//}}AFX_DATA_INIT
 }
 
@@ -78,7 +78,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 		return;	
 	}
 
-	InputStream stream;
+	OutputStream stream;
 	char nickname[64] = {0};
 	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
 	uint16 iLength = (uint16)strlen(nickname) + 1;

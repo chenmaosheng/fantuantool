@@ -118,25 +118,24 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			m_iRecvBufLen += iCopyLen;
 		}
 
-		while (m_iRecvBufLen > sizeof(uint16))
+		while (m_iRecvBufLen > SERVER_PACKET_HEAD)
 		{
-			RawPacket* pPacket = (RawPacket*)m_RecvBuf;
-			if (m_iRecvBufLen >= pPacket->m_iLen)
+			ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
+			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
+			if (m_iRecvBufLen >= iFullLength)
 			{
-				ServerPacket* pServerPacket = (ServerPacket*)pPacket->m_Buf;
-				uint16 iServerPacketLen = pPacket->m_iLen - sizeof(pPacket->m_iLen);
-				DataStream<0> pkt(pServerPacket->m_iLen, pServerPacket->m_Buf);
+				OutputStream stream(pServerPacket->m_iLen, pServerPacket->m_Buf);
 				uint16 iLength = 0;
-				pkt.SerializeFrom(iLength);
+				stream.Serialize(iLength);
 				char* nickname = (char*)alloca(iLength + 1);
-				pkt.SerializeFrom(iLength, nickname);
+				stream.Serialize(iLength, nickname);
 				nickname[iLength] = '\0';
 				
-				if (m_iRecvBufLen > pPacket->m_iLen)
+				if (m_iRecvBufLen > iFullLength)
 				{
-					memmove(m_RecvBuf, m_RecvBuf + pPacket->m_iLen, m_iRecvBufLen - pPacket->m_iLen);
+					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
 				}
-				m_iRecvBufLen -= pPacket->m_iLen;
+				m_iRecvBufLen -= iFullLength;
 			}
 			else
 			{

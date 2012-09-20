@@ -7,3 +7,18 @@
 7, data stream(in/out)
 8, memory management
 9, packet_buffer concept, similar to single buffer
+
+client
+1, rpc->server, with parameters
+2, serialize parameters to a datastream
+3, retrieve buffer and length from datastream
+4, use packet to wrap this buffer and add header info
+5, send it
+
+server
+1, receive a raw buffer
+2, check if buffer is larger than header
+3, cut specific size from received buffer
+4, put buffer into datastream
+5, unserialize from datastream and retrieve parameters
+6, call specific rpc function with parameters

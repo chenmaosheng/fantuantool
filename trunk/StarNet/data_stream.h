@@ -1,30 +1,15 @@
 #ifndef _H_DATA_STREAM
 #define _H_DATA_STREAM
 
-#include "..\tool\common.h"
+#include "common.h"
 
-template<size_t DataLength = 0>
-class DataStream
+template<size_t DataLength>
+class _InputStream
 {
 public:
-	const static size_t sDataLength = DataLength;
-
-	DataStream() : m_iDataLength(0), m_iDataIndex(0)
+	_InputStream() : m_iDataLength(0)
 	{
-		m_DataBuffer = new char[sDataLength];
-	}
-
-	DataStream(uint32 iLength, char* pBuf) : m_iDataLength(iLength), m_iDataIndex(0), m_DataBuffer(pBuf)
-	{
-
-	}
-
-	~DataStream()
-	{
-		if (m_iDataIndex)
-		{
-			SAFE_DELETE(m_DataBuffer);
-		}
+		memset(m_DataBuffer, 0, sizeof(m_DataBuffer));
 	}
 
 	uint16 GetDataLength() const
@@ -38,9 +23,9 @@ public:
 	}
 
 	template<typename T>
-	bool SerializeTo(const T& value)
+	bool Serialize(const T& value)
 	{
-		if (m_iDataLength + sizeof(T) <= sDataLength)
+		if (m_iDataLength + sizeof(T) <= sizeof(m_DataBuffer))
 		{
 			memcpy(m_DataBuffer+m_iDataLength, &value, sizeof(T));
 			m_iDataLength += sizeof(T);
@@ -51,10 +36,10 @@ public:
 	}
 
 	template<typename T>
-	bool SerializeTo(uint16 iCount, const T* array)
+	bool Serialize(uint16 iCount, const T* array)
 	{
 		iCount *= sizeof(T);
-		if (m_iDataLength + iCount <= sDataLength)
+		if (m_iDataLength + iCount <= sizeof(m_DataBuffer))
 		{
 			memcpy(m_DataBuffer + m_iDataLength, array, iCount);
 			m_iDataLength += iCount;
@@ -64,8 +49,33 @@ public:
 		return false;
 	}
 
+private:
+	uint16 m_iDataLength;
+	char m_DataBuffer[DataLength];
+};
+
+typedef _InputStream<MAX_INPUT_BUFFER> InputStream;
+typedef _InputStream<MAX_OUTPUT_BUFFER> PeerInputStream;
+
+class OutputStream
+{
+public:
+	OutputStream(uint32 iLength, char* pBuf) : m_iDataLength(iLength), m_iDataIndex(0), m_DataBuffer(pBuf)
+	{
+	}
+
+	uint16 GetDataLength() const
+	{
+		return m_iDataLength;
+	}
+
+	const char* GetBuffer() const
+	{
+		return m_DataBuffer;
+	}
+
 	template<typename T>
-	bool SerializeFrom(T& value)
+	bool Serialize(T& value)
 	{
 		if (m_iDataLength - m_iDataIndex >= sizeof(T))
 		{
@@ -78,7 +88,7 @@ public:
 	}
 
 	template<typename T>
-	bool SerializeFrom(uint16 iCount, T* array)
+	bool Serialize(uint16 iCount, T* array)
 	{
 		iCount *= sizeof(T);
 		if (m_iDataLength - m_iDataIndex >= iCount)

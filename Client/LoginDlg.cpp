@@ -78,22 +78,20 @@ void CLoginDlg::OnBnClickedLoginButton()
 		return;	
 	}
 
-	DataStream<MAX_INPUT_BUFFER> pkt;
+	InputStream stream;
 	char nickname[64] = {0};
 	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
 	uint16 iLength = (uint16)strlen(nickname) + 1;
-	pkt.SerializeTo(iLength);
-	pkt.SerializeTo(nickname);
+	stream.Serialize(iLength);
+	stream.Serialize(nickname);
 
 	char outBuf[1024] = {0};
-	RawPacket* pRawPacket = (RawPacket*)outBuf;
-	ServerPacket* pServerPacket = (ServerPacket*)pRawPacket->m_Buf;
-	pServerPacket->m_iLen = pkt.GetDataLength();
+	ServerPacket* pServerPacket = (ServerPacket*)outBuf;
+	pServerPacket->m_iLen = stream.GetDataLength();
 	pServerPacket->m_iFilterId = LOGIN;
-	memcpy(pServerPacket->m_Buf, pkt.GetBuffer(), pServerPacket->m_iLen);
-	pRawPacket->m_iLen = sizeof(pServerPacket->m_iLen) + sizeof(pServerPacket->m_iFilterId) + sizeof(pRawPacket->m_iLen)+pkt.GetDataLength();
+	memcpy(pServerPacket->m_Buf, stream.GetBuffer(), pServerPacket->m_iLen);
 	
-	m_pSocket->Send(outBuf,pRawPacket->m_iLen);
+	m_pSocket->Send(outBuf,pServerPacket->m_iLen+SERVER_PACKET_HEAD);
 
 	theApp.m_strName = m_strName;
 

@@ -1,13 +1,7 @@
 #ifndef _H_BASIC_PACKET
 #define _H_BASIC_PACKET
 
-#include "..\tool\common.h"
-
-struct RawPacket
-{
-	uint16 m_iLen;	// the whole length of packet, include this variable itself
-	char m_Buf[1];
-};
+#include "common.h"
 
 struct ServerPacket
 {

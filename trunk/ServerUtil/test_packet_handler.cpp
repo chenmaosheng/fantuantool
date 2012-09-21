@@ -10,9 +10,9 @@ bool CALLBACK LoginReq_Callback(void* pClient, InputStream& stream)
 	stream.Serialize(iLength);
 	char* nickname = (char*)alloca(iLength + 1);
 	stream.Serialize(iLength, nickname);
-	nickname[iLength] = '\0';
+	nickname[iLength] = '\0';		// step5: analyze datastream
 
-	LoginReq(pClient, nickname);
+	LoginReq(pClient, nickname);	// step6: call rpc function with parameters
 
 	return true;
 }

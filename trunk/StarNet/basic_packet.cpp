@@ -3,6 +3,6 @@
 
 bool OnPacketReceived(void* pClient, uint16 iFilterId, uint16 iLen, const char* pBuf)
 {
-	InputStream stream(iLen, pBuf);
+	InputStream stream(iLen, pBuf);	// step4: put buffer into stream
 	return g_PacketHandlerFactories[iFilterId >> 8].m_pHandler[iFilterId && 0xff](pClient, stream);
 }

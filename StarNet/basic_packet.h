@@ -13,5 +13,6 @@ struct ServerPacket
 #define SERVER_PACKET_HEAD sizeof(uint16) + sizeof(uint16)
 
 bool OnPacketReceived(void* , uint16 iFilterId, uint16 iLen, const char* pBuf);
+int32 SendPacket(void*, uint16 iFilterId, uint16 iLen, const char* pBuf);
 
 #endif

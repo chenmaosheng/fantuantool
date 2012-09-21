@@ -42,6 +42,8 @@ protected:
 	ContextPool* m_pContextPool;
 
 	Log* m_pLogSystem;
+
+public:
 	LogicLoop* m_pMainLoop;
 };
 

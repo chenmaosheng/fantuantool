@@ -8,6 +8,7 @@ enum
 	COMMAND_ONCONNECT,
 	COMMAND_ONDISCONNECT,
 	COMMAND_ONDATA,
+	COMMAND_BROADCASTDATA,
 };
 
 class LogicCommand
@@ -64,6 +65,20 @@ public:
 	
 public:
 	ConnID m_ConnId;
+	uint16 m_iLen;
+	char* m_pData;
+};
+
+class LogicCommandBroadcastData : public LogicCommandT<COMMAND_BROADCASTDATA>
+{
+public:
+	LogicCommandBroadcastData();
+	~LogicCommandBroadcastData();
+	bool CopyData(uint16 iLen, const char* pData);
+
+public:
+	ConnID m_ConnId;
+	uint16 m_iFilterId;
 	uint16 m_iLen;
 	char* m_pData;
 };

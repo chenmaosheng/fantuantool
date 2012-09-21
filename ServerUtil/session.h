@@ -43,7 +43,7 @@ public:
 
 	static void Initialize(ServerBase* pServer);
 
-	void LoginNtf(const char* strNickname);
+	void LoginReq(const char* strNickname);
 
 protected:
 	int32 HandlePacket(ServerPacket*);

@@ -118,13 +118,13 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			pBuf += iCopyLen;
 			iLen -= iCopyLen;
 			m_iRecvBufLen += iCopyLen;
-		}
+		}	// step1: received a raw buffer
 
-		while (m_iRecvBufLen > SERVER_PACKET_HEAD)
+		while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
 		{
 			ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
 			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
-			if (m_iRecvBufLen >= iFullLength)
+			if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
 			{
 				iRet = HandlePacket(pServerPacket);
 				if (iRet != 0)
@@ -278,7 +278,7 @@ void Session::LoginReq(const char* strNickname)
 	stream.Serialize(m_iSessionId);
 	uint16 iLength = (uint16)strlen(strNickname);
 	stream.Serialize(iLength);
-	stream.Serialize(iLength, strNickname);
+	stream.Serialize(iLength, strNickname);		
 
 	LogicCommandBroadcastData* pCommand = new LogicCommandBroadcastData;
 	pCommand->m_ConnId = (ConnID)m_pConnection;

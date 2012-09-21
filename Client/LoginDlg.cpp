@@ -93,7 +93,7 @@ int32 CLoginDlg::LoginReq(void* pClient, const char* nickname)
 	OutputStream stream;
 	uint16 iLength = (uint16)strlen(nickname) + 1;
 	stream.Serialize(iLength);
-	stream.Serialize(nickname);			// step2: serialize parameters to a datastream
+	stream.Serialize(iLength, nickname);			// step2: serialize parameters to a datastream
 
 	SendPacket(pClient, LOGIN, stream.GetDataLength(), stream.GetBuffer());		// step3: retrieve buf and len from datastream
 
@@ -109,4 +109,6 @@ int32 CLoginDlg::SendPacket(void* pClient, uint16 iFilterId, uint16 iLen, const 
 	memcpy(pServerPacket->m_Buf, pBuf, iLen);		// step4: use packet to wrap this buf and add header info
 
 	m_pSocket->Send(outBuf,iLen+SERVER_PACKET_HEAD); // step5: send it
+
+	return 0;
 }

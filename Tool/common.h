@@ -27,6 +27,7 @@ typedef double				float64;
 typedef HANDLE				ConnID;
 
 #define SAFE_DELETE(ptr)	if (ptr) {delete (ptr); (ptr) = NULL;}
+#define SAFE_DELETE_ARRAY(ptr) if ((ptr) != NULL) { delete [] (ptr); (ptr) = NULL; }
 
 #define MAX_INPUT_BUFFER	1024
 #define MAX_OUTPUT_BUFFER	65500

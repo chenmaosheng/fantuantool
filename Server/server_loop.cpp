@@ -5,20 +5,49 @@
 #include "connection.h"
 #include "server.h"
 
-ServerLoop::ServerLoop()
+ServerLoop::ServerLoop(uint16 iSessionMax) :
+m_SessionPool(iSessionMax)
 {
-	// todo: where is server id
-	m_iServerId = 0;
+	m_iSessionMax = iSessionMax;
+	m_arraySession = new Session*[iSessionMax];
 }
 
 ServerLoop::~ServerLoop()
 {
-
+	SAFE_DELETE_ARRAY(m_arraySession);
 }
 
 int32 ServerLoop::Init()
 {
+	Session* pSession = NULL;
+	int32 iRet = 0;
+	SessionId id;
+
 	LogicLoop::Init();
+
+	id.iValue_ = 0;
+	id.sValue_.serverId_ = 0; // todo: where is server id
+
+	// first initialize all session and put them into pool
+	// that's why we can't initialize session in pool itself
+	for (uint16 i = 0; i < m_iSessionMax; ++i)
+	{
+		pSession = m_SessionPool.Allocate();
+		if (!pSession)
+		{
+			return -1;
+		}
+
+		id.sValue_.session_index_ = i;
+		pSession->m_iSessionId = id.iValue_;
+		m_arraySession[i] = pSession;
+	}
+
+	for (uint16 i = 0; i < m_iSessionMax; ++i)
+	{
+		m_SessionPool.Free(m_arraySession[i]);
+	}
+
 	Session::Initialize(g_pServer);
 
 	return 0;
@@ -31,13 +60,17 @@ void ServerLoop::Destroy()
 
 Session* ServerLoop::GetSession(uint32 iSessionId)
 {
-	std::map<uint32, Session*>::iterator mit = m_mSessionList.find(iSessionId);
-	if (mit != m_mSessionList.end())
+	SessionId id;
+	Session* pSession = NULL;
+	id.iValue_ = iSessionId;
+
+	pSession = m_arraySession[id.sValue_.session_index_];
+	if (pSession->m_iSessionId != iSessionId)
 	{
-		return mit->second;
+		return NULL;
 	}
 
-	return NULL;
+	return pSession;
 }
 
 DWORD ServerLoop::_Loop()
@@ -71,10 +104,16 @@ bool ServerLoop::_OnCommand(LogicCommand* pCommand)
 
 void ServerLoop::_OnCommandOnConnect(LogicCommandOnConnect* pCommand)
 {
-	Session* pSession = new Session;
-	pSession->OnConnection(pCommand->m_ConnId);
-
-	m_mSessionList.insert(std::make_pair(pSession->m_iSessionId, pSession));
+	Session* pSession = m_SessionPool.Allocate();
+	if (pSession)
+	{
+		m_mSessionMap.insert(std::make_pair(pSession->m_iSessionId, pSession));
+		pSession->OnConnection(pCommand->m_ConnId);
+	}
+	else
+	{
+		((Connection*)pCommand->m_ConnId)->AsyncDisconnect();
+	}
 }
 
 void ServerLoop::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCommand)
@@ -83,13 +122,18 @@ void ServerLoop::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCommand)
 	Session* pSession = (Session*)pConnection->client_;
 	if (pSession)
 	{
-		pSession->OnDisconnect();
-		std::map<uint32, Session*>::iterator mit = m_mSessionList.find(pSession->m_iSessionId);
-		if (mit != m_mSessionList.end())
+		stdext::hash_map<uint32, Session*>::iterator mit = m_mSessionMap.find(pSession->m_iSessionId);
+		if (mit != m_mSessionMap.end())
 		{
-			SAFE_DELETE(mit->second);
-			m_mSessionList.erase(mit);
+			m_mSessionMap.erase(mit);
 		}
+
+		pSession->OnDisconnect();
+		m_SessionPool.Free(pSession);
+	}
+	else
+	{
+		pConnection->AsyncDisconnect();
 	}
 }
 
@@ -101,11 +145,16 @@ void ServerLoop::_OnCommandOnData(LogicCommandOnData* pCommand)
 	{
 		pSession->OnData(pCommand->m_iLen, pCommand->m_pData);
 	}
+	else
+	{
+		pConnection->AsyncDisconnect();
+	}
 }
 
 void ServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand)
 {
-	for (std::map<uint32, Session*>::iterator mit = m_mSessionList.begin(); mit != m_mSessionList.end(); ++mit)
+	for (stdext::hash_map<uint32, Session*>::iterator mit = m_mSessionMap.begin();
+		mit != m_mSessionMap.end(); ++mit)
 	{
 		mit->second->SendData(pCommand->m_iFilterId, pCommand->m_iLen, pCommand->m_pData);
 	}

@@ -2,7 +2,8 @@
 #define _H_SERVER_LOOP
 
 #include "logic_loop.h"
-#include <map>
+#include "object_pool.h"
+#include <hash_map>
 
 class ServerBase;
 class Session;
@@ -14,7 +15,7 @@ class LogicCommandBroadcastData;
 class ServerLoop : public LogicLoop
 {
 public:
-	ServerLoop();
+	ServerLoop(uint16 iSessionMax = 32768);
 	~ServerLoop();
 
 	int32 Init();
@@ -31,8 +32,9 @@ private:
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 
 private:
-	std::map<uint32, Session*> m_mSessionList;
-	uint8 m_iServerId;
-
+	stdext::hash_map<uint32, Session*> m_mSessionMap;
+	ObjectPool<Session> m_SessionPool;
+	Session** m_arraySession;
+	uint16 m_iSessionMax;
 };
 #endif

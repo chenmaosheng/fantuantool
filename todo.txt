@@ -23,3 +23,5 @@ server
 4, put buffer into datastream
 5, unserialize from datastream and retrieve parameters
 6, call specific rpc function with parameters
+
+static variable in lib file can't be loaded, it must be in exe project

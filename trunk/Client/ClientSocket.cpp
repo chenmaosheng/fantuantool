@@ -7,6 +7,8 @@
 #include "ClientDlg.h"
 #include "targetver.h"
 #include "Command.h"
+#include "basic_packet.h"
+#include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -45,7 +47,19 @@ void CClientSocket::OnReceive(int nErrorCode)
 	Receive(buf, sizeof(buf));
 	while ((*p) != 0)
 	{
-		Header* header = (Header*)p;
+		ServerPacket* pPacket = (ServerPacket*)p;
+		InputStream stream(pPacket->m_iLen, pPacket->m_Buf);
+		if (pPacket->m_iFilterId == LOGIN_NTF)
+		{
+			uint32 iSessionId = 0;
+			stream.Serialize(iSessionId);
+			uint16 iLength = 0;
+			stream.Serialize(iLength);
+			char nickname[64] = {0};
+			stream.Serialize(iLength, nickname);
+			chatDlg->UpdateUser(nickname, iSessionId, iLength);
+		}
+		/*Header* header = (Header*)p;
 		if (header->type == LOGIN)
 		{
 			LoginPkt* pkt = (LoginPkt*)header;
@@ -62,9 +76,9 @@ void CClientSocket::OnReceive(int nErrorCode)
 		{
 			LogoutPkt* pkt = (LogoutPkt*)header;
 			chatDlg->DeleteUser(pkt->connId);
-		}
+		}*/
 
-		p = p + (header->len + sizeof(Header));
+		p = p + (pPacket->m_iLen + SERVER_PACKET_HEAD);
 	}
 	
 	CSocket::OnReceive(nErrorCode);

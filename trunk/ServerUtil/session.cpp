@@ -6,6 +6,8 @@
 #include "single_buffer.h"
 #include "command.h"
 #include "data_stream.h"
+#include "logic_command.h"
+#include "logic_loop.h"
 
 ServerBase* Session::m_pServer = NULL;
 
@@ -124,12 +126,6 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
 			if (m_iRecvBufLen >= iFullLength)
 			{
-				/*OutputStream stream(pServerPacket->m_iLen, pServerPacket->m_Buf);
-				uint16 iLength = 0;
-				stream.Serialize(iLength);
-				char* nickname = (char*)alloca(iLength + 1);
-				stream.Serialize(iLength, nickname);
-				nickname[iLength] = '\0';*/
 				iRet = HandlePacket(pServerPacket);
 				if (iRet != 0)
 				{
@@ -255,13 +251,12 @@ int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
 		return -1;
 	}
 
-	/*CS_Packet* pPacket = (CS_Packet*)buf;
-	pPacket->m_iLen = len;
+	ServerPacket* pPacket = (ServerPacket*)buf;
+	pPacket->m_iLen = len + SERVER_PACKET_HEAD;
 	pPacket->m_iFilterId = filterId;
-	memcpy(pPacket->m_Buf, data, len);*/
 
-	memcpy(buf, data, len);
-	m_pConnection->AsyncSend(len, buf);
+	memcpy(pPacket->m_Buf, data, len);
+	m_pConnection->AsyncSend(pPacket->m_iLen, buf);
 
 	return 0;
 }
@@ -277,6 +272,19 @@ void Session::SaveSendData(uint16 iFilterId, uint16 iLen, char *pBuf)
 	// todo: if need to transfer to other server
 }
 
-void Session::LoginNtf(const char* strNickname)
+void Session::LoginReq(const char* strNickname)
 {
+	OutputStream stream;
+	stream.Serialize(m_iSessionId);
+	uint16 iLength = (uint16)strlen(strNickname);
+	stream.Serialize(iLength);
+	stream.Serialize(iLength, strNickname);
+
+	LogicCommandBroadcastData* pCommand = new LogicCommandBroadcastData;
+	pCommand->m_ConnId = (ConnID)m_pConnection;
+	pCommand->m_iLen = stream.GetDataLength();
+	pCommand->m_iFilterId = LOGIN_NTF;
+	pCommand->CopyData(stream.GetDataLength(), stream.GetBuffer());
+
+	m_pServer->m_pMainLoop->PushCommand(pCommand);
 }

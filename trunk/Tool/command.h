@@ -4,6 +4,7 @@
 enum
 {
 	LOGIN,
+	LOGIN_NTF,
 	LOGOUT,
 	SEND_MESSAGE,
 };

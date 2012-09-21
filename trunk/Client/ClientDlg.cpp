@@ -241,13 +241,13 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	return TRUE;
 }
 
-void CClientDlg::UpdateUser(char* nickname, int connId, int length)
+void CClientDlg::UpdateUser(char* nickname, int sessionId, int length)
 {
 	TCHAR user[128] = {0};
 	MultiByteToWideChar(CP_UTF8, 0, nickname, length, user, 128);
 	CString user_info = user;
 
-	m_users.push_back( std::pair<int, CString>(connId, user_info) );
+	m_users.push_back( std::pair<int, CString>(sessionId, user_info) );
 
 	m_UserList.ResetContent();
 	for(int j=0; j<int(m_users.size()); j++)

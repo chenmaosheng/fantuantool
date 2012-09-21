@@ -10,6 +10,7 @@ class LogicCommand;
 class LogicCommandOnConnect;
 class LogicCommandOnDisconnect;
 class LogicCommandOnData;
+class LogicCommandBroadcastData;
 class ServerLoop : public LogicLoop
 {
 public:
@@ -27,6 +28,7 @@ private:
 	void _OnCommandOnConnect(LogicCommandOnConnect*);
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	void _OnCommandOnData(LogicCommandOnData*);
+	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 
 private:
 	std::map<uint32, Session*> m_mSessionList;

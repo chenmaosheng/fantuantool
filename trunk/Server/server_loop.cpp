@@ -60,6 +60,10 @@ bool ServerLoop::_OnCommand(LogicCommand* pCommand)
 	case COMMAND_ONDATA:
 		_OnCommandOnData((LogicCommandOnData*)pCommand);
 		break;
+
+	case COMMAND_BROADCASTDATA:
+		_OnCommandBroadcastData((LogicCommandBroadcastData*)pCommand);
+		break;
 	}
 
 	return true;
@@ -96,5 +100,13 @@ void ServerLoop::_OnCommandOnData(LogicCommandOnData* pCommand)
 	if (pSession)
 	{
 		pSession->OnData(pCommand->m_iLen, pCommand->m_pData);
+	}
+}
+
+void ServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand)
+{
+	for (std::map<uint32, Session*>::iterator mit = m_mSessionList.begin(); mit != m_mSessionList.end(); ++mit)
+	{
+		mit->second->SendData(pCommand->m_iFilterId, pCommand->m_iLen, pCommand->m_pData);
 	}
 }

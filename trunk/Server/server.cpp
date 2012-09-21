@@ -7,6 +7,7 @@
 #include "handler.h"
 #include "server_loop.h"
 #include "logic_command.h"
+#include "session.h"
 
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
@@ -223,4 +224,9 @@ void Server::DestroyMainLoop()
 		m_pMainLoop->Destroy();
 		SAFE_DELETE(m_pMainLoop);
 	}
+}
+
+int32 SendPacket(void* pClient, uint16 iFilterId, uint16 iLen, const char* pBuf)
+{
+	return ((Session*)pClient)->SendData(iFilterId, iLen, pBuf);
 }

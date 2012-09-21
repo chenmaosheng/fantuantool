@@ -2,6 +2,7 @@
 #define AFX_LOGINDLG_H__33DB2C16_B9F7_4CDA_9291_CBDA65D6E03B__INCLUDED_
 
 #include "ClientSocket.h"	// Added by ClassView
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -43,8 +44,8 @@ public:
 	afx_msg void OnBnClickedLoginButton();
 
 private:
-	int32 LoginReq(void* pClient, const char* nickname);
-	int32 SendPacket(void* pClient, uint16 iFilterId, uint16 iLen, const char* pBuf);
+	int LoginReq(void* pClient, const char* nickname);
+	int SendPacket(void* pClient, UINT16 iFilterId, UINT16 iLen, const char* pBuf);
 };
 
 //{{AFX_INSERT_LOCATION}}

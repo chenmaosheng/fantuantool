@@ -9,6 +9,9 @@
 #include "log_device_file.h"
 #include "minidump.h"
 #include "logic_loop.h"
+#include "singleton.h"
+#include "packet.h"
+#include "session.h"
 
 ServerBase::ServerBase()
 {
@@ -29,6 +32,8 @@ int32 ServerBase::Init()
 	int32 iRet = 0;
 	
 	Minidump::Init(_T("log"));
+
+	InitPacketDispatch();
 
 	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
@@ -175,4 +180,9 @@ void ServerBase::StopMainLoop()
 		m_pMainLoop->Stop();
 		m_pMainLoop->Join();
 	}
+}
+
+int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	return ((Session*)pClient)->SendData(iTypeId, iLen, pBuf);
 }

@@ -45,7 +45,7 @@ public:
 
 private:
 	int LoginReq(void* pClient, const char* nickname);
-	int SendPacket(void* pClient, UINT16 iFilterId, UINT16 iLen, const char* pBuf);
+	int SendPacket(void* pClient, UINT16 iTypeId, UINT16 iLen, const char* pBuf);
 };
 
 //{{AFX_INSERT_LOCATION}}

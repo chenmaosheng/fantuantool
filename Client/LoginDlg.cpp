@@ -6,7 +6,7 @@
 #include "LoginDlg.h"
 #include "ClientSocket.h"
 #include "targetver.h"
-#include "basic_packet.h"
+#include "packet.h"
 #include "command.h"
 #include "data_stream.h"
 #ifdef _DEBUG
@@ -100,12 +100,12 @@ int32 CLoginDlg::LoginReq(void* pClient, const char* nickname)
 	return 0;
 }
 
-int32 CLoginDlg::SendPacket(void* pClient, uint16 iFilterId, uint16 iLen, const char* pBuf)
+int32 CLoginDlg::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
 	char outBuf[1024] = {0};
 	ServerPacket* pServerPacket = (ServerPacket*)outBuf;
 	pServerPacket->m_iLen = iLen;
-	pServerPacket->m_iFilterId = iFilterId;
+	pServerPacket->m_iTypeId = iTypeId;
 	memcpy(pServerPacket->m_Buf, pBuf, iLen);		// step4: use packet to wrap this buf and add header info
 
 	m_pSocket->Send(outBuf,iLen+SERVER_PACKET_HEAD); // step5: send it

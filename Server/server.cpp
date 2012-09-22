@@ -9,6 +9,8 @@
 #include "logic_command.h"
 #include "session.h"
 
+#include "test_packet_dispatch.h"
+
 std::vector<Connection*> Server::clients;
 std::vector< std::pair<Connection*, std::string > > Server::nicknames;
 
@@ -226,7 +228,7 @@ void Server::DestroyMainLoop()
 	}
 }
 
-int32 SendPacket(void* pClient, uint16 iFilterId, uint16 iLen, const char* pBuf)
+void Server::InitPacketDispatch()
 {
-	return ((Session*)pClient)->SendData(iFilterId, iLen, pBuf);
+	static Test_PacketDispatch _Test_PacketDispatch;
 }

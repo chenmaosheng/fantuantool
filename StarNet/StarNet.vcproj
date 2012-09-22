@@ -157,10 +157,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\basic_packet.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\connection.cpp"
 				>
 			</File>
@@ -169,7 +165,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\packet_handler.cpp"
+				RelativePath=".\packet_dispatch.cpp"
 				>
 			</File>
 			<File
@@ -188,10 +184,6 @@
 			>
 			<File
 				RelativePath=".\acceptor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\basic_packet.h"
 				>
 			</File>
 			<File
@@ -215,7 +207,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\packet_handler.h"
+				RelativePath=".\packet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\packet_dispatch.h"
 				>
 			</File>
 			<File

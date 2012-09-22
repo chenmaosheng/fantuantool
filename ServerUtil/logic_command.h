@@ -78,7 +78,7 @@ public:
 
 public:
 	ConnID m_ConnId;
-	uint16 m_iFilterId;
+	uint16 m_iTypeId;
 	uint16 m_iLen;
 	char* m_pData;
 };

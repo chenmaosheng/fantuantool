@@ -156,6 +156,6 @@ void ServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand)
 	for (stdext::hash_map<uint32, Session*>::iterator mit = m_mSessionMap.begin();
 		mit != m_mSessionMap.end(); ++mit)
 	{
-		mit->second->SendData(pCommand->m_iFilterId, pCommand->m_iLen, pCommand->m_pData);
+		mit->second->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData);
 	}
 }

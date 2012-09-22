@@ -7,7 +7,7 @@
 #include "ClientDlg.h"
 #include "targetver.h"
 #include "Command.h"
-#include "basic_packet.h"
+#include "packet.h"
 #include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,7 +49,7 @@ void CClientSocket::OnReceive(int nErrorCode)
 	{
 		ServerPacket* pPacket = (ServerPacket*)p;
 		InputStream stream(pPacket->m_iLen, pPacket->m_Buf);
-		if (pPacket->m_iFilterId == LOGIN_NTF)
+		if (pPacket->m_iTypeId == LOGIN_NTF)
 		{
 			uint32 iSessionId = 0;
 			stream.Serialize(iSessionId);

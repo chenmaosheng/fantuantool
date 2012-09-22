@@ -39,7 +39,7 @@ public:
 	virtual void OnData(uint16 iLen, char* pBuf);
 	virtual void Disconnect();
 	// filterId means the key point of each packet, the first byte means todo, the second byte means todo
-	virtual int32 SendData(uint16 iFilterId, uint16 iLen, const char* pData);
+	virtual int32 SendData(uint16 iTypeId, uint16 iLen, const char* pData);
 
 	static void Initialize(ServerBase* pServer);
 
@@ -47,7 +47,7 @@ public:
 
 protected:
 	int32 HandlePacket(ServerPacket*);
-	void SaveSendData(uint16 iFilterId, uint16 iLen, char* pBuf);
+	void SaveSendData(uint16 iTypeId, uint16 iLen, char* pBuf);
 
 public:
 	uint32 m_iSessionId;

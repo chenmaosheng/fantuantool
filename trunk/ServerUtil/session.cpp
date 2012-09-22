@@ -1,7 +1,7 @@
 #include "session.h"
 #include "server_base.h"
 #include "connection.h"
-#include "basic_packet.h"
+#include "packet.h"
 #include "context_pool.h"
 #include "single_buffer.h"
 #include "command.h"
@@ -243,7 +243,7 @@ void Session::Disconnect()
 	}
 }
 
-int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
+int32 Session::SendData(uint16 iTypeId, uint16 len, const char *data)
 {
 	char* buf = m_pServer->GetContextPool()->PopOutputBuffer();
 	if (!buf)
@@ -253,7 +253,7 @@ int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
 
 	ServerPacket* pPacket = (ServerPacket*)buf;
 	pPacket->m_iLen = len + SERVER_PACKET_HEAD;
-	pPacket->m_iFilterId = filterId;
+	pPacket->m_iTypeId = iTypeId;
 
 	memcpy(pPacket->m_Buf, data, len);
 	m_pConnection->AsyncSend(pPacket->m_iLen, buf);
@@ -263,11 +263,11 @@ int32 Session::SendData(uint16 filterId, uint16 len, const char *data)
 
 int32 Session::HandlePacket(ServerPacket* pPacket)
 {
-	OnPacketReceived(this, pPacket->m_iFilterId, pPacket->m_iLen, pPacket->m_Buf);
+	Receiver::OnPacketReceived(this, pPacket->m_iTypeId, pPacket->m_iLen, pPacket->m_Buf);
 	return 0;
 }
 
-void Session::SaveSendData(uint16 iFilterId, uint16 iLen, char *pBuf)
+void Session::SaveSendData(uint16 iTypeId, uint16 iLen, char *pBuf)
 {
 	// todo: if need to transfer to other server
 }
@@ -283,7 +283,7 @@ void Session::LoginReq(const char* strNickname)
 	LogicCommandBroadcastData* pCommand = new LogicCommandBroadcastData;
 	pCommand->m_ConnId = (ConnID)m_pConnection;
 	pCommand->m_iLen = stream.GetDataLength();
-	pCommand->m_iFilterId = LOGIN_NTF;
+	pCommand->m_iTypeId = LOGIN_NTF;
 	pCommand->CopyData(stream.GetDataLength(), stream.GetBuffer());
 
 	m_pServer->m_pMainLoop->PushCommand(pCommand);

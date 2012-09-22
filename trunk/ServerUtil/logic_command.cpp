@@ -27,7 +27,7 @@ bool LogicCommandOnData::CopyData(uint16 iLen, const char *pData)
 LogicCommandBroadcastData::LogicCommandBroadcastData()
 {
 	m_iLen = 0;
-	m_iFilterId = 0;
+	m_iTypeId = 0;
 	m_pData = NULL;
 }
 

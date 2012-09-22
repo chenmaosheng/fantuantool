@@ -27,6 +27,8 @@ public:
 	static void DeleteClient(Connection* pConnection);
 
 private:
+	void InitPacketDispatch();
+
 	int32 InitMainLoop();
 	void DestroyMainLoop();
 

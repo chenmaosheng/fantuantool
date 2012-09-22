@@ -21,6 +21,8 @@ protected:
 	ServerBase();
 	virtual ~ServerBase();
 
+	virtual void InitPacketDispatch() = 0;
+
 	int32 InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
 	void DestroyLog();
 

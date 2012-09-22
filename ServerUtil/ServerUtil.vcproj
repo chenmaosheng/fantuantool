@@ -166,6 +166,14 @@
 				RelativePath=".\session.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\session_server.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server_loop.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -186,6 +194,14 @@
 			</File>
 			<File
 				RelativePath=".\session.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server_loop.h"
 				>
 			</File>
 		</Filter>

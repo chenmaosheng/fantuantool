@@ -43,8 +43,6 @@ public:
 
 	static void Initialize(ServerBase* pServer);
 
-	void LoginReq(const char* strNickname);
-
 protected:
 	int32 HandlePacket(ServerPacket*);
 	void SaveSendData(uint16 iTypeId, uint16 iLen, char* pBuf);

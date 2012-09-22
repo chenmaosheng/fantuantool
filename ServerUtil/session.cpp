@@ -271,20 +271,3 @@ void Session::SaveSendData(uint16 iTypeId, uint16 iLen, char *pBuf)
 {
 	// todo: if need to transfer to other server
 }
-
-void Session::LoginReq(const char* strNickname)
-{
-	OutputStream stream;
-	stream.Serialize(m_iSessionId);
-	uint16 iLength = (uint16)strlen(strNickname);
-	stream.Serialize(iLength);
-	stream.Serialize(iLength, strNickname);		
-
-	LogicCommandBroadcastData* pCommand = new LogicCommandBroadcastData;
-	pCommand->m_ConnId = (ConnID)m_pConnection;
-	pCommand->m_iLen = stream.GetDataLength();
-	pCommand->m_iTypeId = LOGIN_NTF;
-	pCommand->CopyData(stream.GetDataLength(), stream.GetBuffer());
-
-	m_pServer->m_pMainLoop->PushCommand(pCommand);
-}

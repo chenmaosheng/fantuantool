@@ -6,7 +6,7 @@
 
 
 // todo: what if we have more than one logicloop in one process
-class LogicCommand;
+struct LogicCommand;
 class LogicLoop
 {
 public:
@@ -18,14 +18,15 @@ public:
 
 	virtual int32 Start();
 	virtual void Stop();
-	//virtual bool IsAllowStop() = 0;
+	virtual bool IsReadyForShutdown() const = 0;
 
 	virtual void Join();
 	
 	virtual void PushCommand(LogicCommand*);
+	void PushShutdownCommand();
 
 protected:
-	virtual DWORD _Loop() = 0;
+	virtual uint32 _Loop() = 0;
 	virtual bool _OnCommand(LogicCommand*) = 0;
 
 private:

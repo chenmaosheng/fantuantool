@@ -9,21 +9,18 @@ enum
 	COMMAND_ONDISCONNECT,
 	COMMAND_ONDATA,
 	COMMAND_BROADCASTDATA,
+	COMMAND_SHUTDOWN,
+	COMMAND_DISCONNECT,
 };
 
-class LogicCommand
+struct LogicCommand
 {
-public:
-	LogicCommand(){}
-
-public:
 	int m_iCmdId;
 };
 
 template<uint16 iCmdId>
-class LogicCommandT : public LogicCommand
+struct LogicCommandT : public LogicCommand
 {
-public:
 	const static uint16 CmdId = iCmdId;
 
 	LogicCommandT()
@@ -32,55 +29,61 @@ public:
 	}
 };
 
-class LogicCommandOnConnect : public LogicCommandT<COMMAND_ONCONNECT>
+struct LogicCommandOnConnect : public LogicCommandT<COMMAND_ONCONNECT>
 {
-public:
 	LogicCommandOnConnect()
 	{
 		m_ConnId = NULL;
 	}
 
-public:
 	ConnID m_ConnId;
 };
 
-class LogicCommandOnDisconnect : public LogicCommandT<COMMAND_ONDISCONNECT>
+struct LogicCommandOnDisconnect : public LogicCommandT<COMMAND_ONDISCONNECT>
 {
-public:
 	LogicCommandOnDisconnect()
 	{
 		m_ConnId = NULL;
 	}
 
-public:
 	ConnID m_ConnId;
 };
 
-class LogicCommandOnData : public LogicCommandT<COMMAND_ONDATA>
+struct LogicCommandOnData : public LogicCommandT<COMMAND_ONDATA>
 {
-public:
 	LogicCommandOnData();
 	~LogicCommandOnData();
 	bool CopyData(uint16 iLen, const char* pData);
 	
-public:
 	ConnID m_ConnId;
 	uint16 m_iLen;
 	char* m_pData;
 };
 
-class LogicCommandBroadcastData : public LogicCommandT<COMMAND_BROADCASTDATA>
+struct LogicCommandBroadcastData : public LogicCommandT<COMMAND_BROADCASTDATA>
 {
-public:
 	LogicCommandBroadcastData();
 	~LogicCommandBroadcastData();
 	bool CopyData(uint16 iLen, const char* pData);
 
-public:
 	ConnID m_ConnId;
 	uint16 m_iTypeId;
 	uint16 m_iLen;
 	char* m_pData;
+};
+
+struct LogicCommandShutdown : public LogicCommandT<COMMAND_SHUTDOWN>
+{
+};
+
+struct LogicCommandDisconnect : public LogicCommandT<COMMAND_DISCONNECT>
+{
+	LogicCommandDisconnect()
+	{
+		m_iSessionId = 0;
+	}
+
+	uint32 m_iSessionId;
 };
 
 #endif

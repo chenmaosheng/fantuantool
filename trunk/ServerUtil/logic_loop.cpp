@@ -66,6 +66,11 @@ void LogicLoop::PushCommand(LogicCommand* pCommand)
 	::SetEvent(m_hCommandEvent);
 }
 
+void LogicLoop::PushShutdownCommand()
+{
+	PushCommand(new LogicCommandShutdown);
+}
+
 uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 {
 	LogicLoop* pLogicLoop = (LogicLoop*)pParam;

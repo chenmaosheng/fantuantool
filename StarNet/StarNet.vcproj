@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\peer_connector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\starnet.cpp"
 				>
 			</File>
@@ -212,6 +216,30 @@
 			</File>
 			<File
 				RelativePath=".\packet_dispatch.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_acceptor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_client.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_connector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_packet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_stream.h"
 				>
 			</File>
 			<File

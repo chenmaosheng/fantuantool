@@ -32,6 +32,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoginServer", "LoginServer\
 		{D0F1863D-C9EF-46CC-B8AA-A133466C8CAC} = {D0F1863D-C9EF-46CC-B8AA-A133466C8CAC}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FTGen", "FTGen\FTGen.vcproj", "{6E702C12-A30F-468D-AA39-086F0D01E85C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -70,6 +72,10 @@ Global
 		{363059E5-E404-454D-BA0E-AE8BC4E937B0}.Debug|Win32.Build.0 = Debug|Win32
 		{363059E5-E404-454D-BA0E-AE8BC4E937B0}.Release|Win32.ActiveCfg = Release|Win32
 		{363059E5-E404-454D-BA0E-AE8BC4E937B0}.Release|Win32.Build.0 = Release|Win32
+		{6E702C12-A30F-468D-AA39-086F0D01E85C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6E702C12-A30F-468D-AA39-086F0D01E85C}.Debug|Win32.Build.0 = Debug|Win32
+		{6E702C12-A30F-468D-AA39-086F0D01E85C}.Release|Win32.ActiveCfg = Release|Win32
+		{6E702C12-A30F-468D-AA39-086F0D01E85C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,6 +23,7 @@ typedef __int64				int64;
 typedef unsigned __int64	uint64;
 typedef float				float32;
 typedef double				float64;
+typedef const char*			cpint8;
 
 typedef HANDLE				ConnID;
 

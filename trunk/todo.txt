@@ -9,6 +9,9 @@
 9, packet_buffer concept, similar to single buffer
 10, sessionid index has problem
 
+11, ft gen need to generate file
+12, starnet need connect concept (client function)
+
 client
 1, rpc->server, with parameters
 2, serialize parameters to a datastream

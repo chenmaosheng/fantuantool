@@ -1,9 +1,8 @@
 #ifndef _H_STAR_NET
 #define _H_STAR_NET
 
-#include "common.h"
+#include "starnet_common.h"
 #include "log.h"
-#include "peer_packet.h"
 
 class StarNet
 {

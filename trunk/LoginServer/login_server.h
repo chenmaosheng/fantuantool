@@ -3,6 +3,7 @@
 
 #include "session_server.h"
 #include "singleton.h"
+#include "peer_packet.h"
 
 class LoginServer : public SessionServer,
 					public Singleton<LoginServer>
@@ -20,6 +21,9 @@ private:
 
 	int32 InitMainLoop();
 	void DestroyMainLoop();
+
+public:
+	PEER_SERVER m_pMasterServer;
 };
 
 extern LoginServer* g_pServer;

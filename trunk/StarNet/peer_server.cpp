@@ -257,3 +257,20 @@ PeerServer* PeerServerSet::GetPeerServer(uint32 iIP, uint16 iPort)
 
 	return NULL;
 }
+
+PeerOutputStream::PeerOutputStream()
+{
+	m_pPacket = (PeerPacket*)PeerServerSet::Instance()->m_pContextPool->PopOutputBuffer();
+	if (m_pPacket)
+	{
+		m_pPacket->m_iLen = 0;
+	}
+}
+
+PeerOutputStream::~PeerOutputStream()
+{
+	if (m_pPacket)
+	{
+		PeerServerSet::Instance()->m_pContextPool->PushOutputBuffer((char*)m_pPacket);
+	}
+}

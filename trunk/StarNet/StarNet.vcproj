@@ -251,6 +251,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\starnet_common.h"
+				>
+			</File>
+			<File
 				RelativePath=".\worker.h"
 				>
 			</File>

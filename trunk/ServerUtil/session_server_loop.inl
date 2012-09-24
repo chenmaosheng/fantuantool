@@ -90,7 +90,7 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 	switch(pCommand->m_iCmdId)
 	{
 	case COMMAND_ONCONNECT:
-		if ( m_iShutdownStatus == NOT_SHUTDOWN)
+		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
 		{
 			_OnCommandOnConnect((LogicCommandOnConnect*)pCommand);
 		}
@@ -101,14 +101,14 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 		break;
 
 	case COMMAND_ONDATA:
-		if ( m_iShutdownStatus == NOT_SHUTDOWN)
+		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
 		{
 			_OnCommandOnData((LogicCommandOnData*)pCommand);
 		}
 		break;
 
 	case COMMAND_BROADCASTDATA:
-		if ( m_iShutdownStatus == NOT_SHUTDOWN)
+		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
 		{
 			_OnCommandBroadcastData((LogicCommandBroadcastData*)pCommand);
 		}

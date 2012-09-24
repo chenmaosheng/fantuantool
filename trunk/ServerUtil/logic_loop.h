@@ -10,6 +10,8 @@ struct LogicCommand;
 class LogicLoop
 {
 public:
+	enum { NOT_SHUTDOWN, START_SHUTDOWN, READY_FOR_SHUTDOWN, };
+
 	LogicLoop();
 	virtual ~LogicLoop();
 

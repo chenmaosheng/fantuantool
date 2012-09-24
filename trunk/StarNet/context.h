@@ -1,7 +1,7 @@
 #ifndef _H_CONTEXT
 #define _H_CONTEXT
 
-#include <winsock2.h>
+#include "common.h"
 
 enum
 {

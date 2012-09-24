@@ -76,12 +76,13 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 	LogicLoop* pLogicLoop = (LogicLoop*)pParam;
 	LogicCommand* pCommand = NULL;
 	DWORD dwRet = 0;
+	uint32 iSleepTime = 0;
 
 	while (!pLogicLoop->m_bQuit)
 	{
 		while (true)
 		{
-			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, 10);
+			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, iSleepTime);
 			if (dwRet == WAIT_FAILED || dwRet == WAIT_TIMEOUT)
 			{
 				break;
@@ -101,6 +102,8 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 				SAFE_DELETE(pCommand);
 			}
 		}
+
+		iSleepTime = pLogicLoop->_Loop();
 	}
 
 	return 0;

@@ -16,8 +16,6 @@ template<typename T>
 class SessionServerLoop : public LogicLoop
 {
 public:
-	enum { NOT_SHUTDOWN, START_SHUTDOWN, READY_FOR_SHUTDOWN, };
-
 	SessionServerLoop(uint16 iSessionMax = 32768);
 	~SessionServerLoop();
 

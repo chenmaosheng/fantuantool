@@ -1,7 +1,8 @@
 #ifndef _H_SERVER_BASE
 #define _H_SERVER_BASE
 
-#include "common.h"
+#include "server_common.h"
+#include "peer_packet.h"
 
 class Worker;
 class Acceptor;
@@ -16,6 +17,8 @@ public:
 	virtual void Destroy();
 
 	ContextPool* GetContextPool();
+	PEER_SERVER GetPeerServer(uint16 iServerId);
+	PEER_SERVER GetPeerServer(const TCHAR* strServerName);
 	
 protected:
 	ServerBase();
@@ -38,10 +41,11 @@ protected:
 	int32 StartMainLoop();
 	void StopMainLoop();
 
-protected:
+private:
 	Acceptor* m_pAcceptor;
 	Worker* m_pWorker;
 	ContextPool* m_pContextPool;
+	PEER_SERVER m_arrayPeerServer[PEER_SERVER_MAX];
 
 	Log* m_pLogSystem;
 

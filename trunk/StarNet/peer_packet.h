@@ -1,10 +1,7 @@
 #ifndef _H_PEER_PACKET
 #define _H_PEER_PACKET
 
-#include "common.h"
-
-DECLARE_HANDLE(PEER_CLIENT);
-DECLARE_HANDLE(PEER_SERVER);
+#include "starnet_common.h"
 
 struct PeerPacket
 {

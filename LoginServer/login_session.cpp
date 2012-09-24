@@ -1,6 +1,7 @@
 #include "login_session.h"
 #include "login_server_loop.h"
-#include "login_server_send.h"
+#include "master_peer_send.h"
+#include "login_server.h"
 
 LoginServerLoop* LoginSession::m_pMainLoop = NULL;
 
@@ -39,7 +40,7 @@ void LoginSession::LoginReq(const char* strNickname)
 {
 	int32 iRet = 0;
 
-	iRet = LoginServerSend::LoginNtf(this, m_iSessionId, strNickname);
+	iRet = MasterPeerSend::LoginReq(g_pServer->m_pMasterServer, m_iSessionId, strNickname);
 	if (iRet != 0)
 	{
 		Disconnect();

@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\server_common.h"
+				>
+			</File>
+			<File
 				RelativePath=".\session.h"
 				>
 			</File>

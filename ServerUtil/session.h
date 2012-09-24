@@ -1,7 +1,7 @@
 #ifndef _H_SESSION
 #define _H_SESSION
 
-#include "common.h"
+#include "server_common.h"
 
 #pragma pack(1)
 

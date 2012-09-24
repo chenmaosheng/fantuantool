@@ -48,7 +48,7 @@ uint32 LoginServerLoop::_Loop()
 		_ReadyForShutdown();
 	}
 
-	return 0;
+	return 100;
 }
 
 bool LoginServerLoop::_OnCommand(LogicCommand* pCommand)

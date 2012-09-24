@@ -23,7 +23,7 @@ public:
 	{
 		if (m_pPacket->m_iLen + sizeof(T) <= MAX_PEER_BUFFER)
 		{
-			memcpy(m_pPacket->m_Buf+m_pPacket->m_iLen, value, sizeof(T));
+			memcpy(m_pPacket->m_Buf+m_pPacket->m_iLen, &value, sizeof(T));
 			m_pPacket->m_iLen += sizeof(T);
 			return true;
 		}
@@ -39,7 +39,7 @@ public:
 		if (m_pPacket->m_iLen + iCount <= MAX_PEER_BUFFER)
 		{
 			memcpy(m_pPacket->m_Buf+m_pPacket->m_iLen, array, iCount);
-			m_iDataLength += iCount;
+			m_pPacket->m_iLen += iCount;
 			return true;
 		}
 

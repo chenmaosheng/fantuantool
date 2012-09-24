@@ -1,7 +1,7 @@
 #ifndef _H_LOGIC_COMMAND
 #define _H_LOGIC_COMMAND
 
-#include "common.h"
+#include "server_common.h"
 
 enum
 {

@@ -13,6 +13,8 @@
 #include "packet.h"
 #include "session.h"
 
+uint16 server_port[] = {5150, 5151};
+
 ServerBase::ServerBase()
 {
 	m_pAcceptor = NULL;
@@ -21,6 +23,8 @@ ServerBase::ServerBase()
 
 	m_pLogSystem = NULL;
 	m_pMainLoop = NULL;
+
+	memset(&m_arrayPeerServer, 0, sizeof(m_arrayPeerServer));
 }
 
 ServerBase::~ServerBase()
@@ -76,6 +80,34 @@ void ServerBase::Destroy()
 ContextPool* ServerBase::GetContextPool()
 {
 	return m_pContextPool;
+}
+
+PEER_SERVER ServerBase::GetPeerServer(uint16 iServerId)
+{
+	uint32 iIP = 0;
+	uint16 iPort = 0;
+
+	if (iServerId >= PEER_SERVER_MAX)
+	{
+		return NULL;
+	}
+
+	if (!m_arrayPeerServer[iServerId])
+	{
+		iIP = inet_addr("127.0.0.1");
+		iPort = server_port[iServerId];
+		m_arrayPeerServer[iServerId] = StarNet::GetPeerServer(iIP, iPort);
+	}
+
+	return m_arrayPeerServer[iServerId];
+}
+
+PEER_SERVER ServerBase::GetPeerServer(const TCHAR* strServerName)
+{
+	uint32 iIP = 0;
+	uint16 iPort = 0;
+
+	return NULL;
 }
 
 int32 ServerBase::InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize)

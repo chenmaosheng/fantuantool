@@ -1,8 +1,7 @@
 #ifndef _H_HANDLER
 #define _H_HANDLER
 
-#include "common.h"
-
+#include "starnet_common.h"
 
 typedef bool (CALLBACK* ON_CONNECTION)(ConnID);
 typedef void (CALLBACK* ON_DISCONNECT)(ConnID);

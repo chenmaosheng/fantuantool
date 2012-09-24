@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil;..\GenFile"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil;..\GenPeerFile"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil;..\GenFile"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerUtil;..\GenPeerFile"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -178,11 +178,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\master_player_context.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\master_server.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\master_server_loop.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_packet_impl.cpp"
 				>
 			</File>
 		</Filter>
@@ -196,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\master_player_context.h"
+				>
+			</File>
+			<File
 				RelativePath=".\master_server.h"
 				>
 			</File>
@@ -205,10 +217,22 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name="Gen Peer Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\GenPeerFile\master_peer_dispatch.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\master_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\master_peer_recv.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

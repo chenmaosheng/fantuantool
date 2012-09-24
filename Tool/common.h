@@ -25,14 +25,8 @@ typedef float				float32;
 typedef double				float64;
 typedef const char*			cpint8;
 
-typedef HANDLE				ConnID;
-
 #define SAFE_DELETE(ptr)	if (ptr) {delete (ptr); (ptr) = NULL;}
 #define SAFE_DELETE_ARRAY(ptr) if ((ptr) != NULL) { delete [] (ptr); (ptr) = NULL; }
-
-#define MAX_INPUT_BUFFER	1024
-#define MAX_OUTPUT_BUFFER	65500
-#define MAX_PEER_BUFFER		65536
 
 enum
 {
@@ -41,5 +35,7 @@ enum
 
 	LOG_TYPE_MAX = LOG_SERVER + 1,
 };
+
+#define ACCOUNTNAME_MAX 64
 
 #endif

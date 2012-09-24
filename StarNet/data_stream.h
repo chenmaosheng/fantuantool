@@ -1,7 +1,7 @@
 #ifndef _H_DATA_STREAM
 #define _H_DATA_STREAM
 
-#include "common.h"
+#include "starnet_common.h"
 
 template<size_t DataLength>
 class _OutputStream

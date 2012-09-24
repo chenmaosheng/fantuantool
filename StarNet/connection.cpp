@@ -83,7 +83,7 @@ void Connection::AsyncRecv(Context* pContext)
 	}
 }
 
-void Connection::AsyncSend(uint16 len, char* buf)
+void Connection::AsyncSend(uint32 len, char* buf)
 {
 	Context* pContext = (Context*)((char*)buf - BUFOFFSET);
 	if (pContext->operation_type_ != OPERATION_SEND)
@@ -168,6 +168,22 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 	}
 
 	return NULL;
+}
+
+bool Connection::Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, void* pClient)
+{
+	Connection* pConnection = Create(pHandler, pContextPool, pWorker, NULL);
+	if (pConnection)
+	{
+		if (pConnection->AsyncConnect(pAddr, pClient))
+		{
+			return true;
+		}
+
+		Delete(pConnection);
+	}
+
+	return false;
 }
 
 void Connection::Close(Connection* pConnection)

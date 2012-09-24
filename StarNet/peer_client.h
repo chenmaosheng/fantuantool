@@ -2,21 +2,26 @@
 #define _H_PEER_CLIENT
 
 #include <vector>
+#include "common.h"
+#include "singleton.h"
 
 class Worker;
 class ContextPool;
-class PeerClient
+class PeerClientConnector;
+class PeerClient : public Singleton<PeerClient>
 {
 public:
 	PeerClient();
 	~PeerClient();
 
-	PeerConnector* GetConnector(uint32 iIP, uint16 iPort);
+	PeerClientConnector* GetConnector(uint32 iIP, uint16 iPort);
 
-private:
+public:
 	Worker* m_pWorker;
 	ContextPool* m_pContextPool;
-	std::vector<PeerConnector*> m_vPeerConnectors;
+
+private:
+	std::vector<PeerClientConnector*> m_vPeerClientConnectors;
 };
 
 #endif

@@ -26,7 +26,7 @@ struct Connection : SLIST_ENTRY
 	void AsyncDisconnect();
 	void AsyncSend(Context*);
 	void AsyncRecv(Context*);
-	void AsyncSend(uint16 len, char* buf);
+	void AsyncSend(uint32 len, char* buf);
 
 	void SetClient(void*);
 	void* GetClient();
@@ -34,6 +34,7 @@ struct Connection : SLIST_ENTRY
 	bool IsConnected();
 
 	static Connection* Create(Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, Acceptor* pAcceptor);
+	static bool Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, void* pClient);
 	static void Close(Connection*);
 	static void Delete(Connection*);
 };

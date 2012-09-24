@@ -169,7 +169,23 @@
 				>
 			</File>
 			<File
-				RelativePath=".\peer_connector.cpp"
+				RelativePath=".\peer_client.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_client_connector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_dispatch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_server.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_server_connector.cpp"
 				>
 			</File>
 			<File
@@ -219,15 +235,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\peer_acceptor.h"
-				>
-			</File>
-			<File
 				RelativePath=".\peer_client.h"
 				>
 			</File>
 			<File
-				RelativePath=".\peer_connector.h"
+				RelativePath=".\peer_client_connector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_dispatch.h"
 				>
 			</File>
 			<File
@@ -236,6 +252,10 @@
 			</File>
 			<File
 				RelativePath=".\peer_server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\peer_server_connector.h"
 				>
 			</File>
 			<File

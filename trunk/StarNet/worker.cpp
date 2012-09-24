@@ -152,7 +152,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					{
 						printf("client %s send something\n", inet_ntoa(pConnection->sockaddr_.sin_addr));
 						
-						pConnection->handler_.OnData((ConnID)pConnection, (uint16)dwNumRead, pContext->buffer_);
+						pConnection->handler_.OnData((ConnID)pConnection, (uint32)dwNumRead, pContext->buffer_);
 						pConnection->AsyncRecv(pContext);
 					}
 					

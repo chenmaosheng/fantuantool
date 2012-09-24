@@ -8,7 +8,7 @@ class SessionServer : public ServerBase
 public:
 	static bool CALLBACK OnConnection(ConnID connId);
 	static void CALLBACK OnDisconnect(ConnID connId);
-	static void CALLBACK OnData(ConnID connId, uint16 iLen, char* pBuf);
+	static void CALLBACK OnData(ConnID connId, uint32 iLen, char* pBuf);
 	static void CALLBACK OnConnectFailed(void*);
 
 	SessionServer();

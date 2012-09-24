@@ -50,7 +50,7 @@ void CALLBACK SessionServer::OnDisconnect(ConnID connId)
 	pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void CALLBACK SessionServer::OnData(ConnID connId, uint16 iLen, char* pBuf)
+void CALLBACK SessionServer::OnData(ConnID connId, uint32 iLen, char* pBuf)
 {
 	SessionServer* pServer = (SessionServer*)((Connection*)connId)->acceptor_->server_;
 	LogicCommandOnData* pCommand = NULL;

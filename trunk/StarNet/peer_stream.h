@@ -9,13 +9,13 @@ public:
 	PeerOutputStream();
 	~PeerOutputStream();
 
-	int32 Send(PEER_SERVER);
-	int32 Send(PEER_CLIENT);
+	int32 Send(PEER_CLIENT_CONNECTOR);
+	int32 Send(PEER_SERVER_CONNECTOR);
 
 	void SetId(uint16 iFilterId, uint16 iFuncId)
 	{
-		m_iFilterId = iFilterId;
-		m_iFuncId = iFuncId;
+		m_pPacket->m_iFilterId = iFilterId;
+		m_pPacket->m_iFuncId = iFuncId;
 	}
 
 	template<typename T>
@@ -23,7 +23,7 @@ public:
 	{
 		if (m_pPacket->m_iLen + sizeof(T) <= MAX_PEER_BUFFER)
 		{
-			mempcy(m_pPacket->m_Buf+m_pPacket->m_iLen, value, sizeof(T));
+			memcpy(m_pPacket->m_Buf+m_pPacket->m_iLen, value, sizeof(T));
 			m_pPacket->m_iLen += sizeof(T);
 			return true;
 		}

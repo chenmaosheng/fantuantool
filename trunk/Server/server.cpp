@@ -111,7 +111,7 @@ void CALLBACK Server::OnDisconnect(ConnID connId)
 	pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void CALLBACK Server::OnData(ConnID connId, uint16 iLen, char* pBuf)
+void CALLBACK Server::OnData(ConnID connId, uint32 iLen, char* pBuf)
 {
 	/*Connection* pConnection = (Connection*)connId;
 	Header* header = (Header*)pBuf;

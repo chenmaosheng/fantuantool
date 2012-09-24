@@ -1,4 +1,6 @@
 #include "starnet.h"
+#include "peer_server.h"
+#include "peer_client.h"
 
 LPFN_ACCEPTEX StarNet::acceptex_;
 LPFN_CONNECTEX StarNet::connectex_;
@@ -37,4 +39,19 @@ int32 StarNet::Init()
 void StarNet::Destroy()
 {
 	WSACleanup();
+}
+
+bool StarNet::StartPeerServer(uint32 iIP, uint16 iPort, uint32 iWorkerCount)
+{
+	return PeerServer::Instance()->Init(iIP, iPort);
+}
+
+void StarNet::StopPeerServer()
+{
+	PeerServer::Instance()->Destroy();
+}
+
+PEER_CLIENT_CONNECTOR StarNet::GetPeerConnector(uint32 iIP, uint16 iPort)
+{
+	return (PEER_CLIENT_CONNECTOR)PeerClient::Instance()->GetConnector(iIP, iPort);
 }

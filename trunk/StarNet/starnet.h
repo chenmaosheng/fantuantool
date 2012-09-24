@@ -3,13 +3,18 @@
 
 #include "common.h"
 #include "log.h"
+#include "peer_packet.h"
 
 class StarNet
 {
 public:
 	static int32 Init();
 	static void Destroy();
+	static bool StartPeerServer(uint32 iIP, uint16 iPort, uint32 iWorkerCount);
+	static void StopPeerServer();
+	static PEER_CLIENT_CONNECTOR GetPeerConnector(uint32 iIP, uint16 iPort);
 
+public:
 	static LPFN_ACCEPTEX acceptex_;
 	static LPFN_CONNECTEX connectex_;
 	static LPFN_DISCONNECTEX disconnectex_;

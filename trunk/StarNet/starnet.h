@@ -12,7 +12,7 @@ public:
 	static void Destroy();
 	static bool StartPeerServer(uint32 iIP, uint16 iPort, uint32 iWorkerCount);
 	static void StopPeerServer();
-	static PEER_CLIENT_CONNECTOR GetPeerConnector(uint32 iIP, uint16 iPort);
+	static PEER_SERVER GetPeerServer(uint32 iIP, uint16 iPort);
 
 public:
 	static LPFN_ACCEPTEX acceptex_;

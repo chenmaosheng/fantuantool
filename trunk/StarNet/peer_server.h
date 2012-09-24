@@ -1,35 +1,63 @@
 #ifndef _H_PEER_SERVER
 #define _H_PEER_SERVER
 
-#include <vector>
-#include "common.h"
+#include "peer_packet.h"
 #include "singleton.h"
+#include <vector>
 
-class Worker;
-class ContextPool;
-class Acceptor;
-class PeerServerConnector;
-class PeerServer : public Singleton<PeerServer>
+class PeerServer
 {
 public:
-	bool Init(uint32 iIP, uint16 iPort);
+	enum
+	{
+		NOT_CONNECT,
+		CONNECTING,
+		CONNECTED,
+		CONNECT_FAILED,
+		DISCONNECTED,
+		DESTORYING,
+	};
+
+	void Init(uint32 iIP, uint16 iPort);
 	void Destroy();
-	bool AddConnector(PeerServerConnector*);
-	void DeleteConnector(ConnID);
+	PSOCKADDR_IN GetSockAddr();
+
+	ConnID GetConnId();
+	bool Connect();
+	void OnPeerData(uint32 iLen, char* pBuf);
+	bool Dispatch(PeerPacket*);
+	bool Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf);
 
 	static bool CALLBACK OnConnection(ConnID connId);
 	static void CALLBACK OnDisconnect(ConnID connId);
 	static void CALLBACK OnData(ConnID connId, uint32 iLen, char* pBuf);
+	static void CALLBACK OnConnectFailed(void*);
+
+private:
+	ConnID m_ConnId;
+	SOCKADDR_IN m_SockAddr;
+	uint32 m_iRecvBufLen;
+	char m_RecvBuf[MAX_PEER_BUFFER];
+	int32 m_iState;
+};
+
+class Worker;
+class ContextPool;
+class PeerServer;
+class PeerServerSet : public Singleton<PeerServerSet>
+{
+public:
+	PeerServerSet();
+	~PeerServerSet();
+
+	PeerServer* GetPeerServer(uint32 iIP, uint16 iPort);
 
 public:
 	Worker* m_pWorker;
 	ContextPool* m_pContextPool;
-	Acceptor* m_pAcceptor;
-	uint32 m_iIP;
-	uint16 m_iPort;
 
 private:
-	std::vector<PeerServerConnector*> m_vPeerConnectors;
+	std::vector<PeerServer*> m_vPeerServers;
 };
 
 #endif

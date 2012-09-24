@@ -9,8 +9,8 @@ public:
 	PeerOutputStream();
 	~PeerOutputStream();
 
-	int32 Send(PEER_CLIENT_CONNECTOR);
-	int32 Send(PEER_SERVER_CONNECTOR);
+	int32 Send(PEER_CLIENT);
+	int32 Send(PEER_SERVER);
 
 	void SetId(uint16 iFilterId, uint16 iFuncId)
 	{

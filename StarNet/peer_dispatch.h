@@ -8,7 +8,7 @@
 
 struct PeerClientDispatchFilter
 {
-	typedef bool (CALLBACK* Func)(PEER_CLIENT_CONNECTOR, PeerInputStream&);
+	typedef bool (CALLBACK* Func)(PEER_CLIENT, PeerInputStream&);
 	Func* m_pFunc;
 };
 
@@ -23,7 +23,7 @@ private:
 
 struct PeerServerDispatchFilter
 {
-	typedef bool (CALLBACK* Func)(PEER_SERVER_CONNECTOR, PeerInputStream&);
+	typedef bool (CALLBACK* Func)(PEER_SERVER, PeerInputStream&);
 	Func* m_pFunc;
 };
 

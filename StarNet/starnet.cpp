@@ -43,15 +43,15 @@ void StarNet::Destroy()
 
 bool StarNet::StartPeerServer(uint32 iIP, uint16 iPort, uint32 iWorkerCount)
 {
-	return PeerServer::Instance()->Init(iIP, iPort);
+	return PeerClientSet::Instance()->Init(iIP, iPort);
 }
 
 void StarNet::StopPeerServer()
 {
-	PeerServer::Instance()->Destroy();
+	PeerClientSet::Instance()->Destroy();
 }
 
-PEER_CLIENT_CONNECTOR StarNet::GetPeerConnector(uint32 iIP, uint16 iPort)
+PEER_SERVER StarNet::GetPeerServer(uint32 iIP, uint16 iPort)
 {
-	return (PEER_CLIENT_CONNECTOR)PeerClient::Instance()->GetConnector(iIP, iPort);
+	return (PEER_SERVER)PeerServerSet::Instance()->GetPeerServer(iIP, iPort);
 }

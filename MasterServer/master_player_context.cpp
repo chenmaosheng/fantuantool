@@ -19,3 +19,12 @@ void MasterPlayerContext::Clear()
 	m_strAccountName[0] = '\0';
 }
 
+void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName)
+{
+	int32 iRet = 0;
+
+	m_iSessionId = iSessionId;
+	wcscpy_s(m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR), strAccountName);
+
+	// notify frontend
+}

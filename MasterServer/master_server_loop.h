@@ -4,8 +4,10 @@
 #include "logic_loop.h"
 #include "object_pool.h"
 #include <hash_map>
+#include <string>
 
 class MasterPlayerContext;
+struct LogicCommandOnLoginReq;
 class MasterServerLoop : public LogicLoop
 {
 public:
@@ -24,13 +26,16 @@ private:
 	void _ShutdownPlayer(MasterPlayerContext*);
 	
 	bool _OnCommand(LogicCommand*);
-	void _OnCommandShutdown();	
+	void _OnCommandShutdown();
+
+private:
+	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
 
 private:
 	int32 m_iShutdownStatus;
 	
 	ObjectPool<MasterPlayerContext> m_PlayerContextPool;
-	stdext::hash_map<const TCHAR*, MasterPlayerContext*> m_mPlayerContextByName;
+	stdext::hash_map<std::wstring, MasterPlayerContext*> m_mPlayerContextByName;
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContextBySessionId;
 };
 

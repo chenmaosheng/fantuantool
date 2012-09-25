@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="LoginServer"
-	ProjectGUID="{363059E5-E404-454D-BA0E-AE8BC4E937B0}"
-	RootNamespace="LoginServer"
+	Name="GateServer"
+	ProjectGUID="{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB}"
+	RootNamespace="FrontEndServer"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -175,23 +175,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\login_server.cpp"
+				RelativePath=".\gate_server.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\login_server_loop.cpp"
+				RelativePath=".\gate_server_loop.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\login_session.cpp"
+				RelativePath=".\gate_session.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\packet_impl.cpp"
 				>
 			</File>
 		</Filter>
@@ -201,55 +197,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\login_server.h"
+				RelativePath=".\gate_server.h"
 				>
 			</File>
 			<File
-				RelativePath=".\login_server_loop.h"
+				RelativePath=".\gate_server_loop.h"
 				>
 			</File>
 			<File
-				RelativePath=".\login_session.h"
+				RelativePath=".\gate_session.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Gen Server Files"
+			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\GenServerFile\login_client_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenServerFile\login_client_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\GenServerFile\login_packet_dispatch.h"
-				>
-			</File>
-			<File
-				RelativePath="..\GenServerFile\login_server_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenServerFile\login_server_send.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Gen Peer Files"
-			>
-			<File
-				RelativePath="..\GenPeerFile\master_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenPeerFile\master_peer_send.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

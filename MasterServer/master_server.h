@@ -21,8 +21,6 @@ private:
 
 	int32 InitMainLoop();
 	void DestroyMainLoop();
-
-
 };
 
 extern MasterServer* g_pServer;

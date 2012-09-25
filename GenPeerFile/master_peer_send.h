@@ -1,7 +1,7 @@
 #ifndef _H_MASTER_PEER_SEND
 #define _H_MASTER_PEER_SEND
 
-#include "peer_packet.h"
+#include "server_common.h"
 
 struct MasterPeerSend
 {

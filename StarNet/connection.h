@@ -22,7 +22,7 @@ struct Connection : SLIST_ENTRY
 	LONG			connected_;
 	LONG			iorefmax_;
 	
-	int32 AsyncConnect(PSOCKADDR_IN addr, void* client);
+	bool AsyncConnect(PSOCKADDR_IN addr, void* client);
 	void AsyncDisconnect();
 	void AsyncSend(Context*);
 	void AsyncRecv(Context*);

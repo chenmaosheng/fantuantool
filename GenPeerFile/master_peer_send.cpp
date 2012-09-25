@@ -9,6 +9,6 @@ uint32 MasterPeerSend::LoginReq(PEER_SERVER pPeerServer, uint32 iSessionId, cons
 	stream.Serialize(iAccountNameLen);
 	stream.Serialize(iAccountNameLen, strAccountName);
 
-	stream.SetId(1, 0);
+	stream.SetId(PEER_FILTER_MASTER, 0);
 	return stream.Send(pPeerServer);
 }

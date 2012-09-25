@@ -13,7 +13,7 @@
 #include "packet.h"
 #include "session.h"
 
-uint16 server_port[] = {5150, 5151};
+uint16 server_port[] = {4001, 4002};
 
 ServerBase::ServerBase()
 {
@@ -212,6 +212,21 @@ void ServerBase::StopMainLoop()
 		m_pMainLoop->Stop();
 		m_pMainLoop->Join();
 	}
+}
+
+int32 ServerBase::StartPeerServer(uint32 iIP, uint16 iPort)
+{
+	if (!StarNet::StartPeerServer(iIP, iPort, 1))
+	{
+		return -1;
+	}
+
+	return 0;
+}
+
+void ServerBase::StopPeerServer()
+{
+	StarNet::StopPeerServer();
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

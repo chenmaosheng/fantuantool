@@ -1,7 +1,7 @@
 #ifndef _H_MASTER_PEER_RECV
 #define _H_MASTER_PEER_RECV
 
-#include "peer_packet.h"
+#include "server_common.h"
 
 struct MasterPeerRecv
 {

@@ -5,26 +5,26 @@
 #include "acceptor.h"
 #include "starnet.h"
 
-int32 Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
+bool Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
 {
 	int32 rc = 0;
 	client_ = client;
-	context_ = (Context*)_aligned_malloc(sizeof(Context), MEMORY_ALLOCATION_ALIGNMENT);
 	if (!context_)
 	{
-		return -1;
+		return false;
 	}
 
+	context_->operation_type_ = OPERATION_CONNECT;
 	rc = StarNet::connectex_(socket_, (sockaddr*)addr, sizeof(*addr), NULL, 0, NULL, &context_->overlapped_);
 	if (rc == 0)
 	{
 		if (WSAGetLastError() != ERROR_IO_PENDING)
 		{
-			return -2;
+			return false;
 		}
 	}
 
-	return 0;
+	return true;
 }
 
 void Connection::AsyncDisconnect()
@@ -144,7 +144,6 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 				pConnection->context_ = (Context*)_aligned_malloc(sizeof(Context), MEMORY_ALLOCATION_ALIGNMENT);
 				if (pConnection->context_)
 				{
-					pConnection->context_->operation_type_ = OPERATION_ACCEPT;
 					pConnection->handler_ = *pHandler;
 					pConnection->context_pool_ = pContextPool;
 					pConnection->worker_ = pWorker;
@@ -154,8 +153,20 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 					pConnection->iorefs_ = 0;
 					pConnection->iorefmax_ = 65536;
 					ZeroMemory(&pConnection->context_->overlapped_, sizeof(WSAOVERLAPPED));
-
-					return pConnection;
+					if (!pAcceptor)
+					{
+						SOCKADDR_IN addr;
+						ZeroMemory(&addr, sizeof(addr));
+						addr.sin_family = AF_INET;
+						if (bind(pConnection->socket_, (sockaddr*)&addr, sizeof(addr)) == 0)
+						{
+							return pConnection;
+						}
+					}
+					else
+					{
+						return pConnection;
+					}
 				}
 			}
 			else

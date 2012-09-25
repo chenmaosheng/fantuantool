@@ -16,4 +16,6 @@ public:
 	virtual void Free(const char* file, int32 line, void*) = 0;
 };
 
+#define MEMORY_POOL_INIT(min, max) MemoryPool::GetInstance()->Init(min, max)
+
 #endif

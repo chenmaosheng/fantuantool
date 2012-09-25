@@ -47,6 +47,11 @@ void MemoryPoolImpl::Init(uint32 iMin, uint32 iMax)
 	}
 }
 
+void MemoryPoolImpl::Destroy()
+{
+
+}
+
 MemoryPoolImpl::~MemoryPoolImpl()
 {
 	Node* pNode = NULL;

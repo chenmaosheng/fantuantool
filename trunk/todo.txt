@@ -4,13 +4,17 @@
 4, sessionserver¸ÅÄî
 5, minidump release°æbug½â¾ö
 6, server id
-7, data stream(in/out)
-8, memory management
+7, data stream(in/out) (finished)
+8, memory management(not tested)
 9, packet_buffer concept, similar to single buffer
-10, sessionid index has problem
+10, sessionid index has problem(fixed)
 
 11, ft gen need to generate file
 12, starnet need connect concept (client function)
+13, server config file
+14, use memory pool
+15, utf8<->wchar, consider about chinese character
+16, alloca has memory leak
 
 client
 1, rpc->server, with parameters

@@ -11,6 +11,8 @@ public:
 	~MasterPlayerContext();
 
 	void Clear();
+
+	void OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName);
 	
 public:
 	uint32 m_iSessionId;

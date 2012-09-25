@@ -3,15 +3,9 @@
 
 #include "common.h"
 
-static uint8 NumberPower(uint32 iNumber)
-{
-	uint8 i = 0;
-	for (; i < 31 && iNumber != 0; ++i)
-	{
-		iNumber >>= 1;
-	}
+uint8 NumberPower(uint32 iNumber);
 
-	return i;
-}
+int32 Char2WChar(const char*, int32, TCHAR*, int32);
+int32 WChar2Char(const TCHAR*, int32, char*, int32);
 
 #endif

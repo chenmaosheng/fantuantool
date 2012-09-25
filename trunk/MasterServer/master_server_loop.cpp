@@ -78,6 +78,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandShutdown();
 		break;
 
+	case COMMAND_ONLOGINREQ:
+		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
+		break;
+
 	default:
 		break;
 	}
@@ -89,9 +93,37 @@ void MasterServerLoop::_OnCommandShutdown()
 {
 	m_iShutdownStatus = START_SHUTDOWN;
 
-	for (stdext::hash_map<const TCHAR*, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.begin();
+	for (stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.begin();
 		mit != m_mPlayerContextByName.end(); ++mit)
 	{
 		_ShutdownPlayer(mit->second);
+	}
+}
+
+void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
+{
+	MasterPlayerContext* pPlayerContext = NULL;
+
+	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
+	if (mit != m_mPlayerContextByName.end())
+	{
+		pPlayerContext = mit->second;
+
+		_ShutdownPlayer(pPlayerContext);
+		return;
+	}
+	else
+	{
+		pPlayerContext = m_PlayerContextPool.Allocate();
+		if (!pPlayerContext)
+		{
+			return;
+		}
+
+		m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
+		m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
+
+
+		pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
 	}
 }

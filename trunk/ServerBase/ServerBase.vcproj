@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="LoginServer"
-	ProjectGUID="{363059E5-E404-454D-BA0E-AE8BC4E937B0}"
-	RootNamespace="LoginServer"
+	Name="ServerBase"
+	ProjectGUID="{DDF13B26-3D16-4802-B5F1-862AC7A64438}"
+	RootNamespace="ServerUtil"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenServerFile;..\GenPeerFile"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -60,18 +60,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -83,9 +75,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -93,7 +82,7 @@
 			Name="Release|Win32"
 			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -116,8 +105,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenServerFile;..\GenPeerFile"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -134,20 +123,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -157,9 +136,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -175,23 +151,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\login_server.cpp"
+				RelativePath=".\logic_command.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\login_server_loop.cpp"
+				RelativePath=".\logic_loop.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\login_session.cpp"
+				RelativePath=".\server_base.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\session.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\packet_impl.cpp"
+				RelativePath=".\session_server.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server_loop.inl"
 				>
 			</File>
 		</Filter>
@@ -201,53 +181,65 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\login_server.h"
+				RelativePath=".\logic_command.h"
 				>
 			</File>
 			<File
-				RelativePath=".\login_server_loop.h"
+				RelativePath=".\logic_loop.h"
 				>
 			</File>
 			<File
-				RelativePath=".\login_session.h"
+				RelativePath=".\server_base.h"
+				>
+			</File>
+			<File
+				RelativePath=".\server_common.h"
+				>
+			</File>
+			<File
+				RelativePath=".\server_config.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session_server_loop.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Gen Server Files"
+			Name="tinyxml"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\GenServerFile\login_client_recv.cpp"
+				RelativePath="..\external\tinyxml\tinystr.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GenServerFile\login_client_recv.h"
+				RelativePath="..\external\tinyxml\tinystr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\GenServerFile\login_packet_dispatch.h"
+				RelativePath="..\external\tinyxml\tinyxml.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GenServerFile\login_server_send.cpp"
+				RelativePath="..\external\tinyxml\tinyxml.h"
 				>
 			</File>
 			<File
-				RelativePath="..\GenServerFile\login_server_send.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Gen Peer Files"
-			>
-			<File
-				RelativePath="..\GenPeerFile\master_peer_send.cpp"
+				RelativePath="..\external\tinyxml\tinyxmlerror.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GenPeerFile\master_peer_send.h"
+				RelativePath="..\external\tinyxml\tinyxmlparser.cpp"
 				>
 			</File>
 		</Filter>

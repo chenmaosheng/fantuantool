@@ -3,9 +3,8 @@
 
 #include "memory_pool.h"
 
-class MemoryObject
+struct MemoryObject
 {
-public:
 	virtual ~MemoryObject(){}
 
 	static void* operator new(size_t size);

@@ -10,11 +10,13 @@ bool CALLBACK OnLoginReq_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stre
 	stream.Serialize(iSessionId);
 	uint16 iAccountNameLen = 0;
 	stream.Serialize(iAccountNameLen);
-	char* accountName = (char*)alloca(iAccountNameLen+1);
+	char* accountName = (char*)_malloca(iAccountNameLen+1);
 	stream.Serialize(iAccountNameLen, accountName);
 	accountName[iAccountNameLen] = '\0';
 
 	MasterPeerRecv::OnLoginReq(pPeerClient, iSessionId, accountName);
+
+	_freea(accountName);
 	return true;
 }
 

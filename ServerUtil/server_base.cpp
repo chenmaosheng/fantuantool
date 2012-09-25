@@ -12,6 +12,7 @@
 #include "singleton.h"
 #include "packet.h"
 #include "session.h"
+#include "memory_pool.h"
 
 uint16 server_port[] = {4001, 4002};
 
@@ -37,8 +38,6 @@ int32 ServerBase::Init()
 	
 	Minidump::Init(_T("log"));
 
-	InitPacketDispatch();
-
 	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
 	{
@@ -50,11 +49,15 @@ int32 ServerBase::Init()
 
 	LOG_DBG(LOG_SERVER, _T("Log Loaded"));
 
+	MEMORY_POOL_INIT(8, 65536);
+
 	iRet = StarNet::Init();
 	if (iRet != 0)
 	{
 		return -2;
 	}
+
+	InitPacketDispatch();
 
 	iRet = InitMainLoop();
 	if (iRet != 0)

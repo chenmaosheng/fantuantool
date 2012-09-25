@@ -34,4 +34,7 @@ __forceinline void MemoryObject::Free(MemoryObject* pObject)
 	operator delete(pObject, MemoryPool::GetInstance());
 }
 
+#define FT_NEW(type) MemoryObject::Allocate<type>()
+#define FT_DELETE(obj) MemoryObject::Free(obj)
+
 #endif

@@ -41,6 +41,9 @@ protected:
 	int32 StartMainLoop();
 	void StopMainLoop();
 
+	int32 StartPeerServer(uint32 iIP, uint16 iPort);
+	void StopPeerServer();
+
 private:
 	Acceptor* m_pAcceptor;
 	Worker* m_pWorker;

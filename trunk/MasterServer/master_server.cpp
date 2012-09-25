@@ -1,5 +1,6 @@
 #include "master_server.h"
 #include "master_server_loop.h"
+#include "master_peer_dispatch.h"
 
 MasterServer* g_pServer = NULL;
 
@@ -9,11 +10,34 @@ MasterServer::MasterServer()
 
 int32 MasterServer::Init()
 {
-	return super::Init();
+	int32 iRet = 0;
+	iRet = super::Init();
+	if (iRet != 0)
+	{
+		return -1;
+	}
+
+	iRet = StartPeerServer(INADDR_ANY, server_port[0]);
+	if (iRet != 0)
+	{
+		return -2;
+	}
+
+	iRet = StartMainLoop();
+	if (iRet != 0)
+	{
+		return -3;
+	}
+
+	return 0;
 }
 
 void MasterServer::Destroy()
 {
+	StopMainLoop();
+
+	StopPeerServer();
+
 	super::Destroy();
 }
 
@@ -40,4 +64,5 @@ void MasterServer::DestroyMainLoop()
 
 void MasterServer::InitPacketDispatch()
 {
+	static MasterPeerDispatch _MasterPeerDispatch;
 }

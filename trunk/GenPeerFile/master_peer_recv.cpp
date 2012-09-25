@@ -26,5 +26,5 @@ static PeerClientDispatchFilter::Func test_func[] =
 
 MasterPeerDispatch::MasterPeerDispatch()
 {
-	PeerClientDispatchFilterArray::GetFilter(0).m_pFunc = test_func;
+	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_MASTER).m_pFunc = test_func;
 }

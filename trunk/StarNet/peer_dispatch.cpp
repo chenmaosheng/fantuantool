@@ -13,7 +13,7 @@ PeerClientDispatchFilter& PeerClientDispatchFilterArray::GetFilter(uint16 iFilte
 bool PeerServer::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf)
 {
 	PeerInputStream stream(iLen, pBuf);	// step4: put buffer into stream
-	return PeerClientDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_CLIENT)this, stream);
+	return PeerServerDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_SERVER)this, stream);
 }
 
 PeerServerDispatchFilter& PeerServerDispatchFilterArray::GetFilter(uint16 iFilterId)
@@ -24,5 +24,5 @@ PeerServerDispatchFilter& PeerServerDispatchFilterArray::GetFilter(uint16 iFilte
 bool PeerClient::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf)
 {
 	PeerInputStream stream(iLen, pBuf);	// step4: put buffer into stream
-	return PeerServerDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_SERVER)this, stream);
+	return PeerClientDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_CLIENT)this, stream);
 }

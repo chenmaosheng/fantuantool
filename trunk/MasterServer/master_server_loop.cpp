@@ -5,7 +5,7 @@
 
 MasterServerLoop::MasterServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
-m_PlayerContextPool(0)
+m_PlayerContextPool(5000)
 {
 	
 }
@@ -46,6 +46,11 @@ int32 MasterServerLoop::Start()
 bool MasterServerLoop::IsReadyForShutdown() const
 {
 	return m_iShutdownStatus == READY_FOR_SHUTDOWN;
+}
+
+int32 MasterServerLoop::GateHoldReq()
+{
+	return 2;
 }
 
 uint32 MasterServerLoop::_Loop()

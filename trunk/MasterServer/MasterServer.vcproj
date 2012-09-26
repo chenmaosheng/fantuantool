@@ -231,6 +231,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath="..\GenPeerFile\gate_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\gate_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\GenPeerFile\master_peer_dispatch.h"
 				>
 			</File>

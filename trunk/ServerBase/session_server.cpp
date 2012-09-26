@@ -92,6 +92,12 @@ SessionServer::~SessionServer()
 int32 SessionServer::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
+	uint32 iPeerIP = 0;
+	uint16 iPeerPort = 0;
+	uint32 iServerIP = 0;
+	uint16 iServerPort = 0;
+	uint32 iThreadCount = 0;
+
 	static Handler handler;
 	handler.OnConnection = &OnConnection;
 	handler.OnDisconnect = &OnDisconnect;
@@ -104,11 +110,29 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 		return -1;
 	}
 
-	iRet = InitAcceptor(0, 5151, &handler, 2);
+	// get all config
+	iRet = GetServerAndPeerConfig(iPeerIP, iPeerPort, iServerIP, iServerPort, iThreadCount);
 	if (iRet != 0)
 	{
 		return -2;
 	}
+
+	// init peer server
+	iRet = StartPeerServer(iPeerIP, iPeerPort);
+	if (iRet != 0)
+	{
+		return -3;
+	}
+
+	LOG_STT(LOG_SERVER, _T("StartPeerServer success, IP=%d, port=%d"), iPeerIP, iPeerPort);
+
+	iRet = InitAcceptor(iServerIP, iServerPort, &handler, iThreadCount);
+	if (iRet != 0)
+	{
+		return -4;
+	}
+
+	LOG_STT(LOG_SERVER, _T("InitAcceptor success, IP=%d, port=%d"), iServerIP, iServerPort);
 
 	StartAcceptor();
 
@@ -121,6 +145,7 @@ void SessionServer::Destroy()
 {
 	StopMainLoop();
 	DestroyAcceptor();
+	StopPeerServer();
 
 	ServerBase::Destroy();
 }

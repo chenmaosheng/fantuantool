@@ -13,6 +13,8 @@
 #include "packet.h"
 #include "session.h"
 #include "memory_pool.h"
+#include "server_config.h"
+#include "common_config.h"
 
 uint16 server_port[] = {4001, 4002};
 
@@ -24,6 +26,7 @@ ServerBase::ServerBase()
 
 	m_pLogSystem = NULL;
 	m_pMainLoop = NULL;
+	m_pServerConfig = NULL;
 
 	memset(&m_arrayPeerServer, 0, sizeof(m_arrayPeerServer));
 }
@@ -38,10 +41,16 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	
 	Minidump::Init(_T("log"));
 
-	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
+	iRet = InitConfig(strServerName);
 	if (iRet != 0)
 	{
 		return -1;
+	}
+
+	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
+	if (iRet != 0)
+	{
+		return -2;
 	}
 
 	m_pLogSystem->SetLogTypeString(LOG_STARNET, _T("StarNet"));
@@ -54,15 +63,13 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	iRet = StarNet::Init();
 	if (iRet != 0)
 	{
-		return -2;
+		return -3;
 	}
-
-	InitPacketDispatch();
 
 	iRet = InitMainLoop();
 	if (iRet != 0)
 	{
-		return -3;
+		return -4;
 	}
 
 	LOG_DBG(LOG_SERVER, _T("StarNet Loaded"));
@@ -78,6 +85,7 @@ void ServerBase::Destroy()
 	DestroyMainLoop();
 	StarNet::Destroy();
 	DestroyLog();
+	DestroyConfig();
 }
 
 ContextPool* ServerBase::GetContextPool()
@@ -89,6 +97,7 @@ PEER_SERVER ServerBase::GetPeerServer(uint16 iServerId)
 {
 	uint32 iIP = 0;
 	uint16 iPort = 0;
+	ServerConfigItem* pConfigItem = NULL;
 
 	if (iServerId >= PEER_SERVER_MAX)
 	{
@@ -97,9 +106,13 @@ PEER_SERVER ServerBase::GetPeerServer(uint16 iServerId)
 
 	if (!m_arrayPeerServer[iServerId])
 	{
-		iIP = inet_addr("127.0.0.1");
-		iPort = server_port[iServerId];
-		m_arrayPeerServer[iServerId] = StarNet::GetPeerServer(iIP, iPort);
+		pConfigItem = m_pServerConfig->GetServerConfigItemById(iServerId);
+		if (pConfigItem)
+		{
+			iIP = pConfigItem->m_iPeerIP;
+			iPort = pConfigItem->m_iPeerPort;
+			m_arrayPeerServer[iServerId] = StarNet::GetPeerServer(iIP, iPort);
+		}
 	}
 
 	return m_arrayPeerServer[iServerId];
@@ -109,8 +122,33 @@ PEER_SERVER ServerBase::GetPeerServer(const TCHAR* strServerName)
 {
 	uint32 iIP = 0;
 	uint16 iPort = 0;
+	ServerConfigItem* pConfigItem = m_pServerConfig->GetServerConfigItem(strServerName);
+	if (pConfigItem)
+	{
+		iIP = pConfigItem->m_iPeerIP;
+		iPort = pConfigItem->m_iPeerPort;
+		return StarNet::GetPeerServer(iIP, iPort);
+	}
 
 	return NULL;
+}
+
+int32 ServerBase::InitConfig(const TCHAR* strServerName)
+{
+	uint32 iRealmId = 0;
+
+	m_pServerConfig = CreateConfig(iRealmId, strServerName);
+	if (!m_pServerConfig || !m_pServerConfig->LoadConfig())
+	{
+		return -1;
+	}
+
+	return 0;
+}
+
+void ServerBase::DestroyConfig()
+{
+	SAFE_DELETE(m_pServerConfig);
 }
 
 int32 ServerBase::InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize)

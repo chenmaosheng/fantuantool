@@ -17,9 +17,10 @@ public:
 public:
 	uint32 m_iSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
-
-public:
 	static MasterServerLoop* m_pMainLoop;
+
+private:
+	uint16 m_iGateServerId;
 };
 
 #endif

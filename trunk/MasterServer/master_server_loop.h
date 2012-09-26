@@ -21,6 +21,8 @@ public:
 	int32 Start();
 	bool IsReadyForShutdown() const;
 
+	int32 GateHoldReq();
+
 private:
 	uint32 _Loop();
 	void _ShutdownPlayer(MasterPlayerContext*);

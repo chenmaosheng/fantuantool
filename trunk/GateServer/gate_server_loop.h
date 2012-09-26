@@ -4,6 +4,7 @@
 #include "session_server_loop.h"
 #include "gate_session.h"
 
+struct LogicCommandGateHoldReq;
 class GateServerLoop : public SessionServerLoop<GateSession>
 {
 public:
@@ -20,6 +21,10 @@ public:
 private:
 	uint32 _Loop();
 	bool _OnCommand(LogicCommand*);
+
+private:
+	void _OnCommandGateHoldReq(LogicCommandGateHoldReq*);
+
 };
 
 #endif

@@ -29,3 +29,4 @@ LoginPacketDispatch::LoginPacketDispatch()
 	DispatchFilterArray::GetFilter(0).m_pFunc = test_func;
 }
 
+static LoginPacketDispatch _LoginPacketDispatch;

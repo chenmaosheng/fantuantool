@@ -12,8 +12,6 @@ int __cdecl _tmain(int argc, TCHAR **argv)
 	g_pServer = GateServer::Instance();
 	g_pServer->Init(argv[1]);
 
-	LOG_STT(LOG_SERVER, _T("Listen to port: %d"), 5150);
-
 	while (true)
 	{
 		Sleep(1000);

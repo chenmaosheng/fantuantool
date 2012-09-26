@@ -4,6 +4,7 @@
 #include "server_base.h"
 #include "singleton.h"
 
+class MasterServerConfig;
 class MasterServer : public ServerBase,
 					public Singleton<MasterServer>
 {
@@ -17,12 +18,13 @@ public:
 	void Shutdown();
 
 private:
-	void InitPacketDispatch();
-
 	int32 InitMainLoop();
 	void DestroyMainLoop();
+
+	ServerConfig* CreateConfig(uint32 iRealmId, const TCHAR* strServerName);
 };
 
 extern MasterServer* g_pServer;
+extern MasterServerConfig* g_pConfig;
 
 #endif

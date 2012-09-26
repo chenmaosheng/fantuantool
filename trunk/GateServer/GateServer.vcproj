@@ -194,12 +194,20 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\peer_packet_impl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\gate_logic_command.h"
+				>
+			</File>
 			<File
 				RelativePath=".\gate_server.h"
 				>
@@ -218,10 +226,22 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name="Gen Peer Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\GenPeerFile\gate_peer_dispatch.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\gate_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\gate_peer_recv.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

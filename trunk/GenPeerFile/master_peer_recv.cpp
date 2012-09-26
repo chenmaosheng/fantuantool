@@ -30,3 +30,5 @@ MasterPeerDispatch::MasterPeerDispatch()
 {
 	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_MASTER).m_pFunc = test_func;
 }
+
+static MasterPeerDispatch _MasterPeerDispatch;

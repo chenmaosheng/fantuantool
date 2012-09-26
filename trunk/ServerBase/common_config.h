@@ -25,6 +25,7 @@ public:
 	bool LoadConfig();
 
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
+	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
 
 public:
 	TCHAR m_strLogPath[MAX_PATH+1];

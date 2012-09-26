@@ -73,7 +73,7 @@ void ObjectPool<T>::Free(T* pObj)
 	EnterCriticalSection(&m_csObject);
 
 	m_ObjectList.push_back(pObj);
-	++m_iUsedSize;
+	--m_iUsedSize;
 
 	LeaveCriticalSection(&m_csObject);
 }

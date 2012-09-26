@@ -1,4 +1,4 @@
 <Config>
-	<Server IP="0.0.0.0" Port="8001" ThreadCount="2" />
+	<Server IP="0.0.0.0" Port="8001" ThreadCount="1" />
 	<Session Max="500" />
 </Config>

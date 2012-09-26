@@ -55,3 +55,13 @@ bool ServerConfig::LoadConfig()
 
 	return _LoadConfig();
 }
+
+ServerConfigItem* ServerConfig::GetServerConfigItemById(uint16 iServerId)
+{
+	return m_pCommonConfig->GetServerConfigItemById(iServerId);
+}
+
+ServerConfigItem* ServerConfig::GetServerConfigItem(const TCHAR *strServerName)
+{
+	return m_pCommonConfig->GetServerConfigItem(strServerName);
+}

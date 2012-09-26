@@ -115,3 +115,19 @@ ServerConfigItem* CommonConfig::GetServerConfigItem(const TCHAR* strServerName)
 
 	return NULL;
 }
+
+ServerConfigItem* CommonConfig::GetServerConfigItemById(uint16 iServerId)
+{
+	std::map<std::wstring, ServerConfigItem>::iterator mit = m_mServerConfigItems.begin();
+	while (mit != m_mServerConfigItems.end())
+	{
+		if (mit->second.m_iServerId == iServerId)
+		{
+			return &(mit->second);
+		}
+
+		++mit;
+	}
+
+	return NULL;
+}

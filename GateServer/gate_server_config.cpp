@@ -26,10 +26,10 @@ bool GateServerConfig::_LoadConfig()
 	}
 
 	// server ip
-	m_iServerIP = inet_addr(pServerElement->Attribute("ServerIP"));
+	m_iServerIP = inet_addr(pServerElement->Attribute("IP"));
 
 	// server port
-	m_iServerPort = (uint16)atoi(pServerElement->Attribute("ServerPort"));
+	m_iServerPort = (uint16)atoi(pServerElement->Attribute("Port"));
 
 	// thread count
 	m_iThreadCount = atoi(pServerElement->Attribute("ThreadCount"));

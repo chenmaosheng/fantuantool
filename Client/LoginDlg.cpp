@@ -71,7 +71,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 		m_pSocket->Close();
 		return;
 	}
-	if(!m_pSocket->Connect(m_strServer,5151))
+	if(!m_pSocket->Connect(m_strServer,5001))
 	{
 		AfxMessageBox(_T("Server is not started:-("));
 		m_pSocket->Close();

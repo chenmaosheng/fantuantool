@@ -5,6 +5,7 @@
 #include "tinyxml.h"
 
 class CommonConfig;
+struct ServerConfigItem;
 class ServerConfig
 {
 public:
@@ -12,6 +13,9 @@ public:
 	virtual ~ServerConfig();
 
 	bool LoadConfig();
+
+	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
+	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
 
 private:
 	virtual bool _LoadConfig() = 0;

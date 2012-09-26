@@ -10,7 +10,7 @@ struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
 	LogicCommandOnLoginReq()
 	{
 		m_iSessionId = 0;
-		m_strAccountName[0] = '\0';
+		m_strAccountName[0] = _T('\0');
 	}
 
 	uint32 m_iSessionId;

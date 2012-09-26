@@ -18,6 +18,9 @@ public:
 	virtual void Destroy();
 	virtual void Shutdown();
 
+private:
+	virtual int32 GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, uint32& iServerIP, uint16& iServerPort, uint32& iThreadCount) = 0;
+
 protected:
 	bool m_bReadyForShutdown;
 };

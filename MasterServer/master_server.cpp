@@ -1,8 +1,10 @@
 #include "master_server.h"
 #include "master_server_loop.h"
 #include "master_peer_dispatch.h"
+#include "master_server_config.h"
 
 MasterServer* g_pServer = NULL;
+MasterServerConfig* g_pConfig = NULL;
 
 MasterServer::MasterServer()
 {
@@ -17,11 +19,13 @@ int32 MasterServer::Init(const TCHAR* strServerName)
 		return -1;
 	}
 
-	iRet = StartPeerServer(INADDR_ANY, server_port[0]);
+	iRet = StartPeerServer(g_pConfig->m_iPeerIP, g_pConfig->m_iPeerPort);
 	if (iRet != 0)
 	{
 		return -2;
 	}
+
+	LOG_STT(LOG_SERVER, _T("StartPeerServer success, IP=%d, port=%d"), g_pConfig->m_iPeerIP, g_pConfig->m_iPeerPort);
 
 	iRet = StartMainLoop();
 	if (iRet != 0)
@@ -46,6 +50,12 @@ void MasterServer::Shutdown()
 
 }
 
+ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
+{
+	g_pConfig = new MasterServerConfig(strServerName);
+	return g_pConfig;
+}
+
 int32 MasterServer::InitMainLoop()
 {
 	m_pMainLoop = new MasterServerLoop;
@@ -60,9 +70,4 @@ void MasterServer::DestroyMainLoop()
 		m_pMainLoop->Destroy();
 		SAFE_DELETE(m_pMainLoop);
 	}
-}
-
-void MasterServer::InitPacketDispatch()
-{
-	static MasterPeerDispatch _MasterPeerDispatch;
 }

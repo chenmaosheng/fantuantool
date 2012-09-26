@@ -2,6 +2,7 @@
 #define _H_SERVER_COMMON
 
 #include "starnet_common.h"
+#include "log.h"
 
 #define PEER_SERVER_MAX 32
 
@@ -14,6 +15,7 @@ enum
 {
 	PEER_FILTER_LOGIN,
 	PEER_FILTER_MASTER,
+	PEER_FILTER_GATE,
 };
 
 #define CONFIG_PATH "..\\Config"

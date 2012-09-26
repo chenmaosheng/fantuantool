@@ -10,6 +10,7 @@ class ContextPool;
 struct Handler;
 class Log;
 class LogicLoop;
+class ServerConfig;
 class ServerBase
 {
 public:
@@ -24,7 +25,9 @@ protected:
 	ServerBase();
 	virtual ~ServerBase();
 
-	virtual void InitPacketDispatch() = 0;
+	int32 InitConfig(const TCHAR* strServerName);
+	void DestroyConfig();
+	virtual ServerConfig* CreateConfig(uint32 iRealmId, const TCHAR* strServerName) = 0;
 
 	int32 InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
 	void DestroyLog();
@@ -50,6 +53,7 @@ private:
 	ContextPool* m_pContextPool;
 	PEER_SERVER m_arrayPeerServer[PEER_SERVER_MAX];
 
+	ServerConfig* m_pServerConfig;
 	Log* m_pLogSystem;
 
 public:

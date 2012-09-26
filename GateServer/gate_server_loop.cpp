@@ -1,7 +1,10 @@
 #include "gate_server_loop.h"
 #include "gate_server.h"
+#include "gate_logic_command.h"
+#include "gate_server_config.h"
 
-GateServerLoop::GateServerLoop()
+GateServerLoop::GateServerLoop() :
+SessionServerLoop<GateSession>(g_pConfig->m_iSessionMax)
 {
 }
 
@@ -52,9 +55,15 @@ uint32 GateServerLoop::_Loop()
 
 bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 {
+	if (m_iShutdownStatus >= START_SHUTDOWN)
+	{
+		return true;
+	}
+
 	switch (pCommand->m_iCmdId)
 	{
-	case 11:
+	case COMMAND_GATEHOLDREQ:
+		_OnCommandGateHoldReq((LogicCommandGateHoldReq*)pCommand);
 		break;
 
 	default:
@@ -63,4 +72,8 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 	}
 
 	return true;
+}
+
+void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
+{
 }

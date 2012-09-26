@@ -3,8 +3,8 @@
 
 #include "session_server.h"
 #include "singleton.h"
-#include "peer_packet.h"
 
+class GateServerConfig;
 class GateServer : public SessionServer,
 					public Singleton<GateServer>
 {
@@ -17,15 +17,17 @@ public:
 	void Destroy();
 
 private:
-	void InitPacketDispatch();
-
 	int32 InitMainLoop();
 	void DestroyMainLoop();
+
+	ServerConfig* CreateConfig(uint32 iRealmId, const TCHAR* strServerName);
+	int32 GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, uint32& iServerIP, uint16& iServerPort, uint32& iThreadCount);
 
 public:
 	PEER_SERVER m_pMasterServer;
 };
 
 extern GateServer* g_pServer;
+extern GateServerConfig* g_pConfig;
 
 #endif

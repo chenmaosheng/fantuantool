@@ -9,11 +9,11 @@ struct LogicCommandGateHoldReq : public LogicCommandT<COMMAND_GATEHOLDREQ>
 {
 	LogicCommandGateHoldReq()
 	{
-		m_iSessionId = 0;
+		m_iLoginSessionId = 0;
 		m_strAccountName[0] = '\0';
 	}
 
-	uint32 m_iSessionId;
+	uint32 m_iLoginSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 };
 

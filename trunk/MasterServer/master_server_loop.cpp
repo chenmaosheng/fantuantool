@@ -87,6 +87,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
 		break;
 
+	case COMMAND_GATEHOLDACK:
+		_OnCommandGateHoldAck((LogicCommandGateHoldAck*)pCommand);
+		break;
+
 	default:
 		break;
 	}
@@ -131,4 +135,8 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 
 		pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
 	}
+}
+
+void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
+{
 }

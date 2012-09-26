@@ -3,8 +3,10 @@
 
 #include "session_server_loop.h"
 #include "gate_session.h"
+#include <hash_map>
 
 struct LogicCommandGateHoldReq;
+class GateSession;
 class GateServerLoop : public SessionServerLoop<GateSession>
 {
 public:
@@ -25,6 +27,8 @@ private:
 private:
 	void _OnCommandGateHoldReq(LogicCommandGateHoldReq*);
 
+private:
+	stdext::hash_map<std::wstring, GateSession*> m_mSessionMapByName;
 };
 
 #endif

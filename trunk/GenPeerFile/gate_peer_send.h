@@ -5,7 +5,7 @@
 
 struct GatePeerSend
 {
-	static uint32 GateHoldReq(PEER_SERVER pPeerServer, uint32 iSessionId, const TCHAR* strAccountName);
+	static uint32 GateHoldReq(PEER_SERVER pPeerServer, uint32 iLoginSessionId, const TCHAR* strAccountName);
 };
 
 #endif

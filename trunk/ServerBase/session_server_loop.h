@@ -38,11 +38,11 @@ private:
 
 private:
 	stdext::hash_map<uint32, T*> m_mSessionMap;
-	ObjectPool<T> m_SessionPool;
 	T** m_arraySession;
 	uint16 m_iSessionMax;
 
 protected:
+	ObjectPool<T> m_SessionPool;
 	int32 m_iShutdownStatus;
 };
 

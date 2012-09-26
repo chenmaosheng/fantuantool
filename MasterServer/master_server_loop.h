@@ -8,6 +8,7 @@
 
 class MasterPlayerContext;
 struct LogicCommandOnLoginReq;
+struct LogicCommandGateHoldAck;
 class MasterServerLoop : public LogicLoop
 {
 public:
@@ -32,6 +33,7 @@ private:
 
 private:
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
+	void _OnCommandGateHoldAck(LogicCommandGateHoldAck*);
 
 private:
 	int32 m_iShutdownStatus;

@@ -76,4 +76,13 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 
 void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 {
+	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
+	if (mit != m_mSessionMapByName.end())
+	{
+		return;
+	}
+
+	GateSession* pSession = m_SessionPool.Allocate();
+	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSessoin));
+	pSession->OnHoldReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
 }

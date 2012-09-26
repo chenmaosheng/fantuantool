@@ -10,13 +10,12 @@ bool CALLBACK GateHoldReq_Callback(PEER_CLIENT pPeerClient, PeerInputStream& str
 	stream.Serialize(iSessionId);
 	uint16 iAccountNameLen = 0;
 	stream.Serialize(iAccountNameLen);
-	TCHAR* accountName = (TCHAR*)_malloca(iAccountNameLen*sizeof(TCHAR)+1);
+	TCHAR* accountName = (TCHAR*)_malloca((iAccountNameLen+1)*sizeof(TCHAR));
 	stream.Serialize(iAccountNameLen, accountName);
 	accountName[iAccountNameLen] = _T('\0');
 
 	GatePeerRecv::GateHoldReq(pPeerClient, iSessionId, accountName);
 
-	_freea(accountName);
 	return true;
 }
 

@@ -242,6 +242,14 @@
 				RelativePath="..\GenPeerFile\gate_peer_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\GenPeerFile\master_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\master_peer_send.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

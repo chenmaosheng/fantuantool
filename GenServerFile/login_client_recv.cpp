@@ -14,7 +14,6 @@ bool CALLBACK LoginReq_Callback(void* pClient, InputStream& stream)
 
 	LoginClientRecv::LoginReq(pClient, nickname);	// step6: call rpc function with parameters
 
-	_freea(nickname);
 	return true;
 }
 

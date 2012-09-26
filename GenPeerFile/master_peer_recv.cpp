@@ -16,7 +16,6 @@ bool CALLBACK OnLoginReq_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stre
 
 	MasterPeerRecv::OnLoginReq(pPeerClient, iSessionId, accountName);
 
-	_freea(accountName);
 	return true;
 }
 

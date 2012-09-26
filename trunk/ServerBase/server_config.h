@@ -2,18 +2,31 @@
 #define _H_SERVER_CONFIG
 
 #include "server_common.h"
+#include "tinyxml.h"
 
-struct ServerConfig
+class CommonConfig;
+class ServerConfig
 {
-	ServerConfig(uint32 iRealmId);
+public:
+	ServerConfig(const TCHAR* strServerName);
 	virtual ~ServerConfig();
 
+	bool LoadConfig();
+
+private:
+	virtual bool _LoadConfig() = 0;
+
+public:
 	TCHAR m_strServerName[MAX_PATH+1];
 	uint16 m_iServerId;
 	uint32 m_iPeerIP;
 	uint16 m_iPeerPort;
-	uint32 m_iRealmId;
 
+private:
+	CommonConfig* m_pCommonConfig;
+
+protected:
+	TiXmlDocument m_XmlDoc;
 };
 
 #endif

@@ -32,7 +32,7 @@ ServerBase::~ServerBase()
 {
 }
 
-int32 ServerBase::Init()
+int32 ServerBase::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
 	

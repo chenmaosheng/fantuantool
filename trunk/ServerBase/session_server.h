@@ -14,7 +14,7 @@ public:
 	SessionServer();
 	virtual ~SessionServer();
 
-	virtual int32 Init();
+	virtual int32 Init(const TCHAR* strServerName);
 	virtual void Destroy();
 	virtual void Shutdown();
 

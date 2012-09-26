@@ -8,9 +8,9 @@ GateServer::GateServer()
 	m_pMasterServer = NULL;
 }
 
-int32 GateServer::Init()
+int32 GateServer::Init(const TCHAR* strServerName)
 {
-	return super::Init();
+	return super::Init(strServerName);
 }
 
 void GateServer::Destroy()

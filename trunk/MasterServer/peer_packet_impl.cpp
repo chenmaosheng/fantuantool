@@ -10,7 +10,7 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
 	pCommand->m_iSessionId = iSessionId;
-	iRet = Char2WChar(strAccountName, strlen(strAccountName)+1, pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR));
+	iRet = Char2WChar(strAccountName, pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR));
 	if (iRet == 0)
 	{
 		FT_DELETE(pCommand);

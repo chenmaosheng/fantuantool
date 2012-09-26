@@ -25,7 +25,7 @@ Server::~Server()
 
 }
 
-int32 Server::Init()
+int32 Server::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
 	static Handler handler;

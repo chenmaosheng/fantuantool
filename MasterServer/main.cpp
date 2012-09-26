@@ -1,17 +1,22 @@
-#include <cstdio>
-#include "starnet.h"
 #include "master_server.h"
+#include "log.h"
+#include "util.h"
 
-int __cdecl main(int argc, char **argv)
+int __cdecl _tmain(int argc, TCHAR **argv)
 {
-	g_pServer = MasterServer::Instance();
+	if (argc < 2)
+	{
+		return -1;
+	}
 
-	g_pServer->Init();
+	g_pServer = MasterServer::Instance();
+	g_pServer->Init(argv[1]);
+
 	LOG_STT(LOG_SERVER, _T("Listen to port: %d"), 5150);
 
 	while (true)
 	{
-		Sleep(1);
+		Sleep(1000);
 	}
 
 	g_pServer->Shutdown();

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -187,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\master_server_config.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\master_server_loop.cpp"
 				>
 			</File>
@@ -210,6 +214,10 @@
 			</File>
 			<File
 				RelativePath=".\master_server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\master_server_config.h"
 				>
 			</File>
 			<File

@@ -8,10 +8,10 @@ MasterServer::MasterServer()
 {
 }
 
-int32 MasterServer::Init()
+int32 MasterServer::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
-	iRet = super::Init();
+	iRet = super::Init(strServerName);
 	if (iRet != 0)
 	{
 		return -1;

@@ -9,9 +9,9 @@ LoginServer::LoginServer()
 	m_pMasterServer = NULL;
 }
 
-int32 LoginServer::Init()
+int32 LoginServer::Init(const TCHAR* strServerName)
 {
-	return super::Init();
+	return super::Init(strServerName);
 }
 
 void LoginServer::Destroy()

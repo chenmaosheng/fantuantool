@@ -89,7 +89,7 @@ SessionServer::~SessionServer()
 {
 }
 
-int32 SessionServer::Init()
+int32 SessionServer::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
 	static Handler handler;
@@ -98,7 +98,7 @@ int32 SessionServer::Init()
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
-	iRet = ServerBase::Init();
+	iRet = ServerBase::Init(strServerName);
 	if (iRet != 0)
 	{
 		return -1;

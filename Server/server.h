@@ -13,7 +13,7 @@ public:
 	Server();
 	virtual ~Server();
 
-	int32 Init();
+	int32 Init(const TCHAR* strServerName);
 	void Destroy();
 
 	void Start();

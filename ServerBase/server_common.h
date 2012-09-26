@@ -16,4 +16,7 @@ enum
 	PEER_FILTER_MASTER,
 };
 
+#define CONFIG_PATH "..\\Config"
+#define COMMON_CONFIG_FILE "common_config"
+
 #endif

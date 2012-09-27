@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml;..\GenServerFile"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenPeerFile;..\external\tinyxml;..\GenServerFile"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -239,6 +239,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\GenServerFile\login_server_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenServerFile\login_server_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\GenPeerFile\master_peer_dispatch.h"
 				>
 			</File>
@@ -248,6 +256,14 @@
 			</File>
 			<File
 				RelativePath="..\GenPeerFile\master_peer_recv.h"
+				>
+			</File>
+			<File
+				RelativePath=".\session_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\session_peer_send.h"
 				>
 			</File>
 		</Filter>

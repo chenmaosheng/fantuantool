@@ -22,6 +22,9 @@ private:
 	void DestroyMainLoop();
 
 	ServerConfig* CreateConfig(uint32 iRealmId, const TCHAR* strServerName);
+
+public:
+	PEER_SERVER m_pLoginServer;
 };
 
 extern MasterServer* g_pServer;

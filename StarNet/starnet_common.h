@@ -2,6 +2,7 @@
 #define _H_STARNET_COMMON
 
 #include "common.h"
+#include "log.h"
 
 typedef HANDLE				ConnID;
 

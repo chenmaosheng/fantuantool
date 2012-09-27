@@ -11,6 +11,17 @@ MasterServerConfig::~MasterServerConfig()
 
 }
 
+GateConfigItem* MasterServerConfig::GetGateConfigItem(uint16 iServerId)
+{
+	std::map<uint16, GateConfigItem>::iterator mit = m_mGateConfigItems.find(iServerId);
+	if (mit != m_mGateConfigItems.end())
+	{
+		return &(mit->second);
+	}
+
+	return NULL;
+}
+
 bool MasterServerConfig::_LoadConfig()
 {
 	TiXmlElement* pRootElement = m_XmlDoc.FirstChildElement("Config");

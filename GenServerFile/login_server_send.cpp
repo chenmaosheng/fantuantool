@@ -2,13 +2,11 @@
 #include "data_stream.h"
 #include "packet.h"
 
-int32 LoginServerSend::LoginNtf(void* pClient, uint32 iSessionId, const char* strNickName)
+int32 LoginServerSend::LoginNtf(void* pClient, uint32 iGateIP, uint16 iGatePort)
 {
 	OutputStream stream;
-	stream.Serialize(iSessionId);
-	uint16 iLength = (uint16)strlen(strNickName);
-	stream.Serialize(iLength);
-	stream.Serialize(iLength, strNickName);
+	stream.Serialize(iGateIP);
+	stream.Serialize(iGatePort);
 
-	return Sender::SendPacket(pClient, 1, stream.GetDataLength(), stream.GetBuffer());
+	return Sender::SendPacket(pClient, (SERVER_FILTER_LOGIN>>8) | 0, stream.GetDataLength(), stream.GetBuffer());
 }

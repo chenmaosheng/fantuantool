@@ -1,6 +1,4 @@
 #include "login_server.h"
-#include "log.h"
-#include "util.h"
 
 int __cdecl _tmain(int argc, TCHAR **argv)
 {

@@ -19,9 +19,29 @@ bool CALLBACK OnLoginReq_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stre
 	return true;
 }
 
+bool CALLBACK GateHoldAck_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stream)
+{
+	uint32 iServerId = 0;
+	stream.Serialize(iServerId);
+	uint16 iLoginSessionId = 0;
+	stream.Serialize(iLoginSessionId);
+	uint16 iAccountNameLen = 0;
+	stream.Serialize(iAccountNameLen);
+	TCHAR* accountName = (TCHAR*)_malloca((iAccountNameLen+1)*sizeof(TCHAR));
+	stream.Serialize(iAccountNameLen, accountName);
+	accountName[iAccountNameLen] = _T('\0');
+	uint16 iGateSessionId = 0;
+	stream.Serialize(iGateSessionId);
+
+	MasterPeerRecv::GateHoldAck(pPeerClient, iServerId, iLoginSessionId, accountName, iGateSessionId);
+
+	return true;
+}
+
 static PeerClientDispatchFilter::Func test_func[] = 
 {
 	OnLoginReq_Callback,
+	GateHoldAck_Callback,
 	NULL
 };
 

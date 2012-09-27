@@ -17,7 +17,6 @@ public:
 	void OnDisconnect();
 	void Disconnect();
 
-private:
 	void OnHoldReq(uint32 iLoginSessionId, const TCHAR* strAccountName);
 
 public:

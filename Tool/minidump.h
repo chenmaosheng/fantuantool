@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	minidump.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	generate minidump if crash, both debug and release version
+
+*****************************************************************************************/
+
 #ifndef _H_MINIDUMP
 #define _H_MINIDUMP
 

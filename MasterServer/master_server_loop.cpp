@@ -139,4 +139,14 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 
 void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
 {
+	MasterPlayerContext* pPlayerContext = NULL;
+	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
+	if (mit != m_mPlayerContextByName.end())
+	{
+		pPlayerContext = mit->second;
+		if (pPlayerContext->m_iSessionId == pCommand->m_iLoginSessionId)
+		{
+			pPlayerContext->GateHoldAck(pCommand->m_iServerId, pCommand->m_iGateSessionId);
+		}
+	}
 }

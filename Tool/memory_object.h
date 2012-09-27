@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	memory_object.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	all object want to use memory pool need to inherit from this memory object
+
+*****************************************************************************************/
+
 #ifndef _H_MEMORY_OBJECT
 #define _H_MEMORY_OBJECT
 
@@ -15,9 +23,11 @@ struct MemoryObject
 	void* operator new(size_t size, MemoryPool*);
 	void operator delete(void* p, MemoryPool*);
 
+	// use this function to do actual allocation
 	template<typename T>
 	static T* Allocate();
 	
+	// use this function to free existing memory object
 	static void Free(MemoryObject*);
 };
 

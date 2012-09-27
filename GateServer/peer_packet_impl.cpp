@@ -2,7 +2,6 @@
 #include "gate_logic_command.h"
 #include "gate_server.h"
 #include "gate_server_loop.h"
-#include "util.h"
 #include "memory_object.h"
 
 void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, const TCHAR* strAccountName)

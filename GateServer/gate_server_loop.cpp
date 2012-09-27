@@ -83,6 +83,6 @@ void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 	}
 
 	GateSession* pSession = m_SessionPool.Allocate();
-	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSessoin));
+	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSession));
 	pSession->OnHoldReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
 }

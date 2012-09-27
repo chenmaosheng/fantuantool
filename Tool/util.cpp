@@ -1,4 +1,5 @@
 #include "util.h"
+#include <windows.h>
 
 uint8 NumberPower(uint32 iNumber)
 {

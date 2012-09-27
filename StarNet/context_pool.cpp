@@ -8,8 +8,11 @@ void ContextPool::Init(uint32 input_buffer_size, uint32 output_buffer_size)
 	input_context_count_ = 0;
 	output_context_count_ = 0;
 
+	// initialize each Slist
 	InitializeSListHead(&input_context_pool_);
 	InitializeSListHead(&output_context_pool_);
+
+	SN_LOG_STT(_T("Initialize context pool success"));
 }
 
 void ContextPool::Destroy()
@@ -33,6 +36,8 @@ void ContextPool::Destroy()
 	{
 		_aligned_free(InterlockedPopEntrySList(&output_context_pool_));
 	}
+
+	SN_LOG_STT(_T("Destroy context pool success"));
 }
 
 Context* ContextPool::PopInputContext()
@@ -43,6 +48,7 @@ Context* ContextPool::PopInputContext()
 		pContext = (Context*)_aligned_malloc(sizeof(Context)+input_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
 		if (!pContext)
 		{
+			SN_LOG_ERR(_T("Allocate context failed, err=%d"), GetLastError());
 			return NULL;
 		}
 
@@ -64,6 +70,7 @@ Context* ContextPool::PopOutputContext()
 		pContext = (Context*)_aligned_malloc(sizeof(Context)+output_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
 		if (!pContext)
 		{
+			SN_LOG_ERR(_T("Allocate context failed, err=%d"), GetLastError());
 			return NULL;
 		}
 
@@ -94,6 +101,8 @@ char* ContextPool::PopOutputBuffer()
 	{
 		return pContext->buffer_;
 	}
+
+	SN_LOG_ERR(_T("Pop a buffer from pool failed, err=%d"), GetLastError());
 
 	return NULL;
 }

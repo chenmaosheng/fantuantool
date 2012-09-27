@@ -13,12 +13,14 @@ int32 StarNet::Init()
 	SOCKET s;
 	DWORD cb;
 
+	// start WSA
 	if (WSAStartup(MAKEWORD(2,2), &wsd) != 0)
 	{
 		SN_LOG_ERR(_T("WSAStartup failed"));
 		return -1;
 	}
 
+	// create a socket to initialize asynchorous operation function pointer, need to close when finished
 	s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (s == INVALID_SOCKET)
 	{
@@ -33,6 +35,7 @@ int32 StarNet::Init()
 	WSAIoctl(s, SIO_GET_EXTENSION_FUNCTION_POINTER, &GuidGetAcceptExSockaddrs, sizeof(GuidGetAcceptExSockaddrs), &getacceptexsockaddrs_, sizeof(getacceptexsockaddrs_), &cb, NULL, NULL);
 	closesocket(s);
 
+	SN_LOG_STT(_T("Intialize starnet success"));
 	return 0;
 }
 

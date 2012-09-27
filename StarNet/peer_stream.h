@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	peer_stream.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	serialize into/from data, only for peer
+
+*****************************************************************************************/
+
 #ifndef _H_PEER_STREAM
 #define _H_PEER_STREAM
 
@@ -21,6 +29,7 @@ public:
 	template<typename T>
 	bool Serialize(const T& value)
 	{
+		// serialize common type
 		if (m_pPacket->m_iLen + sizeof(T) <= MAX_PEER_BUFFER)
 		{
 			memcpy(m_pPacket->m_Buf+m_pPacket->m_iLen, &value, sizeof(T));
@@ -34,6 +43,7 @@ public:
 	template<typename T>
 	bool Serialize(uint16 iCount, const T* array)
 	{
+		// serialize array type
 		iCount *= sizeof(T);
 
 		if (m_pPacket->m_iLen + iCount <= MAX_PEER_BUFFER)
@@ -70,6 +80,7 @@ public:
 	template<typename T>
 	bool Serialize(T& value)
 	{
+		// serialize common type
 		if (m_iDataLength - m_iDataIndex >= sizeof(T))
 		{
 			memcpy(&value, m_DataBuffer + m_iDataIndex, sizeof(T));
@@ -83,6 +94,7 @@ public:
 	template<typename T>
 	bool Serialize(uint16 iCount, T*& array)
 	{
+		// serialize array type
 		iCount *= sizeof(T);
 		if (m_iDataLength - m_iDataIndex >= iCount)
 		{

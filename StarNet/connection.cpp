@@ -14,15 +14,20 @@ bool Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
 		return false;
 	}
 
+	// post an asychronous connect
 	context_->operation_type_ = OPERATION_CONNECT;
 	rc = StarNet::connectex_(socket_, (sockaddr*)addr, sizeof(*addr), NULL, 0, NULL, &context_->overlapped_);
 	if (rc == 0)
 	{
-		if (WSAGetLastError() != ERROR_IO_PENDING)
+		int32 iLastError = WSAGetLastError();
+		if (iLastError != ERROR_IO_PENDING)
 		{
+			SN_LOG_ERR(_T("ConnectEx failed, err=%d"), iLastError);
 			return false;
 		}
 	}
+
+	SN_LOG_DBG(_T("ConnectEx success"));
 
 	return true;
 }
@@ -30,40 +35,55 @@ bool Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
 void Connection::AsyncDisconnect()
 {
 	int32 rc = 0;
+	// check if is connected
 	if (InterlockedCompareExchange(&connected_, 0, 1))
 	{
+		// post an asychronous disconnect
 		context_->operation_type_ = OPERATION_DISCONNECT;
 		rc = StarNet::disconnectex_(socket_, &context_->overlapped_, acceptor_ ? TF_REUSE_SOCKET: 0, 0);
 		if (rc == 0)
 		{
-			if (WSAGetLastError() != ERROR_IO_PENDING)
+			int32 iLastError = WSAGetLastError();
+			if (iLastError != ERROR_IO_PENDING)
 			{
+				SN_LOG_ERR(_T("ConnectEx failed, err=%d"), iLastError);
 				return;
 			}
 		}
+
+		SN_LOG_DBG(_T("DisconnectEx success"));
 	}
 }
 
 void Connection::AsyncSend(Context* pContext)
 {
 	pContext->connection_ = this;
+	// check if reference count is more than max count
 	if (iorefs_ > iorefmax_)
 	{
+		SN_LOG_ERR(_T("reference count is more than max, iorefs=%d"), iorefs_);
 		context_pool_->PushOutputContext(pContext);
 		AsyncDisconnect();
+		return;
 	}
 
 	InterlockedIncrement(&iorefs_);
 	DWORD dwXfer;
+	// post an asychronous send
 	if (WSASend(socket_, &pContext->wsabuf_, 1, &dwXfer, 0, &pContext->overlapped_, NULL) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() != ERROR_IO_PENDING)
+		int32 iLastError = WSAGetLastError();
+		if (iLastError != ERROR_IO_PENDING)
 		{
+			SN_LOG_ERR(_T("WSASend failed, err=%d"), iLastError);
 			context_pool_->PushOutputContext(pContext);
 			AsyncDisconnect();
 			InterlockedDecrement(&iorefs_);
+			return;
 		}
 	}
+
+	SN_LOG_DBG(_T("WSASend success"));
 }
 
 void Connection::AsyncRecv(Context* pContext)
@@ -72,15 +92,20 @@ void Connection::AsyncRecv(Context* pContext)
 	pContext->wsabuf_.len = context_pool_->input_buffer_size_;
 	InterlockedIncrement(&iorefs_);
 	DWORD dwXfer, dwFlag = 0;
+	// post an asychronous receive
 	if (WSARecv(socket_, &pContext->wsabuf_, 1, &dwXfer, &dwFlag, &pContext->overlapped_, NULL) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() != ERROR_IO_PENDING)
+		int32 iLastError = WSAGetLastError();
+		if (iLastError != ERROR_IO_PENDING)
 		{
+			SN_LOG_ERR(_T("WSARecv failed, err=%d"), iLastError);
 			context_pool_->PushInputContext(pContext);
 			AsyncDisconnect();
 			InterlockedDecrement(&iorefs_);
 		}
 	}
+
+	SN_LOG_DBG(_T("WSARecv success"));
 }
 
 void Connection::AsyncSend(uint32 len, char* buf)
@@ -88,11 +113,13 @@ void Connection::AsyncSend(uint32 len, char* buf)
 	Context* pContext = (Context*)((char*)buf - BUFOFFSET);
 	if (pContext->operation_type_ != OPERATION_SEND)
 	{
+		SN_LOG_ERR(_T("Operation type exception, type=%d"), pContext->operation_type_);
 		return;
 	}
 
 	if (pContext->context_pool_->output_buffer_size_ < len)
 	{
+		SN_LOG_ERR(_T("length is oversize, length=%d"), len);
 		return;
 	}
 
@@ -125,6 +152,7 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 	Connection* pConnection = (Connection*)_aligned_malloc(sizeof(Connection), MEMORY_ALLOCATION_ALIGNMENT);
 	if (pConnection)
 	{
+		// initialize connection's tcp socket
 		pConnection->socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (pConnection->socket_ != INVALID_SOCKET)
 		{
@@ -155,28 +183,35 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 					ZeroMemory(&pConnection->context_->overlapped_, sizeof(WSAOVERLAPPED));
 					if (!pAcceptor)
 					{
+						// if acceptor=NULL, means it's called at client side
+						// connection's socket must bind to it's address
 						SOCKADDR_IN addr;
 						ZeroMemory(&addr, sizeof(addr));
 						addr.sin_family = AF_INET;
 						if (bind(pConnection->socket_, (sockaddr*)&addr, sizeof(addr)) == 0)
 						{
+							SN_LOG_DBG(_T("Create and configure connection in client side"));
 							return pConnection;
 						}
 					}
 					else
 					{
+						SN_LOG_DBG(_T("Create and configure connection in server side"));
 						return pConnection;
 					}
 				}
 			}
 			else
 			{
+				SN_LOG_ERR(_T("CreateIoCompletionPort failed, err=%d"), WSAGetLastError());
 				closesocket(pConnection->socket_);
 			}
 		}
 
 		_aligned_free(pConnection);
 	}
+
+	SN_LOG_ERR(_T("Create connection failed, err=%d"), GetLastError());
 
 	return NULL;
 }
@@ -199,11 +234,14 @@ bool Connection::Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pCo
 
 void Connection::Close(Connection* pConnection)
 {
+	// check if io reference count is 0
 	if (pConnection->iorefs_ || pConnection->connected_)
 	{
+		SN_LOG_ERR(_T("Connection can't be closed, ioref_=%d"), pConnection->iorefs_);
 		return;
 	}
 
+	// different activity in server and client side
 	if (pConnection->acceptor_)
 	{
 		InterlockedPushEntrySList(pConnection->acceptor_->free_connection_, pConnection);
@@ -212,6 +250,8 @@ void Connection::Close(Connection* pConnection)
 	{
 		Delete(pConnection);
 	}
+
+	SN_LOG_DBG(_T("Close connection success"));
 }
 
 void Connection::Delete(Connection* pConnection)
@@ -219,4 +259,6 @@ void Connection::Delete(Connection* pConnection)
 	closesocket(pConnection->socket_);
 	_aligned_free(pConnection->context_);
 	_aligned_free(pConnection);
+
+	SN_LOG_DBG(_T("Close socket success"));
 }

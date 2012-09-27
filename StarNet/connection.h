@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	connection.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	create a connection to restore connect from client
+
+*****************************************************************************************/
+
 #ifndef _H_CONNECTION
 #define _H_CONNECTION
 
@@ -9,22 +17,26 @@ class Worker;
 class Acceptor;
 struct Connection : SLIST_ENTRY
 {
-	SOCKET			socket_;
-	SOCKADDR_IN		sockaddr_;
-	Handler			handler_;
-	ContextPool*	context_pool_;
+	SOCKET			socket_;	
+	SOCKADDR_IN		sockaddr_;		// connetion's address
+	Handler			handler_;		// io handler
+	ContextPool*	context_pool_;	// point to context pool
 	Worker*			worker_;
-	Acceptor*		acceptor_;
-	Context*		context_;
-	void*			client_;
+	Acceptor*		acceptor_;		// related acceptor
+	Context*		context_;		// initial context
+	void*			client_;		// pointer from app layer
 	
-	LONG			iorefs_;
-	LONG			connected_;
-	LONG			iorefmax_;
+	LONG			iorefs_;		// io reference counter
+	LONG			connected_;		// is connected
+	LONG			iorefmax_;		// max io reference allowed
 	
+	// asynchorous connect
 	bool AsyncConnect(PSOCKADDR_IN addr, void* client);
+	// asynchorous disconnect
 	void AsyncDisconnect();
+	// asynchorous send, need pop a context first
 	void AsyncSend(Context*);
+	// asynchorous receive, need pop a context first
 	void AsyncRecv(Context*);
 	void AsyncSend(uint32 len, char* buf);
 
@@ -33,6 +45,7 @@ struct Connection : SLIST_ENTRY
 	void SetRefMax(uint16 iMax);
 	bool IsConnected();
 
+	// static function to create and close
 	static Connection* Create(Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, Acceptor* pAcceptor);
 	static bool Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, void* pClient);
 	static void Close(Connection*);

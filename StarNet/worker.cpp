@@ -5,31 +5,40 @@
 #include "acceptor.h"
 #include "context_pool.h"
 
-void Worker::Init(uint32 iCount)
+void Worker::Init(uint32 iThreadCount)
 {
 	thread_count_ = 0;
+	// create iocp handle
 	iocp_ = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-	while (thread_count_ < iCount)
+	// create all thread
+	while (thread_count_ < iThreadCount)
 	{
 		HANDLE hWorkerThread = (HANDLE)_beginthreadex(NULL, 0, &Worker::WorkerThread, this, 0, NULL);
 		CloseHandle(hWorkerThread);
 
 		++thread_count_;
 	}
+
+	SN_LOG_STT(_T("Initialize worker success, thread count=%d"), thread_count_);
 }
 
 void Worker::Destroy()
 {
+	// if threads are not all closed, wait for them
 	while (thread_count_)
 	{
 		PostQueuedCompletionStatus(iocp_, 0, 0, NULL);
 		Sleep(100);
 	}
 
+	SN_LOG_STT(_T("destroy worker success"));
+
 	if (iocp_)
 	{
 		CloseHandle(iocp_);
 	}
+
+	SN_LOG_STT(_T("destroy iocp handle"));
 }
 
 Worker* Worker::CreateWorker(uint32 iCount)
@@ -63,6 +72,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 
 	do
 	{
+		// get io response from iocp
 		bResult = GetQueuedCompletionStatus(pWorker->iocp_, &dwNumRead, &key, &lpOverlapped, INFINITE);
 		if (lpOverlapped)
 		{
@@ -76,19 +86,23 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					if (bResult)
 					{
 						int32 rc = 0;
-						SOCKADDR_IN* addr = (SOCKADDR_IN*)pContext->buffer_;
+						// post another accept request
 						pAcceptor->Accept();
 						rc = setsockopt(pConnection->socket_, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char*)&pAcceptor->socket_, sizeof(pAcceptor->socket_));
 						if (rc == 0)
 						{
+							// confirm connected and invoke handler
 							pConnection->connected_ = 1;
 							if (pConnection->handler_.OnConnection((ConnID)pConnection) && 
 								(pContext = pConnection->context_pool_->PopInputContext()))
 							{
+								// post a receive request
 								pConnection->AsyncRecv(pContext);
 							}
 							else
 							{
+								// post a disconnect request
+								SN_LOG_ERR(_T("OnAccept failed"));
 								pConnection->AsyncDisconnect();
 							}
 						}
@@ -111,16 +125,21 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 							if (pConnection->handler_.OnConnection((ConnID)pConnection) &&
 								(pContext = pConnection->context_pool_->PopInputContext()))
 							{
+								// post a receive request
 								pConnection->AsyncRecv(pContext);
 							}
 							else
 							{
+								// post a disconnect request
+								SN_LOG_ERR(_T("OnConnect failed"));
 								pConnection->AsyncDisconnect();
 							}
 						}
 					}
 					else
 					{
+						// invoke when connect failed
+						SN_LOG_ERR(_T("OnConnectFailed"));
 						pConnection->handler_.OnConnectFailed(pConnection->client_);
 						Connection::Close(pConnection);
 					}
@@ -144,14 +163,13 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 				{
 					if (dwNumRead == 0)
 					{
-						printf("client %s disconnected\n", inet_ntoa(pConnection->sockaddr_.sin_addr));
+						// post a disconnect request
+						SN_LOG_ERR(_T("OnConnect failed"));
 						pConnection->context_pool_->PushInputContext(pContext);
 						pConnection->AsyncDisconnect();
 					}
 					else
 					{
-						printf("client %s send something\n", inet_ntoa(pConnection->sockaddr_.sin_addr));
-						
 						pConnection->handler_.OnData((ConnID)pConnection, (uint32)dwNumRead, pContext->buffer_);
 						pConnection->AsyncRecv(pContext);
 					}

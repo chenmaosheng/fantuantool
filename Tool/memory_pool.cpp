@@ -38,6 +38,7 @@ MemoryPool* MemoryPool::GetInstance()
 
 void MemoryPoolImpl::Init(uint32 iMin, uint32 iMax)
 {
+	// get min and max, and initialize all SList
 	m_iMinPower = NumberPower(iMin);
 	m_iMaxPower = NumberPower(iMax);
 	m_iCount = 0;
@@ -83,6 +84,7 @@ void MemoryPoolImpl::Free(void* p)
 
 void* MemoryPoolImpl::Allocate(const char *file, int32 line, uint32 iSize)
 {
+	// get the 2nd power of this size
 	uint8 iPower = NumberPower(iSize);
 	if (iPower > m_iMaxPower)
 	{
@@ -91,6 +93,7 @@ void* MemoryPoolImpl::Allocate(const char *file, int32 line, uint32 iSize)
 
 	iPower = iPower < m_iMinPower ? m_iMinPower : iPower;
 	uint8 iIndex = iPower - m_iMinPower;
+	// get a node from related SList
 	Node* pNode = (Node*)InterlockedPopEntrySList(&m_Headers[iIndex]);
 	if (!pNode)
 	{
@@ -99,11 +102,13 @@ void* MemoryPoolImpl::Allocate(const char *file, int32 line, uint32 iSize)
 		InterlockedIncrement(&m_iCount);
 	}
 
+	// notice that the node has one byte to restore index
 	return pNode+1;
 }
 
 void MemoryPoolImpl::Free(const char *file, int32 line, void* p)
 {
+	// put node into related SList
 	Node* pNode = (Node*)p - 1;
 	uint8 iPower = pNode->m_iIndex + m_iMinPower;
 	InterlockedPushEntrySList(&m_Headers[pNode->m_iIndex], pNode);

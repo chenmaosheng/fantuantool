@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	starnet.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	starnet starter
+
+*****************************************************************************************/
+
 #ifndef _H_STAR_NET
 #define _H_STAR_NET
 
@@ -6,23 +14,23 @@
 class StarNet
 {
 public:
+	// intialize starnet
 	static int32 Init();
+	// destroy starnet
 	static void Destroy();
+	// create and start a server for other peer servers
 	static bool StartPeerServer(uint32 iIP, uint16 iPort, uint32 iWorkerCount);
+	// stop a peer server
 	static void StopPeerServer();
+	// get a remote peer server by ip and port
 	static PEER_SERVER GetPeerServer(uint32 iIP, uint16 iPort);
 
 public:
-	static LPFN_ACCEPTEX acceptex_;
-	static LPFN_CONNECTEX connectex_;
-	static LPFN_DISCONNECTEX disconnectex_;
-	static LPFN_GETACCEPTEXSOCKADDRS getacceptexsockaddrs_;
+	static LPFN_ACCEPTEX acceptex_;		// asynchorous accept function address
+	static LPFN_CONNECTEX connectex_;	// asynchorous connect function address
+	static LPFN_DISCONNECTEX disconnectex_; // asynchorous disconnect function address
+	static LPFN_GETACCEPTEXSOCKADDRS getacceptexsockaddrs_;	// asynchorous getsockaddr function address
 };
-
-#define SN_LOG_DBG(Expression, ...) LOG_DBG(LOG_STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_WAR(Expression, ...) LOG_WAR(LOG_STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_ERR(Expression, ...) LOG_ERR(LOG_STARNET, Expression, __VA_ARGS__)
-#define SN_LOG_STT(Expression, ...) LOG_STT(LOG_STARNET, Expression, __VA_ARGS__)
 
 
 #endif

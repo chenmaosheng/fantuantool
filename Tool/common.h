@@ -19,9 +19,11 @@
 #include <windows.h>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
+
 #include "type.h"
 #include "util.h"
 
+// common defines
 #define ACCOUNTNAME_MAX 64
 
 #endif

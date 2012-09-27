@@ -15,11 +15,13 @@ struct MemoryObject
 {
 	virtual ~MemoryObject(){}
 
+	// overload all related new/delete, prevent their use
 	static void* operator new(size_t size);
 	static void* operator new[](size_t size);
 	static void operator delete(void* p);
 	static void operator delete[](void* p);
 
+	// rewrite new/delete
 	void* operator new(size_t size, MemoryPool*);
 	void operator delete(void* p, MemoryPool*);
 

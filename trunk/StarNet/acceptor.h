@@ -33,20 +33,21 @@ public:
 	void SetServer(void*);
 	void* GetServer();
 
+	// use these two static functions to create and destroy acceptor
 	static Acceptor* CreateAcceptor(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPool, Handler* pHandler);
 	static void DestroyAcceptor(Acceptor*);
 
 public:
 	SOCKET	socket_;
-	Handler	handler_;
-	Worker*	worker_;
-	ContextPool* context_pool_;
+	Handler	handler_;				// io handler
+	Worker*	worker_;				// worker thread
+	ContextPool* context_pool_;		// related context pool
 	void*	server_;				// related server
-	Context* context_;
+	Context* context_;				// initial context
 	
 	LONG	iorefs_;				// reference count to record the number of io, if start, add one, if finished, minus one
 	LONG	running_;				// is running or not
-	uint32	total_connection_;
+	uint32	total_connection_;		// number of connections
 	PSLIST_HEADER free_connection_;	// use SList to manage all free connections in order to improve performance
 
 };

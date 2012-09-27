@@ -17,7 +17,7 @@ bool CALLBACK LoginReq_Callback(void* pClient, InputStream& stream)
 	return true;
 }
 
-static DispatchFilter::Func test_func[] = 
+static DispatchFilter::Func func[] = 
 {
 	LoginReq_Callback,
 	NULL
@@ -25,7 +25,8 @@ static DispatchFilter::Func test_func[] =
 
 LoginPacketDispatch::LoginPacketDispatch()
 {
-	DispatchFilterArray::GetFilter(0).m_pFunc = test_func;
+	DispatchFilterArray::GetFilter(CLIENT_FILTER_LOGIN).m_pFunc = func;
+	DispatchFilterArray::GetFilter(CLIENT_FILTER_LOGIN).m_iFuncCount = sizeof(func)/sizeof(func[0]);
 }
 
 static LoginPacketDispatch _LoginPacketDispatch;

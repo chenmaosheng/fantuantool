@@ -11,6 +11,7 @@ void Minidump::Init(TCHAR *strPath)
 	DWORD dwRet = 0;
 	TCHAR strModuleName[MAX_PATH] = {0};
 
+	// get module name in order to create correct dump file name
 	dwRet = GetModuleBaseName(GetCurrentProcess(), NULL, strModuleName, sizeof(strModuleName)/sizeof(TCHAR));
 	if (dwRet == 0)
 	{
@@ -26,9 +27,11 @@ void Minidump::Init(TCHAR *strPath)
 	_stprintf_s(m_strDumpPath, sizeof(m_strDumpPath)/sizeof(TCHAR), _T("%s_%02d.%02d.%02d %02d.%02d.%02d.dmp"),
 		m_strDumpPath, now.wYear, now.wMonth, now.wDay, now.wHour, now.wMinute, now.wSecond);
 
+	// record process handle and id
 	m_hProcess = GetCurrentProcess();
 	m_dwProcessId = GetCurrentProcessId();
 
+	// set all possible dump filter
 	SetUnhandledExceptionFilter(_UnhandledExceptionFilter);
 	_set_invalid_parameter_handler(_InvalidParameterHandler);
 	_set_purecall_handler(_UnHandledPurecallHandler);
@@ -50,9 +53,11 @@ void Minidump::_Create(_EXCEPTION_POINTERS *pExceptionPointers)
 		return;
 	}
 
+	// write dump file with full memory
 	bRet = MiniDumpWriteDump(m_hProcess, m_dwProcessId, hDump, MiniDumpWithFullMemory, pExceptionPointers?&exceptionInfo:NULL, NULL, NULL);
 	if (!bRet)
 	{
+		// if failed, try to write dump with normal memory
 		bRet = MiniDumpWriteDump(m_hProcess, m_dwProcessId, hDump, MiniDumpNormal, pExceptionPointers?&exceptionInfo:NULL, NULL, NULL);
 		if (!bRet)
 		{

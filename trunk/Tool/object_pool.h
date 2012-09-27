@@ -16,9 +16,11 @@ template<typename T>
 class ObjectPool
 {
 public:
+	// cstr and dstr
 	ObjectPool(uint16 iObjectMax);
 	~ObjectPool();
 
+	// allocate and deallocate object
 	T* Allocate();
 	void Free(T*);
 

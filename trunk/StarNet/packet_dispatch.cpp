@@ -10,6 +10,16 @@ DispatchFilter& DispatchFilterArray::GetFilter(uint8 iFilterId)
 
 bool Receiver::OnPacketReceived(void* pSession, uint16 iTypeId, uint16 iLen, const char *pBuf)
 {
-	InputStream stream(iLen, pBuf);	// step4: put buffer into stream
-	return DispatchFilterArray::GetFilter(uint8(iTypeId >> 8)).m_pFunc[iTypeId && 0xff](pSession, stream);
+	uint8 iFilterId = (uint8)(iTypeId >> 8);
+	uint8 iFuncType = (uint8)(iTypeId && 0xff);
+	DispatchFilter& filter = DispatchFilterArray::GetFilter(iFilterId);
+	// check if func type is valid
+	if (iFuncType >= filter.m_iFuncCount)
+	{
+		SN_LOG_ERR(_T("invalid funcType=%d, funcCount=%d"), iFuncType, filter.m_iFuncCount);
+		return false;
+	}
+
+	InputStream stream(iLen, pBuf);	// put buffer into stream
+	return filter.m_pFunc[iFuncType](pSession, stream);
 }

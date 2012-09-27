@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	single_buffer.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	single-direction buffer
+
+*****************************************************************************************/
+
 #ifndef _H_SINGLE_BUFFER
 #define _H_SINGLE_BUFFER
 
@@ -7,7 +15,7 @@ public:
 	// Constructor
 	SingleBuffer(size_t max_size) : m_iSize(max_size), m_iCurrSize(0)
 	{
-		// 分配一块对齐的内存
+		// allocate an aligned memory
 		m_pData = _aligned_malloc(max_size, MEMORY_ALLOCATION_ALIGNMENT);
 		memset(m_pData, 0, max_size);
 		m_pTail = m_pData;
@@ -19,7 +27,7 @@ public:
 		_aligned_free(m_pData);
 	}
 
-	// 往Buffer中写入一定长度的数据
+	// write some data to buffer
 	bool	Push(const void* pItem, size_t iLength)
 	{
 		if (m_iCurrSize + iLength >= m_iSize)
@@ -35,7 +43,7 @@ public:
 		return true;
 	}
 
-	// 从Buffer中读出一定长度的数据
+	// read some data from buffer
 	bool	Pop(void* pItem, size_t iLength)
 	{
 		if (pItem == NULL)
@@ -68,10 +76,10 @@ public:
 	}
 
 private:
-	void*			m_pData;		// Buffer的数据
-	void* volatile	m_pTail;		// 指向写入的数据尾部
-	size_t			m_iSize;		// Buffer的总大小
-	size_t			m_iCurrSize;	// 使用的大小
+	void*			m_pData;		// Buffer
+	void* volatile	m_pTail;		// point to the end of the buffer
+	size_t			m_iSize;		// whole length of buffer
+	size_t			m_iCurrSize;	// currently used length of buffer
 };
 
 #endif

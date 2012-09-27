@@ -2,7 +2,6 @@
 #define _H_STAR_NET
 
 #include "starnet_common.h"
-#include "log.h"
 
 class StarNet
 {

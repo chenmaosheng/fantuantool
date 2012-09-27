@@ -4,6 +4,7 @@
 #include "session_server_loop.h"
 #include "gate_session.h"
 #include <hash_map>
+#include <string>
 
 struct LogicCommandGateHoldReq;
 class GateSession;

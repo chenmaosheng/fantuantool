@@ -24,7 +24,7 @@ struct LogicCommandGateHoldAck : public LogicCommandT<COMMAND_GATEHOLDACK>
 	{
 		m_iLoginSessionId = 0;
 		m_iGateSessionId = 0;
-		m_iSessionId = 0;
+		m_iServerId = 0;
 		m_strAccountName[0] = _T('\0');
 	}
 

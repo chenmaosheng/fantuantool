@@ -1,6 +1,5 @@
 #include "server_config.h"
 #include "common_config.h"
-#include "util.h"
 
 ServerConfig::ServerConfig(const TCHAR* strServerName)
 {

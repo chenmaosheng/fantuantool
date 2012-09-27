@@ -4,7 +4,6 @@
 #include "acceptor.h"
 #include "context_pool.h"
 #include "starnet.h"
-#include "log.h"
 #include "log_device_console.h"
 #include "log_device_file.h"
 #include "minidump.h"
@@ -15,8 +14,6 @@
 #include "memory_pool.h"
 #include "server_config.h"
 #include "common_config.h"
-
-uint16 server_port[] = {4001, 4002};
 
 ServerBase::ServerBase()
 {
@@ -268,9 +265,4 @@ int32 ServerBase::StartPeerServer(uint32 iIP, uint16 iPort)
 void ServerBase::StopPeerServer()
 {
 	StarNet::StopPeerServer();
-}
-
-int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
-{
-	return ((Session*)pClient)->SendData(iTypeId, iLen, pBuf);
 }

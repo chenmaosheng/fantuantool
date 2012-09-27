@@ -2,6 +2,7 @@
 #include "login_server_loop.h"
 #include "master_peer_send.h"
 #include "login_server.h"
+#include "packet.h"
 
 LoginServerLoop* LoginSession::m_pMainLoop = NULL;
 
@@ -47,5 +48,7 @@ void LoginSession::LoginReq(const char* strNickname)
 	}
 }
 
-
-
+int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	return ((LoginSession*)pClient)->SendData(iTypeId, iLen, pBuf);
+}

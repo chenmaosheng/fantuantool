@@ -18,6 +18,8 @@ public:
 	MasterServerConfig(const TCHAR* strServerName);
 	~MasterServerConfig();
 
+	GateConfigItem* GetGateConfigItem(uint16 iServerId);
+
 private:
 	bool _LoadConfig();
 

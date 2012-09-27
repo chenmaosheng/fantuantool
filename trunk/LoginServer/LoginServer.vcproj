@@ -198,6 +198,10 @@
 				RelativePath=".\packet_impl.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\peer_imp.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -256,6 +260,18 @@
 			</File>
 			<File
 				RelativePath="..\GenPeerFile\master_peer_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\session_peer_dispatch.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\session_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenPeerFile\session_peer_recv.h"
 				>
 			</File>
 		</Filter>

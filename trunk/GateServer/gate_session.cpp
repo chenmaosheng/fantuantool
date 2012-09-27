@@ -2,6 +2,8 @@
 #include "gate_server_loop.h"
 #include "gate_server.h"
 #include "master_peer_send.h"
+#include "gate_server_config.h"
+#include "packet.h"
 
 GateServerLoop* GateSession::m_pMainLoop = NULL;
 
@@ -49,3 +51,7 @@ void GateSession::OnHoldReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
 	}
 }
 
+int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	return ((GateSession*)pClient)->SendData(iTypeId, iLen, pBuf);
+}

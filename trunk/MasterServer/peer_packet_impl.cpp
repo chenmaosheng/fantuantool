@@ -2,7 +2,6 @@
 #include "master_logic_command.h"
 #include "master_server.h"
 #include "master_server_loop.h"
-#include "util.h"
 #include "memory_object.h"
 
 void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, const char* strAccountName)

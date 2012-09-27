@@ -15,6 +15,7 @@
 14, use memory pool
 15, utf8<->wchar, consider about chinese character
 16, alloca has memory leak
+17, send more than 1 buf in wsasend
 
 client
 1, rpc->server, with parameters

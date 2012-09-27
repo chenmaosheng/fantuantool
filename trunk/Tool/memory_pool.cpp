@@ -1,19 +1,20 @@
 #include "memory_pool.h"
 #include "singleton.h"
-#include "util.h"
 
 class MemoryPoolImpl : public MemoryPool,
 					   public Singleton<MemoryPoolImpl>
 {
 public:
+	// one node points to an allocated memory, use SList to control push and pop
 	struct Node : SLIST_ENTRY
 	{
-		uint8 m_iIndex;
-		char m_Buf[1];
+		uint8 m_iIndex;	// the index of this node in the SList
+		char m_Buf[1];	// point to the first byte of buffer
 	};
 
 	~MemoryPoolImpl();
 
+	// Initialize memory pool, min is the minimum bytes of allocate object, max is the maximum bytes of allocate object
 	void Init(uint32 iMin, uint32 iMax);
 	void Destroy();
 
@@ -23,11 +24,11 @@ public:
 	void Free(const char* file, int32 line, void*);
 
 private:
-	uint32 m_iMinPower;
-	uint32 m_iMaxPower;
-	volatile LONG m_iCount;
-	SLIST_HEADER m_Headers[32];
-	uint32 m_iHeaderCount;
+	uint32 m_iMinPower;			// the minimum 2nd power
+	uint32 m_iMaxPower;			// the maximum 2nd power
+	volatile LONG m_iCount;		// the count of all allocated object
+	SLIST_HEADER m_Headers[32];	// all possible SLists
+	uint32 m_iHeaderCount;		// the number of SList
 };
 
 MemoryPool* MemoryPool::GetInstance()

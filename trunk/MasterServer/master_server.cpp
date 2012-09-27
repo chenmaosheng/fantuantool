@@ -58,6 +58,12 @@ ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServer
 
 int32 MasterServer::InitMainLoop()
 {
+	m_pLoginServer = GetPeerServer(_T("Login"));
+	if (!m_pLoginServer)
+	{
+		return -1;
+	}
+
 	m_pMainLoop = new MasterServerLoop;
 
 	return m_pMainLoop->Init();

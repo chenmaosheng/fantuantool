@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	object_pool.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	preallocate objects, fast allocate and free
+
+*****************************************************************************************/
+
 #ifndef _H_OBJECT_POOL
 #define _H_OBJECT_POOL
 

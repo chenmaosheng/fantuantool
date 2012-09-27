@@ -1,5 +1,4 @@
 #include "common_config.h"
-#include "util.h"
 
 CommonConfig::CommonConfig()
 {

@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	singleton.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	singleton-pattern, do not abuse
+
+*****************************************************************************************/
+
 #ifndef _H_SINGLETON
 #define _H_SINGLETON
 

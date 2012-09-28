@@ -66,6 +66,7 @@ private:
 };
 
 typedef _OutputStream<MAX_INPUT_BUFFER> OutputStream;
+typedef _OutputStream<MAX_OUTPUT_BUFFER> ServerOutputStream;
 
 // stream for receiving
 class InputStream

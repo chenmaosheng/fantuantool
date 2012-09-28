@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	log_device_impl.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	implement the abstract log device except output function
+
+*****************************************************************************************/
+
 #ifndef _H_LOG_DEVICE_IMPL
 #define _H_LOG_DEVICE_IMPL
 

@@ -3,6 +3,7 @@
 #include "logic_command.h"
 #include "connection.h"
 #include "session_server.h"
+#include "packet.h"
 
 template<typename T>
 SessionServerLoop<T>::SessionServerLoop(uint16 iSessionMax) :
@@ -90,7 +91,7 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 	switch(pCommand->m_iCmdId)
 	{
 	case COMMAND_ONCONNECT:
-		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
 		{
 			_OnCommandOnConnect((LogicCommandOnConnect*)pCommand);
 		}
@@ -101,14 +102,14 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 		break;
 
 	case COMMAND_ONDATA:
-		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
 		{
 			_OnCommandOnData((LogicCommandOnData*)pCommand);
 		}
 		break;
 
 	case COMMAND_BROADCASTDATA:
-		if ( m_iShutdownStatus >= NOT_SHUTDOWN)
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
 		{
 			_OnCommandBroadcastData((LogicCommandBroadcastData*)pCommand);
 		}
@@ -116,6 +117,13 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 
 	case COMMAND_SHUTDOWN:
 		_OnCommandShutdown();
+		break;
+
+	case COMMAND_PACKETFORWARD:
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
+		{
+			_OnCommandPacketForward((LogicCommandPacketForward*)pCommand);
+		}
 		break;
 	}
 
@@ -193,6 +201,19 @@ void SessionServerLoop<T>::_OnCommandShutdown()
 		mit != m_mSessionMap.end(); ++mit)
 	{
 		mit->second->Disconnect();
+	}
+}
+
+template<typename T>
+void SessionServerLoop<T>::_OnCommandPacketForward(LogicCommandPacketForward* pCommand)
+{
+	T* pSession = GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		if (Sender::SendPacket(pSession, pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData) != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("SendPacket failed, sid=%d"), pCommand->m_iSessionId);
+		}
 	}
 }
 

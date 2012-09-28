@@ -21,7 +21,7 @@ struct DispatchFilter
 	Func* m_pFunc;
 };
 
-// lot of fiters of dispatcher
+// lot of filters of dispatcher
 class DispatchFilterArray
 {
 public:

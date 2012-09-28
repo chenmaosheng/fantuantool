@@ -21,7 +21,7 @@ public:
 	// clear all variables
 	void Clear();
 	// save need send data to buffer, delay to send by some means, only send to client
-	int32 DelaySendData(uint16 iType, uint16 iLen, const char* pBuf);
+	int32 DelaySendData(uint16 iTypeId, uint16 iLen, const char* pBuf);
 
 	// receive login request from login server
 	void OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName);
@@ -38,7 +38,7 @@ private:
 
 private:
 	// restore delayed send data, only for single thread condition
-	static uint16 m_iDelayType;
+	static uint16 m_iDelayTypeId;
 	static uint16 m_iDelayLen;
 	static char m_DelayBuf[MAX_INPUT_BUFFER];
 };

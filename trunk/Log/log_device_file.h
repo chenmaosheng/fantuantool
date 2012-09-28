@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	log_device_file.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	describe a log device to output to file
+
+*****************************************************************************************/
+
 #ifndef _H_LOG_DEVICE_FILE
 #define _H_LOG_DEVICE_FILE
 
@@ -6,8 +14,6 @@
 class LogDeviceFile : public LogDeviceImpl
 {
 public:
-	enum { FILENAME_MAXSIZE = 1<<8, };
-
 	LogDeviceFile();
 	LogDeviceFile(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize = 1<<20);
 	~LogDeviceFile();
@@ -20,7 +26,7 @@ private:
 	void _FileClose();
 
 private:
-	TCHAR m_strFileName[FILENAME_MAXSIZE];
+	TCHAR m_strFileName[MAX_PATH + 1];
 	FILE* m_pFile;
 };
 

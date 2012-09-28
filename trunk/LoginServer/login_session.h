@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	login_session.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	inherit from session, only for login server
+
+*****************************************************************************************/
+
 #ifndef _H_LOGIN_SESSION
 #define _H_LOGIN_SESSION
 

@@ -1,3 +1,12 @@
+/*****************************************************************************************
+	filename:	session_server.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	based on server base, handle one kind of server which need to manage session
+				currently is for login server and gate server
+
+*****************************************************************************************/
+
 #ifndef _H_SESSION_SERVER
 #define _H_SESSION_SERVER
 

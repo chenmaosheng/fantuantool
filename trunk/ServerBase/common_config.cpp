@@ -3,12 +3,7 @@
 CommonConfig::CommonConfig()
 {
 	m_strLogPath[0] = _T('\0');
-	m_iLogLevel = 0;
-}
-
-CommonConfig::~CommonConfig()
-{
-
+	m_iLogLevel = Log::LOG_DEBUG_LEVEL;
 }
 
 bool CommonConfig::LoadConfig()
@@ -16,6 +11,7 @@ bool CommonConfig::LoadConfig()
 	int32 iRet = 0;
 	char commonConfigFile[MAX_PATH + 1] = {0};
 
+	// combine the filename and load xml file
 	_snprintf_s(commonConfigFile, MAX_PATH + 1, "%s\\%s.xml", CONFIG_PATH, COMMON_CONFIG_FILE);
 	if (!m_XmlDoc.LoadFile(commonConfigFile))
 	{

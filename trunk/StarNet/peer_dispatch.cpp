@@ -12,8 +12,16 @@ PeerClientDispatchFilter& PeerClientDispatchFilterArray::GetFilter(uint16 iFilte
 
 bool PeerServer::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf)
 {
-	PeerInputStream stream(iLen, pBuf);	// step4: put buffer into stream
-	return PeerServerDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_SERVER)this, stream);
+	PeerServerDispatchFilter& filter = PeerServerDispatchFilterArray::GetFilter(iFilterId);
+	// check if func type is valid
+	if (iFuncId >= filter.m_iFuncCount)
+	{
+		SN_LOG_ERR(_T("invalid funcId=%d, funcCount=%d"), iFuncId, filter.m_iFuncCount);
+		return false;
+	}
+
+	PeerInputStream stream(iLen, pBuf);	// put buffer into stream
+	return filter.m_pFunc[iFuncId]((PEER_SERVER)this, stream);
 }
 
 PeerServerDispatchFilter& PeerServerDispatchFilterArray::GetFilter(uint16 iFilterId)
@@ -23,6 +31,13 @@ PeerServerDispatchFilter& PeerServerDispatchFilterArray::GetFilter(uint16 iFilte
 
 bool PeerClient::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf)
 {
-	PeerInputStream stream(iLen, pBuf);	// step4: put buffer into stream
-	return PeerClientDispatchFilterArray::GetFilter(iFilterId).m_pFunc[iFuncId]((PEER_CLIENT)this, stream);
+	PeerClientDispatchFilter& filter = PeerClientDispatchFilterArray::GetFilter(iFilterId);
+	// check if func type is valid
+	if (iFuncId >= filter.m_iFuncCount)
+	{
+		SN_LOG_ERR(_T("invalid funcId=%d, funcCount=%d"), iFuncId, filter.m_iFuncCount);
+		return false;
+	}
+	PeerInputStream stream(iLen, pBuf);	// put buffer into stream
+	return filter.m_pFunc[iFuncId]((PEER_CLIENT)this, stream);
 }

@@ -12,11 +12,16 @@ void PeerServer::Init(uint32 iIP, uint16 iPort)
 	m_SockAddr.sin_port = htons(iPort);
 	m_SockAddr.sin_addr.s_addr = iIP;
 
+	// initial state
 	m_iState = NOT_CONNECT;
+
+	SN_LOG_STT(_T("Initial the state of PeerServer, wait for connecting"));
 }
 
 void PeerServer::Destroy()
 {
+	SN_LOG_STT(_T("Ready to disconnect from server"));
+
 	Connection* pConnection = (Connection*)m_ConnId;
 	if (m_iState == CONNECTED)
 	{
@@ -31,6 +36,8 @@ void PeerServer::Destroy()
 	{
 		Connection::Close(pConnection);
 	}
+
+	SN_LOG_STT(_T("Disconnected from server"));
 }
 
 PSOCKADDR_IN PeerServer::GetSockAddr()
@@ -56,6 +63,7 @@ ConnID PeerServer::GetConnId()
 	case NOT_CONNECT:
 		{
 			m_iState = CONNECTING;
+			// try to connect until connected
 			if (Connect())
 			{
 				while (m_iState == CONNECTING)
@@ -75,6 +83,8 @@ ConnID PeerServer::GetConnId()
 		}
 		break;
 	}
+
+	SN_LOG_ERR(_T("There is something wrong when get connId"));
 	return NULL;
 }
 
@@ -83,6 +93,7 @@ void PeerServer::OnPeerData(uint32 iLen, char* pBuf)
 	uint32 iCopyLen = 0;
 	int32 iRet = 0;
 	Connection* pConnection = (Connection*)m_ConnId;
+	// check if peer client is connected
 	if (!pConnection->IsConnected())
 	{
 		return;
@@ -90,6 +101,8 @@ void PeerServer::OnPeerData(uint32 iLen, char* pBuf)
 
 	do 
 	{
+		// check if received buffer is not enough
+		// if that, we should split the incoming buffer and handle the rest of them
 		if (m_iRecvBufLen + iLen <= sizeof(m_RecvBuf))
 		{
 			memcpy(m_RecvBuf + m_iRecvBufLen, pBuf, iLen);
@@ -106,6 +119,8 @@ void PeerServer::OnPeerData(uint32 iLen, char* pBuf)
 			m_iRecvBufLen += iCopyLen;
 		}
 
+		// check if currently received buffer is longer than packet header
+		// if that, loop retrieve packet from buffer until the length is shorter than header
 		while (m_iRecvBufLen > PEER_PACKET_HEAD)
 		{
 			PeerPacket* pPeerPacket = (PeerPacket*)m_RecvBuf;
@@ -115,9 +130,11 @@ void PeerServer::OnPeerData(uint32 iLen, char* pBuf)
 				iRet = Dispatch(pPeerPacket);
 				if (iRet != 0)
 				{
+					SN_LOG_ERR(_T("Dispatch failed"));
 					return;
 				}
 
+				// after dispatched, move memory in order to cut the finished buffer
 				if (m_iRecvBufLen > iFullLength)
 				{
 					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
@@ -209,8 +226,11 @@ PeerServerSet::PeerServerSet()
 {
 	StarNet::Init();
 
+	// create worker with 1 thread and context pool
 	m_pWorker = Worker::CreateWorker(1);
 	m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
+
+	SN_LOG_STT(_T("Initialize PeerServerSet success"));
 }
 
 PeerServerSet::~PeerServerSet()
@@ -235,6 +255,8 @@ PeerServerSet::~PeerServerSet()
 	}
 
 	StarNet::Destroy();
+
+	SN_LOG_STT(_T("Destroy PeerServerSet success"));
 }
 
 PeerServer* PeerServerSet::GetPeerServer(uint32 iIP, uint16 iPort)
@@ -255,6 +277,7 @@ PeerServer* PeerServerSet::GetPeerServer(uint32 iIP, uint16 iPort)
 		return pConnector;
 	}
 
+	SN_LOG_ERR(_T("Something wrong when get peer server"));
 	return NULL;
 }
 

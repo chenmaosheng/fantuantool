@@ -1,9 +1,16 @@
+/*****************************************************************************************
+	filename:	logic_loop.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	help server to control game tick
+
+*****************************************************************************************/
+
 #ifndef _H_LOGIC_LOOP
 #define _H_LOGIC_LOOP
 
-#include "common.h"
+#include "server_common.h"
 #include <list>
-
 
 // todo: what if we have more than one logicloop in one process
 struct LogicCommand;

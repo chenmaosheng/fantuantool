@@ -8,7 +8,7 @@
 #include "packet.h"
 
 MasterServerLoop* MasterPlayerContext::m_pMainLoop = NULL;
-uint16 MasterPlayerContext::m_iDelayType = 0;
+uint16 MasterPlayerContext::m_iDelayTypeId = 0;
 uint16 MasterPlayerContext::m_iDelayLen = 0;
 char MasterPlayerContext::m_DelayBuf[MAX_INPUT_BUFFER] = {0};
 
@@ -29,9 +29,9 @@ void MasterPlayerContext::Clear()
 	m_iGateServerId = 0;
 }
 
-int32 MasterPlayerContext::DelaySendData(uint16 iType, uint16 iLen, const char *pBuf)
+int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
 {
-	m_iDelayType = iType;
+	m_iDelayTypeId = iTypeId;
 	m_iDelayLen = iLen;
 	memcpy(m_DelayBuf, pBuf, iLen);
 
@@ -67,7 +67,7 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	GateConfigItem* pConfigItem = NULL;
 
 	m_iGateServerId = iGateServerId;
-	pConfigItem = g_pConfig->GetGateConfigItem(iGateServerId);
+	pConfigItem = g_pServerConfig->GetGateConfigItem(iGateServerId);
 	if (!pConfigItem)
 	{
 		return;
@@ -80,7 +80,7 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 		return;
 	}
 
-	iRet = SessionPeerSend::PacketForward(g_pServer->m_pLoginServer, m_iSessionId, m_iDelayType, m_iDelayLen, m_DelayBuf);
+	iRet = SessionPeerSend::PacketForward(g_pServer->m_pLoginServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 	if (iRet != 0)
 	{
 		return;

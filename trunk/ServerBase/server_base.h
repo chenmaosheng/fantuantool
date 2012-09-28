@@ -1,8 +1,15 @@
+/*****************************************************************************************
+	filename:	server_base.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	basic function of each server
+
+*****************************************************************************************/
+
 #ifndef _H_SERVER_BASE
 #define _H_SERVER_BASE
 
 #include "server_common.h"
-#include "peer_packet.h"
 
 class Worker;
 class Acceptor;

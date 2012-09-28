@@ -4,7 +4,7 @@
 #include "master_server_config.h"
 
 MasterServer* g_pServer = NULL;
-MasterServerConfig* g_pConfig = NULL;
+MasterServerConfig* g_pServerConfig = NULL;
 
 MasterServer::MasterServer()
 {
@@ -19,13 +19,13 @@ int32 MasterServer::Init(const TCHAR* strServerName)
 		return -1;
 	}
 
-	iRet = StartPeerServer(g_pConfig->m_iPeerIP, g_pConfig->m_iPeerPort);
+	iRet = StartPeerServer(g_pServerConfig->m_iPeerIP, g_pServerConfig->m_iPeerPort);
 	if (iRet != 0)
 	{
 		return -2;
 	}
 
-	LOG_STT(LOG_SERVER, _T("StartPeerServer success, IP=%d, port=%d"), g_pConfig->m_iPeerIP, g_pConfig->m_iPeerPort);
+	LOG_STT(LOG_SERVER, _T("StartPeerServer success, IP=%d, port=%d"), g_pServerConfig->m_iPeerIP, g_pServerConfig->m_iPeerPort);
 
 	iRet = StartMainLoop();
 	if (iRet != 0)
@@ -52,8 +52,8 @@ void MasterServer::Shutdown()
 
 ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
 {
-	g_pConfig = new MasterServerConfig(strServerName);
-	return g_pConfig;
+	g_pServerConfig = new MasterServerConfig(strServerName);
+	return g_pServerConfig;
 }
 
 int32 MasterServer::InitMainLoop()

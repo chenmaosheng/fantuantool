@@ -64,3 +64,8 @@ ServerConfigItem* ServerConfig::GetServerConfigItem(const TCHAR *strServerName)
 {
 	return m_pCommonConfig->GetServerConfigItem(strServerName);
 }
+
+int32 ServerConfig::GetLogLevel() const
+{
+	return m_pCommonConfig->GetLogLevel();
+}

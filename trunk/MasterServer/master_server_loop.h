@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	master_server_loop.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	control game tick on master server
+
+*****************************************************************************************/
+
 #ifndef _H_MASTER_SERVER_LOOP
 #define _H_MASTER_SERVER_LOOP
 

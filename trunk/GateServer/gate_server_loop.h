@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	gate_server_loop.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	control game tick on gate server
+
+*****************************************************************************************/
+
 #ifndef _H_GATE_SERVER_LOOP
 #define _H_GATE_SERVER_LOOP
 

@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	master_logic_command.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	game command on master server
+
+*****************************************************************************************/
+
 #ifndef _H_MASTER_LOGIC_COMMAND
 #define _H_MASTER_LOGIC_COMMAND
 

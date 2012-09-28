@@ -199,7 +199,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\peer_imp.cpp"
+				RelativePath=".\peer_impl.cpp"
 				>
 			</File>
 		</Filter>

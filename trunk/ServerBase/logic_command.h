@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	logic_command.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	basic logic command definition
+
+*****************************************************************************************/
+
 #ifndef _H_LOGIC_COMMAND
 #define _H_LOGIC_COMMAND
 
@@ -6,12 +14,13 @@
 
 enum
 {
-	COMMAND_ONCONNECT,
-	COMMAND_ONDISCONNECT,
-	COMMAND_ONDATA,
-	COMMAND_BROADCASTDATA,
-	COMMAND_SHUTDOWN,
-	COMMAND_DISCONNECT,
+	COMMAND_ONCONNECT,		// receive connection
+	COMMAND_ONDISCONNECT,	// receive disconnect
+	COMMAND_ONDATA,			// receive data
+	COMMAND_BROADCASTDATA,	// ready to broadcast
+	COMMAND_SHUTDOWN,		// ready to shutdown
+	COMMAND_DISCONNECT,		// force disconnect
+	COMMAND_PACKETFORWARD,	// forward packet to another server
 };
 
 struct LogicCommand : public MemoryObject 
@@ -85,6 +94,19 @@ struct LogicCommandDisconnect : public LogicCommandT<COMMAND_DISCONNECT>
 	}
 
 	uint32 m_iSessionId;
+};
+
+struct LogicCommandPacketForward : public LogicCommandT<COMMAND_PACKETFORWARD>
+{
+	LogicCommandPacketForward();
+	~LogicCommandPacketForward();
+
+	bool CopyData(uint16 iLen, const char* pData);
+
+	uint32 m_iSessionId;
+	uint16 m_iTypeId;
+	uint16 m_iLen;
+	char* m_pData;
 };
 
 #endif

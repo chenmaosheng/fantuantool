@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	gate_server.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	serve as a router between client and backend server
+
+*****************************************************************************************/
+
 #ifndef _H_GATE_SERVER
 #define _H_GATE_SERVER
 
@@ -28,6 +36,6 @@ public:
 };
 
 extern GateServer* g_pServer;
-extern GateServerConfig* g_pConfig;
+extern GateServerConfig* g_pServerConfig;
 
 #endif

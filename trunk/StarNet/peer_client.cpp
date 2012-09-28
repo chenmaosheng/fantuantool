@@ -3,7 +3,6 @@
 #include "peer_stream.h"
 #include "worker.h"
 #include "context_pool.h"
-#include "connection.h"
 #include "acceptor.h"
 
 void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
@@ -11,13 +10,17 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 	uint32 iCopyLen = 0;
 	int32 iRet = 0;
 	Connection* pConnection = (Connection*)m_ConnId;
+	// check if peer client is connected
 	if (!pConnection->IsConnected())
 	{
+		SN_LOG_ERR(_T("Peer client is not connected"));
 		return;
 	}
 
 	do 
 	{
+		// check if received buffer is not enough
+		// if that, we should split the incoming buffer and handle the rest of them
 		if (m_iRecvBufLen + iLen <= sizeof(m_RecvBuf))
 		{
 			memcpy(m_RecvBuf + m_iRecvBufLen, pBuf, iLen);
@@ -34,6 +37,8 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 			m_iRecvBufLen += iCopyLen;
 		}
 
+		// check if currently received buffer is longer than packet header
+		// if that, loop retrieve packet from buffer until the length is shorter than header
 		while (m_iRecvBufLen > PEER_PACKET_HEAD)
 		{
 			PeerPacket* pPeerPacket = (PeerPacket*)m_RecvBuf;
@@ -43,9 +48,11 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 				iRet = Dispatch(pPeerPacket);
 				if (iRet != 0)
 				{
+					SN_LOG_ERR(_T("Dispatch failed"));
 					return;
 				}
 
+				// after dispatched, move memory in order to cut the finished buffer
 				if (m_iRecvBufLen > iFullLength)
 				{
 					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
@@ -77,6 +84,7 @@ bool PeerClientSet::Init(uint32 iIP, uint16 iPort)
 	m_iIP = iIP;
 	m_iPort = iPort;
 
+	// create worker with 1 thread and context pool
 	m_pWorker = Worker::CreateWorker(1);
 	m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
 
@@ -92,12 +100,16 @@ bool PeerClientSet::Init(uint32 iIP, uint16 iPort)
 	addr.sin_port = htons(iPort);
 	addr.sin_addr.s_addr = iIP;
 
+	// create acceptor
 	m_pAcceptor = Acceptor::CreateAcceptor(&addr, m_pWorker, m_pContextPool, &handler);
 	if (m_pAcceptor)
 	{
 		m_pAcceptor->Start();
+		SN_LOG_STT(_T("Create Peer acceptor success"));
 		return true;
 	}
+
+	SN_LOG_ERR(_T("Create Peer acceptor failed"));
 
 	return false;
 }
@@ -125,6 +137,8 @@ void PeerClientSet::Destroy()
 		Worker::DestroyWorker(m_pWorker);
 		m_pWorker = NULL;
 	}
+
+	SN_LOG_STT(_T("Destroy Peer acceptor success"));
 }
 
 bool PeerClientSet::AddConnector(PeerClient* pConnector)
@@ -133,11 +147,14 @@ bool PeerClientSet::AddConnector(PeerClient* pConnector)
 	{
 		if ((*it)->m_ConnId == pConnector->m_ConnId)
 		{
+			SN_LOG_ERR(_T("This connection already exists, connId=%d"), pConnector->m_ConnId);
 			return false;
 		}
 	}
 
 	m_vPeerClients.push_back(pConnector);
+
+	SN_LOG_STT(_T("Add a new connector success, connId=%d"), pConnector->m_ConnId);
 	return true;
 }
 
@@ -147,6 +164,7 @@ void PeerClientSet::DeleteConnector(ConnID connId)
 	{
 		if ((*it)->m_ConnId == connId)
 		{
+			SN_LOG_STT(_T("delete a connector success, connId=%d"), connId);
 			m_vPeerClients.erase(it);
 			return;
 		}

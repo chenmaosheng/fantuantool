@@ -1,7 +1,7 @@
 #ifndef _H_LOGIN_CLIENT_RECV
 #define _H_LOGIN_CLIENT_RECV
 
-#include "common.h"
+#include "server_common.h"
 
 struct LoginClientRecv
 {

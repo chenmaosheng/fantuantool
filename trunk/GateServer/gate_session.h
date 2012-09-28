@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	gate_session.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	inherit from session, only for gate server
+
+*****************************************************************************************/
+
 #ifndef _H_GATE_SESSION
 #define _H_GATE_SESSION
 

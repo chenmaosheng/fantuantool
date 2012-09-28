@@ -44,7 +44,7 @@ void GateSession::OnHoldReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
 	((SessionId*)&m_iSessionId)->sValue_.sequence_++;
 	wcscpy_s(m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR), strAccountName);
 
-	iRet = MasterPeerSend::GateHoldAck(g_pServer->m_pMasterServer, g_pConfig->m_iServerId, iLoginSessionId, strAccountName, m_iSessionId);
+	iRet = MasterPeerSend::GateHoldAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, strAccountName, m_iSessionId);
 	if (iRet != 0)
 	{
 		return;

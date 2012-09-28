@@ -44,7 +44,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 		return -1;
 	}
 
-	iRet = InitLog(Log::LOG_DEBUG_LEVEL, _T("Log"), _T("Test"), 0);
+	iRet = InitLog(m_pServerConfig->GetLogLevel(), _T("Log"), _T("Test"), 0);
 	if (iRet != 0)
 	{
 		return -2;

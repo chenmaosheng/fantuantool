@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	login_server.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	receive login request from client
+
+*****************************************************************************************/
+
 #ifndef _H_LOGIN_SERVER
 #define _H_LOGIN_SERVER
 
@@ -28,6 +36,6 @@ public:
 };
 
 extern LoginServer* g_pServer;
-extern LoginServerConfig* g_pConfig;
+extern LoginServerConfig* g_pServerConfig;
 
 #endif

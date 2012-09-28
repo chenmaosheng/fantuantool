@@ -4,7 +4,7 @@
 #include "gate_server_config.h"
 
 GateServerLoop::GateServerLoop() :
-SessionServerLoop<GateSession>(g_pConfig->m_iSessionMax)
+SessionServerLoop<GateSession>(g_pServerConfig->m_iSessionMax)
 {
 }
 

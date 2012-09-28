@@ -1,10 +1,17 @@
+/*****************************************************************************************
+	filename:	session.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	record connection info and receive event from connection
+
+*****************************************************************************************/
+
 #ifndef _H_SESSION
 #define _H_SESSION
 
 #include "server_common.h"
 
 #pragma pack(1)
-
 union SessionId
 {
 	struct  
@@ -38,7 +45,7 @@ public:
 	virtual void OnDisconnect();
 	virtual void OnData(uint16 iLen, char* pBuf);
 	virtual void Disconnect();
-	// filterId means the key point of each packet, the first byte means todo, the second byte means todo
+	// TypeId means the key point of each packet, the first byte means filterId, the second byte means funcId
 	virtual int32 SendData(uint16 iTypeId, uint16 iLen, const char* pData);
 
 	static void Initialize(ServerBase* pServer);

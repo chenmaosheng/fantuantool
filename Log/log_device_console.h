@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	log_device_console.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	describe a log device to output to console
+
+*****************************************************************************************/
+
 #ifndef _H_LOG_DEVICE_CONSOLE
 #define _H_LOG_DEVICE_CONSOLE
 

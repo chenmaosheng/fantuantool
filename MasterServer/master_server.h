@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	master_server.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	manage all other servers and all player in the entire world
+
+*****************************************************************************************/
+
 #ifndef _H_MASTER_SERVER
 #define _H_MASTER_SERVER
 
@@ -28,6 +36,6 @@ public:
 };
 
 extern MasterServer* g_pServer;
-extern MasterServerConfig* g_pConfig;
+extern MasterServerConfig* g_pServerConfig;
 
 #endif

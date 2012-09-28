@@ -4,9 +4,9 @@
 
 int32 LoginServerSend::LoginNtf(void* pClient, uint32 iGateIP, uint16 iGatePort)
 {
-	OutputStream stream;
+	ServerOutputStream stream;
 	stream.Serialize(iGateIP);
 	stream.Serialize(iGatePort);
 
-	return Sender::SendPacket(pClient, (SERVER_FILTER_LOGIN>>8) | 0, stream.GetDataLength(), stream.GetBuffer());
+	return Sender::SendPacket(pClient, (SERVER_FILTER_LOGIN<<8) | 0, stream.GetDataLength(), stream.GetBuffer());
 }

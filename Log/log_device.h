@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	log_device.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	describe a log device to output log, this is the base class
+
+*****************************************************************************************/
+
 #ifndef _H_LOG_DEVICE
 #define _H_LOG_DEVICE
 

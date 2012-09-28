@@ -4,7 +4,7 @@
 #include "login_server_config.h"
 
 LoginServerLoop::LoginServerLoop() :
-SessionServerLoop<LoginSession>(g_pConfig->m_iSessionMax)
+SessionServerLoop<LoginSession>(g_pServerConfig->m_iSessionMax)
 {
 }
 

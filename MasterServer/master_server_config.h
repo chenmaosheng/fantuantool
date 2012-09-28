@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	master_server_config.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	additional configuration on master server
+
+*****************************************************************************************/
+
 #ifndef _H_MASTER_SERVER_CONFIG
 #define _H_MASTER_SERVER_CONFIG
 

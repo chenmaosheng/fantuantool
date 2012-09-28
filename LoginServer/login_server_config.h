@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	login_server_config.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	additional configuration on login server
+
+*****************************************************************************************/
+
 #ifndef _H_LOGIN_SERVER_CONFIG
 #define _H_LOGIN_SERVER_CONFIG
 

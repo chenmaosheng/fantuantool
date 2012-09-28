@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	gate_server_config.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	additional configuration on gate server
+
+*****************************************************************************************/
+
 #ifndef _H_GATE_SERVER_CONFIG
 #define _H_GATE_SERVER_CONFIG
 

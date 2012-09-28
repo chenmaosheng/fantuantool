@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	session_server_loop.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	server logic loop for session server
+
+*****************************************************************************************/
+
 #ifndef _H_SESSION_SERVER_LOOP
 #define _H_SESSION_SERVER_LOOP
 
@@ -12,6 +20,8 @@ struct LogicCommandOnConnect;
 struct LogicCommandOnDisconnect;
 struct LogicCommandOnData;
 struct LogicCommandBroadcastData;
+struct LogicCommandPacketForward;
+
 template<typename T>
 class SessionServerLoop : public LogicLoop
 {
@@ -34,7 +44,8 @@ private:
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
-	void _OnCommandShutdown();	
+	void _OnCommandShutdown();
+	void _OnCommandPacketForward(LogicCommandPacketForward*);
 
 private:
 	stdext::hash_map<uint32, T*> m_mSessionMap;

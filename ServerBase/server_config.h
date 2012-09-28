@@ -1,3 +1,11 @@
+/*****************************************************************************************
+	filename:	server_config.h
+	created:	09/27/2012
+	author:		chen
+	purpose:	basic server configuration for all servers
+
+*****************************************************************************************/
+
 #ifndef _H_SERVER_CONFIG
 #define _H_SERVER_CONFIG
 
@@ -16,6 +24,8 @@ public:
 
 	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
+
+	int32 GetLogLevel() const;
 
 private:
 	virtual bool _LoadConfig() = 0;

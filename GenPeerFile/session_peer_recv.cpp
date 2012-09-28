@@ -8,20 +8,20 @@ bool CALLBACK PacketForward_Callback(PEER_CLIENT pPeerClient, PeerInputStream& s
 {
 	uint32 iSessionId = 0;
 	stream.Serialize(iSessionId);
-	uint16 iType = 0;
-	stream.Serialize(iType);
+	uint16 iTypeId = 0;
+	stream.Serialize(iTypeId);
 	uint16 iLen = 0;
 	stream.Serialize(iLen);
 	char* pBuf = (char*)_malloca(iLen+1);
 	stream.Serialize(iLen, pBuf);
 	pBuf[iLen] = '\0';
 
-	SessionPeerRecv::PacketForward(pPeerClient, iSessionId, iType, iLen, pBuf);
+	SessionPeerRecv::PacketForward(pPeerClient, iSessionId, iTypeId, iLen, pBuf);
 
 	return true;
 }
 
-static PeerClientDispatchFilter::Func test_func[] = 
+static PeerClientDispatchFilter::Func func[] = 
 {
 	PacketForward_Callback,
 	NULL
@@ -29,7 +29,8 @@ static PeerClientDispatchFilter::Func test_func[] =
 
 SessionPeerDispatch::SessionPeerDispatch()
 {
-	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_SESSION).m_pFunc = test_func;
+	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_SESSION).m_pFunc = func;
+	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_SESSION).m_iFuncCount = sizeof(func)/sizeof(func[0]);
 }
 
 static SessionPeerDispatch _MasterPeerDispatch;

@@ -5,7 +5,7 @@
 
 struct SessionPeerRecv
 {
-	static void PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iType, uint16 iLen, const char *pBuf);
+	static void PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char *pBuf);
 };
 
 #endif

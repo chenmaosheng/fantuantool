@@ -1,11 +1,11 @@
 #include "session_peer_send.h"
 #include "peer_stream.h"
 
-int32 SessionPeerSend::PacketForward(PEER_SERVER pPeerServer, uint32 iSessionId, uint16 iType, uint16 iLen, const char *pBuf)
+int32 SessionPeerSend::PacketForward(PEER_SERVER pPeerServer, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char *pBuf)
 {
 	PeerOutputStream stream;
 	stream.Serialize(iSessionId);
-	stream.Serialize(iType);
+	stream.Serialize(iTypeId);
 	stream.Serialize(iLen);
 	stream.Serialize(iLen, pBuf);
 

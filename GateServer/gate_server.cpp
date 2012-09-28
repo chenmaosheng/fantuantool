@@ -3,7 +3,7 @@
 #include "gate_server_config.h"
 
 GateServer* g_pServer = NULL;
-GateServerConfig* g_pConfig = NULL;
+GateServerConfig* g_pServerConfig = NULL;
 
 GateServer::GateServer()
 {
@@ -23,17 +23,17 @@ void GateServer::Destroy()
 
 ServerConfig* GateServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
 {
-	g_pConfig = new GateServerConfig(strServerName);
-	return g_pConfig;
+	g_pServerConfig = new GateServerConfig(strServerName);
+	return g_pServerConfig;
 }
 
 int32 GateServer::GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, uint32& iServerIP, uint16& iServerPort, uint32& iThreadCount)
 {
-	iPeerIP = g_pConfig->m_iPeerIP;
-	iPeerPort = g_pConfig->m_iPeerPort;
-	iServerIP = g_pConfig->m_iServerIP;
-	iServerPort = g_pConfig->m_iServerPort;
-	iThreadCount = g_pConfig->m_iThreadCount;
+	iPeerIP = g_pServerConfig->m_iPeerIP;
+	iPeerPort = g_pServerConfig->m_iPeerPort;
+	iServerIP = g_pServerConfig->m_iServerIP;
+	iServerPort = g_pServerConfig->m_iServerPort;
+	iThreadCount = g_pServerConfig->m_iThreadCount;
 
 	return 0;
 }

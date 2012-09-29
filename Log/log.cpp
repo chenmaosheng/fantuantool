@@ -97,10 +97,7 @@ void Log_Impl::Init(int32 iLogLevel)
 
 void Log_Impl::SetLogTypeString(int32 iLogType, TCHAR* strLogTypeString)
 {
-	if (iLogType)
-	{
-		wcscpy_s(m_strLogType[iLogType], strLogTypeString);
-	}
+	wcscpy_s(m_strLogType[iLogType], strLogTypeString);
 }
 
 void Log_Impl::Destroy()

@@ -45,6 +45,7 @@ int32 LoginServerLoop::Start()
 
 uint32 LoginServerLoop::_Loop()
 {
+	// check if ready for shutdown
 	if (m_iShutdownStatus == START_SHUTDOWN)
 	{
 		_ReadyForShutdown();

@@ -7,7 +7,6 @@
 #include "ClientDlg.h"
 #include "targetver.h"
 #include "Command.h"
-#include "packet.h"
 #include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,7 +19,8 @@ static char THIS_FILE[] = __FILE__;
 
 CClientSocket::CClientSocket()
 {
-
+	m_iRecvBufLen = 0;
+	m_RecvBuf[0] = '\0';
 }
 
 CClientSocket::~CClientSocket()
@@ -41,45 +41,61 @@ END_MESSAGE_MAP()
 
 void CClientSocket::OnReceive(int nErrorCode) 
 {
-	// TODO: Add your specialized code here and/or call the base class
 	char buf[65536] = {0};
-	char* p = buf;
-	Receive(buf, sizeof(buf));
-	while ((*p) != 0)
-	{
-		ServerPacket* pPacket = (ServerPacket*)p;
-		InputStream stream(pPacket->m_iLen, pPacket->m_Buf);
-		if (pPacket->m_iTypeId == LOGIN_NTF)
-		{
-			uint32 iSessionId = 0;
-			stream.Serialize(iSessionId);
-			uint16 iLength = 0;
-			stream.Serialize(iLength);
-			char nickname[64] = {0};
-			stream.Serialize(iLength, nickname);
-			chatDlg->UpdateUser(nickname, iSessionId, iLength);
-		}
-		/*Header* header = (Header*)p;
-		if (header->type == LOGIN)
-		{
-			LoginPkt* pkt = (LoginPkt*)header;
-			chatDlg->UpdateUser(pkt->nickname, pkt->connId, pkt->len-sizeof(pkt->connId));
-		}
-		else
-		if (header->type == SEND_MESSAGE)
-		{
-			SendMessagePkt* pkt = (SendMessagePkt*)header;
-			chatDlg->GetMessage(pkt->message, pkt->len);
-		}
-		else
-		if (header->type == LOGOUT)
-		{
-			LogoutPkt* pkt = (LogoutPkt*)header;
-			chatDlg->DeleteUser(pkt->connId);
-		}*/
+	char* pBuf = buf;
+	int iLen = Receive(buf, sizeof(buf));
 
-		p = p + (pPacket->m_iLen + SERVER_PACKET_HEAD);
-	}
+	uint32 iCopyLen = 0;
+	int32 iRet = 0;
+	
+	do
+	{
+		// the incoming length is no more than the last of buffer
+		if (m_iRecvBufLen + iLen <= sizeof(m_RecvBuf))
+		{
+			memcpy(m_RecvBuf + m_iRecvBufLen, pBuf, iLen);
+			m_iRecvBufLen += iLen;
+			pBuf += iLen;
+			iLen = 0;
+		}
+		else
+		{
+			iCopyLen = m_iRecvBufLen + iLen - sizeof(m_RecvBuf);
+			memcpy(m_RecvBuf + m_iRecvBufLen, pBuf, iCopyLen);
+			pBuf += iCopyLen;
+			iLen -= iCopyLen;
+			m_iRecvBufLen += iCopyLen;
+		}	// step1: received a raw buffer
+
+		while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+		{
+			ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
+			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
+			if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
+			{
+				iRet = HandlePacket(pServerPacket);
+				if (iRet != 0)
+				{
+					return;
+				}
+
+				if (m_iRecvBufLen > iFullLength)
+				{
+					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
+				}
+				m_iRecvBufLen -= iFullLength;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}while (iLen);
 	
 	CSocket::OnReceive(nErrorCode);
+}
+
+int32 CClientSocket::HandlePacket(ServerPacket* pPacket)
+{
+	return chatDlg->HandlePacket(pPacket);
 }

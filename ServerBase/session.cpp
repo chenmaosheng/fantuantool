@@ -251,11 +251,11 @@ int32 Session::SendData(uint16 iTypeId, uint16 len, const char *data)
 	}
 
 	ServerPacket* pPacket = (ServerPacket*)buf;
-	pPacket->m_iLen = len + SERVER_PACKET_HEAD;
+	pPacket->m_iLen = len;
 	pPacket->m_iTypeId = iTypeId;
 
 	memcpy(pPacket->m_Buf, data, len);
-	m_pConnection->AsyncSend(pPacket->m_iLen, buf);
+	m_pConnection->AsyncSend(pPacket->m_iLen + SERVER_PACKET_HEAD, buf);
 
 	return 0;
 }

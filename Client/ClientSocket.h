@@ -6,12 +6,11 @@
 #endif // _MSC_VER > 1000
 // ClientSocket.h : header file
 //
-
+#include "packet.h"
 
 class CClientDlg;
 /////////////////////////////////////////////////////////////////////////////
 // CClientSocket command target
-
 class CClientSocket : public CSocket
 {
 	// Attributes
@@ -30,6 +29,7 @@ public:
 	//{{AFX_VIRTUAL(CClientSocket)
 public:
 	virtual void OnReceive(int nErrorCode);
+	int32 HandlePacket(ServerPacket*);
 	//}}AFX_VIRTUAL
 
 	// Generated message map functions
@@ -39,6 +39,9 @@ public:
 
 	// Implementation
 protected:
+	uint32 m_iRecvBufLen;
+	char m_RecvBuf[MAX_OUTPUT_BUFFER];
+	ServerPacket m_Packet;
 };
 
 /////////////////////////////////////////////////////////////////////////////

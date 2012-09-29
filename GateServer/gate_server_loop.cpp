@@ -45,6 +45,7 @@ int32 GateServerLoop::Start()
 
 uint32 GateServerLoop::_Loop()
 {
+	//// check if ready for shutdown
 	if (m_iShutdownStatus == START_SHUTDOWN)
 	{
 		_ReadyForShutdown();
@@ -55,6 +56,7 @@ uint32 GateServerLoop::_Loop()
 
 bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 {
+	// check if ready for shutdown, then ignore all the commands
 	if (m_iShutdownStatus >= START_SHUTDOWN)
 	{
 		return true;
@@ -79,6 +81,7 @@ void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
 	if (mit != m_mSessionMapByName.end())
 	{
+		LOG_ERR(LOG_SERVER, _T("Find a duplicate account on server, account=%s"), pCommand->m_strAccountName);
 		return;
 	}
 

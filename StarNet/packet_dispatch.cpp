@@ -11,7 +11,7 @@ DispatchFilter& DispatchFilterArray::GetFilter(uint8 iFilterId)
 bool Receiver::OnPacketReceived(void* pSession, uint16 iTypeId, uint16 iLen, const char *pBuf)
 {
 	uint8 iFilterId = (uint8)(iTypeId >> 8);
-	uint8 iFuncType = (uint8)(iTypeId && 0xff);
+	uint8 iFuncType = (uint8)(iTypeId & 0xff);
 	DispatchFilter& filter = DispatchFilterArray::GetFilter(iFilterId);
 	// check if func type is valid
 	if (iFuncType >= filter.m_iFuncCount)

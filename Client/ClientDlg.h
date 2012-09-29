@@ -7,6 +7,7 @@
 
 // CClientDlg dialog
 class CClientSocket;
+struct ServerPacket;
 class CClientDlg : public CDialog
 {
 // Construction
@@ -15,6 +16,7 @@ public:
 	BOOL GetMessage(char* message, int length);
 	void UpdateUser(char* nickname, int sessionId, int length);
 	void DeleteUser(int connId);
+	int HandlePacket(ServerPacket* pPacket);
 
 	void ToTray();
 

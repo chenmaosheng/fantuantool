@@ -58,7 +58,6 @@ private:
 
 class Worker;
 class ContextPool;
-class PeerServer;
 class PeerServerSet : public Singleton<PeerServerSet>
 {
 public:

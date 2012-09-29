@@ -164,7 +164,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					if (dwNumRead == 0)
 					{
 						// post a disconnect request
-						SN_LOG_ERR(_T("OnConnect failed"));
+						SN_LOG_ERR(_T("Client post a disconnect request"));
 						pConnection->context_pool_->PushInputContext(pContext);
 						pConnection->AsyncDisconnect();
 					}

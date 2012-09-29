@@ -49,14 +49,17 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	iRet = m_pMainLoop->GateHoldReq();
 	if (iRet < 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("No more gate session to hold, account=%s, sid=%d"), strAccountName, iSessionId);
 		return;
 	}
 
 	m_iGateServerId = (uint16)iRet;
+	LOG_DBG(LOG_SERVER, _T("Hold a gate session on gate server id=%d"), iRet);
 
 	iRet = GatePeerSend::GateHoldReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, strAccountName);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Send gate hold request failed"));
 		return;
 	}
 }
@@ -70,6 +73,7 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	pConfigItem = g_pServerConfig->GetGateConfigItem(iGateServerId);
 	if (!pConfigItem)
 	{
+		LOG_ERR(LOG_SERVER, _T("Get gate server's config failed"));
 		return;
 	}
 
@@ -77,12 +81,14 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	iRet = LoginServerSend::LoginNtf(this, pConfigItem->m_iServerIP, pConfigItem->m_iServerPort);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Send login notification failed"));
 		return;
 	}
 
 	iRet = SessionPeerSend::PacketForward(g_pServer->m_pLoginServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Forward packet to login server failed"));
 		return;
 	}
 

@@ -42,6 +42,11 @@ public:
 		return m_iLogLevel;
 	}
 
+	const TCHAR* GetLogPath() const
+	{
+		return m_strLogPath;
+	}
+
 private:
 	TCHAR m_strLogPath[MAX_PATH+1];
 	int32 m_iLogLevel;

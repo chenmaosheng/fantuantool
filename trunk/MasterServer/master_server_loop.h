@@ -22,25 +22,33 @@ class MasterServerLoop : public LogicLoop
 public:
 	typedef LogicLoop super;
 
+	// cstr
 	MasterServerLoop();
 	
+	// initialize master server loop
 	int32 Init();
+	// destroy master server loop
 	void Destroy();
-
+	// start master server loop
 	int32 Start();
+	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
 
+	// receive request about hold a gate session
 	int32 GateHoldReq();
 
 private:
 	uint32 _Loop();
+	// shutdown one player in master server
 	void _ShutdownPlayer(MasterPlayerContext*);
 	
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();
 
 private:
+	// receive request about login
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
+	// acknowledge response about hold a gate session
 	void _OnCommandGateHoldAck(LogicCommandGateHoldAck*);
 
 private:

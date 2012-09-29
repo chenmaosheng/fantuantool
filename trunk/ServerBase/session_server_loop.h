@@ -26,10 +26,13 @@ template<typename T>
 class SessionServerLoop : public LogicLoop
 {
 public:
+	// cstr, preallocate assigned number of sessions
 	SessionServerLoop(uint16 iSessionMax = 32768);
-	~SessionServerLoop();
+	virtual ~SessionServerLoop();
 
+	// initialize session logic loop
 	int32 Init(ServerBase* pServer);
+	// destroy session logic loop
 	void Destroy();
 
 	bool IsReadyForShutdown() const;
@@ -45,6 +48,7 @@ private:
 	void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	void _OnCommandShutdown();
+	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
 
 private:

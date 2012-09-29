@@ -4,7 +4,6 @@
 #include "packet.h"
 #include "context_pool.h"
 #include "single_buffer.h"
-#include "command.h"
 #include "data_stream.h"
 #include "logic_command.h"
 #include "logic_loop.h"

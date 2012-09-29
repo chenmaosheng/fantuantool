@@ -41,7 +41,9 @@ void LogicLoop::Destroy()
 
 int32 LogicLoop::Start()
 {
+	// create an event to control command push and pop
 	m_hCommandEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
+	// create a thread to handle command
 	m_hThread = (HANDLE)_beginthreadex(NULL, 0, &LogicLoop::_ThreadMain, this, 0, NULL);
 
 	return 0;
@@ -54,12 +56,14 @@ void LogicLoop::Stop()
 
 void LogicLoop::Join()
 {
+	// let the thread join, and close the command event
 	WaitForSingleObject(m_hThread, INFINITE);
 	CloseHandle(m_hCommandEvent);
 }
 
 void LogicLoop::PushCommand(LogicCommand* pCommand)
 {
+	// push asynchorous command into command list and activate the event
 	EnterCriticalSection(&m_csCommandList);
 	m_CommandList.push_back(pCommand);
 	LeaveCriticalSection(&m_csCommandList);
@@ -82,6 +86,7 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 	{
 		while (true)
 		{
+			// sleep time depends on each server system
 			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, iSleepTime);
 			if (dwRet == WAIT_FAILED || dwRet == WAIT_TIMEOUT)
 			{
@@ -89,6 +94,7 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 			}
 			else if (dwRet == WAIT_OBJECT_0)
 			{
+				// pop a command from list to be handled
 				EnterCriticalSection(&pLogicLoop->m_csCommandList);
 				if (!pLogicLoop->m_CommandList.empty())
 				{
@@ -96,6 +102,7 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 					pLogicLoop->m_CommandList.pop_front();
 				}
 				LeaveCriticalSection(&pLogicLoop->m_csCommandList);
+				// deactivate the command event
 				ResetEvent(pLogicLoop->m_hCommandEvent);
 				pLogicLoop->_OnCommand(pCommand);
 

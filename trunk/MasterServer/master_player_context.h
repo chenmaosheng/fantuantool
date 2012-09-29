@@ -15,6 +15,7 @@ class MasterServerLoop;
 class MasterPlayerContext
 {
 public:
+	// cstr and dstr
 	MasterPlayerContext();
 	~MasterPlayerContext();
 

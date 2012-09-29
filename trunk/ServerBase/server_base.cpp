@@ -1,17 +1,20 @@
 #include "server_base.h"
+// network
+#include "starnet.h"
 #include "connection.h"
 #include "worker.h"
 #include "acceptor.h"
 #include "context_pool.h"
-#include "starnet.h"
+#include "packet.h"
+// util
 #include "log_device_console.h"
 #include "log_device_file.h"
 #include "minidump.h"
-#include "logic_loop.h"
-#include "singleton.h"
-#include "packet.h"
-#include "session.h"
 #include "memory_pool.h"
+// logic
+#include "logic_loop.h"
+#include "session.h"
+// config
 #include "server_config.h"
 #include "common_config.h"
 
@@ -36,49 +39,61 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
 	
+	// initialize minidump
 	Minidump::Init(_T("log"));
 
+	// initialize server's configuration
 	iRet = InitConfig(strServerName);
 	if (iRet != 0)
 	{
 		return -1;
 	}
 
-	iRet = InitLog(m_pServerConfig->GetLogLevel(), _T("Log"), _T("Test"), 0);
+	// initialize log system, after that, log is ready to be used
+	iRet = InitLog(m_pServerConfig->GetLogLevel(), m_pServerConfig->GetLogPath(), strServerName, 0);
 	if (iRet != 0)
 	{
 		return -2;
 	}
 
+	// set the pairs of log type and log type name
+	// todo: later add more pairs
 	m_pLogSystem->SetLogTypeString(LOG_STARNET, _T("StarNet"));
 	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Server"));
 
-	LOG_DBG(LOG_SERVER, _T("Log Loaded"));
+	LOG_STT(LOG_SERVER, _T("Initialize log system success"));
 
-	MEMORY_POOL_INIT(8, 65536);
+	// set the min and max of memory pool object
+	MEMORY_POOL_INIT(MEMORY_OBJECT_MIN, MEMORY_OBJECT_MAX);
+
+	LOG_STT(LOG_SERVER, _T("Initialize memory pool success"));
 
 	iRet = StarNet::Init();
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Initialize StarNet failed"));
 		return -3;
 	}
+
+	LOG_STT(LOG_SERVER, _T("Initialize StarNet success"));
 
 	iRet = InitMainLoop();
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Initialize main loop failed"));
 		return -4;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("StarNet Loaded"));
-
-	LOG_DBG(LOG_SERVER, _T("Server start!"));
-	LOG_DBG(LOG_SERVER, _T("Initialize success!"));
+	LOG_STT(LOG_SERVER, _T("Initialize main loop success"));
+	LOG_STT(LOG_SERVER, _T("Initialize success, server is started!"));
 
 	return 0;
 }
 
 void ServerBase::Destroy()
 {
+	LOG_STT(LOG_SERVER, _T("Start to destroy server"));
+
 	DestroyMainLoop();
 	StarNet::Destroy();
 	DestroyLog();
@@ -98,9 +113,11 @@ PEER_SERVER ServerBase::GetPeerServer(uint16 iServerId)
 
 	if (iServerId >= PEER_SERVER_MAX)
 	{
+		LOG_ERR(LOG_SERVER, _T("ServerId is invalid, id=%d"), iServerId);
 		return NULL;
 	}
 
+	// check if peer server is got before
 	if (!m_arrayPeerServer[iServerId])
 	{
 		pConfigItem = m_pServerConfig->GetServerConfigItemById(iServerId);
@@ -176,12 +193,14 @@ void ServerBase::DestroyLog()
 
 int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler, uint32 iThreadCount)
 {
+	// create iocp worker
 	m_pWorker = Worker::CreateWorker(iThreadCount);
 	if (!m_pWorker)
 	{
 		return -1;
 	}
 
+	// create pool of context
 	m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
 	if (!m_pContextPool)
 	{
@@ -192,12 +211,14 @@ int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler, uint32
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(ip);
 	addr.sin_port = htons(port);
+	// create acceptor to receive connection
 	m_pAcceptor = Acceptor::CreateAcceptor(&addr, m_pWorker, m_pContextPool, pHandler);
 	if (!m_pAcceptor)
 	{
 		return -3;
 	}
 
+	// bind server and acceptor
 	m_pAcceptor->SetServer(this);
 
 	return 0;
@@ -231,6 +252,7 @@ void ServerBase::StartAcceptor()
 
 void ServerBase::StopAcceptor()
 {
+	m_pAcceptor->Stop();
 }
 
 int32 ServerBase::StartMainLoop()
@@ -254,6 +276,7 @@ void ServerBase::StopMainLoop()
 
 int32 ServerBase::StartPeerServer(uint32 iIP, uint16 iPort)
 {
+	// only 1 thread is enough, not too many connections
 	if (!StarNet::StartPeerServer(iIP, iPort, 1))
 	{
 		return -1;

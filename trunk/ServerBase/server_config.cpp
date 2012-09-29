@@ -34,6 +34,7 @@ bool ServerConfig::LoadConfig()
 		return false;
 	}
 
+	// server startup configuration
 	m_iServerId = pServerConfigItem->m_iServerId;
 	m_iPeerIP = pServerConfigItem->m_iPeerIP;
 	m_iPeerPort = pServerConfigItem->m_iPeerPort;
@@ -47,6 +48,7 @@ bool ServerConfig::LoadConfig()
 
 	_snprintf_s(fullServerConfigFile, MAX_PATH + 1, "%s\\%s.xml", CONFIG_PATH, serverConfigFile);
 
+	// load server's own config file
 	if (!m_XmlDoc.LoadFile(fullServerConfigFile))
 	{
 		return false;
@@ -68,4 +70,9 @@ ServerConfigItem* ServerConfig::GetServerConfigItem(const TCHAR *strServerName)
 int32 ServerConfig::GetLogLevel() const
 {
 	return m_pCommonConfig->GetLogLevel();
+}
+
+const TCHAR* ServerConfig::GetLogPath() const
+{
+	return m_pCommonConfig->GetLogPath();
 }

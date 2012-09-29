@@ -39,6 +39,7 @@ int32 SessionServerLoop<T>::Init(ServerBase* pServer)
 		pSession = m_SessionPool.Allocate();
 		if (!pSession)
 		{
+			LOG_ERR(LOG_SERVER, _T("Allocate session failed"));
 			return -1;
 		}
 
@@ -47,12 +48,16 @@ int32 SessionServerLoop<T>::Init(ServerBase* pServer)
 		m_arraySession[i] = pSession;
 	}
 
+	// free all the session to pool, and wait for allocation
 	for (uint16 i = 0; i < m_iSessionMax; ++i)
 	{
 		m_SessionPool.Free(m_arraySession[i]);
 	}
 
+	LOG_STT(LOG_SERVER, _T("Initialize session pool success"));
+
 	Session::Initialize(pServer);
+	LOG_STT(LOG_SERVER, _T("Initialize session server success"));
 
 	return 0;
 }
@@ -60,7 +65,7 @@ int32 SessionServerLoop<T>::Init(ServerBase* pServer)
 template<typename T>
 void SessionServerLoop<T>::Destroy()
 {
-
+	LOG_STT(LOG_SERVER, _T("Destroy session server success"));
 }
 
 template<typename T>
@@ -70,9 +75,16 @@ T* SessionServerLoop<T>::GetSession(uint32 iSessionId)
 	T* pSession = NULL;
 	id.iValue_ = iSessionId;
 
+	if (id.sValue_.session_index_ > m_iSessionMax)
+	{
+		LOG_ERR(LOG_SERVER, _T("SessionId is invalid, sid=%d"), iSessionId);
+		return NULL;
+	}
+
 	pSession = m_arraySession[id.sValue_.session_index_];
 	if (pSession->m_iSessionId != iSessionId)
 	{
+		LOG_ERR(LOG_SERVER, _T("SessionId mismatched, m_iSessionId=%d, iSessionId=%d"), pSession->m_iSessionId, iSessionId);
 		return NULL;
 	}
 
@@ -125,6 +137,10 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 			_OnCommandPacketForward((LogicCommandPacketForward*)pCommand);
 		}
 		break;
+
+	default:
+		LOG_ERR(LOG_SERVER, _T("Undefined command id=%d"), pCommand->m_iCmdId);
+		break;
 	}
 
 	return true;
@@ -141,6 +157,7 @@ void SessionServerLoop<T>::_OnCommandOnConnect(LogicCommandOnConnect* pCommand)
 	}
 	else
 	{
+		LOG_ERR(LOG_SERVER, _T("Allocate session failed"));
 		((Connection*)pCommand->m_ConnId)->AsyncDisconnect();
 	}
 }
@@ -161,10 +178,6 @@ void SessionServerLoop<T>::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCom
 		pSession->OnDisconnect();
 		m_SessionPool.Free(pSession);
 	}
-	else
-	{
-		pConnection->AsyncDisconnect();
-	}
 }
 
 template<typename T>
@@ -178,6 +191,7 @@ void SessionServerLoop<T>::_OnCommandOnData(LogicCommandOnData* pCommand)
 	}
 	else
 	{
+		LOG_ERR(LOG_SERVER, _T("Session can't be found"));
 		pConnection->AsyncDisconnect();
 	}
 }

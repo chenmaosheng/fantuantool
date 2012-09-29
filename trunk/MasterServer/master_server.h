@@ -19,20 +19,27 @@ class MasterServer : public ServerBase,
 public:
 	typedef ServerBase super;
 
+	// cstr
 	MasterServer();
 
+	// initialize master server
 	int32 Init(const TCHAR* strServerName);
+	// destroy master server
 	void Destroy();
+	// shutdown master server
 	void Shutdown();
 
 private:
+	// intialize master server's loop
 	int32 InitMainLoop();
+	// destroy main loop
 	void DestroyMainLoop();
 
+	// allocate server configuration
 	ServerConfig* CreateConfig(uint32 iRealmId, const TCHAR* strServerName);
 
 public:
-	PEER_SERVER m_pLoginServer;
+	PEER_SERVER m_pLoginServer;	// handle of login peer server
 };
 
 extern MasterServer* g_pServer;

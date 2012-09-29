@@ -12,6 +12,7 @@
 #include "server_common.h"
 
 #pragma pack(1)
+// better way to generate sessionid
 union SessionId
 {
 	struct  
@@ -41,6 +42,7 @@ public:
 
 	virtual void Clear();		// when reuse, clear the session
 
+	// handle event from io operation
 	virtual int32 OnConnection(ConnID connId);
 	virtual void OnDisconnect();
 	virtual void OnData(uint16 iLen, char* pBuf);
@@ -48,10 +50,13 @@ public:
 	// TypeId means the key point of each packet, the first byte means filterId, the second byte means funcId
 	virtual int32 SendData(uint16 iTypeId, uint16 iLen, const char* pData);
 
+	// intialize static session
 	static void Initialize(ServerBase* pServer);
 
 protected:
+	// handle server packet which is analyzed from received buffer
 	int32 HandlePacket(ServerPacket*);
+	// restore send data, and send them later
 	void SaveSendData(uint16 iTypeId, uint16 iLen, char* pBuf);
 
 public:

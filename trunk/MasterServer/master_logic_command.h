@@ -11,8 +11,8 @@
 
 #include "logic_command.h"
 
-#define COMMAND_ONLOGINREQ 1001
-#define COMMAND_GATEHOLDACK 1002
+#define COMMAND_ONLOGINREQ 1001		// receive login request
+#define COMMAND_GATEHOLDACK 1002	// acknowledge gate session hold request
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
 {

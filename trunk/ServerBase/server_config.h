@@ -20,14 +20,19 @@ public:
 	ServerConfig(const TCHAR* strServerName);
 	virtual ~ServerConfig();
 
+	// load server configuration
 	bool LoadConfig();
 
+	// get server basic configuration by id or name
 	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
 
+	// get log configuration
 	int32 GetLogLevel() const;
+	const TCHAR* GetLogPath() const;
 
 private:
+	// need implemented by each server
 	virtual bool _LoadConfig() = 0;
 
 public:

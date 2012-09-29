@@ -19,16 +19,23 @@ class LogicLoop
 public:
 	enum { NOT_SHUTDOWN, START_SHUTDOWN, READY_FOR_SHUTDOWN, };
 
+	// cstr and dstr
 	LogicLoop();
 	virtual ~LogicLoop();
 
+	// initialize the logic loop
 	virtual int32 Init();
+	// destroy the logic loop
 	virtual void Destroy();
 
+	// start loop
 	virtual int32 Start();
+	// stop loop
 	virtual void Stop();
+	// check if ready to shutdown
 	virtual bool IsReadyForShutdown() const = 0;
 
+	// hang up the thread
 	virtual void Join();
 	
 	virtual void PushCommand(LogicCommand*);
@@ -39,6 +46,7 @@ protected:
 	virtual bool _OnCommand(LogicCommand*) = 0;
 
 private:
+	// thread run fnction
 	static uint32 WINAPI _ThreadMain(PVOID);
 
 private:

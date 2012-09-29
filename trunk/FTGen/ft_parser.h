@@ -11,7 +11,6 @@
 
 struct Node
 {
-	char returnType[32];
 	char funcName[32];
 	struct Param
 	{
@@ -21,13 +20,13 @@ struct Node
 	int paramCount;
 };
 
-struct NodeSet
+struct Filter
 {
-	NodeSet() { nodeCount = 0; includeCount = 0; }
+	Filter() { nodeCount = 0; }
 	Node node[32];
 	int nodeCount;
-	char includeFile[32][128];
-	int includeCount;
+	char filterName[128];
+	char filterId[128];
 };
 
 #endif

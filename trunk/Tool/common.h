@@ -25,5 +25,6 @@
 
 // common defines
 #define ACCOUNTNAME_MAX 64
+#define FSM_STATE_MAX 64
 
 #endif

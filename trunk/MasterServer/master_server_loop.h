@@ -38,7 +38,7 @@ public:
 	int32 GateHoldReq();
 
 private:
-	uint32 _Loop();
+	DWORD _Loop();
 	// shutdown one player in master server
 	void _ShutdownPlayer(MasterPlayerContext*);
 	

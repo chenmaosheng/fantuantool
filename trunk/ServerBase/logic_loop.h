@@ -41,8 +41,17 @@ public:
 	virtual void PushCommand(LogicCommand*);
 	void PushShutdownCommand();
 
+	// get current time from server start
+	DWORD GetCurrTime() const;
+
+	// get last loop's delta time
+	DWORD GetDeltaTime() const;
+
+	// get current world time
+	uint64 GetWorldTime() const;
+
 protected:
-	virtual uint32 _Loop() = 0;
+	virtual DWORD _Loop() = 0;
 	virtual bool _OnCommand(LogicCommand*) = 0;
 
 private:
@@ -56,6 +65,11 @@ private:
 	CRITICAL_SECTION m_csCommandList;
 	std::list<LogicCommand*> m_CommandList;
 	BOOL m_bQuit;
+
+	// time control
+	DWORD m_dwCurrTime;	// current time, from server start on (ms)
+	DWORD m_dwDeltaTime; // unit frame time cost
+	uint64 m_iWorldTime; // world real time (s)
 };
 
 #endif

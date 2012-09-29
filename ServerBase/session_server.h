@@ -15,6 +15,7 @@
 class SessionServer : public ServerBase
 {
 public:
+	// handle io event
 	static bool CALLBACK OnConnection(ConnID connId);
 	static void CALLBACK OnDisconnect(ConnID connId);
 	static void CALLBACK OnData(ConnID connId, uint32 iLen, char* pBuf);
@@ -23,11 +24,14 @@ public:
 	SessionServer();
 	virtual ~SessionServer();
 
+	// intialize session server
 	virtual int32 Init(const TCHAR* strServerName);
+	// destroy and shutdown session server
 	virtual void Destroy();
 	virtual void Shutdown();
 
 private:
+	// get network startup configuration
 	virtual int32 GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, uint32& iServerIP, uint16& iServerPort, uint32& iThreadCount) = 0;
 
 protected:

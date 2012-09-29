@@ -24,8 +24,8 @@ class MasterServerConfig : public ServerConfig
 {
 public:
 	MasterServerConfig(const TCHAR* strServerName);
-	~MasterServerConfig();
-
+	
+	// get gate server basic config by gate server id
 	GateConfigItem* GetGateConfigItem(uint16 iServerId);
 
 private:

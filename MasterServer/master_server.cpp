@@ -22,6 +22,7 @@ int32 MasterServer::Init(const TCHAR* strServerName)
 	iRet = StartPeerServer(g_pServerConfig->m_iPeerIP, g_pServerConfig->m_iPeerPort);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("StarPeerServer failed, IP=%d, port=%d"), g_pServerConfig->m_iPeerIP, g_pServerConfig->m_iPeerPort);
 		return -2;
 	}
 
@@ -30,14 +31,19 @@ int32 MasterServer::Init(const TCHAR* strServerName)
 	iRet = StartMainLoop();
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Start master server's main loop failed"));
 		return -3;
 	}
+
+	LOG_STT(LOG_SERVER, _T("Initialize master server success"));
 
 	return 0;
 }
 
 void MasterServer::Destroy()
 {
+	LOG_STT(LOG_SERVER, _T("Destroy master server"));
+
 	StopMainLoop();
 
 	StopPeerServer();
@@ -47,7 +53,7 @@ void MasterServer::Destroy()
 
 void MasterServer::Shutdown()
 {
-
+	LOG_STT(LOG_SERVER, _T("Shutdown master server"));
 }
 
 ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
@@ -61,6 +67,7 @@ int32 MasterServer::InitMainLoop()
 	m_pLoginServer = GetPeerServer(_T("Login"));
 	if (!m_pLoginServer)
 	{
+		LOG_ERR(LOG_SERVER, _T("Get login peer server failed"));
 		return -1;
 	}
 

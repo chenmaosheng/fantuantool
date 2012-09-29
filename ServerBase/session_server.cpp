@@ -98,6 +98,7 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 	uint16 iServerPort = 0;
 	uint32 iThreadCount = 0;
 
+	// set the event handler
 	static Handler handler;
 	handler.OnConnection = &OnConnection;
 	handler.OnDisconnect = &OnDisconnect;
@@ -114,6 +115,7 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 	iRet = GetServerAndPeerConfig(iPeerIP, iPeerPort, iServerIP, iServerPort, iThreadCount);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Get Config failed"));
 		return -2;
 	}
 
@@ -121,6 +123,7 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 	iRet = StartPeerServer(iPeerIP, iPeerPort);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Start peer server failed, ip=%d, port=%d"), iPeerIP, iPeerPort);
 		return -3;
 	}
 
@@ -129,20 +132,25 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 	iRet = InitAcceptor(iServerIP, iServerPort, &handler, iThreadCount);
 	if (iRet != 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("InitAcceptor failed, ip=%d, port=%d"), iPeerIP, iPeerPort);
 		return -4;
 	}
 
 	LOG_STT(LOG_SERVER, _T("InitAcceptor success, IP=%d, port=%d"), iServerIP, iServerPort);
 
 	StartAcceptor();
+	LOG_STT(LOG_SERVER, _T("Start acceptor success"));
 
 	StartMainLoop();
+	LOG_STT(LOG_SERVER, _T("Start main loop success"));
 
 	return 0;
 }
 
 void SessionServer::Destroy()
 {
+	LOG_STT(LOG_SERVER, _T("Destroy session server"));
+
 	StopMainLoop();
 	DestroyAcceptor();
 	StopPeerServer();
@@ -152,8 +160,12 @@ void SessionServer::Destroy()
 
 void SessionServer::Shutdown()
 {
+	LOG_STT(LOG_SERVER, _T("Ready to shutdown session server"));
+
+	// first stop the acceptor
 	StopAcceptor();
 
+	// use command to control shutdown
 	m_pMainLoop->PushShutdownCommand();
 
 	while (!m_pMainLoop->IsReadyForShutdown())

@@ -251,6 +251,10 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Gen Server Files"
+			>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

@@ -12,6 +12,7 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 	iRet = Char2WChar(strAccountName, pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR));
 	if (iRet == 0)
 	{
+		LOG_ERR(LOG_SERVER, _T("Char2WChar failed"));
 		FT_DELETE(pCommand);
 		return;
 	}

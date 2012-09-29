@@ -50,6 +50,7 @@ bool MasterServerLoop::IsReadyForShutdown() const
 
 int32 MasterServerLoop::GateHoldReq()
 {
+	// todo:
 	return 2;
 }
 
@@ -116,8 +117,8 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
 	if (mit != m_mPlayerContextByName.end())
 	{
+		LOG_ERR(LOG_SERVER, _T("This account is already logged in, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		pPlayerContext = mit->second;
-
 		_ShutdownPlayer(pPlayerContext);
 		return;
 	}
@@ -126,12 +127,14 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 		pPlayerContext = m_PlayerContextPool.Allocate();
 		if (!pPlayerContext)
 		{
+			LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 			return;
 		}
 
+		LOG_DBG(LOG_SERVER, _T("Allocate player context success, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+
 		m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
 		m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
-
 
 		pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
 	}
@@ -148,5 +151,13 @@ void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
 		{
 			pPlayerContext->GateHoldAck(pCommand->m_iServerId, pCommand->m_iGateSessionId);
 		}
+		else
+		{
+			LOG_ERR(LOG_SERVER, _T("sessionId is different, sessionId1=%d, sessionId2=%d"), pPlayerContext->m_iSessionId, pCommand->m_iLoginSessionId);
+		}
+	}
+	else
+	{
+		LOG_ERR(LOG_SERVER, _T("account=%s does not exist in master server"), pCommand->m_strAccountName);
 	}
 }

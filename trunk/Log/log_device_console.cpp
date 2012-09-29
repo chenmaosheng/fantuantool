@@ -6,7 +6,7 @@ LogDeviceConsole::LogDeviceConsole(HANDLE pHandle) :
 {
 	if (!m_pHandle)
 	{
-		m_pHandle = stdout;
+		m_pHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	}
 }
 
@@ -22,8 +22,7 @@ void LogDeviceConsole::Init(HANDLE pHandle)
 void LogDeviceConsole::LogOutput(TCHAR* strBuffer)
 {
 	_SetColor(strBuffer);
-	fprintf_s((FILE*)m_pHandle, "%ls", strBuffer);
-	fflush((FILE*)m_pHandle);
+	wprintf_s(_T("%s"), strBuffer);
 }
 
 void LogDeviceConsole::_SetColor(TCHAR* strBuffer)

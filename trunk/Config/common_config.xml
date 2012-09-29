@@ -1,5 +1,5 @@
 <Config>
-  <Log Path="..\Log" Level=1 />
+  <Log Path="..\LogFolder" Level=1 />
   <Realm>
 	<ServerList>
 		<Server name="Login" id="0" PeerIP="127.0.0.1" PeerPort="4001" config="login_config" exe="LoginServer" />

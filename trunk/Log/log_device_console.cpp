@@ -21,8 +21,8 @@ void LogDeviceConsole::Init(HANDLE pHandle)
 
 void LogDeviceConsole::LogOutput(TCHAR* strBuffer)
 {
-	fprintf_s((FILE*)m_pHandle, "%ls", strBuffer);
 	_SetColor(strBuffer);
+	fprintf_s((FILE*)m_pHandle, "%ls", strBuffer);
 	fflush((FILE*)m_pHandle);
 }
 

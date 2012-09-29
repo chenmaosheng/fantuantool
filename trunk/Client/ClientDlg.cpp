@@ -6,6 +6,8 @@
 #include "ClientDlg.h"
 #include "ClientSocket.h"
 #include "Command.h"
+#include "packet.h"
+#include "data_stream.h"
 
 #define WM_SHOWTASK (WM_USER + 1986)
 
@@ -275,6 +277,49 @@ void CClientDlg::DeleteUser(int connId)
 	{
 		m_UserList.AddString(m_users.at(j).second);
 	}
+}
+
+int CClientDlg::HandlePacket(ServerPacket* pPacket)
+{
+	InputStream stream(pPacket->m_iLen, pPacket->m_Buf);	// put buffer into stream
+	uint8 iFilterId = (uint8)(pPacket->m_iTypeId >> 8);
+	uint8 iFuncType = (uint8)(pPacket->m_iTypeId & 0xff);
+
+	if (iFilterId == 1)
+	{
+		if (iFuncType == 0)
+		{
+			int32 iGateIP = 0;
+			int16 iGatePort = 0;
+			stream.Serialize(iGateIP);
+			stream.Serialize(iGatePort);
+
+			in_addr addr;
+			addr.s_addr = iGateIP;
+			char* strServer = inet_ntoa(addr);
+
+			TCHAR strServerU[64] = {0};
+			MultiByteToWideChar(CP_UTF8, 0, strServer, -1, strServerU, 64);
+
+			m_pSocket->Close();
+
+			if(!m_pSocket->Create())
+			{
+				m_pSocket->Close();
+				return -1;
+			}
+			if(!m_pSocket->Connect(strServerU,iGatePort))
+			{
+				AfxMessageBox(_T("Server is not started:-("));
+				m_pSocket->Close();
+				return -1;	
+			}
+
+			// todo: send confirm to server
+		}
+	}
+
+	return 0;
 }
 
 void CClientDlg::ToTray()

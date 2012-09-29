@@ -40,6 +40,7 @@ int32 LoginServer::GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, ui
 
 int32 LoginServer::InitMainLoop()
 {
+	// get master peer server by name
 	m_pMasterServer = GetPeerServer(_T("Master"));
 	if (!m_pMasterServer)
 	{

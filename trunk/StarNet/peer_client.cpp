@@ -8,7 +8,7 @@
 void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 {
 	uint32 iCopyLen = 0;
-	int32 iRet = 0;
+	bool bRet = false;
 	Connection* pConnection = (Connection*)m_ConnId;
 	// check if peer client is connected
 	if (!pConnection->IsConnected())
@@ -45,8 +45,8 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 			uint16 iFullLength = pPeerPacket->m_iLen + PEER_PACKET_HEAD;
 			if (m_iRecvBufLen >= iFullLength)
 			{
-				iRet = Dispatch(pPeerPacket);
-				if (iRet != 0)
+				bRet = Dispatch(pPeerPacket);
+				if (!bRet)
 				{
 					SN_LOG_ERR(_T("Dispatch failed"));
 					return;

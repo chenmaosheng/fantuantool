@@ -38,7 +38,7 @@ bool CALLBACK GateHoldAck_Callback(PEER_CLIENT pPeerClient, PeerInputStream& str
 	return true;
 }
 
-static PeerClientDispatchFilter::Func test_func[] = 
+static PeerClientDispatchFilter::Func func[] = 
 {
 	OnLoginReq_Callback,
 	GateHoldAck_Callback,
@@ -47,7 +47,8 @@ static PeerClientDispatchFilter::Func test_func[] =
 
 MasterPeerDispatch::MasterPeerDispatch()
 {
-	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_MASTER).m_pFunc = test_func;
+	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_MASTER).m_pFunc = func;
+	PeerClientDispatchFilterArray::GetFilter(PEER_FILTER_MASTER).m_iFuncCount = sizeof(func)/sizeof(func[0]);
 }
 
 static MasterPeerDispatch _MasterPeerDispatch;

@@ -40,6 +40,7 @@ int32 GateServer::GetServerAndPeerConfig(uint32& iPeerIP, uint16& iPeerPort, uin
 
 int32 GateServer::InitMainLoop()
 {
+	// get master peer server handle by name
 	m_pMasterServer = GetPeerServer(_T("Master"));
 	if (!m_pMasterServer)
 	{

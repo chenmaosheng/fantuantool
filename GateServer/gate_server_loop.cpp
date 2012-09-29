@@ -43,7 +43,7 @@ int32 GateServerLoop::Start()
 	return 0;
 }
 
-uint32 GateServerLoop::_Loop()
+DWORD GateServerLoop::_Loop()
 {
 	//// check if ready for shutdown
 	if (m_iShutdownStatus == START_SHUTDOWN)

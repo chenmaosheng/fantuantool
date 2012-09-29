@@ -43,7 +43,7 @@ int32 LoginServerLoop::Start()
 	return 0;
 }
 
-uint32 LoginServerLoop::_Loop()
+DWORD LoginServerLoop::_Loop()
 {
 	// check if ready for shutdown
 	if (m_iShutdownStatus == START_SHUTDOWN)

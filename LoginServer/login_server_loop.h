@@ -26,7 +26,7 @@ public:
 	int32 Start();
 
 private:
-	uint32 _Loop();
+	DWORD _Loop();
 	bool _OnCommand(LogicCommand*);
 };
 

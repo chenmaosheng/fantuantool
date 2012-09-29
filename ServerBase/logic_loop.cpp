@@ -1,15 +1,20 @@
 #include "logic_loop.h"
 #include "logic_command.h"
 #include <process.h>
+#include <mmsystem.h>
+#include <ctime>
 
 LogicLoop* LogicLoop::m_pMainLoop = NULL;
 
 LogicLoop::LogicLoop()
 {
 	m_hThread = NULL;
-	m_bQuit = 0;
-	InitializeCriticalSection(&m_csCommandList);
 	m_hCommandEvent = NULL;
+	m_bQuit = 0;
+	m_dwCurrTime = 0;
+	m_dwDeltaTime = 0;
+	m_iWorldTime = 0;
+	InitializeCriticalSection(&m_csCommandList);
 }
 
 LogicLoop::~LogicLoop()
@@ -41,6 +46,10 @@ void LogicLoop::Destroy()
 
 int32 LogicLoop::Start()
 {
+	// start time line
+	m_dwCurrTime = timeGetTime();
+	m_dwDeltaTime = 0;
+
 	// create an event to control command push and pop
 	m_hCommandEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
 	// create a thread to handle command
@@ -75,25 +84,50 @@ void LogicLoop::PushShutdownCommand()
 	PushCommand(FT_NEW(LogicCommandShutdown));
 }
 
+DWORD LogicLoop::GetCurrTime() const
+{
+	return m_dwCurrTime;
+}
+
+DWORD LogicLoop::GetDeltaTime() const
+{
+	return m_dwDeltaTime;
+}
+
+uint64 LogicLoop::GetWorldTime() const
+{
+	return m_iWorldTime;
+}
+
 uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 {
 	LogicLoop* pLogicLoop = (LogicLoop*)pParam;
 	LogicCommand* pCommand = NULL;
 	DWORD dwRet = 0;
-	uint32 iSleepTime = 0;
+	DWORD dwSleepTime = 0;
+	DWORD dwLastTickTime = 0;
 
 	while (!pLogicLoop->m_bQuit)
 	{
+		// update time control
+		dwLastTickTime = pLogicLoop->m_dwCurrTime;
+		pLogicLoop->m_dwCurrTime = timeGetTime();
+		pLogicLoop->m_dwDeltaTime = pLogicLoop->m_dwCurrTime - dwLastTickTime;
+		pLogicLoop->m_iWorldTime = time(NULL);
+
 		while (true)
 		{
 			// sleep time depends on each server system
-			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, iSleepTime);
+			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, dwSleepTime);
 			if (dwRet == WAIT_FAILED || dwRet == WAIT_TIMEOUT)
 			{
 				break;
 			}
 			else if (dwRet == WAIT_OBJECT_0)
 			{
+				// set sleep time to 0 first
+				dwSleepTime = 0;
+
 				// pop a command from list to be handled
 				EnterCriticalSection(&pLogicLoop->m_csCommandList);
 				if (!pLogicLoop->m_CommandList.empty())
@@ -110,7 +144,7 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 			}
 		}
 
-		iSleepTime = pLogicLoop->_Loop();
+		dwSleepTime = pLogicLoop->_Loop();
 	}
 
 	return 0;

@@ -54,7 +54,7 @@ int32 MasterServerLoop::GateHoldReq()
 	return 2;
 }
 
-uint32 MasterServerLoop::_Loop()
+DWORD MasterServerLoop::_Loop()
 {
 	if (m_iShutdownStatus == START_SHUTDOWN)
 	{

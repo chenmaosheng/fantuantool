@@ -43,6 +43,15 @@ int32 GateServerLoop::Start()
 	return 0;
 }
 
+int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pSession)
+{
+	return 0;
+}
+
+void GateServerLoop::CloseSession(GateSession* pSession)
+{
+}
+
 DWORD GateServerLoop::_Loop()
 {
 	//// check if ready for shutdown
@@ -81,7 +90,7 @@ void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
 	if (mit != m_mSessionMapByName.end())
 	{
-		LOG_ERR(LOG_SERVER, _T("Find a duplicate account on server, account=%s"), pCommand->m_strAccountName);
+		LOG_ERR(LOG_SERVER, _T("Find a duplicate account on server, acc=%s"), pCommand->m_strAccountName);
 		return;
 	}
 

@@ -49,7 +49,7 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	iRet = m_pMainLoop->GateHoldReq();
 	if (iRet < 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("No more gate session to hold, account=%s, sid=%d"), strAccountName, iSessionId);
+		LOG_ERR(LOG_SERVER, _T("No more gate session to hold, acc=%s, sid=%08x"), strAccountName, iSessionId);
 		return;
 	}
 
@@ -93,6 +93,11 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	}
 
 	// todo: login session id delete, add gate session id
+}
+
+void MasterPlayerContext::OnSessionDisconnect()
+{
+	// todo: complex state check
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

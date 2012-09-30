@@ -27,7 +27,13 @@ public:
 	int32 Init();
 	void Destroy();
 
+	// start gate server's loop
 	int32 Start();
+
+	// temp session to session
+	int32 TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pSession);
+	// close session
+	void CloseSession(GateSession*);
 
 private:
 	DWORD _Loop();

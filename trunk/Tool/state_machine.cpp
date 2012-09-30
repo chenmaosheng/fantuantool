@@ -73,6 +73,18 @@ void StateMachine::AddFSMState(FSMState* pState)
 	m_mStateMap.insert(std::make_pair(pState->GetState(), pState));
 }
 
+FSMState* StateMachine::ForceGetFSMState(int32 iState)
+{
+	FSMState* pState = GetFSMState(iState);
+	if (!pState)
+	{
+		pState = new FSMState(iState);
+		AddFSMState(pState);
+	}
+
+	return pState;
+}
+
 void StateMachine::DeleteFSMState(int32 iState)
 {
 	std::map<int32, FSMState*>::iterator mit = m_mStateMap.find(iState);

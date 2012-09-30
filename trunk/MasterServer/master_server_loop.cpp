@@ -92,6 +92,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandGateHoldAck((LogicCommandGateHoldAck*)pCommand);
 		break;
 
+	case COMMAND_ONSESSIONDISCONNECT:
+		_OnCommandOnSessionDisconnect((LogicCommandOnSessionDisconnect*)pCommand);
+		break;
+
 	default:
 		break;
 	}
@@ -117,7 +121,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
 	if (mit != m_mPlayerContextByName.end())
 	{
-		LOG_ERR(LOG_SERVER, _T("This account is already logged in, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("This account is already logged in, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		pPlayerContext = mit->second;
 		_ShutdownPlayer(pPlayerContext);
 		return;
@@ -127,11 +131,11 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 		pPlayerContext = m_PlayerContextPool.Allocate();
 		if (!pPlayerContext)
 		{
-			LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 			return;
 		}
 
-		LOG_DBG(LOG_SERVER, _T("Allocate player context success, account=%s, sid=%d"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		LOG_DBG(LOG_SERVER, _T("Allocate player context success, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 
 		m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
 		m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
@@ -158,6 +162,16 @@ void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
 	}
 	else
 	{
-		LOG_ERR(LOG_SERVER, _T("account=%s does not exist in master server"), pCommand->m_strAccountName);
+		LOG_ERR(LOG_SERVER, _T("acc=%s does not exist in master server"), pCommand->m_strAccountName);
+	}
+}
+
+void MasterServerLoop::_OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect* pCommand)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit != m_mPlayerContextBySessionId.end())
+	{
+		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive disconnect from session server"), mit->second->m_strAccountName, pCommand->m_iSessionId);
+		mit->second->OnSessionDisconnect();
 	}
 }

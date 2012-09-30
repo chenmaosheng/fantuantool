@@ -23,4 +23,7 @@ int32 Char2WChar(const char*, TCHAR*, int32);
 int32 WChar2Char(const TCHAR*, int32, char*, int32);
 int32 WChar2Char(const TCHAR*, char*, int32);
 
+// case sensitive transform
+TCHAR* LowerCase(TCHAR*);
+
 #endif

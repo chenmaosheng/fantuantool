@@ -28,6 +28,8 @@ public:
 	void OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName);
 	// send gate hold response to login server
 	void GateHoldAck(uint16 iGateServerId, uint32 iGateSessionId);
+	// receive disconnect from session server
+	void OnSessionDisconnect();
 	
 public:
 	uint32 m_iSessionId;

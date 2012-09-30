@@ -31,3 +31,16 @@ int32 WChar2Char(const TCHAR* strTChar, char* strChar, int32 iCharLen)
 {
 	return WChar2Char(strTChar, -1, strChar, iCharLen);
 }
+
+TCHAR* LowerCase(TCHAR* strTChar)
+{
+	for(; strTChar[0] != '\0'; ++strTChar)
+	{
+		if (strTChar[0] >= _T('A') && strTChar[0] <= _T('Z'))
+		{
+			strTChar[0] = strTChar[0] + (_T('a') - _T('A'));
+		}
+	}
+
+	return strTChar;
+}

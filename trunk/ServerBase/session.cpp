@@ -9,24 +9,35 @@
 #include "logic_loop.h"
 
 ServerBase* Session::m_pServer = NULL;
+char* Session::m_pPrivateKey = NULL;
+uint16 Session::m_iPrivateKeyLen = 0;
 
-void Session::Initialize(ServerBase* pServer)
+void Session::Initialize(const TCHAR* strPrivateKeyFile, ServerBase* pServer)
 {
 	m_pServer = pServer;
+	// todo: fake secret key
+	m_pPrivateKey = _strdup("private key");
+	m_iPrivateKeyLen = (uint16)strlen(m_pPrivateKey);
 }
 
-Session::Session()
+Session::Session() :
+m_StateMachine(SESSION_STATE_NONE) // reset state machine
 {
 	m_iSessionId = 0;
 	m_pConnection = NULL;
 	m_iRecvBufLen = 0;
+	m_RecvBuf[0] = '\0';
+	m_dwConnectionTime = 0;
+	m_dwLoggedInTime = 0;
+	m_iLoginBufLen = 0;
+	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
 
-	//m_pDataBuf = new SingleBuffer(MAX_INPUT_BUFFER);
+	// initialize state machine
+	InitStateMachine();
 }
 
 Session::~Session()
 {
-	//SAFE_DELETE(m_pDataBuf);
 	m_pConnection = NULL;
 }
 
@@ -34,11 +45,24 @@ void Session::Clear()
 {
 	m_pConnection = NULL;
 	m_iRecvBufLen = 0;
+	m_RecvBuf[0] = '\0';
+	m_dwConnectionTime = 0;
+	m_dwLoggedInTime = 0;
+	m_iLoginBufLen = 0;
+	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
 }
 
 int32 Session::OnConnection(ConnID connId)
 {
 	int32 iRet = 0;
+
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION, false) != SESSION_STATE_ONCONNECTION)
+	{
+		LOG_ERR(LOG_SERVER, _T("Session state error, state=%d"), m_StateMachine.GetCurrState());
+		return -1;
+	}
+
 	int32 i = sizeof(SessionId);
 
 	// reset sequence
@@ -50,11 +74,28 @@ int32 Session::OnConnection(ConnID connId)
 	m_pConnection->SetClient(this);
 	m_pConnection->SetRefMax(256);
 
+	// set new state
+	iRet = m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION);
+	if (iRet < 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		return -1;
+	}
+
+	// set session's onconnection time
+	m_dwConnectionTime = m_pServer->GetCurrTime();
 	return 0;
 }
 
 void Session::OnDisconnect()
 {
+	// check and set state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		return;
+	}
+
 	if (m_pConnection)
 	{
 		Connection::Close(m_pConnection);
@@ -67,38 +108,17 @@ void Session::OnDisconnect()
 	Clear();
 }
 
-//void Session::OnData(uint16 iLen, char *pBuf)
-//{
-//	uint16 iCopyLen = 0;
-//	uint16 iPacketLen = 0;
-//	Packet* pPacket = NULL;
-//
-//	do
-//	{
-//		// the incoming length is no more than the last of buffer
-//		if (!m_pDataBuf->Push(pBuf, iLen))
-//		{
-//			iCopyLen = m_pDataBuf->GetLastSize();
-//			m_pDataBuf->Push(pBuf, iCopyLen);
-//			pBuf += iCopyLen;
-//		}
-//
-//		while (m_pDataBuf->GetCurrSize() > sizeof(uint16))
-//		{
-//			m_pDataBuf->Pop(&iPacketLen, sizeof(uint16));
-//			if (m_pDataBuf->GetCurrSize() >= iPacketLen)
-//			{
-//				
-//			}
-//		}
-//
-//	}while(iLen);
-//}
-
 void Session::OnData(uint16 iLen, char* pBuf)
 {
 	uint16 iCopyLen = 0;
 	int32 iRet = 0;
+
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDATA, false) != m_StateMachine.GetCurrState())
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x, Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
 
 	do
 	{
@@ -119,116 +139,58 @@ void Session::OnData(uint16 iLen, char* pBuf)
 			m_iRecvBufLen += iCopyLen;
 		}	// step1: received a raw buffer
 
-		while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+		// if clinet is just connected
+		if (m_StateMachine.GetCurrState() == SESSION_STATE_ONCONNECTION)
 		{
-			ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
-			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
-			if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
+			while (m_iRecvBufLen >= m_iPrivateKeyLen)
 			{
-				iRet = HandlePacket(pServerPacket);
-				if (iRet != 0)
+				iRet = HandleLoginPacket(m_iRecvBufLen, m_RecvBuf);
+				if (iRet < 0)
 				{
 					return;
 				}
-				
-				if (m_iRecvBufLen > iFullLength)
+
+				if (m_iRecvBufLen > m_iPrivateKeyLen)
 				{
-					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
+					memmove(m_RecvBuf, m_RecvBuf + m_iPrivateKeyLen, m_iRecvBufLen - m_iPrivateKeyLen);
 				}
-				m_iRecvBufLen -= iFullLength;
+				m_iRecvBufLen -= m_iPrivateKeyLen;
+
+				if (iRet == 1 && m_iRecvBufLen != 0)
+				{
+					LOG_ERR(LOG_SERVER, _T("sid=%08x why there is other data received"), m_iSessionId);
+					return;
+				}
 			}
-			else
+		}
+		else
+		{
+			while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
 			{
-				break;
+				ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
+				uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
+				if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
+				{
+					iRet = HandlePacket(pServerPacket);
+					if (iRet != 0)
+					{
+						return;
+					}
+					
+					if (m_iRecvBufLen > iFullLength)
+					{
+						memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
+					}
+					m_iRecvBufLen -= iFullLength;
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
 	}while (iLen);
 }
-
-//void Session::OnData(uint16 iLen, char *pBuf)
-//{
-//	do
-//	{
-//		if (m_iRecvBufLen)
-//		{
-//			uint16 iCopyLen = 0;
-//			// if the last buffer is less than head
-//			if (m_iRecvBufLen < CS_PACKET_HEAD)
-//			{
-//				iCopyLen = CS_PACKET_HEAD - m_iRecvBufLen;
-//				// if received buffer is less than need-copy length
-//				if (iLen < iCopyLen)
-//				{
-//					iCopyLen = iLen;
-//				}
-//				// copy to the next buffer position
-//				memcpy(m_RecvBuf + m_iRecvBufLen, Buf, iCopyLen);
-//			}
-//			else
-//			{
-//				CS_Packet* pPacket = (CS_Packet*)m_RecvBuf;
-//				// the last buf just cost the head and the new buf is larger than packet itself
-//				if (m_iRecvBufLen == CS_PACKET_HEAD && iLen >= pPacket->m_iLen)
-//				{
-//					// todo: do the packet
-//					m_iRecvBufLen = 0;
-//					iLen -= pPacket->m_iLen;
-//					pBuf += pPacket->m_iLen;
-//				}
-//				else
-//				{
-//					// need-copy length equals to full packet size minus received length
-//					iCopyLen = CS_PACKET_HEAD + pPacket->m_iLen - m_iRecvBufLen;
-//					if (iLen < iCopyLen)
-//					{
-//						iCopyLen = iLen;
-//					}
-//					memcpy(m_RecvBuf + m_iRecvBufLen, pBuf, iCopyLen);
-//					m_iRecvBufLen += iCopyLen;
-//					iLen -= iCopyLen;
-//					pBuf += iCopyLen;
-//					if (m_iRecvBufLen == CS_PACKET_HEAD + pPacket->m_iLen)
-//					{
-//						// todo: do the packet
-//						m_iRecvBufLen = 0;
-//					}
-//				}
-//			}
-//		}
-//		else
-//		{
-//			// if received buffer is less than head
-//			if (iLen < CS_PACKET_HEAD)
-//			{
-//				memcpy(m_RecvBuf, pBuf, iLen);
-//				m_iRecvBufLen += iLen;
-//				return;
-//			}
-//
-//			CS_Packet* pPacket = (CS_Packet*)pBuf;
-//			if (pPacket->m_iLen > MAX_INPUT_BUFFER)
-//			{
-//				Disconnect();
-//				return;
-//			}
-//
-//			uint16 iRealLen = CS_PACKET_HEAD + pPacket->m_iLen;
-//			// if received buffer is no less than length of packet
-//			if (iLen >= iRealLen)
-//			{
-//				// todo: do this packet
-//				iLen -= iRealLen;
-//				pBuf += iRealLen;
-//			}
-//			else
-//			{
-//				memcpy(m_RecvBuf, pBuf, iLen);
-//				m_iRecvBufLen += iLen;
-//				return;
-//			}
-//		}
-//	}while(iLen != 0)
-//}
 
 void Session::Disconnect()
 {
@@ -266,7 +228,121 @@ int32 Session::HandlePacket(ServerPacket* pPacket)
 	return 0;
 }
 
-void Session::SaveSendData(uint16 iTypeId, uint16 iLen, char *pBuf)
+int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 {
-	// todo: if need to transfer to other server
+	int32 iRet = 0;
+
+	// todo: decrypt by private key, now is fake
+	iRet = iLen;
+	memcpy((char*)&m_TokenPacket+m_iLoginBufLen, pBuf, iLen);
+
+	m_iLoginBufLen += iLen;
+
+	if (m_iLoginBufLen < sizeof(uint16))
+	{
+		// continue receiving
+		return 0;
+	}
+
+	// check if token buffer is larger than normal
+	if (m_iLoginBufLen > m_TokenPacket.m_iTokenLen + sizeof(uint16) ||
+		m_TokenPacket.m_iTokenLen > MAX_TOKEN_LEN)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x token data error"), m_iSessionId);
+		Disconnect();
+		return -1;
+	}
+
+	if (m_TokenPacket.m_iTokenLen + sizeof(uint16) == m_iLoginBufLen)
+	{
+		// check token packet is valid
+		iRet = CheckLoginToken(m_TokenPacket.m_iTokenLen, m_TokenPacket.m_TokenBuf);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=08x token data is invalid"), m_iSessionId);
+			Disconnect();
+			return -2;
+		}
+
+		// notify client login success
+		iRet = LoggedInNtf();
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=08x LoggedInNtf failed"), m_iSessionId);
+			Disconnect();
+			return -3;
+		}
+
+		m_pConnection->AsyncSend(strlen(g_LoggedInNtf), (char*)g_LoggedInNtf);
+
+		LOG_DBG(LOG_SERVER, _T("sid=08x LoggedIn success"), m_iSessionId);
+
+		return 1;	// success
+	}
+	else
+	{
+		// continue receiving
+		return 0;
+	}
+}
+
+void Session::InitStateMachine()
+{
+	FSMState* pState = NULL;
+	
+	// when state is none
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_NONE);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(SESSION_EVENT_ONCONNECTION, SESSION_STATE_ONCONNECTION);
+
+	// when state is onconnection
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONCONNECTION);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(SESSION_EVENT_DISCONNECT, SESSION_STATE_DISCONNECT);
+	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
+	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_ONCONNECTION);
+	
+	// when state is disconnect
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_DISCONNECT);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
+
+	// when state is ondisconnect
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONDISCONNECT);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+}
+
+int32 Session::LoggedInNtf()
+{
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN) != SESSION_STATE_LOGGEDIN)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
+		return -1;
+	}
+	
+	m_dwLoggedInTime = m_pServer->GetCurrTime();
+
+	LOG_DBG(LOG_SERVER, _T("sid=%08x send login success notification to client"), m_iSessionId);
+
+	return 0;
 }

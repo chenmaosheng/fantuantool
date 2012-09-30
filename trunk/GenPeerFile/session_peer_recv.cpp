@@ -21,9 +21,20 @@ bool CALLBACK PacketForward_Callback(PEER_CLIENT pPeerClient, PeerInputStream& s
 	return true;
 }
 
+bool CALLBACK OnSessionDisconnect_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stream)
+{
+	uint32 iSessionId = 0;
+	stream.Serialize(iSessionId);
+
+	SessionPeerRecv::OnSessionDisconnect(pPeerClient, iSessionId);
+
+	return true;
+}
+
 static PeerClientDispatchFilter::Func func[] = 
 {
 	PacketForward_Callback,
+	OnSessionDisconnect_Callback,
 	NULL
 };
 

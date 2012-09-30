@@ -56,7 +56,8 @@ int32 SessionServerLoop<T>::Init(ServerBase* pServer)
 
 	LOG_STT(LOG_SERVER, _T("Initialize session pool success"));
 
-	Session::Initialize(pServer);
+	// todo: don't forget private key file
+	Session::Initialize(_T(""), pServer);
 	LOG_STT(LOG_SERVER, _T("Initialize session server success"));
 
 	return 0;
@@ -77,7 +78,7 @@ T* SessionServerLoop<T>::GetSession(uint32 iSessionId)
 
 	if (id.sValue_.session_index_ > m_iSessionMax)
 	{
-		LOG_ERR(LOG_SERVER, _T("SessionId is invalid, sid=%d"), iSessionId);
+		LOG_ERR(LOG_SERVER, _T("SessionId is invalid, sid=%08x"), iSessionId);
 		return NULL;
 	}
 
@@ -226,7 +227,7 @@ void SessionServerLoop<T>::_OnCommandPacketForward(LogicCommandPacketForward* pC
 	{
 		if (Sender::SendPacket(pSession, pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData) != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("SendPacket failed, sid=%d"), pCommand->m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("SendPacket failed, sid=%08x"), pCommand->m_iSessionId);
 		}
 	}
 }

@@ -31,6 +31,10 @@ public:
 	// get peer server by id or name
 	PEER_SERVER GetPeerServer(uint16 iServerId);
 	PEER_SERVER GetPeerServer(const TCHAR* strServerName);
+
+	// time control
+	DWORD GetCurrTime();
+	DWORD GetDeltaTime();
 	
 protected:
 	ServerBase();

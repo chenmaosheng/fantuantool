@@ -21,6 +21,7 @@ enum
 	COMMAND_SHUTDOWN,		// ready to shutdown
 	COMMAND_DISCONNECT,		// force disconnect
 	COMMAND_PACKETFORWARD,	// forward packet to another server
+	COMMAND_ONSESSIONDISCONNECT, // receive session disconnect
 };
 
 struct LogicCommand : public MemoryObject 
@@ -107,6 +108,16 @@ struct LogicCommandPacketForward : public LogicCommandT<COMMAND_PACKETFORWARD>
 	uint16 m_iTypeId;
 	uint16 m_iLen;
 	char* m_pData;
+};
+
+struct LogicCommandOnSessionDisconnect : public LogicCommandT<COMMAND_ONSESSIONDISCONNECT>
+{
+	LogicCommandOnSessionDisconnect()
+	{
+		m_iSessionId = 0;
+	}
+
+	uint32 m_iSessionId;
 };
 
 #endif

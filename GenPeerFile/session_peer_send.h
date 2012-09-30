@@ -6,6 +6,7 @@
 struct SessionPeerSend
 {
 	static int32 PacketForward(PEER_SERVER pPeerServer, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char* pBuf);
+	static int32 OnDisconnect(PEER_SERVER pPeerServer, uint32 iSessionId);
 };
 
 #endif

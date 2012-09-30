@@ -147,6 +147,16 @@ PEER_SERVER ServerBase::GetPeerServer(const TCHAR* strServerName)
 	return NULL;
 }
 
+DWORD ServerBase::GetCurrTime()
+{
+	return m_pMainLoop->GetCurrTime();
+}
+
+DWORD ServerBase::GetDeltaTime()
+{
+	return m_pMainLoop->GetDeltaTime();
+}
+
 int32 ServerBase::InitConfig(const TCHAR* strServerName)
 {
 	uint32 iRealmId = 0;

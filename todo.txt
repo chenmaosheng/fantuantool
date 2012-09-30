@@ -16,6 +16,8 @@
 15, utf8<->wchar, consider about chinese character
 16, alloca has memory leak
 17, send more than 1 buf in wsasend
+18, private key file
+19, packet encryption
 
 client
 1, rpc->server, with parameters

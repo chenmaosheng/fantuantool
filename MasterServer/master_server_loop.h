@@ -17,6 +17,7 @@
 class MasterPlayerContext;
 struct LogicCommandOnLoginReq;
 struct LogicCommandGateHoldAck;
+struct LogicCommandOnSessionDisconnect;
 class MasterServerLoop : public LogicLoop
 {
 public:
@@ -50,6 +51,8 @@ private:
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
 	// acknowledge response about hold a gate session
 	void _OnCommandGateHoldAck(LogicCommandGateHoldAck*);
+	// receive disconnect from session server
+	void _OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect*);
 
 private:
 	int32 m_iShutdownStatus;

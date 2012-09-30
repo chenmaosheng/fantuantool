@@ -25,6 +25,11 @@
 
 // common defines
 #define ACCOUNTNAME_MAX 64
-#define FSM_STATE_MAX 64
+#define PASSWORD_MAX 32
+#define FSM_STATE_MAX 256
+#define MAX_TOKEN_LEN 512
+
+// todo: temp data
+const static char g_LoggedInNtf[] = "LoggedIn";
 
 #endif

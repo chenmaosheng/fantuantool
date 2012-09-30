@@ -24,3 +24,8 @@ void SessionPeerRecv::PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, 
 
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
+
+void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
+{
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}

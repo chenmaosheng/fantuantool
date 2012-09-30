@@ -59,6 +59,10 @@ public:
 
 	// add new fsm state
 	void AddFSMState(FSMState*);
+	
+	// check if fsmstate exists, if not, add a new one
+	// in any case will return a fsmstate
+	FSMState* ForceGetFSMState(int32 iState);
 
 	// delete a fsm state
 	void DeleteFSMState(int32 iState);

@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib"
+				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib"
+				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -195,7 +195,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\peer_packet_impl.cpp"
+				RelativePath=".\peer_impl.cpp"
 				>
 			</File>
 		</Filter>

@@ -12,3 +12,12 @@ int32 SessionPeerSend::PacketForward(PEER_SERVER pPeerServer, uint32 iSessionId,
 	stream.SetId(PEER_FILTER_SESSION, 0);
 	return stream.Send(pPeerServer);
 }
+
+int32 SessionPeerSend::OnDisconnect(PEER_SERVER pPeerServer, uint32 iSessionId)
+{
+	PeerOutputStream stream;
+	stream.Serialize(iSessionId);
+
+	stream.SetId(PEER_FILTER_SESSION, 1);
+	return stream.Send(pPeerServer);
+}

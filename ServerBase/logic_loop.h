@@ -48,6 +48,7 @@ public:
 	DWORD GetDeltaTime() const;
 
 	// get current world time
+	// todo: if more than one loop, different loop has different world time
 	uint64 GetWorldTime() const;
 
 protected:

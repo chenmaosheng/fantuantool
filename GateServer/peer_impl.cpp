@@ -8,6 +8,12 @@ void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, 
 {
 	uint32 iRet = 0;
 	LogicCommandGateHoldReq* pCommand = FT_NEW(LogicCommandGateHoldReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateHoldReq) failed"));
+		return;
+	}
+
 	pCommand->m_iLoginSessionId = iLoginSessionId;
 	wcscpy_s(pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);

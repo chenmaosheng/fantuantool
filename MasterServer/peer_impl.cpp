@@ -9,6 +9,12 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 {
 	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnLoginReq) failed"));
+		return;
+	}
+
 	pCommand->m_iSessionId = iSessionId;
 	iRet = Char2WChar(strAccountName, pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR));
 	if (iRet == 0)
@@ -25,6 +31,12 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, const TCHAR *strAccountName, uint32 iGateSessionId)
 {
 	LogicCommandGateHoldAck* pCommand = FT_NEW(LogicCommandGateHoldAck);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateHoldAck) failed"));
+		return;
+	}
+
 	pCommand->m_iServerId = iServerId;
 	pCommand->m_iLoginSessionId = iLoginSessionId;
 	pCommand->m_iGateSessionId = iGateSessionId;
@@ -35,6 +47,12 @@ void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint
 void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
 {
 	LogicCommandOnSessionDisconnect* pCommand = FT_NEW(LogicCommandOnSessionDisconnect);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnSessionDisconnect) failed"));
+		return;
+	}
+
 	pCommand->m_iSessionId = iSessionId;
 	g_pServer->m_pMainLoop->PushCommand(pCommand);	
 }

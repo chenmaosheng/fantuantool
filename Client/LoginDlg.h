@@ -42,10 +42,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedLoginButton();
-
-private:
-	int LoginReq(void* pClient, const char* nickname);
-	int SendPacket(void* pClient, UINT16 iTypeId, UINT16 iLen, const char* pBuf);
 };
 
 //{{AFX_INSERT_LOCATION}}

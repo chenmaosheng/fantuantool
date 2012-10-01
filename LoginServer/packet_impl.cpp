@@ -1,8 +1,8 @@
 #include "login_session.h"
 #include "login_client_recv.h"
 
-void LoginClientRecv::LoginReq(void* pClient, const char* strNickname)
+void LoginClientRecv::VersionReq(void* pClient, uint32 iVersion)
 {
 	LoginSession* pSession = (LoginSession*)pClient;
-	//pSession->LoginReq(strNickname);
+	pSession->OnVersionReq(iVersion);
 }

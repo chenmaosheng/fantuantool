@@ -22,14 +22,6 @@ enum
 	PEER_FILTER_GATE,
 };
 
-enum
-{
-	// all C/S filters defined
-	CLIENT_FILTER_LOGIN,
-	SERVER_FILTER_LOGIN,
-	SERVER_FILTER_GATE,
-};
-
 #define CONFIG_PATH "..\\Config"			// config files folder
 #define COMMON_CONFIG_FILE "common_config"	// common config's filename
 

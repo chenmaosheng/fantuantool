@@ -1,5 +1,4 @@
 #include "session_server.h"
-#include "Command.h"
 #include "connection.h"
 #include "worker.h"
 #include "acceptor.h"

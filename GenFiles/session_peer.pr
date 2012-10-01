@@ -1,0 +1,5 @@
+filter (SessionPeer, PEER_FILTER_SESSION)
+{
+	PacketForward(uint32 iSessionId, uint16 iTypeId, uint16 iLen, string pBuf);
+	OnSessionDisconnect(uint32 iSessionId);
+}

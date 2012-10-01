@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="LoginServer"
-	ProjectGUID="{363059E5-E404-454D-BA0E-AE8BC4E937B0}"
-	RootNamespace="LoginServer"
+	Name="PRGen"
+	ProjectGUID="{ABBA78E7-892B-4091-AD45-3E1416C895BB}"
+	RootNamespace="PRGen"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -41,7 +41,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenFiles;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +60,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -116,7 +114,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenFiles;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -135,7 +132,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -175,31 +171,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\login_server.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\login_server_config.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\login_server_loop.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\login_session.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\packet_impl.cpp"
+				RelativePath=".\pr_generator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\peer_impl.cpp"
+				RelativePath=".\pr_parser.cpp"
 				>
 			</File>
 		</Filter>
@@ -209,71 +189,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\login_server.h"
+				RelativePath=".\pr_generator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\login_server_config.h"
-				>
-			</File>
-			<File
-				RelativePath=".\login_server_loop.h"
-				>
-			</File>
-			<File
-				RelativePath=".\login_session.h"
+				RelativePath=".\pr_parser.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Gen Server Files"
+			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\GenFiles\login_client_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\login_client_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\login_server_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\login_server_send.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Gen Peer Files"
-			>
-			<File
-				RelativePath="..\GenFiles\master_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\master_peer_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\session_peer_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\session_peer_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\session_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenFiles\session_peer_send.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

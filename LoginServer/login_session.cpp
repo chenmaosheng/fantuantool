@@ -136,7 +136,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 		return;
 	}
 
-	iRet = MasterPeerSend::LoginReq(g_pServer->m_pMasterServer, m_iSessionId, m_strAccountName);
+	iRet = MasterPeerSend::OnLoginReq(g_pServer->m_pMasterServer, m_iSessionId, m_strAccountName);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d LoginReq to master server failed"), m_strAccountName, m_iSessionId);

@@ -5,8 +5,7 @@
 
 struct LoginClientRecv
 {
-	// must implement at app layer
-	static void LoginReq(void* pClient, const char* strNickname);
+	static void VersionReq(void* pClient, uint32 iVersion);
 };
 
 #endif

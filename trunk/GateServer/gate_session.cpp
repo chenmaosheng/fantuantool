@@ -10,6 +10,9 @@ GateServerLoop* GateSession::m_pMainLoop = NULL;
 GateSession::GateSession()
 {
 	Clear();
+
+	// initialize state machine
+	InitStateMachine();
 }
 
 GateSession::~GateSession()

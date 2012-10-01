@@ -78,37 +78,17 @@ void CLoginDlg::OnBnClickedLoginButton()
 		return;	
 	}
 
+	m_pSocket->SetState(CONNECTED);
+
+	TokenPacket packet;
 	char nickname[64] = {0};
 	WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
+	_snprintf(packet.m_TokenBuf, 256, "%s;Password", nickname);
 
-	LoginReq(NULL, nickname);		// step1: rpc->server with parameters
+	packet.m_iTokenLen = (uint16)strlen(packet.m_TokenBuf)+1;
+	m_pSocket->Send((char*)&packet,packet.m_iTokenLen+sizeof(uint16)); // step5: send it
 
 	theApp.m_strName = m_strName;
 
 	CDialog::OnOK();
-}
-
-int32 CLoginDlg::LoginReq(void* pClient, const char* nickname)
-{
-	OutputStream stream;
-	uint16 iLength = (uint16)strlen(nickname) + 1;
-	stream.Serialize(iLength);
-	stream.Serialize(iLength, nickname);			// step2: serialize parameters to a datastream
-
-	SendPacket(pClient, LOGIN, stream.GetDataLength(), stream.GetBuffer());		// step3: retrieve buf and len from datastream
-
-	return 0;
-}
-
-int32 CLoginDlg::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
-{
-	char outBuf[1024] = {0};
-	ServerPacket* pServerPacket = (ServerPacket*)outBuf;
-	pServerPacket->m_iLen = iLen;
-	pServerPacket->m_iTypeId = iTypeId;
-	memcpy(pServerPacket->m_Buf, pBuf, iLen);		// step4: use packet to wrap this buf and add header info
-
-	m_pSocket->Send(outBuf,iLen+SERVER_PACKET_HEAD); // step5: send it
-
-	return 0;
 }

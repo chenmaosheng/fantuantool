@@ -32,4 +32,12 @@
 // todo: temp data
 const static char g_LoggedInNtf[] = "LoggedIn";
 
+enum
+{
+	// all C/S filters defined
+	CLIENT_FILTER_LOGIN,
+	SERVER_FILTER_LOGIN,
+	SERVER_FILTER_GATE,
+};
+
 #endif

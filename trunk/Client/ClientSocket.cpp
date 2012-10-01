@@ -21,6 +21,7 @@ CClientSocket::CClientSocket()
 {
 	m_iRecvBufLen = 0;
 	m_RecvBuf[0] = '\0';
+	m_iState = NOT_CONNECT;
 }
 
 CClientSocket::~CClientSocket()
@@ -67,29 +68,39 @@ void CClientSocket::OnReceive(int nErrorCode)
 			m_iRecvBufLen += iCopyLen;
 		}	// step1: received a raw buffer
 
-		while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+		if (m_iState == CONNECTED)
 		{
-			ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
-			uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
-			if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
-			{
-				iRet = HandlePacket(pServerPacket);
-				if (iRet != 0)
-				{
-					return;
-				}
+			m_iState = LOGGEDIN;
 
-				if (m_iRecvBufLen > iFullLength)
-				{
-					memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
-				}
-				m_iRecvBufLen -= iFullLength;
-			}
-			else
+			VersionReq(NULL, 1);
+		}
+		else
+		{
+			while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
 			{
-				break;
+				ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
+				uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
+				if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
+				{
+					iRet = HandlePacket(pServerPacket);
+					if (iRet != 0)
+					{
+						return;
+					}
+
+					if (m_iRecvBufLen > iFullLength)
+					{
+						memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
+					}
+					m_iRecvBufLen -= iFullLength;
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
+		
 	}while (iLen);
 	
 	CSocket::OnReceive(nErrorCode);
@@ -98,4 +109,27 @@ void CClientSocket::OnReceive(int nErrorCode)
 int32 CClientSocket::HandlePacket(ServerPacket* pPacket)
 {
 	return chatDlg->HandlePacket(pPacket);
+}
+
+int32 CClientSocket::VersionReq(void* pClient, int32 iVersion)
+{
+	OutputStream stream;
+	stream.Serialize(iVersion);	// step2: serialize parameters to a datastream		
+
+	SendPacket(pClient, (CLIENT_FILTER_LOGIN<<8)|0, stream.GetDataLength(), stream.GetBuffer());		// step3: retrieve buf and len from datastream
+
+	return 0;
+}
+
+int32 CClientSocket::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	char outBuf[1024] = {0};
+	ServerPacket* pServerPacket = (ServerPacket*)outBuf;
+	pServerPacket->m_iLen = iLen;
+	pServerPacket->m_iTypeId = iTypeId;
+	memcpy(pServerPacket->m_Buf, pBuf, iLen);		// step4: use packet to wrap this buf and add header info
+
+	Send(outBuf,iLen+SERVER_PACKET_HEAD); // step5: send it
+
+	return 0;
 }

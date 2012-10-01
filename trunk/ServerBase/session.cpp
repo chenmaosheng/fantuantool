@@ -31,9 +31,6 @@ m_StateMachine(SESSION_STATE_NONE) // reset state machine
 	m_dwLoggedInTime = 0;
 	m_iLoginBufLen = 0;
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
-
-	// initialize state machine
-	InitStateMachine();
 }
 
 Session::~Session()
@@ -158,8 +155,9 @@ void Session::OnData(uint16 iLen, char* pBuf)
 
 				if (iRet == 1 && m_iRecvBufLen != 0)
 				{
-					LOG_ERR(LOG_SERVER, _T("sid=%08x why there is other data received"), m_iSessionId);
-					return;
+					/*LOG_ERR(LOG_SERVER, _T("sid=%08x why there is other data received"), m_iSessionId);
+					return;*/
+					m_iRecvBufLen = 0;
 				}
 			}
 		}
@@ -259,7 +257,7 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 		iRet = CheckLoginToken(m_TokenPacket.m_iTokenLen, m_TokenPacket.m_TokenBuf);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("sid=08x token data is invalid"), m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("sid=%08x token data is invalid"), m_iSessionId);
 			Disconnect();
 			return -2;
 		}
@@ -268,14 +266,24 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 		iRet = LoggedInNtf();
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("sid=08x LoggedInNtf failed"), m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("sid=%08x LoggedInNtf failed"), m_iSessionId);
 			Disconnect();
 			return -3;
 		}
 
-		m_pConnection->AsyncSend(strlen(g_LoggedInNtf), (char*)g_LoggedInNtf);
+		char* strLoggedInNtf = (char*)m_pConnection->context_pool_->PopOutputBuffer();
+		if (!strLoggedInNtf)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x PopOutputBuffer failed"), m_iSessionId);
+			Disconnect();
+			return -4;
+		}
 
-		LOG_DBG(LOG_SERVER, _T("sid=08x LoggedIn success"), m_iSessionId);
+		strcpy_s(strLoggedInNtf, MAX_OUTPUT_BUFFER, g_LoggedInNtf);
+
+		m_pConnection->AsyncSend(strlen(strLoggedInNtf), (char*)strLoggedInNtf);
+
+		LOG_DBG(LOG_SERVER, _T("sid=%08x LoggedIn success"), m_iSessionId);
 
 		return 1;	// success
 	}

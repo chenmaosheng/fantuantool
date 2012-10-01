@@ -3,12 +3,17 @@
 #include "master_peer_send.h"
 #include "login_server.h"
 #include "packet.h"
+#include "version.h"
+#include "login_server_send.h"
 
 LoginServerLoop* LoginSession::m_pMainLoop = NULL;
 
 LoginSession::LoginSession()
 {
 	Clear();
+
+	// initialize state machine
+	InitStateMachine();
 }
 
 LoginSession::~LoginSession()
@@ -27,7 +32,7 @@ int32 LoginSession::OnConnection(ConnID connId)
 	int32 iRet = 0;
 
 	// check state
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION) != SESSION_STATE_ONCONNECTION)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION, false) != SESSION_STATE_ONCONNECTION)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%d state=%d Session state error"), m_iSessionId, m_StateMachine.GetCurrState());
 		return -1;
@@ -98,6 +103,40 @@ void LoginSession::OnLoginAck(int32 iReturn)
 
 void LoginSession::OnVersionReq(uint32 iVersion)
 {
+	int32 iRet = 0;
+
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONVERSIONREQ, false) != SESSION_STATE_ONVERSIONREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		Disconnect();
+		return;
+	}
+
+	// check version
+	if (iVersion != CLIENT_VERSION)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d version is invalid, version=%d latest_version=%d"), m_strAccountName, m_iSessionId, iVersion, CLIENT_VERSION);
+		
+		iRet = LoginServerSend::VersionAck(this, 1);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"));
+		}
+
+		Disconnect();
+		return;
+	}
+
+	iRet = LoginServerSend::VersionAck(this, 0);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"));
+		Disconnect();
+		return;
+	}
+
+	// todo: notify master server
 }
 
 void LoginSession::InitStateMachine()

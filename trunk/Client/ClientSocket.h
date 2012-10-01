@@ -9,6 +9,12 @@
 #include "packet.h"
 
 class CClientDlg;
+enum
+{
+	NOT_CONNECT,
+	CONNECTED,
+	LOGGEDIN,
+};
 /////////////////////////////////////////////////////////////////////////////
 // CClientSocket command target
 class CClientSocket : public CSocket
@@ -30,6 +36,7 @@ public:
 public:
 	virtual void OnReceive(int nErrorCode);
 	int32 HandlePacket(ServerPacket*);
+	void SetState(int32 iState){m_iState = iState;}
 	//}}AFX_VIRTUAL
 
 	// Generated message map functions
@@ -42,6 +49,11 @@ protected:
 	uint32 m_iRecvBufLen;
 	char m_RecvBuf[MAX_OUTPUT_BUFFER];
 	ServerPacket m_Packet;
+	int32 m_iState;
+
+private:
+	int VersionReq(void* pClient, int iVersion);
+	int SendPacket(void* pClient, UINT16 iTypeId, UINT16 iLen, const char* pBuf);
 };
 
 /////////////////////////////////////////////////////////////////////////////

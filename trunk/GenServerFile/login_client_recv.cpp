@@ -4,22 +4,19 @@
 #include "packet.h"
 #include <malloc.h>
 
-bool CALLBACK LoginReq_Callback(void* pClient, InputStream& stream)
+bool CALLBACK VersionReq_Callback(void* pClient, InputStream& stream)
 {
-	uint16 iLength = 0;
-	stream.Serialize(iLength);
-	char* nickname = (char*)_malloca(iLength + 1);
-	stream.Serialize(iLength, nickname);
-	nickname[iLength] = '\0';		// step5: analyze datastream
+	uint32 iVersion = 0;
+	stream.Serialize(iVersion);// step5: analyze datastream
 
-	LoginClientRecv::LoginReq(pClient, nickname);	// step6: call rpc function with parameters
+	LoginClientRecv::VersionReq(pClient, iVersion);	// step6: call rpc function with parameters
 
 	return true;
 }
 
 static DispatchFilter::Func func[] = 
 {
-	LoginReq_Callback,
+	VersionReq_Callback,
 	NULL
 };
 

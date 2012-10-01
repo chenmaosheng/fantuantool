@@ -1,0 +1,6 @@
+filter (LoginServer, SERVER_FILTER_LOGIN)
+{
+	VersionAck(int32 iReason);
+	LoginFailedAck(int32 iReason);
+	LoginNtf(uint32 iGateIP, uint16 iGatePort);
+}

@@ -5,7 +5,7 @@
 #include "memory_object.h"
 #include "session_peer_recv.h"
 
-void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, const char* strAccountName)
+void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, const TCHAR* strAccountName)
 {
 	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
@@ -16,15 +16,7 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 	}
 
 	pCommand->m_iSessionId = iSessionId;
-	iRet = Char2WChar(strAccountName, pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR));
-	if (iRet == 0)
-	{
-		LOG_ERR(LOG_SERVER, _T("Char2WChar failed"));
-		FT_DELETE(pCommand);
-		return;
-	}
-
-	pCommand->m_strAccountName[iRet] = _T('\0');
+	wcscpy_s(pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 

@@ -1,6 +1,5 @@
 #include "login_server.h"
 #include "login_server_loop.h"
-#include "login_packet_dispatch.h"
 #include "login_server_config.h"
 
 LoginServer* g_pServer = NULL;

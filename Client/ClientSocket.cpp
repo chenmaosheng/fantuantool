@@ -6,7 +6,6 @@
 #include "ClientSocket.h"
 #include "ClientDlg.h"
 #include "targetver.h"
-#include "Command.h"
 #include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -73,6 +72,8 @@ void CClientSocket::OnReceive(int nErrorCode)
 			m_iState = LOGGEDIN;
 
 			VersionReq(NULL, 1);
+			m_iRecvBufLen = 0;
+			memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
 		}
 		else
 		{

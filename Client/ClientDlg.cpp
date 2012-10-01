@@ -5,7 +5,6 @@
 #include "Client.h"
 #include "ClientDlg.h"
 #include "ClientSocket.h"
-#include "Command.h"
 #include "packet.h"
 #include "data_stream.h"
 
@@ -193,7 +192,7 @@ void CClientDlg::OnBnClickedSendButton()
 		return;
 	}
 
-	SendMessagePkt pkt;
+	/*SendMessagePkt pkt;
 
 	CTime time = CTime::GetCurrentTime();
 	CString t = time.Format("%H:%M:%S");
@@ -206,7 +205,7 @@ void CClientDlg::OnBnClickedSendButton()
 	m_strMessage = "";
 	UpdateData(FALSE);
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_MESSAGE_EDIT);
-	pEdit->SetFocus();
+	pEdit->SetFocus();*/
 }
 
 BOOL CClientDlg::GetMessage(char* message, int length)

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenServerFile;..\GenPeerFile;..\external\tinyxml"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenFiles;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenServerFile;..\GenPeerFile;..\external\tinyxml"
+				AdditionalIncludeDirectories="..\tool;..\log;..\starnet;..\ServerBase;..\GenFiles;..\external\tinyxml"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -231,23 +231,19 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\GenPeerFile\gate_peer_dispatch.h"
+				RelativePath="..\GenFiles\gate_peer_recv.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GenPeerFile\gate_peer_recv.cpp"
+				RelativePath="..\GenFiles\gate_peer_recv.h"
 				>
 			</File>
 			<File
-				RelativePath="..\GenPeerFile\gate_peer_recv.h"
+				RelativePath="..\GenFiles\master_peer_send.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GenPeerFile\master_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GenPeerFile\master_peer_send.h"
+				RelativePath="..\GenFiles\master_peer_send.h"
 				>
 			</File>
 		</Filter>

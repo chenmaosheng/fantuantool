@@ -1,6 +1,5 @@
 #include "master_server.h"
 #include "master_server_loop.h"
-#include "master_peer_dispatch.h"
 #include "master_server_config.h"
 
 MasterServer* g_pServer = NULL;

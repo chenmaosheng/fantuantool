@@ -1,0 +1,4 @@
+filter (GatePeer, PEER_FILTER_GATE)
+{
+	GateHoldReq(uint32 iSessionId, wstring strAccountName);
+}

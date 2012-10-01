@@ -51,6 +51,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{C84D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenFiles", "GenFiles\GenFiles.vcproj", "{59F59BEA-4FFD-4659-957C-DF4FE47C525A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PRGen", "PRGen\PRGen.vcproj", "{ABBA78E7-892B-4091-AD45-3E1416C895BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -105,6 +107,10 @@ Global
 		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Debug|Win32.Build.0 = Debug|Win32
 		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Release|Win32.ActiveCfg = Release|Win32
 		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Release|Win32.Build.0 = Release|Win32
+		{ABBA78E7-892B-4091-AD45-3E1416C895BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ABBA78E7-892B-4091-AD45-3E1416C895BB}.Debug|Win32.Build.0 = Debug|Win32
+		{ABBA78E7-892B-4091-AD45-3E1416C895BB}.Release|Win32.ActiveCfg = Release|Win32
+		{ABBA78E7-892B-4091-AD45-3E1416C895BB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

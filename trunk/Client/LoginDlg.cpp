@@ -7,7 +7,6 @@
 #include "ClientSocket.h"
 #include "targetver.h"
 #include "packet.h"
-#include "command.h"
 #include "data_stream.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW

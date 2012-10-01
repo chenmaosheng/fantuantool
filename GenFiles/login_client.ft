@@ -1,0 +1,4 @@
+filter (LoginClient, CLIENT_FILTER_LOGIN)
+{
+	VersionReq(uint32 iVersion);
+}

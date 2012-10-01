@@ -1,10 +1,10 @@
 #include "master_peer_send.h"
 #include "peer_stream.h"
 
-uint32 MasterPeerSend::LoginReq(PEER_SERVER pPeerServer, uint32 iSessionId, const char *strAccountName)
+uint32 MasterPeerSend::LoginReq(PEER_SERVER pPeerServer, uint32 iSessionId, const TCHAR *strAccountName)
 {
 	PeerOutputStream stream;
-	uint16 iAccountNameLen = (uint16)strlen(strAccountName);
+	uint16 iAccountNameLen = (uint16)wcslen(strAccountName);
 	stream.Serialize(iSessionId);
 	stream.Serialize(iAccountNameLen);
 	stream.Serialize(iAccountNameLen, strAccountName);

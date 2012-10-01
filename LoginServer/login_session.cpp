@@ -121,7 +121,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 		iRet = LoginServerSend::VersionAck(this, 1);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"));
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"), m_strAccountName, m_iSessionId);
 		}
 
 		Disconnect();
@@ -131,12 +131,26 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 	iRet = LoginServerSend::VersionAck(this, 0);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d VersionAck failed"), m_strAccountName, m_iSessionId);
 		Disconnect();
 		return;
 	}
 
-	// todo: notify master server
+	iRet = MasterPeerSend::LoginReq(g_pServer->m_pMasterServer, m_iSessionId, m_strAccountName);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d LoginReq to master server failed"), m_strAccountName, m_iSessionId);
+		Disconnect();
+		return;
+	}
+
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ) != SESSION_STATE_ONLOGINREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%d LoginReq to master server success"), m_strAccountName, m_iSessionId);
 }
 
 void LoginSession::InitStateMachine()

@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GateServer", "GateServer\Ga
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenFiles", "GenFiles\GenFiles.vcproj", "{59F59BEA-4FFD-4659-957C-DF4FE47C525A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -99,13 +101,17 @@ Global
 		{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB}.Debug|Win32.Build.0 = Debug|Win32
 		{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB}.Release|Win32.ActiveCfg = Release|Win32
 		{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB}.Release|Win32.Build.0 = Release|Win32
+		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Debug|Win32.Build.0 = Debug|Win32
+		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Release|Win32.ActiveCfg = Release|Win32
+		{59F59BEA-4FFD-4659-957C-DF4FE47C525A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B7CB19AC-2A23-4E94-B693-8573B23C8C75} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 		{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 		{363059E5-E404-454D-BA0E-AE8BC4E937B0} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
-		{B7CB19AC-2A23-4E94-B693-8573B23C8C75} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 	EndGlobalSection
 EndGlobal

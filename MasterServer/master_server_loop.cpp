@@ -3,6 +3,8 @@
 #include "master_logic_command.h"
 #include "master_player_context.h"
 #include "session_peer_send.h"
+#include "login_peer_send.h"
+#include "gate_peer_send.h"
 
 MasterServerLoop::MasterServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
@@ -49,6 +51,11 @@ bool MasterServerLoop::IsReadyForShutdown() const
 	return m_iShutdownStatus == READY_FOR_SHUTDOWN;
 }
 
+void MasterServerLoop::LoginSession2GateSession(MasterPlayerContext* pPlayerContext, uint32 iLoginSessionId, uint32 iGateSessionId)
+{
+	// todo:
+}
+
 int32 MasterServerLoop::GateHoldReq()
 {
 	// todo:
@@ -68,7 +75,7 @@ DWORD MasterServerLoop::_Loop()
 	return 100;
 }
 
-void MasterServerLoop::_ShutdownPlayer(MasterPlayerContext* pPlayerContext)
+void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 {
 	int32 iRet = 0;
 	bool bSendOnLoginAck = false;
@@ -78,6 +85,42 @@ void MasterServerLoop::_ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	if (pPlayerContext->m_bFinalizing)
 	{
 		return;
+	}
+
+	switch (pPlayerContext->m_StateMachine.GetCurrState())
+	{
+	case PLAYER_STATE_ONLOGINREQ:
+		bSendOnLoginAck = true;
+		break;
+
+	case PLAYER_STATE_GATEHOLDREQ:
+	case PLAYER_STATE_GATEHOLDACK:
+		bSendOnLoginAck = true;
+		bSendGateReleaseReq = true;
+		break;
+
+	case PLAYER_STATE_GATEHOLDNTF:
+		bSendGateReleaseReq = true;
+		break;
+
+	case PLAYER_STATE_ONGATELOGINREQ:
+		bSendGateDisconnect = true;
+		break;
+	}
+
+	if (bSendOnLoginAck && !IsReadyForShutdown())
+	{
+		LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pPlayerContext->m_iSessionId, 3);
+	}
+
+	if (bSendGateReleaseReq && !IsReadyForShutdown())
+	{
+		GatePeerSend::GateReleaseReq(g_pServer->GetPeerServer(pPlayerContext->m_iGateServerId), pPlayerContext->m_iSessionId, wcslen(pPlayerContext->m_strAccountName)+1, pPlayerContext->m_strAccountName);
+	}
+
+	if (bSendGateDisconnect && !IsReadyForShutdown())
+	{
+		SessionPeerSend::Disconnect(g_pServer->GetPeerServer(pPlayerContext->m_iGateServerId), pPlayerContext->m_iSessionId, 0);
 	}
 }
 
@@ -120,7 +163,7 @@ void MasterServerLoop::_OnCommandShutdown()
 	for (stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.begin();
 		mit != m_mPlayerContextByName.end(); ++mit)
 	{
-		_ShutdownPlayer(mit->second);
+		ShutdownPlayer(mit->second);
 	}
 }
 
@@ -141,7 +184,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		}
 
-		_ShutdownPlayer(pPlayerContext);
+		ShutdownPlayer(pPlayerContext);
 		return;
 	}
 	

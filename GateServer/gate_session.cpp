@@ -3,7 +3,7 @@
 #include "gate_server.h"
 #include "master_peer_send.h"
 #include "gate_server_config.h"
-#include "packet.h"
+#include "session_peer_send.h"
 
 GateServerLoop* GateSession::m_pMainLoop = NULL;
 
@@ -27,14 +27,42 @@ void GateSession::Clear()
 
 int32 GateSession::OnConnection(ConnID connId)
 {
-	LOG_DBG(LOG_SERVER, _T("Receive a connection, connId=%d"), connId);
-	return super::OnConnection(connId);
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION) != SESSION_STATE_ONCONNECTION)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return -1;
+	}
+
+	super::OnConnection(connId);
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Receive a connection"), m_strAccountName, m_iSessionId);
+	return 0;
 }
 
 void GateSession::OnDisconnect()
 {
-	LOG_DBG(LOG_SERVER, _T("sid=%08x connection is disconnected"), m_iSessionId);
+	int32 iRet = 0;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x connection is disconnected"), m_strAccountName, m_iSessionId);
 	super::OnDisconnect();
+
+	switch (m_StateMachine.GetCurrState())
+	{
+	case SESSION_STATE_ONDISCONNECT:
+		iRet = SessionPeerSend::OnSessionDisconnect(g_pServer->m_pMasterServer, m_iSessionId);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d OnSessionDisconnect failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+
+		m_pMainLoop->CloseSession(this);
+		break;
+
+	default:
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		break;
+	}
 }
 
 void GateSession::Disconnect()
@@ -227,6 +255,17 @@ int32 GateSession::LoggedInNtf()
 	m_pMainLoop->CloseSession(this);
 
 	return 0;
+}
+
+void GateSession::OnSessionTransfered()
+{
+}
+
+void GateSession::OnMasterDisconnect()
+{
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive disconnect"), m_strAccountName, m_iSessionId);
+
+	Connection::Close(m_pConnection);
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

@@ -5,6 +5,7 @@
 #include "packet.h"
 #include "version.h"
 #include "login_server_send.h"
+#include "session_peer_send.h"
 
 LoginServerLoop* LoginSession::m_pMainLoop = NULL;
 
@@ -50,24 +51,23 @@ int32 LoginSession::OnConnection(ConnID connId)
 
 void LoginSession::OnDisconnect()
 {
+	int32 iRet = 0;
+
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%d Receive disconnect request from client"), m_strAccountName, m_iSessionId);
 	
-	// check state
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT, false) != SESSION_STATE_ONDISCONNECT) 
-	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
-		return;
-	}
+	super::OnDisconnect();
 
 	// check if state is login req, it must notify master server
 	// and the server is not ready for shutdown
 	if (m_StateMachine.GetCurrState() == SESSION_STATE_ONLOGINREQ &&
 		!g_pServer->m_bReadyForShutdown)
 	{
-		// todo: notify master server
+		iRet = SessionPeerSend::OnSessionDisconnect(g_pServer->m_pMasterServer, m_iSessionId);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d OnSessionDisconnect failed"), m_strAccountName, m_iSessionId);
+		}
 	}
-
-	super::OnDisconnect();
 }
 
 void LoginSession::Disconnect()

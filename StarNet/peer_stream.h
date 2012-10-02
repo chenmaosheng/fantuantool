@@ -98,7 +98,7 @@ public:
 		iCount *= sizeof(T);
 		if (m_iDataLength - m_iDataIndex >= iCount)
 		{
-			memcpy(array, m_DataBuffer + m_iDataIndex, iCount);
+			array = (T*)(m_DataBuffer+m_iDataIndex);
 			m_iDataIndex += iCount;
 			return true;
 		}

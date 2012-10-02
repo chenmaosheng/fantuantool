@@ -34,14 +34,17 @@ public:
 	int32 Start();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
+	// change from login session to gate session
+	void LoginSession2GateSession(MasterPlayerContext*, uint32 iLoginSessionId, uint32 iGateSessionId);
 
 	// receive request about hold a gate session
 	int32 GateHoldReq();
 
+	// shutdown one player in master server
+	void ShutdownPlayer(MasterPlayerContext*);
+
 private:
 	DWORD _Loop();
-	// shutdown one player in master server
-	void _ShutdownPlayer(MasterPlayerContext*);
 	
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();

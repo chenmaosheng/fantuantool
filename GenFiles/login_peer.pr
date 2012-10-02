@@ -1,0 +1,7 @@
+filter (LoginPeer, PEER_FILTER_LOGIN)
+{
+	// reason: 1 already login
+	// reason: 2 server error
+	// reason: 3 disconnected
+	OnLoginAck(uint32 iSessionId, int8 iReason);
+}

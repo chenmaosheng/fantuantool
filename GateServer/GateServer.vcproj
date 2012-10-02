@@ -239,11 +239,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\GenFiles\login_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenFiles\login_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\GenFiles\master_peer_send.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\GenFiles\master_peer_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenFiles\session_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenFiles\session_peer_recv.h"
+				>
+			</File>
+			<File
+				RelativePath="..\GenFiles\session_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\GenFiles\session_peer_send.h"
 				>
 			</File>
 		</Filter>

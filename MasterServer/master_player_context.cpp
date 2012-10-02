@@ -12,9 +12,11 @@ uint16 MasterPlayerContext::m_iDelayTypeId = 0;
 uint16 MasterPlayerContext::m_iDelayLen = 0;
 char MasterPlayerContext::m_DelayBuf[MAX_INPUT_BUFFER] = {0};
 
-MasterPlayerContext::MasterPlayerContext()
+MasterPlayerContext::MasterPlayerContext() :
+m_StateMachine(PLAYER_STATE_NONE)
 {
 	Clear();
+	_InitStateMachine();
 }
 
 MasterPlayerContext::~MasterPlayerContext()
@@ -42,6 +44,14 @@ int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char
 void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName)
 {
 	int32 iRet = 0;
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONLOGINREQ) != PLAYER_STATE_ONLOGINREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
 	
 	m_iSessionId = iSessionId;
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
@@ -50,17 +60,25 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	iRet = m_pMainLoop->GateHoldReq();
 	if (iRet < 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("No more gate session to hold, acc=%s, sid=%08x"), strAccountName, iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x No more gate session to hold"), strAccountName, iSessionId);
 		return;
 	}
 
 	m_iGateServerId = (uint16)iRet;
-	LOG_DBG(LOG_SERVER, _T("Hold a gate session on gate server id=%d"), iRet);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Hold a gate session on gate server id=%d"), strAccountName, iSessionId, iRet);
 
 	iRet = GatePeerSend::GateHoldReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, (uint16)wcslen(strAccountName)+1, strAccountName);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("Send gate hold request failed"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Send gate hold request failed"), strAccountName, iSessionId);
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDREQ) != PLAYER_STATE_GATEHOLDREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 }
@@ -70,11 +88,22 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	int32 iRet = 0;
 	GateConfigItem* pConfigItem = NULL;
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Hold gate success"), m_strAccountName, m_iSessionId);
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDACK) != PLAYER_STATE_GATEHOLDACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
 	m_iGateServerId = iGateServerId;
 	pConfigItem = g_pServerConfig->GetGateConfigItem(iGateServerId);
 	if (!pConfigItem)
 	{
-		LOG_ERR(LOG_SERVER, _T("Get gate server's config failed"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Get gate server's config failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
@@ -82,23 +111,107 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	iRet = LoginServerSend::LoginNtf(this, pConfigItem->m_iServerIP, pConfigItem->m_iServerPort);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("Send login notification failed"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Send login notification failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
 	iRet = SessionPeerSend::PacketForward(g_pServer->m_pLoginServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("Forward packet to login server failed"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Forward packet to login server failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// set state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDNTF) != PLAYER_STATE_GATEHOLDNTF)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
 	// todo: login session id delete, add gate session id
+	m_pMainLoop->LoginSession2GateSession(this, m_iSessionId, iGateSessionId);
 }
 
 void MasterPlayerContext::OnSessionDisconnect()
 {
-	// todo: complex state check
+	int32 iRet = 0;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive disconnect"), m_strAccountName, m_iSessionId);
+
+	m_pMainLoop->ShutdownPlayer(this);
+}
+
+void MasterPlayerContext::_InitStateMachine()
+{
+	FSMState* pState = NULL;
+	
+	// when state is none
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_NONE);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONLOGINREQ, PLAYER_STATE_ONLOGINREQ);
+
+	// when state is on login req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONLOGINREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_GATEHOLDREQ, PLAYER_STATE_GATEHOLDREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEHOLDREQ);
+	
+	// when state is gate hold req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_GATEHOLDREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_GATEHOLDACK, PLAYER_STATE_GATEHOLDACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEHOLDACK);
+
+	// when state is gate hold ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_GATEHOLDACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_GATEHOLDNTF, PLAYER_STATE_GATEHOLDNTF);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEHOLDACK);
+
+	// when state is gate hold ntf
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_GATEHOLDNTF);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONGATELOGINREQ, PLAYER_STATE_ONGATELOGINREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEHOLDNTF);
+
+	// when state is on gate login req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONGATELOGINREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONGATELOGINREQ);
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

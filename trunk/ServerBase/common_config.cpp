@@ -68,7 +68,7 @@ bool CommonConfig::LoadConfig()
 		item.m_strServerName[iRet] = _T('\0');
 		
 		// server id
-		item.m_iServerId = (uint16)atoi(pServerElement->Attribute("id"));
+		item.m_iServerId = (uint8)atoi(pServerElement->Attribute("id"));
 
 		// peer ip
 		item.m_iPeerIP = inet_addr(pServerElement->Attribute("PeerIP"));

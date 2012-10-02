@@ -18,7 +18,7 @@
 struct ServerConfigItem
 {
 	TCHAR m_strServerName[MAX_PATH+1];	// server name
-	uint16 m_iServerId;					// server id, not allowed to duplicate, will check at config verification function(todo:)
+	uint8 m_iServerId;					// server id, not allowed to duplicate, will check at config verification function(todo:)
 	uint32 m_iPeerIP;					// IP when serve as a peer server
 	uint16 m_iPeerPort;					// port when serve as a peer server
 	TCHAR m_strConfigFile[MAX_PATH+1];	// the config file name of this server

@@ -21,14 +21,9 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 			fprintf(fp, "    static void %s(PEER_CLIENT pPeerClient", filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const TCHAR* %s", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
@@ -55,21 +50,13 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 		fprintf(fp, "{\n");
 		for (int j = 0; j < filter->nodeCount; ++j)
 		{
-			bool bNeedLength = false;
 			fprintf(fp, "bool CALLBACK %s_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stream)\n", filter->node[j].funcName);
 			fprintf(fp, "{\n");
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					bNeedLength = true;
-					fprintf(fp, "    TCHAR* %s;\n", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					bNeedLength = true;
-					fprintf(fp, "    char* %s;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    %s* %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
@@ -77,27 +64,21 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 				}
 			}
 
-			if (bNeedLength)
+			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				fprintf(fp, "    uint16 iLength;\n\n");
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
+				{
+					fprintf(fp, "    uint16 %s_length;\n", filter->node[j].paramSet[k].paramName);
+				}
 			}
 
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    %s = (TCHAR*)_malloca((iLength + 1)*sizeof(TCHAR));\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    %s[iLength] = _T('\\0');\n", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    %s = (char*)_malloca(iLength + 1);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    %s[iLength] = _T('\\0');\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+					fprintf(fp, "    stream.Serialize(%s_length);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    stream.Serialize(%s_length, %s);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
@@ -153,14 +134,9 @@ void GenerateSendInclude(const char* name, FILE* fp)
 			fprintf(fp, "    static int32 %s(PEER_SERVER pPeerServer", filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const TCHAR* %s", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
@@ -189,43 +165,33 @@ void GenerateSendCpp(const char* name, FILE* fp)
 			fprintf(fp, "int32 %sSend::%s(PEER_SERVER pPeerServer", filter->filterName, filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					bNeedLength = true;
-					fprintf(fp, ", const TCHAR* %s", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					bNeedLength = true;
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
 					fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 			}
+
 			fprintf(fp, ")\n{\n");
 			fprintf(fp, "    PeerOutputStream stream;\n");
-			if (bNeedLength)
+			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				fprintf(fp, "    uint16 iLength;\n");
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
+				{
+					fprintf(fp, "    uint16 %s_length;\n", filter->node[j].paramSet[k].paramName);
+				}
 			}
 
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "wstring") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    iLength = (uint16)wcslen(%s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
-				}
-				else
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
-				{
-					fprintf(fp, "    iLength = (uint16)strlen(%s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+					fprintf(fp, "    stream.Serialize(%s_length);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    stream.Serialize(%s_length, %s);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{

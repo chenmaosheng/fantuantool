@@ -5,7 +5,7 @@
 #include "memory_object.h"
 #include "session_peer_recv.h"
 
-void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, const TCHAR* strAccountName)
+void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
 	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
@@ -16,11 +16,11 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, cons
 	}
 
 	pCommand->m_iSessionId = iSessionId;
-	wcscpy_s(pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR), strAccountName);
+	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, const TCHAR *strAccountName, uint32 iGateSessionId)
+void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName, uint32 iGateSessionId)
 {
 	LogicCommandGateHoldAck* pCommand = FT_NEW(LogicCommandGateHoldAck);
 	if (!pCommand)
@@ -32,7 +32,7 @@ void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint
 	pCommand->m_iServerId = iServerId;
 	pCommand->m_iLoginSessionId = iLoginSessionId;
 	pCommand->m_iGateSessionId = iGateSessionId;
-	wcscpy_s(pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR), strAccountName);
+	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 

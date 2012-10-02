@@ -12,19 +12,19 @@ void Minidump::Init(TCHAR *strPath)
 	TCHAR strModuleName[MAX_PATH] = {0};
 
 	// get module name in order to create correct dump file name
-	dwRet = GetModuleBaseName(GetCurrentProcess(), NULL, strModuleName, sizeof(strModuleName)/sizeof(TCHAR));
+	dwRet = GetModuleBaseName(GetCurrentProcess(), NULL, strModuleName, _countof(strModuleName));
 	if (dwRet == 0)
 	{
-		wcscpy_s(strModuleName, sizeof(strModuleName)/sizeof(TCHAR), _T("Fantuan"));
+		wcscpy_s(strModuleName, _countof(strModuleName), _T("Fantuan"));
 	}
 
-	wcscpy_s(m_strDumpPath, sizeof(m_strDumpPath)/sizeof(TCHAR), strPath);
-	wcscat_s(m_strDumpPath, sizeof(m_strDumpPath)/sizeof(TCHAR), _T("\\"));
-	wcscat_s(m_strDumpPath, sizeof(m_strDumpPath)/sizeof(TCHAR), strModuleName);
+	wcscpy_s(m_strDumpPath, _countof(m_strDumpPath), strPath);
+	wcscat_s(m_strDumpPath, _countof(m_strDumpPath), _T("\\"));
+	wcscat_s(m_strDumpPath, _countof(m_strDumpPath), strModuleName);
 
 	SYSTEMTIME now;
 	GetLocalTime(&now);
-	_stprintf_s(m_strDumpPath, sizeof(m_strDumpPath)/sizeof(TCHAR), _T("%s_%02d.%02d.%02d %02d.%02d.%02d.dmp"),
+	_stprintf_s(m_strDumpPath, _countof(m_strDumpPath), _T("%s_%02d.%02d.%02d %02d.%02d.%02d.dmp"),
 		m_strDumpPath, now.wYear, now.wMonth, now.wDay, now.wHour, now.wMinute, now.wSecond);
 
 	// record process handle and id

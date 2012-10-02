@@ -224,6 +224,10 @@
 				RelativePath=".\master_server_loop.h"
 				>
 			</File>
+			<File
+				RelativePath=".\server_context.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Peer Files"

@@ -29,3 +29,8 @@ void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessi
 {
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }
+
+void LoginPeerRecv::OnLoginAck(PEER_CLIENT pPeerClient, uint32 iSessionId, int8 iReason)
+{
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}

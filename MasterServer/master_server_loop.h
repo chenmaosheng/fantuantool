@@ -11,7 +11,7 @@
 
 #include "logic_loop.h"
 #include "object_pool.h"
-#include <hash_map>
+#include "server_context.h"
 #include <string>
 
 class MasterPlayerContext;
@@ -56,10 +56,12 @@ private:
 
 private:
 	int32 m_iShutdownStatus;
-	
+
 	ObjectPool<MasterPlayerContext> m_PlayerContextPool;
 	stdext::hash_map<std::wstring, MasterPlayerContext*> m_mPlayerContextByName;
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContextBySessionId;
+
+	LoginServerContext m_LoginServerContext;
 };
 
 #endif

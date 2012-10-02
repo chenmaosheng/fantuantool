@@ -5,7 +5,7 @@ void GenerateFtdDefine(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_DEFINE\n", name);
 	fprintf(fp, "#define _H_%s_DEFINE\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n\n");
+	fprintf(fp, "#include \"server_common.h\"\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);
@@ -64,5 +64,5 @@ void GenerateFtdDefine(const char* name, FILE* fp)
 			fprintf(fp, "};\n\n");
 		}
 	}
-	fprintf(fp, "\n#endif");
+	fprintf(fp, "#endif");
 }

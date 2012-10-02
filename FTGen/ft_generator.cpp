@@ -5,7 +5,7 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_RECV\n", name);
 	fprintf(fp, "#define _H_%s_RECV\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n\n");
+	fprintf(fp, "#include \"server_common.h\"\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);
@@ -32,9 +32,9 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 			}
 			fprintf(fp, ");\n");
 		}
-		fprintf(fp, "};\n");
+		fprintf(fp, "};\n\n");
 	}
-	fprintf(fp, "\n#endif");
+	fprintf(fp, "#endif");
 }
 
 void GenerateRecvCpp(const char* name, FILE* fp)
@@ -47,7 +47,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 	{
 		Filter* filter = &myFile.filterSet[i];
 		fprintf(fp, "namespace ft_%s_recv\n", filter->filterName);
-		fprintf(fp, "{\n");
+		fprintf(fp, "{\n\n");
 		for (int j = 0; j < filter->nodeCount; ++j)
 		{
 			bool bNeedLength = false;
@@ -100,7 +100,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 		{
 			fprintf(fp, "    %s_Callback,\n", filter->node[j].funcName);
 		}
-		fprintf(fp, "    NULL\n};\n");
+		fprintf(fp, "    NULL\n};\n\n");
 
 		fprintf(fp, "struct %sPacketDispatch\n{\n", filter->filterName);
 		fprintf(fp, "    %sPacketDispatch()\n", filter->filterName);

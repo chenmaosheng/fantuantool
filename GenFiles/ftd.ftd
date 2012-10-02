@@ -1,0 +1,5 @@
+struct Player
+{
+	char m_strAccountName[ACCOUNTNAME_MAX];
+	uint64 m_iPlayerId;
+};

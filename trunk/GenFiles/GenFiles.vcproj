@@ -24,9 +24,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe all"
-				ReBuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean all"
-				CleanCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean"
+				BuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe all"
+				ReBuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean all"
+				CleanCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean"
 				Output=""
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				IncludeSearchPath=""
@@ -44,9 +44,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe all"
-				ReBuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean all"
-				CleanCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean"
+				BuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe all"
+				ReBuildCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean all"
+				CleanCommandLine="cd $(SolutionDir)common&#x0D;&#x0A;nmake ftdgen=$(SolutionDir)bin\$(ConfigurationName)\ftdgen.exe ftgen=$(SolutionDir)bin\$(ConfigurationName)\ftgen.exe prgen=$(SolutionDir)bin\$(ConfigurationName)\prgen.exe clean"
 				Output=""
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
@@ -103,6 +103,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\ftd.ftd"
+				>
+			</File>
 			<File
 				RelativePath=".\login_client.ft"
 				>
@@ -163,6 +167,14 @@
 			</File>
 			<File
 				RelativePath=".\session_peer.pr"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Gen Define Files"
+			>
+			<File
+				RelativePath=".\ftd_define.h"
 				>
 			</File>
 		</Filter>

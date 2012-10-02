@@ -77,6 +77,10 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandGateHoldReq((LogicCommandGateHoldReq*)pCommand);
 		break;
 
+	case COMMAND_DISCONNECT:
+		_OnCommandDisconnect((LogicCommandDisconnect*)pCommand);
+		break;
+
 	default:
 		return super::_OnCommand(pCommand);
 		break;
@@ -97,4 +101,13 @@ void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 	GateSession* pSession = m_SessionPool.Allocate();
 	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSession));
 	pSession->OnHoldReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
+}
+
+void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
+{
+	GateSession* pSession = GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		pSession->OnMasterDisconnect();
+	}
 }

@@ -92,9 +92,11 @@ struct LogicCommandDisconnect : public LogicCommandT<COMMAND_DISCONNECT>
 	LogicCommandDisconnect()
 	{
 		m_iSessionId = 0;
+		m_iReason = 0;
 	}
 
 	uint32 m_iSessionId;
+	uint8 m_iReason;
 };
 
 struct LogicCommandPacketForward : public LogicCommandT<COMMAND_PACKETFORWARD>

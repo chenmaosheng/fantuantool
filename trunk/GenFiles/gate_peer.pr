@@ -1,4 +1,5 @@
 filter (GatePeer, PEER_FILTER_GATE)
 {
-	GateHoldReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+	GateHoldReq(uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+	GateReleaseReq(uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
 }

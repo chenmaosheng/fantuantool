@@ -42,6 +42,8 @@ public:
 	int32 OnConnection(ConnID connId);
 	void OnDisconnect();
 	void Disconnect();
+	// receive disconnect from master
+	void OnMasterDisconnect();
 
 	void OnHoldReq(uint32 iLoginSessionId, const TCHAR* strAccountName);
 

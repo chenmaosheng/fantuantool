@@ -6,6 +6,7 @@
 6, private key file
 7, packet encryption
 8, master context state machine
+9, master context wait for free issue
 
 client
 1, rpc->server, with parameters

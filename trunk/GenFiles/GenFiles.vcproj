@@ -162,6 +162,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\login_peer.pr"
+				>
+			</File>
+			<File
 				RelativePath=".\master_peer.pr"
 				>
 			</File>

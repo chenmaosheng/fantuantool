@@ -2,11 +2,5 @@ filter (SessionPeer, PEER_FILTER_SESSION)
 {
 	PacketForward(uint32 iSessionId, uint16 iTypeId, uint16 iLen, char pBuf[iLen]);
 	OnSessionDisconnect(uint32 iSessionId);
-}
-
-filter (LoginPeer, PEER_FILTER_LOGIN)
-{
-	// reason: 1 already login
-	// reason: 2 server error
-	OnLoginAck(uint32 iSessionId, int8 iReason);
+	Disconnect(uint32 iSessionid, uint8 iReason);
 }

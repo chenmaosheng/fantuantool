@@ -11,11 +11,28 @@
 
 #include "logic_command.h"
 
-#define COMMAND_GATEHOLDREQ 1001
+enum
+{
+	COMMAND_GATEHOLDREQ = 1001,
+	COMMAND_GATERELEASEREQ,
+};
+
 
 struct LogicCommandGateHoldReq : public LogicCommandT<COMMAND_GATEHOLDREQ>
 {
 	LogicCommandGateHoldReq()
+	{
+		m_iLoginSessionId = 0;
+		m_strAccountName[0] = '\0';
+	}
+
+	uint32 m_iLoginSessionId;
+	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+};
+
+struct LogicCommandGateReleaseReq : public LogicCommandT<COMMAND_GATERELEASEREQ>
+{
+	LogicCommandGateReleaseReq()
 	{
 		m_iLoginSessionId = 0;
 		m_strAccountName[0] = '\0';

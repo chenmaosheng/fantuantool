@@ -4,6 +4,7 @@
 #include "master_server_loop.h"
 #include "memory_object.h"
 #include "session_peer_recv.h"
+#include "login_peer_recv.h"
 
 void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
@@ -50,6 +51,11 @@ void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessi
 }
 
 void SessionPeerRecv::PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char *pBuf)
+{
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}
+
+void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionid, uint8 iReason)
 {
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }

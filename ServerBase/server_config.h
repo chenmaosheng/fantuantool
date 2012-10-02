@@ -37,7 +37,7 @@ private:
 
 public:
 	TCHAR m_strServerName[MAX_PATH+1];
-	uint16 m_iServerId;
+	uint8 m_iServerId;
 	uint32 m_iPeerIP;
 	uint16 m_iPeerPort;
 

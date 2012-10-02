@@ -286,7 +286,7 @@ int CClientDlg::HandlePacket(ServerPacket* pPacket)
 
 	if (iFilterId == 1)
 	{
-		if (iFuncType == 0)
+		if (iFuncType == 2)
 		{
 			int32 iGateIP = 0;
 			int16 iGatePort = 0;

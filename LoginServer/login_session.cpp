@@ -106,7 +106,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 	int32 iRet = 0;
 
 	// check state
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONVERSIONREQ, false) != SESSION_STATE_ONVERSIONREQ)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONVERSIONREQ) != SESSION_STATE_ONVERSIONREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		Disconnect();
@@ -136,7 +136,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 		return;
 	}
 
-	iRet = MasterPeerSend::OnLoginReq(g_pServer->m_pMasterServer, m_iSessionId, m_strAccountName);
+	iRet = MasterPeerSend::OnLoginReq(g_pServer->m_pMasterServer, m_iSessionId, (uint16)wcslen(m_strAccountName)+1, m_strAccountName);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d LoginReq to master server failed"), m_strAccountName, m_iSessionId);
@@ -144,7 +144,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 		return;
 	}
 
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ) != SESSION_STATE_ONLOGINREQ)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ, false) != SESSION_STATE_ONLOGINREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
@@ -265,7 +265,7 @@ int32 LoginSession::CheckLoginToken(uint16 iLen, char* pBuf)
 
 	strcpy_s(strPassword, sizeof(strPassword), pToken);
 
-	iRet = Char2WChar(strAccountName, m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR));
+	iRet = Char2WChar(strAccountName, m_strAccountName, _countof(m_strAccountName));
 	if (iRet == 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Char2WChar error"), m_iSessionId);

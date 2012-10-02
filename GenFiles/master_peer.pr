@@ -1,5 +1,5 @@
 filter (MasterPeer, PEER_FILTER_MASTER)
 {
-	OnLoginReq(uint32 iSessionId, wstring strAccountName);
-	GateHoldAck(uint16 iServerId, uint32 iLoginSessionId, wstring strAccountName, uint32 iGateSessionId);
+	OnLoginReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+	GateHoldAck(uint16 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen], uint32 iGateSessionId);
 }

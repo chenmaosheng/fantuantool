@@ -21,7 +21,7 @@ SessionServerLoop<T>::~SessionServerLoop()
 }
 
 template<typename T>
-int32 SessionServerLoop<T>::Init(ServerBase* pServer)
+int32 SessionServerLoop<T>::Init(uint8 iServerId, ServerBase* pServer)
 {
 	T* pSession = NULL;
 	int32 iRet = 0;
@@ -30,7 +30,7 @@ int32 SessionServerLoop<T>::Init(ServerBase* pServer)
 	LogicLoop::Init();
 
 	id.iValue_ = 0;
-	id.sValue_.serverId_ = 0; // todo: where is server id
+	id.sValue_.serverId_ = iServerId;
 
 	// first initialize all session and put them into pool
 	// that's why we can't initialize session in pool itself

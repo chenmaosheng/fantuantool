@@ -16,6 +16,7 @@ struct Node
 	{
 		char paramType[32];
 		char paramName[32];
+		char paramSize[32];
 	}paramSet[32];
 	int paramCount;
 };

@@ -4,7 +4,7 @@
 #include "gate_server_loop.h"
 #include "memory_object.h"
 
-void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, const TCHAR* strAccountName)
+void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
 	uint32 iRet = 0;
 	LogicCommandGateHoldReq* pCommand = FT_NEW(LogicCommandGateHoldReq);
@@ -15,6 +15,6 @@ void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, 
 	}
 
 	pCommand->m_iLoginSessionId = iLoginSessionId;
-	wcscpy_s(pCommand->m_strAccountName, sizeof(pCommand->m_strAccountName)/sizeof(TCHAR), strAccountName);
+	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }

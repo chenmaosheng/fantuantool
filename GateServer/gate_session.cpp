@@ -48,9 +48,9 @@ void GateSession::OnHoldReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
 	int32 iRet = 0;
 
 	((SessionId*)&m_iSessionId)->sValue_.sequence_++;
-	wcscpy_s(m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR), strAccountName);
+	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 
-	iRet = MasterPeerSend::GateHoldAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, strAccountName, m_iSessionId);
+	iRet = MasterPeerSend::GateHoldAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, (uint16)wcslen(strAccountName)+1, strAccountName, m_iSessionId);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x gate hold ack failed to send"), m_iSessionId);
@@ -173,7 +173,7 @@ int32 GateSession::CheckLoginToken(uint16 iLen, char* pBuf)
 
 	strcpy_s(strPassword, sizeof(strPassword), pToken);
 
-	iRet = Char2WChar(strAccountName, m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR));
+	iRet = Char2WChar(strAccountName, m_strAccountName, _countof(m_strAccountName));
 	if (iRet == 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Char2WChar error"), m_iSessionId);

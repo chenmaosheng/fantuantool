@@ -9,7 +9,7 @@ ServerConfig::ServerConfig(const TCHAR* strServerName)
 	m_iPeerIP = 0;
 	m_iPeerPort = 0;
 
-	wcscpy_s(m_strServerName, sizeof(m_strServerName)/sizeof(TCHAR), strServerName);
+	wcscpy_s(m_strServerName, _countof(m_strServerName), strServerName);
 }
 
 ServerConfig::~ServerConfig()

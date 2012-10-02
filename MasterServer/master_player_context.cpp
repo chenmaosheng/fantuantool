@@ -43,7 +43,7 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	int32 iRet = 0;
 	
 	m_iSessionId = iSessionId;
-	wcscpy_s(m_strAccountName, sizeof(m_strAccountName)/sizeof(TCHAR), strAccountName);
+	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 
 	// notify gate
 	iRet = m_pMainLoop->GateHoldReq();
@@ -56,7 +56,7 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	m_iGateServerId = (uint16)iRet;
 	LOG_DBG(LOG_SERVER, _T("Hold a gate session on gate server id=%d"), iRet);
 
-	iRet = GatePeerSend::GateHoldReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, strAccountName);
+	iRet = GatePeerSend::GateHoldReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, (uint16)wcslen(strAccountName)+1, strAccountName);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("Send gate hold request failed"));

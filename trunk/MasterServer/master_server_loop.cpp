@@ -2,6 +2,7 @@
 #include "master_server.h"
 #include "master_logic_command.h"
 #include "master_player_context.h"
+#include "session_peer_send.h"
 
 MasterServerLoop::MasterServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
@@ -67,8 +68,17 @@ DWORD MasterServerLoop::_Loop()
 	return 100;
 }
 
-void MasterServerLoop::_ShutdownPlayer(MasterPlayerContext*)
+void MasterServerLoop::_ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 {
+	int32 iRet = 0;
+	bool bSendOnLoginAck = false;
+	bool bSendGateReleaseReq = false;
+	bool bSendGateDisconnect = false;
+
+	if (pPlayerContext->m_bFinalizing)
+	{
+		return;
+	}
 }
 
 bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
@@ -117,31 +127,43 @@ void MasterServerLoop::_OnCommandShutdown()
 void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 {
 	MasterPlayerContext* pPlayerContext = NULL;
+	int32 iRet = 0;
 
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
 	if (mit != m_mPlayerContextByName.end())
 	{
-		LOG_ERR(LOG_SERVER, _T("This account is already logged in, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x This account is already logged in"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		pPlayerContext = mit->second;
+
+		iRet = LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 1);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		}
+
 		_ShutdownPlayer(pPlayerContext);
 		return;
 	}
-	else
+	
+	pPlayerContext = m_PlayerContextPool.Allocate();
+	if (!pPlayerContext)
 	{
-		pPlayerContext = m_PlayerContextPool.Allocate();
-		if (!pPlayerContext)
+		LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		iRet = LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 2);
+		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
-			return;
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		}
-
-		LOG_DBG(LOG_SERVER, _T("Allocate player context success, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
-
-		m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
-		m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
-
-		pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
+		return;
 	}
+
+	LOG_DBG(LOG_SERVER, _T("Allocate player context success, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+
+	m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
+	m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
+	m_LoginServerContext.m_mPlayerContext.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
+
+	pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
 }
 
 void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)

@@ -34,6 +34,8 @@ public:
 public:
 	uint32 m_iSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+	bool m_bFinalizing; // almost leave or not
+
 	static MasterServerLoop* m_pMainLoop;
 
 private:

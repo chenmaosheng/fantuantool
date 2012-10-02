@@ -1,23 +1,11 @@
 1, session功能完成
-2, logicloop概念
-3, logiccommand概念
-4, sessionserver概念
-5, minidump release版bug解决
-6, server id
-7, data stream(in/out) (finished)
-8, memory management(not tested)
-9, packet_buffer concept, similar to single buffer
-10, sessionid index has problem(fixed)
-
-11, ft gen need to generate file
-12, starnet need connect concept (client function)
-13, server config file
-14, use memory pool
-15, utf8<->wchar, consider about chinese character
-16, alloca has memory leak
-17, send more than 1 buf in wsasend
-18, private key file
-19, packet encryption
+2, minidump release版bug解决
+3, packet_buffer concept, similar to single buffer
+4, alloca has memory leak
+5, send more than 1 buf in wsasend
+6, private key file
+7, packet encryption
+8, master context state machine
 
 client
 1, rpc->server, with parameters

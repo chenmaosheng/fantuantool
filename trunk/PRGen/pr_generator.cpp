@@ -5,7 +5,7 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_RECV\n", name);
 	fprintf(fp, "#define _H_%s_RECV\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n\n");
+	fprintf(fp, "#include \"server_common.h\"\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);
@@ -32,9 +32,9 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 			}
 			fprintf(fp, ");\n");
 		}
-		fprintf(fp, "};\n");
+		fprintf(fp, "};\n\n");
 	}
-	fprintf(fp, "\n#endif");
+	fprintf(fp, "#endif");
 }
 
 void GenerateRecvCpp(const char* name, FILE* fp)
@@ -47,7 +47,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 	{
 		Filter* filter = &myFile.filterSet[i];
 		fprintf(fp, "namespace pr_%s_recv\n", filter->filterName);
-		fprintf(fp, "{\n");
+		fprintf(fp, "{\n\n");
 		for (int j = 0; j < filter->nodeCount; ++j)
 		{
 			fprintf(fp, "bool CALLBACK %s_Callback(PEER_CLIENT pPeerClient, PeerInputStream& stream)\n", filter->node[j].funcName);
@@ -92,7 +92,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 				fprintf(fp, ", %s", filter->node[j].paramSet[k].paramName);
 			}
 			fprintf(fp, ");\n");
-			fprintf(fp, "    return true;\n}\n");
+			fprintf(fp, "    return true;\n}\n\n");
 		}
 
 		fprintf(fp, "static PeerClientDispatchFilter::Func func[] = \n{\n");
@@ -100,7 +100,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 		{
 			fprintf(fp, "    %s_Callback,\n", filter->node[j].funcName);
 		}
-		fprintf(fp, "    NULL\n};\n");
+		fprintf(fp, "    NULL\n};\n\n");
 
 		fprintf(fp, "struct %sDispatch\n{\n", filter->filterName);
 		fprintf(fp, "    %sDispatch()\n", filter->filterName);
@@ -118,7 +118,7 @@ void GenerateSendInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_SEND\n", name);
 	fprintf(fp, "#define _H_%s_SEND\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n\n");
+	fprintf(fp, "#include \"server_common.h\"\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);
@@ -145,9 +145,9 @@ void GenerateSendInclude(const char* name, FILE* fp)
 			}
 			fprintf(fp, ");\n");
 		}
-		fprintf(fp, "};\n");
+		fprintf(fp, "};\n\n");
 	}
-	fprintf(fp, "\n#endif");
+	fprintf(fp, "#endif");
 }
 
 void GenerateSendCpp(const char* name, FILE* fp)
@@ -201,7 +201,7 @@ void GenerateSendCpp(const char* name, FILE* fp)
 
 			fprintf(fp, "    stream.SetId(%s, %d);\n", filter->filterId, j);
 			fprintf(fp, "    return stream.Send(pPeerServer);\n");
-			fprintf(fp, "}\n");
+			fprintf(fp, "}\n\n");
 		}
 	}
 }

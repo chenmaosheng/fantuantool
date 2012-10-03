@@ -62,19 +62,6 @@ int32 MasterServerLoop::GateHoldReq()
 	return 2;
 }
 
-DWORD MasterServerLoop::_Loop()
-{
-	if (m_iShutdownStatus == START_SHUTDOWN)
-	{
-		if (m_mPlayerContextBySessionId.empty())
-		{
-			m_iShutdownStatus = READY_FOR_SHUTDOWN;
-		}
-	}
-
-	return 100;
-}
-
 void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 {
 	int32 iRet = 0;
@@ -122,6 +109,53 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	{
 		SessionPeerSend::Disconnect(g_pServer->GetPeerServer(pPlayerContext->m_iGateServerId), pPlayerContext->m_iSessionId, 0);
 	}
+
+	AddPlayerToFinalizingQueue(pPlayerContext);
+}
+
+void MasterServerLoop::AddPlayerToFinalizingQueue(MasterPlayerContext* pPlayerContext)
+{
+	pPlayerContext->m_bFinalizing = true;
+	m_PlayerFinalizingQueue.push(pPlayerContext);
+}
+
+void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
+{
+	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pPlayerContext->m_strAccountName);
+	if (mit != m_mPlayerContextByName.end())
+	{
+		m_mPlayerContextByName.erase(mit);
+	}
+
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit2 = m_mPlayerContextBySessionId.find(pPlayerContext->m_iSessionId);
+	if (mit2 != m_mPlayerContextBySessionId.end())
+	{
+		m_mPlayerContextBySessionId.erase(mit2);
+	}
+
+	LOG_STT(LOG_SERVER, _T("acc=%s sid=%d Delete player"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+	pPlayerContext->Clear();
+
+	m_PlayerContextPool.Free(pPlayerContext);
+}
+
+DWORD MasterServerLoop::_Loop()
+{
+	while (!m_PlayerFinalizingQueue.empty())
+	{
+		DeletePlayer(m_PlayerFinalizingQueue.back());
+		m_PlayerFinalizingQueue.pop();
+	}
+
+	if (m_iShutdownStatus == START_SHUTDOWN)
+	{
+		if (m_mPlayerContextBySessionId.empty())
+		{
+			m_iShutdownStatus = READY_FOR_SHUTDOWN;
+		}
+	}
+
+	return 100;
 }
 
 bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)

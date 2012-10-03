@@ -8,10 +8,12 @@ session_peer_file = session_peer_send.h session_peer_send.cpp session_peer_recv.
 gate_peer_file = gate_peer_send.h gate_peer_send.cpp gate_peer_recv.h gate_peer_recv.cpp
 login_peer_file = login_peer_send.h login_peer_send.cpp login_peer_recv.h login_peer_recv.cpp
 
-all: $(ftd_file) $(login_client_file) $(login_server_file) $(master_peer_file) $(session_peer_file) $(gate_peer_file) $(login_peer_file)
+lua_file = test.cpp
+
+all: $(ftd_file) $(login_client_file) $(login_server_file) $(master_peer_file) $(session_peer_file) $(gate_peer_file) $(login_peer_file) $(lua_file)
 
 clean:
-	del /Q $(ftd_file) $(login_client_file) $(login_server_file) $(master_peer_file) $(session_peer_file) $(gate_peer_file) $(login_peer_file)
+	del /Q $(ftd_file) $(login_client_file) $(login_server_file) $(master_peer_file) $(session_peer_file) $(gate_peer_file) $(login_peer_file) $(lua_file)
 	
 $(ftd_file): ftd.ftd
 	$(ftdgen) $?
@@ -33,3 +35,6 @@ $(gate_peer_file): gate_peer.pr
 	
 $(login_peer_file): login_peer.pr
 	$(prgen) $?
+	
+$(lua_file): test.pkg
+	$(tolua) -o $(lua_file) $?

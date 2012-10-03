@@ -14,7 +14,7 @@ void GateSession::InitStateMachine()
 		return;
 	}
 
-	pState->AddTransition(SESSION_EVENT_ONGATEHOLDREQ, SESSION_STATE_ONGATEHOLDREQ);
+	pState->AddTransition(SESSION_EVENT_ONGATEALLOCREQ, SESSION_STATE_ONGATEALLOCREQ);
 
 	// when state is connected
 	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONCONNECTION);
@@ -33,18 +33,18 @@ void GateSession::InitStateMachine()
 		return;
 	}
 
-	// when state is receive gate hold req
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONGATEHOLDREQ);
+	// when state is receive gate allocate req
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONGATEALLOCREQ);
 	if (!pState)
 	{
 		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
 		return;
 	}
 
-	pState->AddTransition(SESSION_EVENT_GATEHOLDACK, SESSION_STATE_GATEHOLDACK);
+	pState->AddTransition(SESSION_EVENT_GATEALLOCACK, SESSION_STATE_GATEALLOCACK);
 
-	// when state is send gate hold ack
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_GATEHOLDACK);
+	// when state is send gate allocate ack
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_GATEALLOCACK);
 	if (!pState)
 	{
 		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));

@@ -21,18 +21,33 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void MasterPeerRecv::GateHoldAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName, uint32 iGateSessionId)
+void MasterPeerRecv::GateAllocAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName, uint32 iGateSessionId)
 {
-	LogicCommandGateHoldAck* pCommand = FT_NEW(LogicCommandGateHoldAck);
+	LogicCommandGateAllocAck* pCommand = FT_NEW(LogicCommandGateAllocAck);
 	if (!pCommand)
 	{
-		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateHoldAck) failed"));
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateAllocAck) failed"));
 		return;
 	}
 
 	pCommand->m_iServerId = iServerId;
 	pCommand->m_iLoginSessionId = iLoginSessionId;
 	pCommand->m_iGateSessionId = iGateSessionId;
+	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void MasterPeerRecv::OnGateLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
+{
+	uint32 iRet = 0;
+	LogicCommandOnGateLoginReq* pCommand = FT_NEW(LogicCommandOnGateLoginReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnGateLoginReq) failed"));
+		return;
+	}
+
+	pCommand->m_iSessionId = iSessionId;
 	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }

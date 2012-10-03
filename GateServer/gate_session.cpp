@@ -24,11 +24,13 @@ void GateSession::Clear()
 {
 	super::Clear();
 	m_strAccountName[0] = _T('\0');
+	m_bTempSession = true;
 }
 
 int32 GateSession::OnConnection(ConnID connId)
 {
 	super::OnConnection(connId);
+	m_bTempSession = true;
 
 	LOG_DBG(LOG_SERVER, _T("sid=%08x Receive a connection"), m_iSessionId);
 	return 0;
@@ -77,21 +79,39 @@ void GateSession::Disconnect()
 	super::Disconnect();
 }
 
-void GateSession::OnHoldReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
+void GateSession::OnGateAllocReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
 {
 	int32 iRet = 0;
 
 	((SessionId*)&m_iSessionId)->sValue_.sequence_++;
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
+	m_bTempSession = false;
 
-	iRet = MasterPeerSend::GateHoldAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, (uint16)wcslen(strAccountName)+1, strAccountName, m_iSessionId);
+	iRet = MasterPeerSend::GateAllocAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, (uint16)wcslen(strAccountName)+1, strAccountName, m_iSessionId);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("sid=%08x gate hold ack failed to send"), m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("sid=%08x gate allocate ack failed to send"), m_iSessionId);
 		return;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("sid=%08x send gate hold ack to master server"), m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("sid=%08x send gate allocate ack to master server"), m_iSessionId);
+}
+
+void GateSession::Clone(GateSession* pSession)
+{
+	// source must not be temp session and dest must be temp session
+	if (!m_bTempSession && pSession->m_bTempSession)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x session error"), m_iSessionId);
+		return;
+	}
+
+	m_dwConnectionTime = pSession->m_dwConnectionTime;
+	m_dwLoggedInTime = pSession->m_dwLoggedInTime;
+	m_pConnection = pSession->m_pConnection;
+	wcscpy_s(m_strAccountName, _countof(m_strAccountName), pSession->m_strAccountName);
+
+	m_pConnection->SetClient(this);
 }
 
 int32 GateSession::CheckLoginToken(uint16 iLen, char* pBuf)
@@ -179,6 +199,28 @@ int32 GateSession::LoggedInNtf()
 
 void GateSession::OnSessionTransfered()
 {
+	int32 iRet = 0;
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x gate login start"), m_strAccountName, m_iSessionId);
+
+	if (m_StateMachine.StateTransition(SESSION_EVENT_TRANSFERED) != SESSION_EVENT_LOGGEDIN)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	iRet = MasterPeerSend::OnGateLoginReq(g_pServer->m_pMasterServer, m_iSessionId, wcslen(m_strAccountName)+1, m_strAccountName);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnGateLoginReq failed"), m_strAccountName, m_iSessionId);
+		Disconnect();
+		return;
+	}
+
+	if (m_StateMachine.StateTransition(SESSION_EVENT_GATELOGINREQ) != SESSION_STATE_GATELOGINREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
 }
 
 void GateSession::OnMasterDisconnect()

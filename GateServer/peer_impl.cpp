@@ -5,13 +5,13 @@
 #include "memory_object.h"
 #include "session_peer_recv.h"
 
-void GatePeerRecv::GateHoldReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
+void GatePeerRecv::GateAllocReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
 	uint32 iRet = 0;
-	LogicCommandGateHoldReq* pCommand = FT_NEW(LogicCommandGateHoldReq);
+	LogicCommandGateAllocReq* pCommand = FT_NEW(LogicCommandGateAllocReq);
 	if (!pCommand)
 	{
-		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateHoldReq) failed"));
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateAllocReq) failed"));
 		return;
 	}
 

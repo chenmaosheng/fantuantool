@@ -56,7 +56,7 @@ void LoginSession::InitStateMachine()
 	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_ONLOGINREQ);
 	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_ONLOGINREQ);
 	pState->AddTransition(SESSION_EVENT_ONLOGINACK, SESSION_STATE_ONLOGINACK);
-	pState->AddTransition(SESSION_EVENT_ONGATEHOLDNTF, SESSION_STATE_ONGATEHOLDNTF);
+	pState->AddTransition(SESSION_EVENT_ONGATEALLOCNTF, SESSION_STATE_ONGATEALLOCNTF);
 
 	// when state is on login ack
 	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONLOGINACK);
@@ -71,8 +71,8 @@ void LoginSession::InitStateMachine()
 	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_ONLOGINACK);
 	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_ONLOGINACK);
 
-	// when state is gate hold ntf
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONGATEHOLDNTF);
+	// when state is gate allocate ntf
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONGATEALLOCNTF);
 	if (!pState)
 	{
 		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
@@ -81,6 +81,6 @@ void LoginSession::InitStateMachine()
 
 	pState->AddTransition(SESSION_EVENT_DISCONNECT, SESSION_STATE_DISCONNECT);
 	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
-	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_ONGATEHOLDNTF);
-	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_ONGATEHOLDNTF);
+	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_ONGATEALLOCNTF);
+	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_ONGATEALLOCNTF);
 }

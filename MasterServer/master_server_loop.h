@@ -13,6 +13,7 @@
 #include "object_pool.h"
 #include "server_context.h"
 #include <string>
+#include <queue>
 
 class MasterPlayerContext;
 struct LogicCommandOnLoginReq;
@@ -42,6 +43,10 @@ public:
 
 	// shutdown one player in master server
 	void ShutdownPlayer(MasterPlayerContext*);
+	// add player to finalizing queue
+	void AddPlayerToFinalizingQueue(MasterPlayerContext*);
+	// totally delete a player
+	void DeletePlayer(MasterPlayerContext*);
 
 private:
 	DWORD _Loop();
@@ -65,6 +70,9 @@ private:
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContextBySessionId;
 
 	LoginServerContext m_LoginServerContext;
+	GateServerContext m_arrayGateServerContext[GATE_SERVER_MAX];
+
+	std::queue<MasterPlayerContext*> m_PlayerFinalizingQueue;
 };
 
 #endif

@@ -23,19 +23,14 @@ GateSession::~GateSession()
 void GateSession::Clear()
 {
 	super::Clear();
+	m_strAccountName[0] = _T('\0');
 }
 
 int32 GateSession::OnConnection(ConnID connId)
 {
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION) != SESSION_STATE_ONCONNECTION)
-	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
-		return -1;
-	}
-
 	super::OnConnection(connId);
 
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Receive a connection"), m_strAccountName, m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("sid=%08x Receive a connection"), m_iSessionId);
 	return 0;
 }
 
@@ -44,7 +39,18 @@ void GateSession::OnDisconnect()
 	int32 iRet = 0;
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x connection is disconnected"), m_strAccountName, m_iSessionId);
-	super::OnDisconnect();
+	// check and set state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		return;
+	}
+
+	if (m_pConnection)
+	{
+		Connection::Close(m_pConnection);
+		m_pConnection = NULL;
+	}
 
 	switch (m_StateMachine.GetCurrState())
 	{
@@ -86,92 +92,6 @@ void GateSession::OnHoldReq(uint32 iLoginSessionId, const TCHAR *strAccountName)
 	}
 
 	LOG_DBG(LOG_SERVER, _T("sid=%08x send gate hold ack to master server"), m_iSessionId);
-}
-
-void GateSession::InitStateMachine()
-{
-	FSMState* pState = NULL;
-	
-	super::InitStateMachine();
-
-	// when state is none
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_NONE);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	pState->AddTransition(SESSION_EVENT_ONGATEHOLDREQ, SESSION_STATE_ONGATEHOLDREQ);
-	
-	// when state is connected
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONCONNECTION);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-	pState->AddTransition(SESSION_EVENT_LOGGEDIN, SESSION_STATE_TRANSFERED);
-
-	// when state is transfered
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_TRANSFERED);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	// when state is receive gate hold req
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONGATEHOLDREQ);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	pState->AddTransition(SESSION_EVENT_GATEHOLDACK, SESSION_STATE_GATEHOLDACK);
-
-	// when state is send gate hold ack
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_GATEHOLDACK);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	pState->AddTransition(SESSION_EVENT_TRANSFERED, SESSION_STATE_LOGGEDIN);
-
-	// when state is gate release req
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_GATERELEASEREQ);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	// when state is loggedin
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_LOGGEDIN);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	pState->AddTransition(SESSION_EVENT_GATELOGINREQ, SESSION_STATE_GATELOGINREQ);
-
-	// when state is send gate login
-	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_GATELOGINREQ);
-	if (!pState)
-	{
-		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
-		return;
-	}
-
-	pState->AddTransition(SESSION_EVENT_DISCONNECT, SESSION_STATE_DISCONNECT);
-	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
-	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_GATELOGINREQ);
-	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_GATELOGINREQ);
-
 }
 
 int32 GateSession::CheckLoginToken(uint16 iLen, char* pBuf)

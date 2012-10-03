@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gate_session_state.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>

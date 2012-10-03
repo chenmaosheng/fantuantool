@@ -12,6 +12,7 @@
 #include "starnet_common.h"
 
 #define PEER_SERVER_MAX 32		// max of peer server connected
+#define GATE_SERVER_MAX 64		// max of gate server started
 
 enum
 {

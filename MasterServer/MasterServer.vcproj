@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\master_player_state.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\master_server.cpp"
 				>
 			</File>

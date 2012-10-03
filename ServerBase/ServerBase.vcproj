@@ -182,6 +182,10 @@
 				RelativePath=".\session_server_loop.inl"
 				>
 			</File>
+			<File
+				RelativePath=".\session_state.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

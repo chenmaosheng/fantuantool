@@ -60,8 +60,14 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tolua", "external\tolua\tolua.vcproj", "{1F759FB4-847E-45F9-BC70-6DD5CA6F76F3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tolua++", "external\tolua++\tolua++.vcproj", "{BA29F956-5D99-44FA-A38C-FC24174ABBAE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF49E545-3112-4CBA-86EB-DE65E4038399} = {CF49E545-3112-4CBA-86EB-DE65E4038399}
+		{1F759FB4-847E-45F9-BC70-6DD5CA6F76F3} = {1F759FB4-847E-45F9-BC70-6DD5CA6F76F3}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FTDGen", "FTDGen\FTDGen.vcproj", "{A351DEA9-66D0-4F90-A47A-E11A5BE72FD4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientBase", "ClientBase\ClientBase.vcproj", "{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +141,10 @@ Global
 		{A351DEA9-66D0-4F90-A47A-E11A5BE72FD4}.Debug|Win32.Build.0 = Debug|Win32
 		{A351DEA9-66D0-4F90-A47A-E11A5BE72FD4}.Release|Win32.ActiveCfg = Release|Win32
 		{A351DEA9-66D0-4F90-A47A-E11A5BE72FD4}.Release|Win32.Build.0 = Release|Win32
+		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Debug|Win32.Build.0 = Debug|Win32
+		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Release|Win32.ActiveCfg = Release|Win32
+		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

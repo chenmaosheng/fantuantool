@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -62,7 +62,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lua.lib tolua.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\bin\debug"
 				GenerateDebugInformation="true"
@@ -93,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"

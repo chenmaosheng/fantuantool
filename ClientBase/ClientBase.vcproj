@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tolua"
-	ProjectGUID="{1F759FB4-847E-45F9-BC70-6DD5CA6F76F3}"
-	RootNamespace="tolua"
+	Name="ClientBase"
+	ProjectGUID="{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}"
+	RootNamespace="ClientBase"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="0"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -41,14 +41,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\lua"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -81,8 +79,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -104,11 +102,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -149,23 +149,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\tolua_event.c"
-				>
-			</File>
-			<File
-				RelativePath=".\tolua_is.c"
-				>
-			</File>
-			<File
-				RelativePath=".\tolua_map.c"
-				>
-			</File>
-			<File
-				RelativePath=".\tolua_push.c"
-				>
-			</File>
-			<File
-				RelativePath=".\tolua_to.c"
+				RelativePath=".\client_base.cpp"
 				>
 			</File>
 		</Filter>
@@ -175,11 +159,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\tolua++.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tolua_event.h"
+				RelativePath=".\client_base.h"
 				>
 			</File>
 		</Filter>

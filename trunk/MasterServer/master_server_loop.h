@@ -17,7 +17,8 @@
 
 class MasterPlayerContext;
 struct LogicCommandOnLoginReq;
-struct LogicCommandGateHoldAck;
+struct LogicCommandGateAllocAck;
+struct LogicCommandOnGateLoginReq;
 struct LogicCommandOnSessionDisconnect;
 class MasterServerLoop : public LogicLoop
 {
@@ -38,8 +39,8 @@ public:
 	// change from login session to gate session
 	void LoginSession2GateSession(MasterPlayerContext*, uint32 iLoginSessionId, uint32 iGateSessionId);
 
-	// receive request about hold a gate session
-	int32 GateHoldReq();
+	// receive request about allocate a gate session
+	int32 GateAllocReq();
 
 	// shutdown one player in master server
 	void ShutdownPlayer(MasterPlayerContext*);
@@ -57,8 +58,10 @@ private:
 private:
 	// receive request about login
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
-	// acknowledge response about hold a gate session
-	void _OnCommandGateHoldAck(LogicCommandGateHoldAck*);
+	// acknowledge response about allocate a gate session
+	void _OnCommandGateAllocAck(LogicCommandGateAllocAck*);
+	// receive request about gate login
+	void _OnCommandOnGateLoginReq(LogicCommandOnGateLoginReq*);
 	// receive disconnect from session server
 	void _OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect*);
 

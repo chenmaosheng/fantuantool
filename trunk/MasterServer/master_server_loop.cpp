@@ -56,7 +56,7 @@ void MasterServerLoop::LoginSession2GateSession(MasterPlayerContext* pPlayerCont
 	// todo:
 }
 
-int32 MasterServerLoop::GateHoldReq()
+int32 MasterServerLoop::GateAllocReq()
 {
 	// todo:
 	return 2;
@@ -80,13 +80,13 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 		bSendOnLoginAck = true;
 		break;
 
-	case PLAYER_STATE_GATEHOLDREQ:
-	case PLAYER_STATE_GATEHOLDACK:
+	case PLAYER_STATE_GATEALLOCREQ:
+	case PLAYER_STATE_GATEALLOCACK:
 		bSendOnLoginAck = true;
 		bSendGateReleaseReq = true;
 		break;
 
-	case PLAYER_STATE_GATEHOLDNTF:
+	case PLAYER_STATE_GATEALLOCNTF:
 		bSendGateReleaseReq = true;
 		break;
 
@@ -175,8 +175,12 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
 		break;
 
-	case COMMAND_GATEHOLDACK:
-		_OnCommandGateHoldAck((LogicCommandGateHoldAck*)pCommand);
+	case COMMAND_GATEALLOCACK:
+		_OnCommandGateAllocAck((LogicCommandGateAllocAck*)pCommand);
+		break;
+
+	case COMMAND_ONGATELOGINREQ:
+		_OnCommandOnGateLoginReq((LogicCommandOnGateLoginReq*)pCommand);
 		break;
 
 	case COMMAND_ONSESSIONDISCONNECT:
@@ -243,7 +247,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 	pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
 }
 
-void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
+void MasterServerLoop::_OnCommandGateAllocAck(LogicCommandGateAllocAck* pCommand)
 {
 	MasterPlayerContext* pPlayerContext = NULL;
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
@@ -252,7 +256,7 @@ void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
 		pPlayerContext = mit->second;
 		if (pPlayerContext->m_iSessionId == pCommand->m_iLoginSessionId)
 		{
-			pPlayerContext->GateHoldAck(pCommand->m_iServerId, pCommand->m_iGateSessionId);
+			pPlayerContext->GateAllocAck(pCommand->m_iServerId, pCommand->m_iGateSessionId);
 		}
 		else
 		{
@@ -263,6 +267,18 @@ void MasterServerLoop::_OnCommandGateHoldAck(LogicCommandGateHoldAck* pCommand)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s does not exist in master server"), pCommand->m_strAccountName);
 	}
+}
+
+void MasterServerLoop::_OnCommandOnGateLoginReq(LogicCommandOnGateLoginReq* pCommand)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
+	{
+		LOG_WAR(LOG_SERVER, _T("acc=? sid=%d can't find context"), pCommand->m_iSessionId);
+		return;
+	}
+
+	mit->second->OnGateLoginReq();
 }
 
 void MasterServerLoop::_OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect* pCommand)

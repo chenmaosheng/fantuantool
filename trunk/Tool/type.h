@@ -26,7 +26,7 @@ typedef const char*			cpint8;
 // log type define
 enum
 {
-	LOG_STARNET,
+	LOG_NET,
 	LOG_SERVER,
 
 	LOG_TYPE_MAX = LOG_SERVER + 1,

@@ -13,14 +13,14 @@
 
 enum
 {
-	COMMAND_GATEHOLDREQ = 1001,
+	COMMAND_GATEALLOCREQ = 1001,
 	COMMAND_GATERELEASEREQ,
 };
 
 
-struct LogicCommandGateHoldReq : public LogicCommandT<COMMAND_GATEHOLDREQ>
+struct LogicCommandGateAllocReq : public LogicCommandT<COMMAND_GATEALLOCREQ>
 {
-	LogicCommandGateHoldReq()
+	LogicCommandGateAllocReq()
 	{
 		m_iLoginSessionId = 0;
 		m_strAccountName[0] = '\0';

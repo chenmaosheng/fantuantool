@@ -43,13 +43,44 @@ int32 GateServerLoop::Start()
 	return 0;
 }
 
-int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pSession)
+int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pOutputSession)
 {
+	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(strAccountName);
+	if (mit == m_mSessionMapByName.end())
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d Can't find related session info"), strAccountName, iTempSessionId);
+		return -1;
+	}
+
+	GateSession* pSession = mit->second;
+	GateSession* pTempSession = GetSession(iTempSessionId);
+
+	// check state
+	if (pSession->m_StateMachine.GetCurrState() != SESSION_STATE_GATEALLOCACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), strAccountName, iTempSessionId, pSession->m_StateMachine.GetCurrState());
+		return -1;
+	}
+	
+	pSession->Clone(pTempSession);
+	pSession->OnSessionTransfered();
+	pOutputSession = pSession;
+
 	return 0;
 }
 
 void GateServerLoop::CloseSession(GateSession* pSession)
 {
+	super::CloseSession(pSession);
+
+	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pSession->m_strAccountName);
+	if (mit != m_mSessionMapByName.end())
+	{
+		m_mSessionMapByName.erase(mit);
+	}
+
+	pSession->Clear();
+	m_SessionPool.Free(pSession);
 }
 
 DWORD GateServerLoop::_Loop()
@@ -73,8 +104,8 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 
 	switch (pCommand->m_iCmdId)
 	{
-	case COMMAND_GATEHOLDREQ:
-		_OnCommandGateHoldReq((LogicCommandGateHoldReq*)pCommand);
+	case COMMAND_GATEALLOCREQ:
+		_OnCommandGateAllocReq((LogicCommandGateAllocReq*)pCommand);
 		break;
 
 	case COMMAND_DISCONNECT:
@@ -89,7 +120,7 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 	return true;
 }
 
-void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
+void GateServerLoop::_OnCommandGateAllocReq(LogicCommandGateAllocReq* pCommand)
 {
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
 	if (mit != m_mSessionMapByName.end())
@@ -100,7 +131,7 @@ void GateServerLoop::_OnCommandGateHoldReq(LogicCommandGateHoldReq* pCommand)
 
 	GateSession* pSession = m_SessionPool.Allocate();
 	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSession));
-	pSession->OnHoldReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
+	pSession->OnGateAllocReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
 }
 
 void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)

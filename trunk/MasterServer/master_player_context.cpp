@@ -57,25 +57,25 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 
 	// notify gate
-	iRet = m_pMainLoop->GateHoldReq();
+	iRet = m_pMainLoop->GateAllocReq();
 	if (iRet < 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x No more gate session to hold"), strAccountName, iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x No more gate session to allocate"), strAccountName, iSessionId);
 		return;
 	}
 
 	m_iGateServerId = (uint16)iRet;
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Hold a gate session on gate server id=%d"), strAccountName, iSessionId, iRet);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Allocate a gate session on gate server id=%d"), strAccountName, iSessionId, iRet);
 
-	iRet = GatePeerSend::GateHoldReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, (uint16)wcslen(strAccountName)+1, strAccountName);
+	iRet = GatePeerSend::GateAllocReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, (uint16)wcslen(strAccountName)+1, strAccountName);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Send gate hold request failed"), strAccountName, iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Send gate allocate request failed"), strAccountName, iSessionId);
 		return;
 	}
 
 	// check state
-	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDREQ) != PLAYER_STATE_GATEHOLDREQ)
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCREQ) != PLAYER_STATE_GATEALLOCREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
 		m_pMainLoop->ShutdownPlayer(this);
@@ -83,15 +83,15 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	}
 }
 
-void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionId)
+void MasterPlayerContext::GateAllocAck(uint16 iGateServerId, uint32 iGateSessionId)
 {
 	int32 iRet = 0;
 	GateConfigItem* pConfigItem = NULL;
 
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Hold gate success"), m_strAccountName, m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Allocate gate success"), m_strAccountName, m_iSessionId);
 
 	// check state
-	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDACK) != PLAYER_STATE_GATEHOLDACK)
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCACK) != PLAYER_STATE_GATEALLOCACK)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		m_pMainLoop->ShutdownPlayer(this);
@@ -125,7 +125,7 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 	}
 
 	// set state
-	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEHOLDNTF) != PLAYER_STATE_GATEHOLDNTF)
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCNTF) != PLAYER_STATE_GATEALLOCNTF)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		m_pMainLoop->ShutdownPlayer(this);
@@ -134,6 +134,11 @@ void MasterPlayerContext::GateHoldAck(uint16 iGateServerId, uint32 iGateSessionI
 
 	// todo: login session id delete, add gate session id
 	m_pMainLoop->LoginSession2GateSession(this, m_iSessionId, iGateSessionId);
+}
+
+void MasterPlayerContext::OnGateLoginReq()
+{
+	// todo:
 }
 
 void MasterPlayerContext::OnSessionDisconnect()

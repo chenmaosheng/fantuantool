@@ -69,6 +69,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FTDGen", "FTDGen\FTDGen.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientBase", "ClientBase\ClientBase.vcproj", "{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleNet", "SimpleNet\SimpleNet.vcproj", "{D27287F8-6C41-4212-8BEB-E2E9C0BFF177}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82252E1B-455A-4F5D-84D7-CE989DE040BD} = {82252E1B-455A-4F5D-84D7-CE989DE040BD}
+		{2DB1461C-AF09-4A54-91DC-3D9028DBD685} = {2DB1461C-AF09-4A54-91DC-3D9028DBD685}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -145,6 +151,10 @@ Global
 		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Debug|Win32.Build.0 = Debug|Win32
 		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Release|Win32.ActiveCfg = Release|Win32
 		{1F6190C6-D588-44B1-BDB5-3E1957BFDD69}.Release|Win32.Build.0 = Release|Win32
+		{D27287F8-6C41-4212-8BEB-E2E9C0BFF177}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D27287F8-6C41-4212-8BEB-E2E9C0BFF177}.Debug|Win32.Build.0 = Debug|Win32
+		{D27287F8-6C41-4212-8BEB-E2E9C0BFF177}.Release|Win32.ActiveCfg = Release|Win32
+		{D27287F8-6C41-4212-8BEB-E2E9C0BFF177}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

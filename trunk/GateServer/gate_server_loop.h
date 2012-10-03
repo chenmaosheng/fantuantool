@@ -14,7 +14,7 @@
 #include <hash_map>
 #include <string>
 
-struct LogicCommandGateHoldReq;
+struct LogicCommandGateAllocReq;
 struct LogicCommandDisconnect;
 class GateSession;
 class GateServerLoop : public SessionServerLoop<GateSession>
@@ -32,16 +32,16 @@ public:
 	int32 Start();
 
 	// temp session to session
-	int32 TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pSession);
+	int32 TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pOutputSession);
 	// close session
 	void CloseSession(GateSession*);
-
+	
 private:
 	DWORD _Loop();
 	bool _OnCommand(LogicCommand*);
 
 private:
-	void _OnCommandGateHoldReq(LogicCommandGateHoldReq*);
+	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
 
 private:

@@ -16,18 +16,18 @@ enum
 {
 	PLAYER_STATE_NONE,
 	PLAYER_STATE_ONLOGINREQ,
-	PLAYER_STATE_GATEHOLDREQ,
-	PLAYER_STATE_GATEHOLDACK,
-	PLAYER_STATE_GATEHOLDNTF,
+	PLAYER_STATE_GATEALLOCREQ,
+	PLAYER_STATE_GATEALLOCACK,
+	PLAYER_STATE_GATEALLOCNTF,
 	PLAYER_STATE_ONGATELOGINREQ,
 };
 
 enum
 {
 	PLAYER_EVENT_ONLOGINREQ,
-	PLAYER_EVENT_GATEHOLDREQ,
-	PLAYER_EVENT_GATEHOLDACK,
-	PLAYER_EVENT_GATEHOLDNTF,
+	PLAYER_EVENT_GATEALLOCREQ,
+	PLAYER_EVENT_GATEALLOCACK,
+	PLAYER_EVENT_GATEALLOCNTF,
 	PLAYER_EVENT_ONGATELOGINREQ,
 	PLAYER_EVENT_ONSESSIONDISCONNECT,
 };
@@ -47,8 +47,10 @@ public:
 
 	// receive login request from login server
 	void OnLoginReq(uint32 iSessionId, const TCHAR* strAccountName);
-	// send gate hold response to login server
-	void GateHoldAck(uint16 iGateServerId, uint32 iGateSessionId);
+	// receive login request from gate server
+	void OnGateLoginReq();
+	// send gate allocate response to login server
+	void GateAllocAck(uint16 iGateServerId, uint32 iGateSessionId);
 	// receive disconnect from session server
 	void OnSessionDisconnect();
 

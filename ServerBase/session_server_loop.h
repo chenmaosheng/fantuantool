@@ -44,10 +44,9 @@ protected:
 	void _ReadyForShutdown();
 	virtual bool _OnCommand(LogicCommand*);
 
-private:
 	void _OnCommandOnConnect(LogicCommandOnConnect*);
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
-	void _OnCommandOnData(LogicCommandOnData*);
+	virtual void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	void _OnCommandShutdown();
 	// handle packet forwarding to other server

@@ -45,8 +45,10 @@ private:
 	bool _OnCommand(LogicCommand*);
 
 private:
-	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);
+	void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
+	
+	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);
 	void _OnCommandGateReleaseReq(LogicCommandGateReleaseReq*);
 
 private:

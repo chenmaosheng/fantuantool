@@ -183,6 +183,27 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 	return true;
 }
 
+void GateServerLoop::_OnCommandOnData(LogicCommandOnData* pCommand)
+{
+	Connection* pConnection = (Connection*)pCommand->m_ConnId;
+	GateSession* pSession = (GateSession*)pConnection->client_;
+	if (!pSession || pSession->m_bFinalizing)
+	{
+		return;
+	}
+
+	super::_OnCommandOnData(pCommand);
+}
+
+void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
+{
+	GateSession* pSession = GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		pSession->OnMasterDisconnect();
+	}
+}
+
 void GateServerLoop::_OnCommandGateAllocReq(LogicCommandGateAllocReq* pCommand)
 {
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
@@ -195,15 +216,6 @@ void GateServerLoop::_OnCommandGateAllocReq(LogicCommandGateAllocReq* pCommand)
 	GateSession* pSession = m_SessionPool.Allocate();
 	m_mSessionMapByName.insert(std::make_pair(pCommand->m_strAccountName, pSession));
 	pSession->OnGateAllocReq(pCommand->m_iLoginSessionId, pCommand->m_strAccountName);
-}
-
-void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
-{
-	GateSession* pSession = GetSession(pCommand->m_iSessionId);
-	if (pSession)
-	{
-		pSession->OnMasterDisconnect();
-	}
 }
 
 void GateServerLoop::_OnCommandGateReleaseReq(LogicCommandGateReleaseReq* pCommand)

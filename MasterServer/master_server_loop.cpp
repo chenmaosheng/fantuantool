@@ -129,7 +129,7 @@ int32 MasterServerLoop::GateAllocReq()
 void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 {
 	int32 iRet = 0;
-	bool bSendOnLoginAck = false;
+	bool bSendOnLoginFailedAck = false;
 	bool bSendGateReleaseReq = false;
 	bool bSendGateDisconnect = false;
 
@@ -141,12 +141,12 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	switch (pPlayerContext->m_StateMachine.GetCurrState())
 	{
 	case PLAYER_STATE_ONLOGINREQ:
-		bSendOnLoginAck = true;
+		bSendOnLoginFailedAck = true;
 		break;
 
 	case PLAYER_STATE_GATEALLOCREQ:
 	case PLAYER_STATE_GATEALLOCACK:
-		bSendOnLoginAck = true;
+		bSendOnLoginFailedAck = true;
 		bSendGateReleaseReq = true;
 		break;
 
@@ -159,9 +159,9 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 		break;
 	}
 
-	if (bSendOnLoginAck && !IsReadyForShutdown())
+	if (bSendOnLoginFailedAck && !IsReadyForShutdown())
 	{
-		LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pPlayerContext->m_iSessionId, 3);
+		LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pPlayerContext->m_iSessionId, 3);
 	}
 
 	if (bSendGateReleaseReq && !IsReadyForShutdown())
@@ -339,10 +339,10 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x This account is already logged in"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		pPlayerContext = mit->second;
 
-		iRet = LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 1);
+		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 1);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginFailedAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		}
 
 		ShutdownPlayer(pPlayerContext);
@@ -353,10 +353,10 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 	if (!pPlayerContext)
 	{
 		LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
-		iRet = LoginPeerSend::OnLoginAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 2);
+		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 2);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginFailedAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		}
 		return;
 	}

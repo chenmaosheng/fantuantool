@@ -12,6 +12,7 @@
 #include "session_server_loop.h"
 #include "login_session.h"
 
+struct LogicCommandOnLoginFailedAck;
 class LoginServerLoop : public SessionServerLoop<LoginSession>
 {
 public:
@@ -28,6 +29,7 @@ public:
 private:
 	DWORD _Loop();
 	bool _OnCommand(LogicCommand*);
+	bool _OnCommandOnLoginFailedAck(LogicCommandOnLoginFailedAck*);
 };
 
 #endif

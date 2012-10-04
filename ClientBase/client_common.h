@@ -1,18 +1,14 @@
 /*****************************************************************************************
-	filename:	client_base.h
-	created:	10/03/2012
+	filename:	client_common.h
+	created:	10/04/2012
 	author:		chen
-	purpose:	basic function of each client
+	purpose:	necessary defines in client
 
 *****************************************************************************************/
 
-#ifndef _H_CLIENT_BASE
-#define _H_CLIENT_BASE
+#ifndef _H_CLIENT_COMMON
+#define _H_CLIENT_COMMON
 
-#include "client_common.h"
-
-class ClientBase
-{
-};
+#include "simplenet_common.h"
 
 #endif

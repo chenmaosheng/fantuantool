@@ -21,7 +21,7 @@ void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void MasterPeerRecv::GateAllocAck(PEER_CLIENT pPeerClient, uint16 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName, uint32 iGateSessionId)
+void MasterPeerRecv::GateAllocAck(PEER_CLIENT pPeerClient, uint8 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName, uint32 iGateSessionId)
 {
 	LogicCommandGateAllocAck* pCommand = FT_NEW(LogicCommandGateAllocAck);
 	if (!pCommand)

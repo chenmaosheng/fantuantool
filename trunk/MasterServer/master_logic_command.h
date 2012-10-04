@@ -54,7 +54,7 @@ struct LogicCommandGateAllocAck : public LogicCommandT<COMMAND_GATEALLOCACK>
 
 	uint32 m_iLoginSessionId;
 	uint32 m_iGateSessionId;
-	uint16 m_iServerId;
+	uint8 m_iServerId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX + 1];
 };
 

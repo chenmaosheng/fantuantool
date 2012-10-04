@@ -24,7 +24,7 @@ public:
 	bool LoadConfig();
 
 	// get server basic configuration by id or name
-	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
+	ServerConfigItem* GetServerConfigItemById(uint8 iServerId);
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
 
 	// get log configuration

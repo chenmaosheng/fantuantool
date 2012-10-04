@@ -35,7 +35,7 @@ public:
 
 	// get server basic configuration
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
-	ServerConfigItem* GetServerConfigItemById(uint16 iServerId);
+	ServerConfigItem* GetServerConfigItemById(uint8 iServerId);
 
 	int32 GetLogLevel() const
 	{

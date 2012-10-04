@@ -29,9 +29,13 @@ struct GateServerContext
 	GateServerContext()
 	{
 		m_iServerId = 0;
+		m_iSessionMax = 0;
+		m_iSessionCount = 0;
 	}
 
 	uint8 m_iServerId;
+	uint16 m_iSessionMax;
+	uint16 m_iSessionCount;
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContext;
 };
 

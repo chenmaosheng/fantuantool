@@ -25,6 +25,7 @@ void GateSession::Clear()
 	super::Clear();
 	m_strAccountName[0] = _T('\0');
 	m_bTempSession = true;
+	m_bFinalizing = false;
 }
 
 int32 GateSession::OnConnection(ConnID connId)
@@ -44,7 +45,7 @@ void GateSession::OnDisconnect()
 	// check and set state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
 	{
-		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
 
@@ -75,7 +76,19 @@ void GateSession::OnDisconnect()
 
 void GateSession::Disconnect()
 {
-	LOG_DBG(LOG_SERVER, _T("sid=%08x force to disconnect"), m_iSessionId);
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x force to disconnect"), m_strAccountName, m_iSessionId);
+
+	if (m_StateMachine.StateTransition(SESSION_EVENT_DISCONNECT) < 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
 	super::Disconnect();
 }
 
@@ -113,6 +126,11 @@ void GateSession::OnGateAllocReq(uint32 iLoginSessionId, const TCHAR *strAccount
 
 void GateSession::OnGateReleaseReq()
 {
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x connection is disconnected"), m_strAccountName, m_iSessionId);
 
 	if (m_StateMachine.StateTransition(SESSION_EVENT_GATERELEASEREQ) != SESSION_STATE_GATERELEASEREQ)
@@ -150,6 +168,11 @@ int32 GateSession::CheckLoginToken(uint16 iLen, char* pBuf)
 	char strAccountName[ACCOUNTNAME_MAX*3 + 1] = {0};
 	char strPassword[PASSWORD_MAX+1] = {0};
 	char* nextToken = NULL;
+
+	if (m_bFinalizing)
+	{
+		return -1;
+	}
 
 	// get account and password from token
 	char* pToken = strtok_s(pBuf, ";", &nextToken);
@@ -196,6 +219,11 @@ int32 GateSession::LoggedInNtf()
 {
 	int32 iRet = 0;
 	GateSession* pSession = NULL;
+
+	if (m_bFinalizing)
+	{
+		return -1;
+	}
 
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN, false) == -1)
@@ -254,9 +282,35 @@ void GateSession::OnSessionTransfered()
 
 void GateSession::OnMasterDisconnect()
 {
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive disconnect"), m_strAccountName, m_iSessionId);
 
-	Connection::Close(m_pConnection);
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONMASTERDISCONNECT) != SESSION_STATE_ONMASTERDISCONNECT)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	switch(m_StateMachine.GetCurrState())
+	{
+	case SESSION_STATE_ONMASTERDISCONNECT:
+		Connection::Close(m_pConnection);
+		break;
+
+	case SESSION_STATE_ONDISCONNECT:
+		m_pMainLoop->CloseSession(this, true);
+		break;
+
+	default:
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		break;
+	}
+
+	
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

@@ -18,6 +18,7 @@ enum
 	SESSION_STATE_GATEALLOCACK, // send gate allocate ack
 	SESSION_STATE_GATERELEASEREQ, // receive gate release req
 	SESSION_STATE_GATELOGINREQ, // send gate login to master
+	SESSION_STATE_ONMASTERDISCONNECT, // receive force disconnect from master server
 };
 
 enum
@@ -27,6 +28,7 @@ enum
 	SESSION_EVENT_GATEALLOCACK,
 	SESSION_EVENT_GATERELEASEREQ,
 	SESSION_EVENT_GATELOGINREQ,
+	SESSION_EVENT_ONMASTERDISCONNECT,
 };
 
 class GateServerLoop;
@@ -63,6 +65,7 @@ public:
 	static GateServerLoop* m_pMainLoop;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	uint32 m_iLoginSessionId;
+	bool m_bFinalizing;
 
 private:
 	bool m_bTempSession;	// before finished login, the session is allocated as temp session

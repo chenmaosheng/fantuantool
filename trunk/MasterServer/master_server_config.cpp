@@ -37,7 +37,7 @@ bool MasterServerConfig::_LoadConfig()
 		memset(&item, 0, sizeof(item));
 
 		// server id
-		item.m_iServerId = (uint16)atoi(pGateServerElement->Attribute("id"));
+		item.m_iServerId = (uint8)atoi(pGateServerElement->Attribute("id"));
 
 		// server ip
 		item.m_iServerIP = inet_addr(pGateServerElement->Attribute("ServerIP"));

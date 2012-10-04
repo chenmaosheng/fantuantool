@@ -4,8 +4,7 @@ int32 SimpleNet::Init()
 {
 	WSADATA wsd;
 	SOCKET s;
-	DWORD cb;
-
+	
 	// start WSA
 	if (WSAStartup(MAKEWORD(2,2), &wsd) != 0)
 	{

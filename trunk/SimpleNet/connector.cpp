@@ -7,189 +7,143 @@ bool Connector::Connect(PSOCKADDR_IN addr, void* client)
 	client_ = client;
 
 	rc = connect(socket_, (sockaddr*)addr, sizeof(*addr));
-	if (rc == 0)
+	if (rc == SOCKET_ERROR)
 	{
-		int32 iLastError = WSAGetLastError();
-		if (iLastError != ERROR_IO_PENDING)
-		{
-			SN_LOG_ERR(_T("Connect failed, err=%d"), iLastError);
-			return false;
-		}
+		SN_LOG_ERR(_T("Connect failed"));
+		return false;
 	}
 
-	SN_LOG_DBG(_T("ConnectEx success"));
+	connected_ = 1;
+	handler_.OnConnection((ConnID)this);
+
+	SN_LOG_DBG(_T("Connect success"));
 
 	return true;
 }
 
 void Connector::Disconnect()
 {
+	closesocket(socket_);
 }
 
 void Connector::Recv()
 {
-	pContext->connection_ = this;
-	pContext->wsabuf_.len = context_pool_->input_buffer_size_;
-	InterlockedIncrement(&iorefs_);
-	DWORD dwXfer, dwFlag = 0;
-	// post an asychronous receive
-	if (WSARecv(socket_, &pContext->wsabuf_, 1, &dwXfer, &dwFlag, &pContext->overlapped_, NULL) == SOCKET_ERROR)
+	char buffer[MAX_OUTPUT_BUFFER] = {0};
+	int32 iLen = 0;
+	iLen = recv(socket_, buffer, MAX_OUTPUT_BUFFER, 0);
+	if (iLen == SOCKET_ERROR)
 	{
-		int32 iLastError = WSAGetLastError();
-		if (iLastError != ERROR_IO_PENDING)
-		{
-			SN_LOG_ERR(_T("WSARecv failed, err=%d"), iLastError);
-			context_pool_->PushInputContext(pContext);
-			AsyncDisconnect();
-			InterlockedDecrement(&iorefs_);
-		}
+		SN_LOG_ERR(_T("Recv failed"));
 	}
-
-	SN_LOG_DBG(_T("WSARecv success"));
+	else
+	if (iLen == 0)
+	{
+		handler_.OnDisconnect((ConnID)this);
+	}
+	else
+	{
+		handler_.OnData((ConnID)this, (uint32)iLen, buffer);
+	}
 }
 
-void Connection::Send(uint32 len, char* buf)
+void Connector::Send(int iLen, char* pBuf)
 {
-	int rc = 0;
-	rc = send(socket_, buf, len, 0);
-	if (rc == 0)
+	int32 rc = 0;
+	rc = send(socket_, pBuf, iLen, 0);
+	if (rc == SOCKET_ERROR)
 	{
-
+		SN_LOG_ERR(_T("Send failed"));
 	}
 }
 
-void Connection::SetClient(void* pClient)
+void Connector::SetClient(void* pClient)
 {
 	client_ = pClient;
 }
 
-void* Connection::GetClient()
+void* Connector::GetClient()
 {
 	return client_;
 }
 
-void Connection::SetRefMax(uint16 iMax)
-{
-	iorefmax_ = iMax;
-}
-
-bool Connection::IsConnected()
+bool Connector::IsConnected()
 {
 	return connected_ ? true : false;
 }
 
-Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, Acceptor* pAcceptor)
+Connector* Connector::Create(Handler* pHandler, Worker* pWorker)
 {
-	Connection* pConnection = (Connection*)_aligned_malloc(sizeof(Connection), MEMORY_ALLOCATION_ALIGNMENT);
-	if (pConnection)
+	Connector* pConnector = (Connector*)_aligned_malloc(sizeof(Connector), MEMORY_ALLOCATION_ALIGNMENT);
+	if (pConnector)
 	{
 		// initialize connection's tcp socket
-		pConnection->socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-		if (pConnection->socket_ != INVALID_SOCKET)
+		pConnector->socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (pConnector->socket_ != INVALID_SOCKET)
 		{
-			// the 3rd param is the key of getqueued
-			if (CreateIoCompletionPort((HANDLE)pConnection->socket_, pWorker->iocp_, (ULONG_PTR)pConnection, 0))
+			u_long non_blocking = 1;
+			ioctlsocket(pConnector->socket_, FIONBIO, &non_blocking);
+			DWORD val = 0;
+
+			// set snd buf and recv buf to 0, it's said that it must improve the performance
+			setsockopt(pConnector->socket_, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val));
+			setsockopt(pConnector->socket_, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val));
+
+			val = 1;
+			setsockopt(pConnector->socket_, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val));
+			setsockopt(pConnector->socket_, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val));
+
+			pConnector->handler_ = *pHandler;
+			pConnector->worker_ = pWorker;
+			pConnector->connected_ = 0;
+			pWorker->m_pConnector = pConnector;
+
+			SOCKADDR_IN addr;
+			ZeroMemory(&addr, sizeof(addr));
+			addr.sin_family = AF_INET;
+			if (bind(pConnector->socket_, (sockaddr*)&addr, sizeof(addr)) == 0)
 			{
-				DWORD val = 0;
-
-				// set snd buf and recv buf to 0, it's said that it must improve the performance
-				setsockopt(pConnection->socket_, SOL_SOCKET, SO_RCVBUF, (const char *)&val, sizeof(val));
-				setsockopt(pConnection->socket_, SOL_SOCKET, SO_SNDBUF, (const char *)&val, sizeof(val));
-
-				val = 1;
-				setsockopt(pConnection->socket_, SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val));
-				setsockopt(pConnection->socket_, IPPROTO_TCP, TCP_NODELAY, (const char *)&val, sizeof(val));
-
-				pConnection->context_ = (Context*)_aligned_malloc(sizeof(Context), MEMORY_ALLOCATION_ALIGNMENT);
-				if (pConnection->context_)
-				{
-					pConnection->handler_ = *pHandler;
-					pConnection->context_pool_ = pContextPool;
-					pConnection->worker_ = pWorker;
-					pConnection->acceptor_ = pAcceptor;
-					pConnection->context_->connection_ = pConnection;
-					pConnection->connected_ = 0;
-					pConnection->iorefs_ = 0;
-					pConnection->iorefmax_ = 65536;
-					ZeroMemory(&pConnection->context_->overlapped_, sizeof(WSAOVERLAPPED));
-					if (!pAcceptor)
-					{
-						// if acceptor=NULL, means it's called at client side
-						// connection's socket must bind to it's address
-						SOCKADDR_IN addr;
-						ZeroMemory(&addr, sizeof(addr));
-						addr.sin_family = AF_INET;
-						if (bind(pConnection->socket_, (sockaddr*)&addr, sizeof(addr)) == 0)
-						{
-							SN_LOG_DBG(_T("Create and configure connection in client side"));
-							return pConnection;
-						}
-					}
-					else
-					{
-						SN_LOG_DBG(_T("Create and configure connection in server side"));
-						return pConnection;
-					}
-				}
-			}
-			else
-			{
-				SN_LOG_ERR(_T("CreateIoCompletionPort failed, err=%d"), WSAGetLastError());
-				closesocket(pConnection->socket_);
+				SN_LOG_DBG(_T("Create and configure connection in client side"));
+				return pConnector;
 			}
 		}
-
-		_aligned_free(pConnection);
+		else
+		{
+			_aligned_free(pConnector);
+		}
 	}
 
-	SN_LOG_ERR(_T("Create connection failed, err=%d"), GetLastError());
+	SN_LOG_ERR(_T("Create connector failed, err=%d"), GetLastError());
 
 	return NULL;
 }
 
-bool Connection::Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, void* pClient)
+bool Connector::Connect(PSOCKADDR_IN pAddr, Handler* pHandler, Worker* pWorker, void* pClient)
 {
-	Connection* pConnection = Create(pHandler, pContextPool, pWorker, NULL);
-	if (pConnection)
+	Connector* pConnector = Create(pHandler, pWorker);
+	if (pConnector)
 	{
-		if (pConnection->AsyncConnect(pAddr, pClient))
+		if (pConnector->Connect(pAddr, pClient))
 		{
 			return true;
 		}
 
-		Delete(pConnection);
+		Delete(pConnector);
 	}
 
 	return false;
 }
 
-void Connection::Close(Connection* pConnection)
+void Connector::Close(Connector* pConnector)
 {
-	// check if io reference count is 0
-	if (pConnection->iorefs_ || pConnection->connected_)
-	{
-		SN_LOG_ERR(_T("Connection can't be closed, ioref_=%d"), pConnection->iorefs_);
-		return;
-	}
-
-	// different activity in server and client side
-	if (pConnection->acceptor_)
-	{
-		InterlockedPushEntrySList(pConnection->acceptor_->free_connection_, pConnection);
-	}
-	else
-	{
-		Delete(pConnection);
-	}
-
+	Delete(pConnector);
+	
 	SN_LOG_DBG(_T("Close connection success"));
 }
 
-void Connection::Delete(Connection* pConnection)
+void Connector::Delete(Connector* pConnector)
 {
-	closesocket(pConnection->socket_);
-	_aligned_free(pConnection->context_);
-	_aligned_free(pConnection);
+	closesocket(pConnector->socket_);
+	_aligned_free(pConnector);
 
 	SN_LOG_DBG(_T("Close socket success"));
 }

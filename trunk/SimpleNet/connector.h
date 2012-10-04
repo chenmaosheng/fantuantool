@@ -20,21 +20,18 @@ struct Connector
 	Worker*			worker_;
 	void*			client_;		// pointer from app layer
 
-	LONG			iorefs_;		// io reference counter
 	LONG			connected_;		// is connected
-	LONG			iorefmax_;		// max io reference allowed
-
+	
 	// synchronous connect
 	bool Connect(PSOCKADDR_IN addr, void* client);
-	// asynchronous disconnect
+	// synchronous disconnect
 	void Disconnect();
-	// asynchronous receive
-	void Recv(uint32 iLen, char* pBuf);
-	void Send(uint32 iLen, char* pBuf);
+	// synchronous receive
+	void Recv();
+	void Send(int32 iLen, char* pBuf);
 
 	void SetClient(void*);
 	void* GetClient();
-	void SetRefMax(uint16 iMax);
 	bool IsConnected();
 
 	// static function to create and close

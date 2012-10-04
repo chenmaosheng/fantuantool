@@ -69,20 +69,20 @@ void LoginSession::Disconnect()
 	super::Disconnect();
 }
 
-void LoginSession::OnLoginAck(int32 iReturn)
+void LoginSession::OnLoginFailedAck(int8 iReturn)
 {
 	// this message means login failed
 	int32 iRet = 0;
 
 	// check state
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINACK) != SESSION_STATE_ONLOGINACK)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINFAILEDACK) != SESSION_STATE_ONLOGINFAILEDACK)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		Disconnect();
 		return;
 	}
 
-	//iRet =
+	iRet = LoginServerSend::LoginFailedAck(this, iReturn);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x login ack to client failed"), m_strAccountName, m_iSessionId);

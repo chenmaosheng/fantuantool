@@ -60,7 +60,11 @@ bool LoginServerLoop::_OnCommand(LogicCommand* pCommand)
 {
 	switch (pCommand->m_iCmdId)
 	{
-	case 11:
+	case COMMAND_ONLOGINFAILEDACK:
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
+		{
+			_OnCommandOnLoginFailedAck((LogicCommandOnLoginFailedAck*)pCommand);
+		}
 		break;
 
 	default:
@@ -69,4 +73,16 @@ bool LoginServerLoop::_OnCommand(LogicCommand* pCommand)
 	}
 
 	return true;
+}
+
+bool LoginServerLoop::_OnCommandOnLoginFailedAck(LogicCommandOnLoginFailedAck* pCommand)
+{
+	LoginSession* pSession = GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		pSession->OnLoginFailedAck(pCommand->m_iReason);
+		return true;
+	}
+
+	return false;
 }

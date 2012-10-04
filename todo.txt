@@ -8,6 +8,7 @@
 8, master context state machine
 9, master context wait for free issue
 10, use select to create a simple tcp framework
+11, gate loop's on command base need change
 
 client
 1, rpc->server, with parameters

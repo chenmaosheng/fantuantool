@@ -65,7 +65,7 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 		return;
 	}
 
-	m_iGateServerId = (uint16)iRet;
+	m_iGateServerId = (uint8)iRet;
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Allocate a gate session on gate server id=%d"), strAccountName, iSessionId, iRet);
 
 	iRet = GatePeerSend::GateAllocReq(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, (uint16)wcslen(strAccountName)+1, strAccountName);
@@ -84,7 +84,7 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	}
 }
 
-void MasterPlayerContext::GateAllocAck(uint16 iGateServerId, uint32 iGateSessionId)
+void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionId)
 {
 	int32 iRet = 0;
 	GateConfigItem* pConfigItem = NULL;
@@ -139,7 +139,7 @@ void MasterPlayerContext::GateAllocAck(uint16 iGateServerId, uint32 iGateSession
 
 void MasterPlayerContext::OnGateLoginReq()
 {
-	// todo:
+	// todo: notify dbc
 }
 
 void MasterPlayerContext::OnSessionDisconnect()

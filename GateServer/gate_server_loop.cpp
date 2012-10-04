@@ -72,13 +72,18 @@ int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountNa
 	return 0;
 }
 
-void GateServerLoop::CloseSession(GateSession* pSession)
+void GateServerLoop::CloseSession(GateSession* pSession, bool isByMaster)
 {
 	int32 iRet = 0;
 	bool bNeedDisconnect = false;
 	bool bNeedGateAllocAck = false;
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x close session start"), pSession->m_strAccountName, pSession->m_iSessionId);
+
+	if (pSession->m_bFinalizing)
+	{
+		return;
+	}
 
 	switch(pSession->m_StateMachine.GetCurrState())
 	{
@@ -103,7 +108,8 @@ void GateServerLoop::CloseSession(GateSession* pSession)
 		return;
 	}
 
-	if (bNeedGateAllocAck)
+	if (bNeedGateAllocAck && !isByMaster &&
+		m_iShutdownStatus < START_SHUTDOWN)
 	{
 		iRet = MasterPeerSend::GateAllocAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, pSession->m_iLoginSessionId, wcslen(pSession->m_strAccountName)+1, pSession->m_strAccountName, pSession->m_iSessionId);
 		if (iRet != 0)
@@ -112,7 +118,8 @@ void GateServerLoop::CloseSession(GateSession* pSession)
 		}
 	}
 
-	ClearSession(pSession);
+	m_SessionFinalizingQueue.push(pSession);
+	pSession->m_bFinalizing = true;
 }
 
 void GateServerLoop::ClearSession(GateSession* pSession)
@@ -131,6 +138,12 @@ void GateServerLoop::ClearSession(GateSession* pSession)
 
 DWORD GateServerLoop::_Loop()
 {
+	while (!m_SessionFinalizingQueue.empty())
+	{
+		ClearSession(m_SessionFinalizingQueue.back());
+		m_SessionFinalizingQueue.pop();
+	}
+
 	//// check if ready for shutdown
 	if (m_iShutdownStatus == START_SHUTDOWN)
 	{
@@ -202,5 +215,6 @@ void GateServerLoop::_OnCommandGateReleaseReq(LogicCommandGateReleaseReq* pComma
 		return;
 	}
 
+	// in theory, will not arrive here, because session will receive ondisconnect first and then close the session 
 	mit->second->OnGateReleaseReq();
 }

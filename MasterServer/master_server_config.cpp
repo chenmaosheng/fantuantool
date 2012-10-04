@@ -6,9 +6,9 @@ ServerConfig(strServerName)
 
 }
 
-GateConfigItem* MasterServerConfig::GetGateConfigItem(uint16 iServerId)
+GateConfigItem* MasterServerConfig::GetGateConfigItem(uint8 iServerId)
 {
-	std::map<uint16, GateConfigItem>::iterator mit = m_mGateConfigItems.find(iServerId);
+	std::map<uint8, GateConfigItem>::iterator mit = m_mGateConfigItems.find(iServerId);
 	if (mit != m_mGateConfigItems.end())
 	{
 		return &(mit->second);

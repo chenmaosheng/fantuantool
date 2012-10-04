@@ -14,7 +14,7 @@
 
 struct GateConfigItem
 {
-	uint16 m_iServerId;
+	uint8 m_iServerId;
 	uint32 m_iServerIP;
 	uint16 m_iServerPort;
 	uint16 m_iSessionMax;
@@ -26,13 +26,13 @@ public:
 	MasterServerConfig(const TCHAR* strServerName);
 	
 	// get gate server basic config by gate server id
-	GateConfigItem* GetGateConfigItem(uint16 iServerId);
+	GateConfigItem* GetGateConfigItem(uint8 iServerId);
 
 private:
 	bool _LoadConfig();
 
-private:
-	std::map<uint16, GateConfigItem> m_mGateConfigItems;
+public:
+	std::map<uint8, GateConfigItem> m_mGateConfigItems;
 };
 
 #endif

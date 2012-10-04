@@ -105,7 +105,7 @@ ContextPool* ServerBase::GetContextPool()
 	return m_pContextPool;
 }
 
-PEER_SERVER ServerBase::GetPeerServer(uint16 iServerId)
+PEER_SERVER ServerBase::GetPeerServer(uint8 iServerId)
 {
 	uint32 iIP = 0;
 	uint16 iPort = 0;

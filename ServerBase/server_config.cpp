@@ -57,7 +57,7 @@ bool ServerConfig::LoadConfig()
 	return _LoadConfig();
 }
 
-ServerConfigItem* ServerConfig::GetServerConfigItemById(uint16 iServerId)
+ServerConfigItem* ServerConfig::GetServerConfigItemById(uint8 iServerId)
 {
 	return m_pCommonConfig->GetServerConfigItemById(iServerId);
 }

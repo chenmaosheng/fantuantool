@@ -50,7 +50,7 @@ public:
 	// receive login request from gate server
 	void OnGateLoginReq();
 	// send gate allocate response to login server
-	void GateAllocAck(uint16 iGateServerId, uint32 iGateSessionId);
+	void GateAllocAck(uint8 iGateServerId, uint32 iGateSessionId);
 	// receive disconnect from session server
 	void OnSessionDisconnect();
 
@@ -63,7 +63,7 @@ public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	bool m_bFinalizing; // almost leave or not
 	StateMachine m_StateMachine;
-	uint16 m_iGateServerId;		// gate server's id which this player locates
+	uint8 m_iGateServerId;		// gate server's id which this player locates
 
 	static MasterServerLoop* m_pMainLoop;
 	

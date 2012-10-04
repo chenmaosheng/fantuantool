@@ -1,16 +1,18 @@
 #include "master_server_loop.h"
 #include "master_server.h"
+#include "master_server_config.h"
 #include "master_logic_command.h"
 #include "master_player_context.h"
 #include "session_peer_send.h"
 #include "login_peer_send.h"
 #include "gate_peer_send.h"
+#include "session.h"
 
 MasterServerLoop::MasterServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
 m_PlayerContextPool(5000)
 {
-	
+	memset(&m_arrayGateServerContext, 0, sizeof(m_arrayGateServerContext));
 }
 
 int32 MasterServerLoop::Init()
@@ -25,11 +27,35 @@ int32 MasterServerLoop::Init()
 
 	MasterPlayerContext::m_pMainLoop = this;
 
+	GateConfigItem* pConfig = NULL;
+	for (std::map<uint8, GateConfigItem>::iterator mit = g_pServerConfig->m_mGateConfigItems.begin();
+		mit != g_pServerConfig->m_mGateConfigItems.end(); ++mit)
+	{
+		pConfig = &(mit->second);
+		if (pConfig->m_iServerId > GATE_SERVER_MAX || m_arrayGateServerContext[pConfig->m_iServerId] != NULL)
+		{
+			LOG_ERR(LOG_SERVER, _T("gate config got some error"));
+			continue;
+		}
+
+		m_arrayGateServerContext[pConfig->m_iServerId] = new GateServerContext;
+		m_arrayGateServerContext[pConfig->m_iServerId]->m_iServerId = pConfig->m_iServerId;
+		m_arrayGateServerContext[pConfig->m_iServerId]->m_iSessionMax = pConfig->m_iSessionMax;
+	}
+
 	return 0;
 }
 
 void MasterServerLoop::Destroy()
 {
+	for (int32 i = 0; i < GATE_SERVER_MAX; ++i)
+	{
+		if (m_arrayGateServerContext[i])
+		{
+			SAFE_DELETE(m_arrayGateServerContext[i]);
+		}
+	}
+
 	super::Destroy();
 }
 
@@ -53,19 +79,51 @@ bool MasterServerLoop::IsReadyForShutdown() const
 
 void MasterServerLoop::LoginSession2GateSession(MasterPlayerContext* pPlayerContext, uint32 iLoginSessionId, uint32 iGateSessionId)
 {
-	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(iLoginSessionId);
-	if (mit != m_mPlayerContextBySessionId.end())
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_LoginServerContext.m_mPlayerContext.find(iLoginSessionId);
+	if (mit != m_LoginServerContext.m_mPlayerContext.end())
 	{
-		m_mPlayerContextBySessionId.erase(mit);
+		m_LoginServerContext.m_mPlayerContext.erase(mit);
+	}
+
+	uint8 iServerId = ((SessionId*)&iGateSessionId)->sValue_.serverId_;
+
+	GateServerContext* pContext = m_arrayGateServerContext[iServerId];
+	if (!pContext)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%d serverId=%d gate config got some error"), iGateSessionId, iServerId);
+		return;
+	}
+
+	pPlayerContext->m_iSessionId = iGateSessionId;
+	pContext->m_mPlayerContext.insert(std::make_pair(iGateSessionId, pPlayerContext));
+
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit2 = m_mPlayerContextBySessionId.find(iLoginSessionId);
+	if (mit2 != m_mPlayerContextBySessionId.end())
+	{
+		m_mPlayerContextBySessionId.erase(mit2);
 		m_mPlayerContextBySessionId.insert(std::make_pair(iGateSessionId, pPlayerContext));
-		pPlayerContext->m_iSessionId = iGateSessionId;
 	}
 }
 
 int32 MasterServerLoop::GateAllocReq()
 {
-	// todo:
-	return 2;
+	// todo: need a better policy
+	GateServerContext* pContext = NULL;
+	int32 iGateServerId = -1;
+
+	for (int32 i = 0; i < GATE_SERVER_MAX; ++i)
+	{
+		pContext = m_arrayGateServerContext[i];
+		if (pContext &&
+			pContext->m_iSessionMax < pContext->m_iSessionCount)
+		{
+			iGateServerId = pContext->m_iServerId;
+			pContext->m_iSessionCount++;
+			break;
+		}
+	}
+	
+	return iGateServerId;
 }
 
 void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
@@ -127,6 +185,36 @@ void MasterServerLoop::AddPlayerToFinalizingQueue(MasterPlayerContext* pPlayerCo
 
 void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
 {
+	bool bNeedDeleteLoginServerContext = false;
+	bool bNeedDeleteGateServerContext = false;
+
+	switch(pPlayerContext->m_StateMachine.GetCurrState())
+	{
+	case PLAYER_STATE_ONLOGINREQ:
+	case PLAYER_STATE_GATEALLOCREQ:
+		bNeedDeleteLoginServerContext = true;
+		break;
+
+	case PLAYER_STATE_GATEALLOCACK:
+	case PLAYER_STATE_GATEALLOCNTF:
+	case PLAYER_STATE_ONGATELOGINREQ:
+		bNeedDeleteGateServerContext = true;
+		break;
+
+	default:
+		break;
+	}
+
+	if (bNeedDeleteLoginServerContext)
+	{
+		DeletePlayerFromLoginServerContext(pPlayerContext);
+	}
+
+	if (bNeedDeleteGateServerContext)
+	{
+		DeletePlayerFromGateServerContext(pPlayerContext);
+	}
+
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pPlayerContext->m_strAccountName);
 	if (mit != m_mPlayerContextByName.end())
 	{
@@ -143,6 +231,35 @@ void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
 	pPlayerContext->Clear();
 
 	m_PlayerContextPool.Free(pPlayerContext);
+}
+
+void MasterServerLoop::DeletePlayerFromLoginServerContext(MasterPlayerContext* pPlayerContext)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_LoginServerContext.m_mPlayerContext.find(pPlayerContext->m_iSessionId);
+	if (mit != m_LoginServerContext.m_mPlayerContext.end())
+	{
+		m_LoginServerContext.m_mPlayerContext.erase(mit);
+	}
+}
+
+void MasterServerLoop::DeletePlayerFromGateServerContext(MasterPlayerContext* pPlayerContext)
+{
+	if (pPlayerContext->m_iGateServerId >= GATE_SERVER_MAX)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x serverid=%d serverid invalid"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId, pPlayerContext->m_iGateServerId);
+		return;
+	}
+
+	GateServerContext* pContext = m_arrayGateServerContext[pPlayerContext->m_iGateServerId];
+	if (pContext)
+	{
+		stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = pContext->m_mPlayerContext.find(pPlayerContext->m_iSessionId);
+		if (mit != pContext->m_mPlayerContext.end())
+		{
+			pContext->m_mPlayerContext.erase(mit);
+		}
+	}
+	
 }
 
 DWORD MasterServerLoop::_Loop()

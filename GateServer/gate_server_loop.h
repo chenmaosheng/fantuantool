@@ -13,6 +13,7 @@
 #include "gate_session.h"
 #include <hash_map>
 #include <string>
+#include <queue>
 
 struct LogicCommandGateAllocReq;
 struct LogicCommandDisconnect;
@@ -35,7 +36,7 @@ public:
 	// temp session to session
 	int32 TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pOutputSession);
 	// close session
-	void CloseSession(GateSession*);
+	void CloseSession(GateSession*, bool isByMaster = false);
 	// clear session
 	void ClearSession(GateSession*);
 	
@@ -50,6 +51,7 @@ private:
 
 private:
 	stdext::hash_map<std::wstring, GateSession*> m_mSessionMapByName;
+	std::queue<GateSession*> m_SessionFinalizingQueue;
 };
 
 #endif

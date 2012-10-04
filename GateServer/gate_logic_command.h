@@ -23,7 +23,7 @@ struct LogicCommandGateAllocReq : public LogicCommandT<COMMAND_GATEALLOCREQ>
 	LogicCommandGateAllocReq()
 	{
 		m_iLoginSessionId = 0;
-		m_strAccountName[0] = '\0';
+		m_strAccountName[0] = _T('\0');
 	}
 
 	uint32 m_iLoginSessionId;
@@ -35,7 +35,7 @@ struct LogicCommandGateReleaseReq : public LogicCommandT<COMMAND_GATERELEASEREQ>
 	LogicCommandGateReleaseReq()
 	{
 		m_iLoginSessionId = 0;
-		m_strAccountName[0] = '\0';
+		m_strAccountName[0] = _T('\0');
 	}
 
 	uint32 m_iLoginSessionId;

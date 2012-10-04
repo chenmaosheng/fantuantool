@@ -33,7 +33,7 @@ void LogDeviceConsole::_SetColor(TCHAR* strBuffer)
 		iLogLevel = 0;
 	}
 	else
-	if (_tcsstr(strBuffer, _T("WARNING")))
+	if (_tcsstr(strBuffer, _T("WARNI")))
 	{
 		iLogLevel = 2;
 	}

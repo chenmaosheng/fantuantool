@@ -151,6 +151,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\connector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\simplenet.cpp"
 				>
 			</File>
@@ -160,6 +164,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\connector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\handler.h"
+				>
+			</File>
 			<File
 				RelativePath=".\simplenet.h"
 				>

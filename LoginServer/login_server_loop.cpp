@@ -22,6 +22,8 @@ int32 LoginServerLoop::Init()
 		return iRet;
 	}
 
+	LoginSession::m_pMainLoop = this;
+
 	return 0;
 }
 

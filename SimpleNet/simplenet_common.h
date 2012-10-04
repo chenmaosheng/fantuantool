@@ -12,6 +12,8 @@
 #include "common.h"
 #include "log.h"
 
+typedef HANDLE				ConnID;
+
 #define SN_LOG_DBG(Expression, ...) LOG_DBG(LOG_NET, Expression, __VA_ARGS__)
 #define SN_LOG_WAR(Expression, ...) LOG_WAR(LOG_NET, Expression, __VA_ARGS__)
 #define SN_LOG_ERR(Expression, ...) LOG_ERR(LOG_NET, Expression, __VA_ARGS__)

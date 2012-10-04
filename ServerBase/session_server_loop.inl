@@ -70,7 +70,7 @@ void SessionServerLoop<T>::Destroy()
 }
 
 template<typename T>
-void SessionServerLoop<T>::CloseSession(T* pSession)
+void SessionServerLoop<T>::ClearSession(T* pSession)
 {
 	stdext::hash_map<uint32, T*>::iterator mit = m_mSessionMap.find(pSession->m_iSessionId);
 	if (mit != m_mSessionMap.end())

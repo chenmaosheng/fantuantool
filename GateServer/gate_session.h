@@ -45,6 +45,7 @@ public:
 	// receive disconnect from master
 	void OnMasterDisconnect();
 	void OnGateAllocReq(uint32 iLoginSessionId, const TCHAR* strAccountName);
+	void OnGateReleaseReq();
 	// clone session from source
 	void Clone(GateSession* pSession);
 	// finish session transfered
@@ -61,9 +62,9 @@ private:
 public:
 	static GateServerLoop* m_pMainLoop;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+	uint32 m_iLoginSessionId;
 
 private:
-	uint32 m_iLoginSessionId;
 	bool m_bTempSession;	// before finished login, the session is allocated as temp session
 };
 

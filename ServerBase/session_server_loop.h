@@ -34,8 +34,8 @@ public:
 	int32 Init(uint8 iServerId, ServerBase* pServer);
 	// destroy session logic loop
 	void Destroy();
-	// close session
-	virtual void CloseSession(T* pSession);
+	// clear session
+	virtual void ClearSession(T* pSession);
 
 	bool IsReadyForShutdown() const;
 

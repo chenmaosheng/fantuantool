@@ -2,6 +2,7 @@
 #include "gate_server.h"
 #include "gate_logic_command.h"
 #include "gate_server_config.h"
+#include "master_peer_send.h"
 
 GateServerLoop::GateServerLoop() :
 SessionServerLoop<GateSession>(g_pServerConfig->m_iSessionMax)
@@ -21,6 +22,8 @@ int32 GateServerLoop::Init()
 	{
 		return iRet;
 	}
+
+	GateSession::m_pMainLoop = this;
 
 	return 0;
 }
@@ -48,7 +51,7 @@ int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountNa
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(strAccountName);
 	if (mit == m_mSessionMapByName.end())
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d Can't find related session info"), strAccountName, iTempSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Can't find related session info"), strAccountName, iTempSessionId);
 		return -1;
 	}
 
@@ -58,7 +61,7 @@ int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountNa
 	// check state
 	if (pSession->m_StateMachine.GetCurrState() != SESSION_STATE_GATEALLOCACK)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), strAccountName, iTempSessionId, pSession->m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iTempSessionId, pSession->m_StateMachine.GetCurrState());
 		return -1;
 	}
 	
@@ -71,8 +74,51 @@ int32 GateServerLoop::TransferSession(uint32 iTempSessionId, TCHAR* strAccountNa
 
 void GateServerLoop::CloseSession(GateSession* pSession)
 {
-	super::CloseSession(pSession);
+	int32 iRet = 0;
+	bool bNeedDisconnect = false;
+	bool bNeedGateAllocAck = false;
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x close session start"), pSession->m_strAccountName, pSession->m_iSessionId);
+
+	switch(pSession->m_StateMachine.GetCurrState())
+	{
+	case SESSION_STATE_ONCONNECTION:
+	case SESSION_STATE_LOGGEDIN:
+	case SESSION_STATE_GATELOGINREQ:
+		bNeedDisconnect = true;
+		break;
+
+	case SESSION_STATE_GATEALLOCACK:
+		bNeedGateAllocAck = true;
+		break;
+
+	default:
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), pSession->m_strAccountName, pSession->m_iSessionId, pSession->m_StateMachine.GetCurrState());
+		break;
+	}
+
+	if (bNeedDisconnect)
+	{
+		pSession->m_pConnection->AsyncDisconnect();
+		return;
+	}
+
+	if (bNeedGateAllocAck)
+	{
+		iRet = MasterPeerSend::GateAllocAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, pSession->m_iLoginSessionId, wcslen(pSession->m_strAccountName)+1, pSession->m_strAccountName, pSession->m_iSessionId);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnGateLoginReq failed"), pSession->m_strAccountName, pSession->m_iSessionId);
+		}
+	}
+
+	ClearSession(pSession);
+}
+
+void GateServerLoop::ClearSession(GateSession* pSession)
+{
+	super::ClearSession(pSession);
+	
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pSession->m_strAccountName);
 	if (mit != m_mSessionMapByName.end())
 	{
@@ -112,6 +158,10 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandDisconnect((LogicCommandDisconnect*)pCommand);
 		break;
 
+	case COMMAND_GATERELEASEREQ:
+		_OnCommandGateReleaseReq((LogicCommandGateReleaseReq*)pCommand);
+		break;
+
 	default:
 		return super::_OnCommand(pCommand);
 		break;
@@ -141,4 +191,16 @@ void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
 	{
 		pSession->OnMasterDisconnect();
 	}
+}
+
+void GateServerLoop::_OnCommandGateReleaseReq(LogicCommandGateReleaseReq* pCommand)
+{
+	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
+	if (mit == m_mSessionMapByName.end())
+	{
+		LOG_ERR(LOG_SERVER, _T("can't find player, acc=%s"), pCommand->m_strAccountName);
+		return;
+	}
+
+	mit->second->OnGateReleaseReq();
 }

@@ -314,7 +314,15 @@ int CClientDlg::HandlePacket(ServerPacket* pPacket)
 				return -1;	
 			}
 
-			// todo: send confirm to server
+			m_strName = theApp.m_strName;
+
+			TokenPacket packet;
+			char nickname[64] = {0};
+			WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
+			_snprintf(packet.m_TokenBuf, 256, "%s;Password", nickname);
+
+			packet.m_iTokenLen = (uint16)strlen(packet.m_TokenBuf)+1;
+			m_pSocket->Send((char*)&packet,packet.m_iTokenLen+sizeof(uint16)); // step5: send it
 		}
 	}
 

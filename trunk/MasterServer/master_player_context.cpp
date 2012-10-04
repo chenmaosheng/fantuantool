@@ -27,9 +27,10 @@ MasterPlayerContext::~MasterPlayerContext()
 void MasterPlayerContext::Clear()
 {
 	m_iSessionId = 0;
-	m_strAccountName[0] = '\0';
+	m_strAccountName[0] = _T('\0');
 	m_iGateServerId = 0;
 	m_bFinalizing = false;
+	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 }
 
 int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)

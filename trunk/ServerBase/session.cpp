@@ -47,6 +47,7 @@ void Session::Clear()
 	m_dwLoggedInTime = 0;
 	m_iLoginBufLen = 0;
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
+	m_StateMachine.SetCurrState(SESSION_STATE_NONE);
 }
 
 int32 Session::OnConnection(ConnID connId)
@@ -262,6 +263,8 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 			return -2;
 		}
 
+		Connection* pConnection = m_pConnection;
+
 		// notify client login success
 		iRet = LoggedInNtf();
 		if (iRet != 0)
@@ -271,7 +274,7 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 			return -3;
 		}
 
-		char* strLoggedInNtf = (char*)m_pConnection->context_pool_->PopOutputBuffer();
+		char* strLoggedInNtf = (char*)pConnection->context_pool_->PopOutputBuffer();
 		if (!strLoggedInNtf)
 		{
 			LOG_ERR(LOG_SERVER, _T("sid=%08x PopOutputBuffer failed"), m_iSessionId);
@@ -281,7 +284,7 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 
 		strcpy_s(strLoggedInNtf, MAX_OUTPUT_BUFFER, g_LoggedInNtf);
 
-		m_pConnection->AsyncSend(strlen(strLoggedInNtf), (char*)strLoggedInNtf);
+		pConnection->AsyncSend(strlen(strLoggedInNtf), (char*)strLoggedInNtf);
 
 		LOG_DBG(LOG_SERVER, _T("sid=%08x LoggedIn success"), m_iSessionId);
 

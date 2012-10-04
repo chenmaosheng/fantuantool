@@ -16,6 +16,7 @@
 
 struct LogicCommandGateAllocReq;
 struct LogicCommandDisconnect;
+struct LogicCommandGateReleaseReq;
 class GateSession;
 class GateServerLoop : public SessionServerLoop<GateSession>
 {
@@ -35,6 +36,8 @@ public:
 	int32 TransferSession(uint32 iTempSessionId, TCHAR* strAccountName, GateSession*& pOutputSession);
 	// close session
 	void CloseSession(GateSession*);
+	// clear session
+	void ClearSession(GateSession*);
 	
 private:
 	DWORD _Loop();
@@ -43,6 +46,7 @@ private:
 private:
 	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
+	void _OnCommandGateReleaseReq(LogicCommandGateReleaseReq*);
 
 private:
 	stdext::hash_map<std::wstring, GateSession*> m_mSessionMapByName;

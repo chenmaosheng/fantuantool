@@ -60,7 +60,7 @@ void GateSession::OnDisconnect()
 		iRet = SessionPeerSend::OnSessionDisconnect(g_pServer->m_pMasterServer, m_iSessionId);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d OnSessionDisconnect failed"), m_strAccountName, m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnSessionDisconnect failed"), m_strAccountName, m_iSessionId);
 			return;
 		}
 
@@ -68,7 +68,7 @@ void GateSession::OnDisconnect()
 		break;
 
 	default:
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		break;
 	}
 }
@@ -83,6 +83,13 @@ void GateSession::OnGateAllocReq(uint32 iLoginSessionId, const TCHAR *strAccount
 {
 	int32 iRet = 0;
 
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONGATEALLOCREQ) != SESSION_STATE_ONGATEALLOCREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%d sid=%08x state=%d state error"), strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
 	((SessionId*)&m_iSessionId)->sValue_.sequence_++;
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 	m_bTempSession = false;
@@ -90,17 +97,39 @@ void GateSession::OnGateAllocReq(uint32 iLoginSessionId, const TCHAR *strAccount
 	iRet = MasterPeerSend::GateAllocAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, iLoginSessionId, (uint16)wcslen(strAccountName)+1, strAccountName, m_iSessionId);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("sid=%08x gate allocate ack failed to send"), m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%d sid=%08x gate allocate ack failed to send"), strAccountName, m_iSessionId);
 		return;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("sid=%08x send gate allocate ack to master server"), m_iSessionId);
+	// check state
+	if (m_StateMachine.StateTransition(SESSION_EVENT_GATEALLOCACK) != SESSION_STATE_GATEALLOCACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%d sid=%08x state=%d state error"), strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%d sid=%08x send gate allocate ack to master server"), strAccountName, m_iSessionId);
+}
+
+void GateSession::OnGateReleaseReq()
+{
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x connection is disconnected"), m_strAccountName, m_iSessionId);
+
+	if (m_StateMachine.StateTransition(SESSION_EVENT_GATERELEASEREQ) != SESSION_STATE_GATERELEASEREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%d sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		
+		m_pMainLoop->CloseSession(this);
+		return;
+	}
+
+	m_pMainLoop->CloseSession(this);
 }
 
 void GateSession::Clone(GateSession* pSession)
 {
 	// source must not be temp session and dest must be temp session
-	if (!m_bTempSession && pSession->m_bTempSession)
+	if (m_bTempSession || !pSession->m_bTempSession)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x session error"), m_iSessionId);
 		return;
@@ -169,16 +198,16 @@ int32 GateSession::LoggedInNtf()
 	GateSession* pSession = NULL;
 
 	// check state
-	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN, false) != -1)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN, false) == -1)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return -1;
 	}
 
 	iRet = m_pMainLoop->TransferSession(m_iSessionId, m_strAccountName, pSession);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d TransferSession error"), m_strAccountName, m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x TransferSession error"), m_strAccountName, m_iSessionId);
 		Disconnect();
 		return -1;
 	}
@@ -186,11 +215,11 @@ int32 GateSession::LoggedInNtf()
 	// after transfer session, check state again
 	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN, false) != SESSION_STATE_TRANSFERED)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return -1;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%d TempSession finishes itse task"), m_strAccountName, m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x TempSession finishes itse task"), m_strAccountName, m_iSessionId);
 
 	m_pMainLoop->CloseSession(this);
 
@@ -202,9 +231,9 @@ void GateSession::OnSessionTransfered()
 	int32 iRet = 0;
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x gate login start"), m_strAccountName, m_iSessionId);
 
-	if (m_StateMachine.StateTransition(SESSION_EVENT_TRANSFERED) != SESSION_EVENT_LOGGEDIN)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_TRANSFERED) != SESSION_STATE_LOGGEDIN)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
 
@@ -218,7 +247,7 @@ void GateSession::OnSessionTransfered()
 
 	if (m_StateMachine.StateTransition(SESSION_EVENT_GATELOGINREQ) != SESSION_STATE_GATELOGINREQ)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%d state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
 }

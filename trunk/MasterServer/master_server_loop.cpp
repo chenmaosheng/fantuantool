@@ -53,7 +53,13 @@ bool MasterServerLoop::IsReadyForShutdown() const
 
 void MasterServerLoop::LoginSession2GateSession(MasterPlayerContext* pPlayerContext, uint32 iLoginSessionId, uint32 iGateSessionId)
 {
-	// todo:
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(iLoginSessionId);
+	if (mit != m_mPlayerContextBySessionId.end())
+	{
+		m_mPlayerContextBySessionId.erase(mit);
+		m_mPlayerContextBySessionId.insert(std::make_pair(iGateSessionId, pPlayerContext));
+		pPlayerContext->m_iSessionId = iGateSessionId;
+	}
 }
 
 int32 MasterServerLoop::GateAllocReq()
@@ -133,7 +139,7 @@ void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
 		m_mPlayerContextBySessionId.erase(mit2);
 	}
 
-	LOG_STT(LOG_SERVER, _T("acc=%s sid=%d Delete player"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+	LOG_STT(LOG_SERVER, _T("acc=%s sid=%08x Delete player"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
 	pPlayerContext->Clear();
 
 	m_PlayerContextPool.Free(pPlayerContext);
@@ -274,7 +280,7 @@ void MasterServerLoop::_OnCommandOnGateLoginReq(LogicCommandOnGateLoginReq* pCom
 	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
 	if (mit == m_mPlayerContextBySessionId.end())
 	{
-		LOG_WAR(LOG_SERVER, _T("acc=? sid=%d can't find context"), pCommand->m_iSessionId);
+		LOG_WAR(LOG_SERVER, _T("acc=? sid=%08x can't find context"), pCommand->m_iSessionId);
 		return;
 	}
 

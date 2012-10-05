@@ -115,7 +115,7 @@ int32 MasterServerLoop::GateAllocReq()
 	{
 		pContext = m_arrayGateServerContext[i];
 		if (pContext &&
-			pContext->m_iSessionMax < pContext->m_iSessionCount)
+			pContext->m_iSessionMax > pContext->m_iSessionCount)
 		{
 			iGateServerId = pContext->m_iServerId;
 			pContext->m_iSessionCount++;

@@ -27,3 +27,5 @@ struct LogicCommandOnLoginFailedAck : public LogicCommandT<COMMAND_ONLOGINFAILED
 	uint32 m_iSessionId;
 	int8 m_iReason;
 };
+
+#endif

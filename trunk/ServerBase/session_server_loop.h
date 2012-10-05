@@ -48,11 +48,11 @@ protected:
 	virtual void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	virtual void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
-	void _OnCommandShutdown();
+	virtual void _OnCommandShutdown();
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
 
-private:
+protected:
 	stdext::hash_map<uint32, T*> m_mSessionMap;
 	T** m_arraySession;
 	uint16 m_iSessionMax;

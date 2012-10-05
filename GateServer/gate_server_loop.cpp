@@ -88,13 +88,24 @@ void GateServerLoop::CloseSession(GateSession* pSession, bool isByMaster)
 	switch(pSession->m_StateMachine.GetCurrState())
 	{
 	case SESSION_STATE_ONCONNECTION:
+		bNeedDisconnect = true;
+		break;
+
 	case SESSION_STATE_LOGGEDIN:
 	case SESSION_STATE_GATELOGINREQ:
-		bNeedDisconnect = true;
+		if (m_iShutdownStatus < START_SHUTDOWN)
+		{
+			bNeedDisconnect = true;
+		}
 		break;
 
 	case SESSION_STATE_GATEALLOCACK:
 		bNeedGateAllocAck = true;
+		break;
+
+	case SESSION_STATE_ONDISCONNECT:
+	case SESSION_STATE_TRANSFERED:
+	case SESSION_STATE_GATERELEASEREQ:
 		break;
 
 	default:
@@ -195,6 +206,18 @@ void GateServerLoop::_OnCommandOnData(LogicCommandOnData* pCommand)
 	super::_OnCommandOnData(pCommand);
 }
 
+void GateServerLoop::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCommand)
+{
+	Connection* pConnection = (Connection*)pCommand->m_ConnId;
+	GateSession* pSession = (GateSession*)pConnection->client_;
+	if (pSession)
+	{
+		super::ClearSession(pSession);
+
+		pSession->OnDisconnect();
+	}
+}
+
 void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
 {
 	GateSession* pSession = GetSession(pCommand->m_iSessionId);
@@ -223,7 +246,7 @@ void GateServerLoop::_OnCommandGateReleaseReq(LogicCommandGateReleaseReq* pComma
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
 	if (mit == m_mSessionMapByName.end())
 	{
-		LOG_ERR(LOG_SERVER, _T("can't find player, acc=%s"), pCommand->m_strAccountName);
+		LOG_WAR(LOG_SERVER, _T("can't find player, acc=%s"), pCommand->m_strAccountName);
 		return;
 	}
 

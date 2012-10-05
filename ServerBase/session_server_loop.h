@@ -45,7 +45,7 @@ protected:
 	virtual bool _OnCommand(LogicCommand*);
 
 	void _OnCommandOnConnect(LogicCommandOnConnect*);
-	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
+	virtual void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	virtual void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	void _OnCommandShutdown();

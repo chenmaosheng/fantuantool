@@ -2,6 +2,7 @@
 #include "logic_command.h"
 #include "login_server.h"
 #include "login_server_config.h"
+#include "login_logic_command.h"
 
 LoginServerLoop::LoginServerLoop() :
 SessionServerLoop<LoginSession>(g_pServerConfig->m_iSessionMax)

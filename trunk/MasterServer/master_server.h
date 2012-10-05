@@ -40,6 +40,7 @@ private:
 
 public:
 	PEER_SERVER m_pLoginServer;	// handle of login peer server
+	PEER_SERVER m_pCacheServer; // handle of cache peer server
 };
 
 extern MasterServer* g_pServer;

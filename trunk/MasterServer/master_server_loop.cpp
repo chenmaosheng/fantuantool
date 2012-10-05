@@ -352,7 +352,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 	pPlayerContext = m_PlayerContextPool.Allocate();
 	if (!pPlayerContext)
 	{
-		LOG_ERR(LOG_SERVER, _T("Allocate player context from pool failed, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Allocate player context from pool failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 2);
 		if (iRet != 0)
 		{
@@ -361,7 +361,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 		return;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("Allocate player context success, acc=%s, sid=%08x"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Allocate player context success"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 
 	m_mPlayerContextByName.insert(std::make_pair(pCommand->m_strAccountName, pPlayerContext));
 	m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));

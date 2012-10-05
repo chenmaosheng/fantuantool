@@ -21,6 +21,7 @@ enum
 	PEER_FILTER_LOGIN,
 	PEER_FILTER_MASTER,
 	PEER_FILTER_GATE,
+	PEER_FILTER_CACHE,
 };
 
 #define CONFIG_PATH "..\\Config"			// config files folder

@@ -67,4 +67,16 @@ void MasterPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONGATELOGINREQ);
+	pState->AddTransition(PLAYER_EVENT_CACHELOGINREQ, PLAYER_STATE_CACHELOGINREQ);
+
+	// when state is cache login req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_CACHELOGINREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_CACHELOGINREQ);
+
 }

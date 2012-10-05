@@ -44,23 +44,23 @@ public:
 	}
 
 	// read some data from buffer
-	bool	Pop(void* pItem, size_t iLength)
+	size_t	Pop(void* pItem, size_t iLength)
 	{
 		if (pItem == NULL)
 		{
-			return false;
+			return 0;
 		}
 
 		if (m_iCurrSize < iLength)
 		{
-			m_iCurrSize = iLength;
+			iLength = m_iCurrSize;
 		}
 
 		m_pTail = (BYTE*)m_pTail - iLength;
 		memcpy(pItem, m_pTail, iLength);
 
 		m_iCurrSize -= iLength;
-		return true;
+		return iLength;
 	}
 
 	// get current size

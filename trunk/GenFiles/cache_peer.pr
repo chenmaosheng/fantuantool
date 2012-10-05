@@ -1,0 +1,4 @@
+filter (CachePeer, PEER_FILTER_CACHE)
+{
+	OnLoginReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+}

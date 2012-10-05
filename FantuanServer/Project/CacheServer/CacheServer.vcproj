@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\tool;..\..\..\log;..\..\..\starnet;..\..\..\ServerBase;..\..\..\GenFiles;..\..\..\external\tinyxml"
+				AdditionalIncludeDirectories="..\..\..\tool;..\..\..\log;..\..\..\starnet;..\..\..\ServerBase;..\..\..\GenFiles;..\..\..\external\tinyxml;..\..\External\MySQL\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,8 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
+				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib libmysql.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\bin\debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -91,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\obj\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -116,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\tool;..\..\..\log;..\..\..\starnet;..\..\..\ServerBase;..\..\..\GenFiles;..\..\..\external\tinyxml"
+				AdditionalIncludeDirectories="..\..\..\tool;..\..\..\log;..\..\..\starnet;..\..\..\ServerBase;..\..\..\GenFiles;..\..\..\external\tinyxml;..\..\External\MySQL\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -135,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib"
+				AdditionalDependencies="Dbghelp.lib Psapi.lib Winmm.lib libmysql.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -175,6 +176,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\Src\CacheServer\cache_player_context.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\cache_player_state.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\CacheServer\cache_server.cpp"
 				>
 			</File>
@@ -190,12 +199,24 @@
 				RelativePath="..\..\Src\CacheServer\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\peer_impl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\Src\CacheServer\cache_logic_command.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\cache_player_context.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\Src\CacheServer\cache_server.h"
 				>
@@ -210,10 +231,38 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name="DBConn"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_conn.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_conn.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_conn_pool.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_conn_pool.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Gen Peer Files"
+			>
+			<File
+				RelativePath="..\..\..\GenFiles\cache_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\GenFiles\cache_peer_recv.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

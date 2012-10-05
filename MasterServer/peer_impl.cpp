@@ -1,10 +1,12 @@
-#include "master_peer_recv.h"
 #include "master_logic_command.h"
 #include "master_server.h"
 #include "master_server_loop.h"
-#include "memory_object.h"
+
+#include "master_peer_recv.h"
 #include "session_peer_recv.h"
 #include "login_peer_recv.h"
+
+#include "memory_object.h"
 
 void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {

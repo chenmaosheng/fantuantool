@@ -1,10 +1,13 @@
 #include "master_player_context.h"
 #include "master_server_loop.h"
-#include "gate_peer_send.h"
 #include "master_server.h"
 #include "master_server_config.h"
-#include "login_server_send.h"
+
+#include "gate_peer_send.h"
 #include "session_peer_send.h"
+#include "cache_peer_send.h"
+#include "login_server_send.h"
+
 #include "packet.h"
 
 MasterServerLoop* MasterPlayerContext::m_pMainLoop = NULL;
@@ -133,13 +136,43 @@ void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionI
 		return;
 	}
 
-	// todo: login session id delete, add gate session id
 	m_pMainLoop->LoginSession2GateSession(this, m_iSessionId, iGateSessionId);
 }
 
 void MasterPlayerContext::OnGateLoginReq()
 {
-	// todo: notify dbc
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONGATELOGINREQ) != PLAYER_STATE_ONGATELOGINREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	iRet = CachePeerSend::OnLoginReq(g_pServer->m_pCacheServer, m_iSessionId, wcslen(m_strAccountName)+1, m_strAccountName);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginReq failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x account logged in finished"), m_strAccountName, m_iSessionId);
+
+	// check state again
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_CACHELOGINREQ) != PLAYER_STATE_CACHELOGINREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+
 }
 
 void MasterPlayerContext::OnSessionDisconnect()

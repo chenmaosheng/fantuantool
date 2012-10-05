@@ -154,6 +154,10 @@
 			Name="Pr Files"
 			>
 			<File
+				RelativePath=".\cache_peer.pr"
+				>
+			</File>
+			<File
 				RelativePath=".\gate_peer.pr"
 				>
 			</File>

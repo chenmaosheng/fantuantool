@@ -82,6 +82,14 @@ int32 MasterServer::InitMainLoop()
 		return -1;
 	}
 
+	// get cache peer server by name
+	m_pCacheServer = GetPeerServer(_T("Cache"));
+	if (!m_pCacheServer)
+	{
+		LOG_ERR(LOG_SERVER, _T("Get cache peer server failed"));
+		return -1;
+	}
+
 	m_pMainLoop = new MasterServerLoop;
 
 	return m_pMainLoop->Init();

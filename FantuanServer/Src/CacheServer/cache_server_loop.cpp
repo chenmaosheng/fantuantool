@@ -1,7 +1,11 @@
 #include "cache_server_loop.h"
+#include "cache_player_context.h"
+#include "cache_server.h"
+#include "cache_logic_command.h"
 
 CacheServerLoop::CacheServerLoop() :
-m_iShutdownStatus(NOT_SHUTDOWN)
+m_iShutdownStatus(NOT_SHUTDOWN),
+m_PlayerContextPool(5000)
 {
 
 }
@@ -16,7 +20,7 @@ int32 CacheServerLoop::Init()
 		return iRet;
 	}
 
-	//CachePlayerContext::m_pMainLoop = this;
+	CachePlayerContext::m_pMainLoop = this;
 
 	return 0;
 }
@@ -66,10 +70,36 @@ bool CacheServerLoop::_OnCommand(LogicCommand* pCommand)
 		return true;
 	}
 
+	switch(pCommand->m_iCmdId)
+	{
+	case COMMAND_ONLOGINREQ:
+		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
+		break;
+
+	default:
+		break;
+	}
+
 	return true;
 }
 
 void CacheServerLoop::_OnCommandShutdown()
 {
 	m_iShutdownStatus = START_SHUTDOWN;
+}
+
+void CacheServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
+{
+	CachePlayerContext* pPlayerContext = m_PlayerContextPool.Allocate();
+	if (!pPlayerContext)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Allocate player context from pool failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Allocate player context success"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+
+	m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
+	pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
+
 }

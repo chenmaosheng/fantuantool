@@ -7,6 +7,7 @@ MasterServerConfig* g_pServerConfig = NULL;
 
 MasterServer::MasterServer()
 {
+	m_pLoginServer = NULL;
 }
 
 int32 MasterServer::Init(const TCHAR* strServerName)
@@ -56,6 +57,13 @@ void MasterServer::Destroy()
 void MasterServer::Shutdown()
 {
 	LOG_STT(LOG_SERVER, _T("Shutdown master server"));
+
+	m_pMainLoop->PushShutdownCommand();
+
+	while (!m_pMainLoop->IsReadyForShutdown())
+	{
+		Sleep(100);
+	}
 }
 
 ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)

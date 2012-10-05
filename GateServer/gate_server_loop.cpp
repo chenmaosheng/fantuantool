@@ -227,6 +227,23 @@ void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
 	}
 }
 
+void GateServerLoop::_OnCommandShutdown()
+{
+	m_iShutdownStatus = START_SHUTDOWN;
+
+	for (stdext::hash_map<uint32, GateSession*>::iterator mit = m_mSessionMap.begin(); mit != m_mSessionMap.end(); ++mit)
+	{
+		if (mit->second->m_pConnection)
+		{
+			mit->second->Disconnect();
+		}
+		else
+		{
+			CloseSession(mit->second);
+		}
+	}
+}
+
 void GateServerLoop::_OnCommandGateAllocReq(LogicCommandGateAllocReq* pCommand)
 {
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);

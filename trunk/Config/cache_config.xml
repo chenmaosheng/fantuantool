@@ -1,0 +1,3 @@
+<Config>
+	<CacheServer DBName="Fantuan" DBHost="127.0.0.1" DBPort="1433" DBUser="chen" DBPassword="chen" DBConnCount="2" />
+</Config>

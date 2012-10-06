@@ -251,6 +251,14 @@
 				RelativePath="..\..\Src\CacheServer\db_conn_pool.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_event.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\CacheServer\db_event.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Peer Files"

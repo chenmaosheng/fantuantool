@@ -2,17 +2,22 @@
 #include "cache_player_context.h"
 #include "cache_server.h"
 #include "cache_logic_command.h"
+#include "cache_server_config.h"
+
+#include "db_conn_pool.h"
 
 CacheServerLoop::CacheServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
-m_PlayerContextPool(5000)
+m_PlayerContextPool(5000),
+m_pDBConnPool(new DBConnPool)
 {
-
 }
 
 int32 CacheServerLoop::Init()
 {
 	int32 iRet = 0;
+
+	LOG_STT(LOG_SERVER, _T("Initialize cache server loop"));
 
 	iRet = super::Init();
 	if (iRet != 0)
@@ -22,17 +27,36 @@ int32 CacheServerLoop::Init()
 
 	CachePlayerContext::m_pMainLoop = this;
 
+	// initialize db pool
+	iRet = m_pDBConnPool->Init(g_pServerConfig->m_strDBName, g_pServerConfig->m_strDBHost, g_pServerConfig->m_iDBPort,
+		g_pServerConfig->m_strDBUser, g_pServerConfig->m_strDBPassword, g_pServerConfig->m_iDBConnCount);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_DB, _T("Initialize DB Pool failed"));
+		return iRet;
+	}
+
 	return 0;
 }
 
 void CacheServerLoop::Destroy()
 {
+	// destroy db pool
+	m_pDBConnPool->Destroy();
+
 	super::Destroy();
+
+	LOG_STT(LOG_SERVER, _T("Destroy cache server loop"));
 }
 
 int32 CacheServerLoop::Start()
 {
 	int32 iRet = 0;
+
+	LOG_STT(LOG_SERVER, _T("Start cache server loop"));
+	
+	// start db pool
+	m_pDBConnPool->Start();
 
 	iRet = super::Start();
 	if (iRet != 0)
@@ -46,6 +70,11 @@ int32 CacheServerLoop::Start()
 void CacheServerLoop::Stop()
 {
 	super::Stop();
+
+	// stop db pool
+	m_pDBConnPool->Stop();
+
+	LOG_STT(LOG_SERVER, _T("Stop cache server loop"));
 }
 
 bool CacheServerLoop::IsReadyForShutdown() const

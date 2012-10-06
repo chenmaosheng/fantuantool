@@ -9,16 +9,17 @@
 #ifndef _H_DB_CONN
 #define _H_DB_CONN
 
-#include "common.h"
+#include "server_common.h"
 #include "mysql.h"
 
+class DBConnPool;
 class DBConn
 {
 public:
 	DBConn();
 	
 	// initialize db connector
-	void Init();
+	void Init(DBConnPool* pDBConnPool);
 	// destroy connector
 	void Destroy();
 
@@ -28,6 +29,7 @@ public:
 	void Join();
 
 	MYSQL* GetConnector();
+	void DeleteConnector();
 
 private:
 	bool _InitConnector();
@@ -39,11 +41,7 @@ private:
 	HANDLE m_hThread;
 	bool m_bQuit;
 
-	char m_strDBName[256];
-	char m_strIP[32];
-	uint16 m_iPort;
-	char m_strUserName[32];
-	char m_strPassword[32];
+	DBConnPool* m_pDBConnPool;
 };
 
 #endif

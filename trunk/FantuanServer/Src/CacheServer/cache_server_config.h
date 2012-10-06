@@ -21,7 +21,7 @@ private:
 
 public:
 	char m_strDBName[MAX_PATH];
-	char m_strDBIP[MAX_PATH];
+	char m_strDBHost[MAX_PATH];
 	char m_strDBUser[MAX_PATH];
 	char m_strDBPassword[MAX_PATH];
 	uint16 m_iDBPort;

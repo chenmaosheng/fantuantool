@@ -28,8 +28,9 @@ enum
 {
 	LOG_NET,
 	LOG_SERVER,
+	LOG_DB,
 
-	LOG_TYPE_MAX = LOG_SERVER + 1,
+	LOG_TYPE_MAX = LOG_DB + 1,
 };
 
 #endif

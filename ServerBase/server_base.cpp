@@ -60,6 +60,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	// todo: later add more pairs
 	m_pLogSystem->SetLogTypeString(LOG_NET, _T("StarNet"));
 	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Server"));
+	m_pLogSystem->SetLogTypeString(LOG_DB, _T("DB"));
 
 	LOG_STT(LOG_SERVER, _T("Initialize log system success"));
 

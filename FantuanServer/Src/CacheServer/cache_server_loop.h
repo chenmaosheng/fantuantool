@@ -14,6 +14,7 @@
 #include <queue>
 #include <hash_map>
 
+class DBConnPool;
 class CachePlayerContext;
 struct LogicCommandOnLoginReq;
 class CacheServerLoop : public LogicLoop
@@ -49,8 +50,9 @@ private:
 	int32 m_iShutdownStatus;
 	ObjectPool<CachePlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint32, CachePlayerContext*> m_mPlayerContextBySessionId;
-
 	std::queue<CachePlayerContext*> m_PlayerFinalizingQueue;
+
+	DBConnPool* m_pDBConnPool;
 };
 
 #endif

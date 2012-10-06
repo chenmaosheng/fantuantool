@@ -24,7 +24,7 @@ bool CacheServerConfig::_LoadConfig()
 	strcpy_s(m_strDBName, MAX_PATH, pCacheServerListElement->Attribute("DBName"));
 
 	// db ip
-	strcpy_s(m_strDBIP, MAX_PATH, pCacheServerListElement->Attribute("DBIP"));
+	strcpy_s(m_strDBHost, MAX_PATH, pCacheServerListElement->Attribute("DBHost"));
 
 	// db user
 	strcpy_s(m_strDBUser, MAX_PATH, pCacheServerListElement->Attribute("DBUser"));

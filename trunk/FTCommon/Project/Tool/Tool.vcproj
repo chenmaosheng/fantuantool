@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\Tool\listener.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\Tool\memory_object.h"
 				>
 			</File>
@@ -207,7 +211,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\Tool\subscriber.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\Tool\type.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\Tool\type_list.h"
 				>
 			</File>
 			<File

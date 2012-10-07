@@ -11,8 +11,23 @@
 
 #include "client_common.h"
 
+class Worker;
 class ClientBase
 {
+public:
+	ClientBase();
+	~ClientBase();
+
+	// initialize client
+	virtual int32 Init();
+	// destroy client
+	virtual void Destroy();
+
+	void Login(const char* strHost, const char* strToken);
+
+private:
+	Worker* m_pWorker;
+	Log* m_pLogSystem;
 };
 
 #endif

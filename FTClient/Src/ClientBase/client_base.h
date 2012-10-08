@@ -37,12 +37,21 @@ public:
 	virtual void Destroy();
 	// receive data
 	virtual void OnClientData(uint32 iLen, char* pBuf);
+	// send data
+	virtual void SendData(uint16 iTypeId, uint16 iLen, const char* pData);
 
 	// connect to login server
-	void Login(const TCHAR* strHost, uint16 iPort, const TCHAR* strToken);
+	void Login(uint32 iIP, uint16 iPort, const char* strToken);
 
 	// handle login packet which is analyzed from received buffer
 	int32 HandleLoginPacket(uint16 iLen, char* pBuf);
+
+	// handle server packet which is analyzed from received buffer
+	int32 HandlePacket(ServerPacket*);
+
+public:
+	// receive login ntf from master server
+	void LoginNtf(uint32 iGateIP, uint16 iGatePort);
 
 private:
 	// connection handler
@@ -59,6 +68,7 @@ private:
 	int32 m_iState;	// current state about connect
 	uint32 m_iRecvBufLen;	// already received buffer length
 	char m_RecvBuf[MAX_OUTPUT_BUFFER];	// the whole received buffer
+	bool m_bInLogin;
 
 	TokenPacket m_TokenPacket;
 };

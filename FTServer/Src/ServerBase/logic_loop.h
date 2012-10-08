@@ -14,6 +14,7 @@
 
 // todo: what if we have more than one logicloop in one process
 struct LogicCommand;
+class Alarm;
 class LogicLoop
 {
 public:
@@ -67,10 +68,13 @@ private:
 	std::list<LogicCommand*> m_CommandList;
 	BOOL m_bQuit;
 
+protected:
 	// time control
 	DWORD m_dwCurrTime;	// current time, from server start on (ms)
 	DWORD m_dwDeltaTime; // unit frame time cost
 	uint64 m_iWorldTime; // world real time (s)
+
+	Alarm* m_pAlarm; // alarm clock
 };
 
 #endif

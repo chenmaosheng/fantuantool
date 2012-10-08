@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\LoginServer\login_server_loop.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\LoginServer\login_session.cpp"
 				>
 			</File>
@@ -218,10 +222,6 @@
 			</File>
 			<File
 				RelativePath="..\..\Src\LoginServer\login_server_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Src\LoginServer\login_server_loop.cpp"
 				>
 			</File>
 			<File

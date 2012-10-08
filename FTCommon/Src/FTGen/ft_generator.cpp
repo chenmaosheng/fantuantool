@@ -5,7 +5,7 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_RECV\n", name);
 	fprintf(fp, "#define _H_%s_RECV\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n");
+	fprintf(fp, "#include \"common.h\"\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);
@@ -118,7 +118,7 @@ void GenerateSendInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_SEND\n", name);
 	fprintf(fp, "#define _H_%s_SEND\n\n", name);
-	fprintf(fp, "#include \"server_common.h\"\n\n");
+	fprintf(fp, "#include \"common.h\"\n\n");
 	for (int i = 0; i < myFile.includeCount; ++i)
 	{
 		fprintf(fp, "#include \"%s\"\n", myFile.includeFile[i]);

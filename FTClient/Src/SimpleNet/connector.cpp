@@ -10,6 +10,7 @@ bool Connector::Connect(PSOCKADDR_IN addr, void* client)
 	if (rc == SOCKET_ERROR)
 	{
 		SN_LOG_ERR(_T("Connect failed"));
+		handler_.OnConnectFailed(client);
 		return false;
 	}
 

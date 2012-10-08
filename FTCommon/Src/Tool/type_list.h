@@ -44,13 +44,13 @@ struct Length< TypeList< T, U > >
 template <class TList, unsigned int index> struct TypeAt;
         
 template <class Head, class Tail>
-struct TypeAt<Typelist<Head, Tail>, 0>
+struct TypeAt<TypeList<Head, Tail>, 0>
 {
     typedef Head Result;
 };
 
 template <class Head, class Tail, unsigned int i>
-struct TypeAt<Typelist<Head, Tail>, i>
+struct TypeAt<TypeList<Head, Tail>, i>
 {
     typedef typename TypeAt<Tail, i - 1>::Result Result;
 };

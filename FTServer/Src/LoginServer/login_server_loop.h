@@ -30,6 +30,10 @@ private:
 	DWORD _Loop();
 	bool _OnCommand(LogicCommand*);
 	bool _OnCommandOnLoginFailedAck(LogicCommandOnLoginFailedAck*);
+
+	// check if any session disconnect, it's a heart beat test
+	void _CheckSessionState();
+	void _ReportState();
 };
 
 #endif

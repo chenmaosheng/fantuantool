@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
+				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\StarNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -128,7 +128,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
+				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\StarNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"

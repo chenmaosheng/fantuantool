@@ -39,7 +39,7 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 
 		// check if currently received buffer is longer than packet header
 		// if that, loop retrieve packet from buffer until the length is shorter than header
-		while (m_iRecvBufLen > PEER_PACKET_HEAD)
+		while (m_iRecvBufLen >= PEER_PACKET_HEAD)
 		{
 			PeerPacket* pPeerPacket = (PeerPacket*)m_RecvBuf;
 			uint16 iFullLength = pPeerPacket->m_iLen + PEER_PACKET_HEAD;

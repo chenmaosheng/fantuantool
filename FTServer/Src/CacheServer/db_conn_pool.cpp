@@ -173,8 +173,11 @@ DBEvent* DBConnPool::PopFromDBEventProcessingList(uint64 iLastEventSequenceId)
 			}
 		}
 
-		pEvent = m_EventProcessingList.front();
-		m_EventProcessingList.pop_front();
+		if (!m_EventProcessingList.empty())
+		{
+			pEvent = m_EventProcessingList.front();
+			m_EventProcessingList.pop_front();
+		}
 	}
 
 	LeaveCriticalSection(&m_csEventProcessingList);

@@ -164,7 +164,7 @@ void Session::OnData(uint16 iLen, char* pBuf)
 		}
 		else
 		{
-			while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+			while (m_iRecvBufLen >= SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
 			{
 				ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
 				uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;

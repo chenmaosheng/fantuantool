@@ -1,8 +1,9 @@
 #include "client_base.h"
 #include "worker.h"
+#include "context_pool.h"
 #include "minidump.h"
-#include "simplenet.h"
-#include "connector.h"
+#include "starnet.h"
+#include "connection.h"
 #include "handler.h"
 #include "memory_pool.h"
 #include "version.h"
@@ -17,7 +18,7 @@ ClientBase::ClientBase()
 {
 	m_pWorker = NULL;
 	m_pLogSystem = NULL;
-	m_pConnector = NULL;
+	m_ConnId = NULL;
 	m_bInLogin = true;
 	m_iRecvBufLen = 0;
 	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
@@ -39,14 +40,11 @@ int32 ClientBase::Init()
 	// set the min and max of memory pool object
 	MEMORY_POOL_INIT(MEMORY_OBJECT_MIN, MEMORY_OBJECT_MAX);
 
-	iRet = SimpleNet::Init();
-	if (iRet != 0)
-	{
-		LOG_ERR(LOG_SERVER, _T("Initialize SimpleNet failed"));
-		return -3;
-	}
+	StarNet::Init();
 
-	m_pWorker = Worker::CreateWorker();
+	// create worker with 1 thread and context pool
+	m_pWorker = Worker::CreateWorker(1);
+	m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
 
 	g_pClientConfig = new ClientConfig;
 	g_pClientConfig->LoadConfig();
@@ -57,14 +55,14 @@ int32 ClientBase::Init()
 void ClientBase::Destroy()
 {
 	SAFE_DELETE(g_pClientConfig);
-	SimpleNet::Destroy();
+	StarNet::Destroy();
 }
 
 void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 {
-	if (m_pConnector)
+	if (m_ConnId)
 	{
-		Connector::Close(m_pConnector);
+		Connection::Close((Connection*)m_ConnId);
 	}
 
 	strcpy_s(m_TokenPacket.m_TokenBuf, MAX_TOKEN_LEN, strToken);
@@ -80,7 +78,7 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 	handler.OnData = &OnData;
 	handler.OnConnectFailed = &OnConnectFailed;
 
-	Connector::Connect(&m_SockAddr, &handler, m_pWorker, this);
+	Connection::Connect(&m_SockAddr, &handler, m_pContextPool, m_pWorker, this);
 }
 
 void ClientBase::OnClientData(uint32 iLen, char* pBuf)
@@ -88,7 +86,8 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 	uint32 iCopyLen = 0;
 	int32 iRet = 0;
 	// check if peer client is connected
-	if (!m_pConnector->IsConnected())
+	Connection* pConnection = (Connection*)m_ConnId;
+	if (!pConnection->IsConnected())
 	{
 		return;
 	}
@@ -139,7 +138,7 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 		}
 		else
 		{
-			while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+			while (m_iRecvBufLen >= SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
 			{
 				ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
 				uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
@@ -168,13 +167,13 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 
 void ClientBase::SendData(uint16 iTypeId, uint16 iLen, const char* pData)
 {
-	char buf[MAX_INPUT_BUFFER] = {0};
+	char* buf = m_pContextPool->PopOutputBuffer();
 	ServerPacket* pPacket = (ServerPacket*)buf;
 	pPacket->m_iLen = iLen;
 	pPacket->m_iTypeId = iTypeId;
-	memcpy(pPacket->m_Buf, pData, iLen);
 
-	m_pConnector->Send(pPacket->m_iLen + SERVER_PACKET_HEAD, buf);
+	memcpy(pPacket->m_Buf, pData, iLen);
+	((Connection*)m_ConnId)->AsyncSend(pPacket->m_iLen + SERVER_PACKET_HEAD, buf);
 }
 
 int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
@@ -202,7 +201,14 @@ int32 ClientBase::HandlePacket(ServerPacket* pPacket)
 void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 {
 	// disconnect to login server
-	m_pConnector->Disconnect();
+	Connection* pConnection = (Connection*)m_ConnId;
+	pConnection->AsyncDisconnect();
+
+	while (pConnection->IsConnected() || m_iState != DISCONNECTED)
+	{
+		Sleep(100);
+	}
+	
 	m_iState = NOT_CONNECT;
 	m_bInLogin = false;
 
@@ -233,20 +239,22 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 
 bool CALLBACK ClientBase::OnConnection(ConnID connId)
 {
-	Connector* pConnector = (Connector*)connId;
-	ClientBase* pClientBase = (ClientBase*)pConnector->GetClient();
-	pClientBase->m_pConnector = pConnector;
+	Connection* pConnection = (Connection*)connId;
+	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
+	pClientBase->m_ConnId = connId;
 	pClientBase->m_iState = CONNECTED;
 	
-	pConnector->Send(pClientBase->m_TokenPacket.m_iTokenLen + sizeof(uint16), (char*)&pClientBase->m_TokenPacket);
+	char* buf = pClientBase->m_pContextPool->PopOutputBuffer();
+	memcpy(buf, (char*)&pClientBase->m_TokenPacket, MAX_INPUT_BUFFER);
+	pConnection->AsyncSend(pClientBase->m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
 
 	return true;
 }
 
 void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 {
-	Connector* pConnector = (Connector*)connId;
-	ClientBase* pClientBase = (ClientBase*)pConnector->GetClient();
+	Connection* pConnection = (Connection*)connId;
+	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
 	pClientBase->m_iState = DISCONNECTED;
 
 	// notify UI
@@ -258,8 +266,8 @@ void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 
 void CALLBACK ClientBase::OnData(ConnID connId, uint32 iLen, char* pBuf)
 {
-	Connector* pConnector = (Connector*)connId;
-	ClientBase* pClientBase = (ClientBase*)pConnector->GetClient();
+	Connection* pConnection = (Connection*)connId;
+	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
 	pClientBase->OnClientData(iLen, pBuf);
 }
 

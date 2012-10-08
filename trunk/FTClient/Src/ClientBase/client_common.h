@@ -9,7 +9,7 @@
 #ifndef _H_CLIENT_COMMON
 #define _H_CLIENT_COMMON
 
-#include "simplenet_common.h"
+#include "starnet_common.h"
 
 #define CONFIG_PATH "..\\Config"			// config files folder
 #define CLIENT_CONFIG_FILE "client_config"	// client config's filename

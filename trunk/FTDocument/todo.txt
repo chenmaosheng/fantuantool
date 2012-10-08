@@ -10,6 +10,8 @@
 10, use select to create a simple tcp framework
 11, gate loop's on command base need change
 12, profiler
+13, master server can't find PacketForward
+14, client disconnection state error
 
 client
 1, rpc->server, with parameters

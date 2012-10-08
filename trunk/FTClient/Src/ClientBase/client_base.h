@@ -14,6 +14,7 @@
 #include "event.h"
 
 class Worker;
+class ContextPool;
 struct Connector;
 class ClientConfig;
 class ClientBase
@@ -70,8 +71,9 @@ private:
 
 private:
 	Worker* m_pWorker;
+	ContextPool* m_pContextPool;
 	Log* m_pLogSystem;
-	Connector* m_pConnector;
+	ConnID m_ConnId;		// connection id
 	SOCKADDR_IN m_SockAddr;
 	int32 m_iState;	// current state about connect
 	uint32 m_iRecvBufLen;	// already received buffer length

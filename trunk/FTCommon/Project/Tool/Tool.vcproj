@@ -187,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\Tool\event.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\Tool\listener.h"
 				>
 			</File>

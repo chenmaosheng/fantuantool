@@ -6,9 +6,12 @@
 #include "handler.h"
 #include "memory_pool.h"
 #include "version.h"
+#include "client_config.h"
 
 #include "login_client_send.h"
 #include "gate_client_send.h"
+
+ClientConfig* g_pClientConfig = NULL;
 
 ClientBase::ClientBase()
 {
@@ -43,11 +46,15 @@ int32 ClientBase::Init()
 
 	m_pWorker = Worker::CreateWorker();
 
+	g_pClientConfig = new ClientConfig;
+	g_pClientConfig->LoadConfig();
+
 	return 0;
 }
 
 void ClientBase::Destroy()
 {
+	SAFE_DELETE(g_pClientConfig);
 	SimpleNet::Destroy();
 }
 
@@ -242,6 +249,12 @@ void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 	Connector* pConnector = (Connector*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnector->GetClient();
 	pClientBase->m_iState = DISCONNECTED;
+
+	// notify UI
+	if (pClientBase->m_pDisconnectEvent)
+	{
+		(*pClientBase->m_pDisconnectEvent)();
+	}
 }
 
 void CALLBACK ClientBase::OnData(ConnID connId, uint32 iLen, char* pBuf)

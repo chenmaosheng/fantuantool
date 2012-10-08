@@ -4,8 +4,9 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "ClientDlg.h"
-#include "ClientSocket.h"
 #include "LoginDlg.h"
+
+#include "client_base.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,11 +65,13 @@ BOOL CClientApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CClientSocket* clientSocket = new CClientSocket;
-	CLoginDlg* loginDlg = new CLoginDlg(clientSocket);
+	m_pClientBase = new ClientBase;
+	m_pClientBase->Init();
+
+	CLoginDlg* loginDlg = new CLoginDlg(m_pClientBase);
 	if (loginDlg->DoModal() == IDCANCEL)
 	{
-		delete clientSocket;
+		delete m_pClientBase;
 		delete loginDlg;
 		return false;
 	}
@@ -77,7 +80,7 @@ BOOL CClientApp::InitInstance()
 		delete loginDlg;
 	}
 
-	CClientDlg* dlg = new CClientDlg(clientSocket);
+	CClientDlg* dlg = new CClientDlg(m_pClientBase);
 	m_pMainWnd = dlg;
 	INT_PTR nResponse = dlg->DoModal();
 	if (nResponse == IDOK)

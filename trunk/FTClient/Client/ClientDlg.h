@@ -6,18 +6,15 @@
 #include <vector>
 
 // CClientDlg dialog
-class CClientSocket;
-struct ServerPacket;
 class CClientDlg : public CDialog
 {
 // Construction
 public:
-	CClientDlg(CClientSocket *p_Socket,CWnd* pParent = NULL);	// standard constructor
+	CClientDlg(ClientBase *pClientBase,CWnd* pParent = NULL);	// standard constructor
 	BOOL GetMessage(char* message, int length);
 	void UpdateUser(char* nickname, int sessionId, int length);
 	void DeleteUser(int connId);
-	int HandlePacket(ServerPacket* pPacket);
-
+	
 	void ToTray();
 
 // Dialog Data
@@ -28,7 +25,7 @@ public:
 	CString m_strMessage;
 	CString m_strName;
 	CString m_strServer;
-	CClientSocket *m_pSocket;
+	ClientBase *m_pClientBase;
 	std::vector< std::pair<int, CString> > m_users;
 
 	protected:

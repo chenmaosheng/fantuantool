@@ -27,3 +27,4 @@ server
 6, call specific rpc function with parameters
 
 static variable in lib file can't be loaded, it must be in exe project
+if encounter mfc's linked error, try Project->Setting->Generation->Use MFC in a Shared DLL

@@ -8,12 +8,14 @@
 #include "version.h"
 
 #include "login_client_send.h"
+#include "gate_client_send.h"
 
 ClientBase::ClientBase()
 {
 	m_pWorker = NULL;
 	m_pLogSystem = NULL;
 	m_pConnector = NULL;
+	m_bInLogin = true;
 
 	m_iState = NOT_CONNECT;
 }
@@ -49,22 +51,19 @@ void ClientBase::Destroy()
 	SimpleNet::Destroy();
 }
 
-void ClientBase::Login(const TCHAR *strHost, uint16 iPort, const TCHAR *strToken)
+void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 {
 	if (m_pConnector)
 	{
 		Connector::Close(m_pConnector);
-		m_pConnector = NULL;
 	}
 
-	WChar2Char(strToken, m_TokenPacket.m_TokenBuf, MAX_TOKEN_LEN);
+	strcpy_s(m_TokenPacket.m_TokenBuf, MAX_TOKEN_LEN, strToken);
 	m_TokenPacket.m_iTokenLen = strlen(m_TokenPacket.m_TokenBuf) + 1;
 
 	m_SockAddr.sin_family = AF_INET;
 	m_SockAddr.sin_port = htons(iPort);
-	char strUTF8[MAX_PATH] = {0};
-	WChar2Char(strHost, strUTF8, MAX_PATH);
-	m_SockAddr.sin_addr.s_addr = inet_addr(strUTF8);
+	m_SockAddr.sin_addr.s_addr = iIP;
 
 	static Handler handler;
 	handler.OnConnection = &OnConnection;
@@ -131,19 +130,99 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 		}
 		else
 		{
+			while (m_iRecvBufLen > SERVER_PACKET_HEAD)	// step2: check if buffer is larger than header
+			{
+				ServerPacket* pServerPacket = (ServerPacket*)m_RecvBuf;
+				uint16 iFullLength = pServerPacket->m_iLen+SERVER_PACKET_HEAD;
+				if (m_iRecvBufLen >= iFullLength)	// step3: cut specific size from received buffer
+				{
+					iRet = HandlePacket(pServerPacket);
+					if (iRet != 0)
+					{
+						return;
+					}
 
+					if (m_iRecvBufLen > iFullLength)
+					{
+						memmove(m_RecvBuf, m_RecvBuf + iFullLength, m_iRecvBufLen - iFullLength);
+					}
+					m_iRecvBufLen -= iFullLength;
+				}
+				else
+				{
+					break;
+				}
+			}
 		}
 	} while (iLen);
+}
+
+void ClientBase::SendData(uint16 iTypeId, uint16 iLen, const char* pData)
+{
+	char buf[MAX_INPUT_BUFFER] = {0};
+	ServerPacket* pPacket = (ServerPacket*)buf;
+	pPacket->m_iLen = iLen;
+	pPacket->m_iTypeId = iTypeId;
+	memcpy(pPacket->m_Buf, pData, iLen);
+
+	m_pConnector->Send(pPacket->m_iLen + SERVER_PACKET_HEAD, buf);
 }
 
 int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
 {
 	m_iState = LOGGEDIN;
 
-	LoginClientSend::VersionReq(NULL, CLIENT_VERSION);
-
+	if (m_bInLogin)
+	{
+		LoginClientSend::VersionReq(this, CLIENT_VERSION);
+	}
+	else
+	{
+		GateClientSend::AvatarListReq(this);
+	}
+	
 	return 0;
 }
+
+int32 ClientBase::HandlePacket(ServerPacket* pPacket)
+{
+	Receiver::OnPacketReceived(this, pPacket->m_iTypeId, pPacket->m_iLen, pPacket->m_Buf);
+	return 0;
+}
+
+void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
+{
+	// disconnect to login server
+	m_pConnector->Disconnect();
+	m_iState = NOT_CONNECT;
+	m_iRecvBufLen = 0;
+	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
+	m_bInLogin = true;
+
+	// connect to gate server
+	Login(iGateIP, iGatePort, m_TokenPacket.m_TokenBuf);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bool CALLBACK ClientBase::OnConnection(ConnID connId)
 {
@@ -184,4 +263,10 @@ void CALLBACK ClientBase::OnConnectFailed(void* pClient)
 	{
 		pClientBase->m_iState = CONNECT_FAILED;
 	}
+}
+
+int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char *pBuf)
+{
+	((ClientBase*)pClient)->SendData(iTypeId, iLen, pBuf);
+	return 0;
 }

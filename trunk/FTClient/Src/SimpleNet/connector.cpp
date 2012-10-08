@@ -145,6 +145,7 @@ void Connector::Delete(Connector* pConnector)
 {
 	closesocket(pConnector->socket_);
 	_aligned_free(pConnector);
+	pConnector = NULL;
 
 	SN_LOG_DBG(_T("Close socket success"));
 }

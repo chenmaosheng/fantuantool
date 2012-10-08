@@ -154,6 +154,10 @@
 				RelativePath="..\..\Src\ClientBase\client_base.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Src\ClientBase\packet_impl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -185,11 +189,27 @@
 			Name="Gen Files"
 			>
 			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_client_send.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_client_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_recv.h"
 				>
 			</File>
 		</Filter>

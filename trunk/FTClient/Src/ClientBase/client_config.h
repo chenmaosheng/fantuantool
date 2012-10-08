@@ -39,11 +39,17 @@ public:
 		return m_strLoginHost;
 	}
 
+	const TCHAR* GetCreateAccountPage() const
+	{
+		return m_strCreateAccountPage;
+	}
+
 private:
 	TCHAR m_strLogPath[MAX_PATH+1];
 	int32 m_iLogLevel;
 	char m_strLoginHost[32];
 	uint16 m_iLoginPort;
+	TCHAR m_strCreateAccountPage[MAX_PATH+1];
 
 	TiXmlDocument m_XmlDoc;
 };

@@ -16,8 +16,10 @@
 #define IDC_NICKNAME_EDIT               1005
 #define IDC_SEND_BUTTON2                1005
 #define IDC_CLOSE_BUTTON                1005
-#define IDC_SERVERIP_EDIT               1006
+#define IDC_PASSWORD_EDIT               1006
 #define ID_LOGIN_BUTTON                 1007
+#define ID_LOGIN_BUTTON2                1008
+#define ID_CREATE_BUTTON                1008
 
 // Next default values for new objects
 // 

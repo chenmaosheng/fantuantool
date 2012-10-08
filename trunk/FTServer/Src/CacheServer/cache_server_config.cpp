@@ -14,7 +14,7 @@ bool CacheServerConfig::_LoadConfig()
 		return false;
 	}
 
-	TiXmlElement* pCacheServerListElement = pRootElement->FirstChildElement("CacheServerList");
+	TiXmlElement* pCacheServerListElement = pRootElement->FirstChildElement("CacheServer");
 	if (!pCacheServerListElement)
 	{
 		return false;

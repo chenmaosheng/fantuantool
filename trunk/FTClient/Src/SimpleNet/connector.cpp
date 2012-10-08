@@ -82,7 +82,7 @@ Connector* Connector::Create(Handler* pHandler, Worker* pWorker)
 		if (pConnector->socket_ != INVALID_SOCKET)
 		{
 			u_long non_blocking = 1;
-			ioctlsocket(pConnector->socket_, FIONBIO, &non_blocking);
+			//ioctlsocket(pConnector->socket_, FIONBIO, &non_blocking);
 			DWORD val = 0;
 
 			// set snd buf and recv buf to 0, it's said that it must improve the performance

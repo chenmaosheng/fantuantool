@@ -1,1 +1,0 @@
-don't forget to modify serverroot in apache/conf/httpd.conf

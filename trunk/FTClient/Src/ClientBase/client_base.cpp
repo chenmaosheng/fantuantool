@@ -19,6 +19,8 @@ ClientBase::ClientBase()
 	m_pLogSystem = NULL;
 	m_pConnector = NULL;
 	m_bInLogin = true;
+	m_iRecvBufLen = 0;
+	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
 
 	m_iState = NOT_CONNECT;
 }
@@ -202,9 +204,7 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 	// disconnect to login server
 	m_pConnector->Disconnect();
 	m_iState = NOT_CONNECT;
-	m_iRecvBufLen = 0;
-	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
-	m_bInLogin = true;
+	m_bInLogin = false;
 
 	// connect to gate server
 	Login(iGateIP, iGatePort, m_TokenPacket.m_TokenBuf);
@@ -237,8 +237,7 @@ bool CALLBACK ClientBase::OnConnection(ConnID connId)
 	ClientBase* pClientBase = (ClientBase*)pConnector->GetClient();
 	pClientBase->m_pConnector = pConnector;
 	pClientBase->m_iState = CONNECTED;
-	pClientBase->m_iRecvBufLen = 0;
-
+	
 	pConnector->Send(pClientBase->m_TokenPacket.m_iTokenLen + sizeof(uint16), (char*)&pClientBase->m_TokenPacket);
 
 	return true;

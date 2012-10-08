@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(CLoginDlg, CDialog)
 	//{{AFX_MSG_MAP(CLoginDlg)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(ID_LOGIN_BUTTON, &CLoginDlg::OnBnClickedLoginButton)
+	ON_BN_CLICKED(ID_CREATE_BUTTON, &CLoginDlg::OnBnClickedCreateButton)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -78,6 +79,11 @@ void CLoginDlg::OnBnClickedLoginButton()
 	m_pClientBase->Login(inet_addr(g_pClientConfig->GetLoginHost()), g_pClientConfig->GetLoginPort(), strUTF8);
 
 	CDialog::OnOK();
+}
+
+void CLoginDlg::OnBnClickedCreateButton()
+{
+	ShellExecute(NULL, _T("open"), g_pClientConfig->GetCreateAccountPage(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 void CLoginDlg::OnDisconnect()

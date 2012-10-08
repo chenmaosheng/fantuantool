@@ -45,12 +45,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml"
+				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -128,12 +128,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml"
+				AdditionalIncludeDirectories="..\..\FTCommon\Src\Tool;..\..\FTCommon\Src\Log;..\Src\SimpleNet;..\Src\ClientBase;..\..\FTCommon\external\tinyxml;..\..\FTCommon\Src\GenFiles"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -269,6 +269,34 @@
 			</File>
 			<File
 				RelativePath=".\res\Client.rc2"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Gen Files"
+			>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\gate_client_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\gate_client_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\login_client_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\login_client_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\login_server_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\login_server_recv.h"
 				>
 			</File>
 		</Filter>

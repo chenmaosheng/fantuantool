@@ -1,0 +1,1279 @@
+[Fri Jan 14 17:32:49 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:32:49 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:32:49 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:32:49 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:32:50 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Fri Jan 14 17:32:50 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Fri Jan 14 17:32:50 2011] [notice] Parent: Created child process 4564
+[Fri Jan 14 17:32:50 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:32:50 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:32:50 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:32:50 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:32:51 2011] [notice] Child 4564: Child process is running
+[Fri Jan 14 17:32:51 2011] [notice] Child 4564: Acquired the start mutex.
+[Fri Jan 14 17:32:51 2011] [notice] Child 4564: Starting 64 worker threads.
+[Fri Jan 14 17:32:51 2011] [notice] Child 4564: Starting thread to listen on port 443.
+[Fri Jan 14 17:32:51 2011] [notice] Child 4564: Starting thread to listen on port 80.
+[Fri Jan 14 17:33:16 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Fri Jan 14 17:33:53 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Fri Jan 14 17:33:53 2011] [notice] Child 4564: Exit event signaled. Child process is ending.
+[Fri Jan 14 17:33:54 2011] [notice] Child 4564: Released the start mutex
+[Fri Jan 14 17:33:55 2011] [notice] Child 4564: All worker threads have exited.
+[Fri Jan 14 17:33:55 2011] [notice] Child 4564: Child process is exiting
+[Fri Jan 14 17:33:55 2011] [notice] Parent: Child process exited successfully.
+[Fri Jan 14 17:34:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:34:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:34:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:34:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:34:18 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Fri Jan 14 17:34:18 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Fri Jan 14 17:34:18 2011] [notice] Parent: Created child process 1008
+[Fri Jan 14 17:34:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:34:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:34:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Jan 14 17:34:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Jan 14 17:34:19 2011] [notice] Child 1008: Child process is running
+[Fri Jan 14 17:34:19 2011] [notice] Child 1008: Acquired the start mutex.
+[Fri Jan 14 17:34:19 2011] [notice] Child 1008: Starting 64 worker threads.
+[Fri Jan 14 17:34:19 2011] [notice] Child 1008: Starting thread to listen on port 443.
+[Fri Jan 14 17:34:19 2011] [notice] Child 1008: Starting thread to listen on port 80.
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Fri Jan 14 17:37:12 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Sun Jan 16 11:38:10 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 16 11:38:10 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 16 11:38:11 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sun Jan 16 11:38:11 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 16 11:38:11 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 16 11:38:12 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Sun Jan 16 11:38:12 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Sun Jan 16 11:38:12 2011] [notice] Parent: Created child process 468
+[Sun Jan 16 11:38:13 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 16 11:38:13 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 16 11:38:13 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 16 11:38:13 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 16 11:38:13 2011] [notice] Child 468: Child process is running
+[Sun Jan 16 11:38:13 2011] [notice] Child 468: Acquired the start mutex.
+[Sun Jan 16 11:38:13 2011] [notice] Child 468: Starting 64 worker threads.
+[Sun Jan 16 11:38:13 2011] [notice] Child 468: Starting thread to listen on port 443.
+[Sun Jan 16 11:38:13 2011] [notice] Child 468: Starting thread to listen on port 80.
+[Mon Jan 17 09:37:50 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Jan 17 09:37:50 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Jan 17 09:37:51 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Jan 17 09:37:51 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Jan 17 09:37:51 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Jan 17 09:37:52 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Jan 17 09:37:52 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Jan 17 09:37:52 2011] [notice] Parent: Created child process 1652
+[Mon Jan 17 09:37:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Jan 17 09:37:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Jan 17 09:37:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Jan 17 09:37:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Jan 17 09:37:53 2011] [notice] Child 1652: Child process is running
+[Mon Jan 17 09:37:53 2011] [notice] Child 1652: Acquired the start mutex.
+[Mon Jan 17 09:37:53 2011] [notice] Child 1652: Starting 64 worker threads.
+[Mon Jan 17 09:37:53 2011] [notice] Child 1652: Starting thread to listen on port 443.
+[Mon Jan 17 09:37:53 2011] [notice] Child 1652: Starting thread to listen on port 80.
+[Wed Jan 19 11:56:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Jan 19 11:56:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Jan 19 11:56:45 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Jan 19 11:56:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Jan 19 11:56:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Jan 19 11:56:47 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Jan 19 11:56:47 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Jan 19 11:56:47 2011] [notice] Parent: Created child process 1396
+[Wed Jan 19 11:56:48 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Jan 19 11:56:48 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Jan 19 11:56:48 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Jan 19 11:56:48 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Jan 19 11:56:48 2011] [notice] Child 1396: Child process is running
+[Wed Jan 19 11:56:48 2011] [notice] Child 1396: Acquired the start mutex.
+[Wed Jan 19 11:56:48 2011] [notice] Child 1396: Starting 64 worker threads.
+[Wed Jan 19 11:56:48 2011] [notice] Child 1396: Starting thread to listen on port 443.
+[Wed Jan 19 11:56:48 2011] [notice] Child 1396: Starting thread to listen on port 80.
+[Sun Jan 23 11:27:11 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Sun Jan 23 11:27:11 2011] [notice] Child 1396: Exit event signaled. Child process is ending.
+[Sun Jan 23 11:27:12 2011] [notice] Child 1396: Released the start mutex
+[Sun Jan 23 11:27:13 2011] [notice] Child 1396: All worker threads have exited.
+[Sun Jan 23 11:27:14 2011] [notice] Child 1396: Child process is exiting
+[Sun Jan 23 11:27:15 2011] [notice] Parent: Child process exited successfully.
+[Sun Jan 23 11:27:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 23 11:27:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 23 11:27:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 23 11:27:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 23 11:27:20 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Sun Jan 23 11:27:20 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Sun Jan 23 11:27:20 2011] [notice] Parent: Created child process 5932
+[Sun Jan 23 11:27:20 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 23 11:27:20 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 23 11:27:20 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Jan 23 11:27:20 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Jan 23 11:27:20 2011] [notice] Child 5932: Child process is running
+[Sun Jan 23 11:27:20 2011] [notice] Child 5932: Acquired the start mutex.
+[Sun Jan 23 11:27:20 2011] [notice] Child 5932: Starting 64 worker threads.
+[Sun Jan 23 11:27:20 2011] [notice] Child 5932: Starting thread to listen on port 443.
+[Sun Jan 23 11:27:20 2011] [notice] Child 5932: Starting thread to listen on port 80.
+[Tue Jan 25 11:42:40 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Jan 25 11:42:40 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Jan 25 11:42:41 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Tue Jan 25 11:42:41 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Jan 25 11:42:41 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Jan 25 11:42:41 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Tue Jan 25 11:42:41 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Tue Jan 25 11:42:41 2011] [notice] Parent: Created child process 544
+[Tue Jan 25 11:42:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Jan 25 11:42:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Jan 25 11:42:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Jan 25 11:42:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Jan 25 11:42:42 2011] [notice] Child 544: Child process is running
+[Tue Jan 25 11:42:42 2011] [notice] Child 544: Acquired the start mutex.
+[Tue Jan 25 11:42:42 2011] [notice] Child 544: Starting 64 worker threads.
+[Tue Jan 25 11:42:42 2011] [notice] Child 544: Starting thread to listen on port 443.
+[Tue Jan 25 11:42:42 2011] [notice] Child 544: Starting thread to listen on port 80.
+[Wed Feb 09 08:48:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 09 08:48:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 09 08:48:28 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Feb 09 08:48:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 09 08:48:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 09 08:48:30 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 09 08:48:30 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 09 08:48:30 2011] [notice] Parent: Created child process 1288
+[Wed Feb 09 08:48:30 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 09 08:48:30 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 09 08:48:30 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 09 08:48:30 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 09 08:48:31 2011] [notice] Child 1288: Child process is running
+[Wed Feb 09 08:48:31 2011] [notice] Child 1288: Acquired the start mutex.
+[Wed Feb 09 08:48:31 2011] [notice] Child 1288: Starting 64 worker threads.
+[Wed Feb 09 08:48:31 2011] [notice] Child 1288: Starting thread to listen on port 443.
+[Wed Feb 09 08:48:31 2011] [notice] Child 1288: Starting thread to listen on port 80.
+[Mon Feb 14 15:34:35 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Feb 14 15:35:47 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Feb 14 15:36:06 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 15:36:06 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 15:36:06 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 15:36:06 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 15:36:06 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 15:36:24 2011] [error] [client 127.0.0.1] PHP Warning:  phpinfo() [<a href='function.phpinfo'>function.phpinfo</a>]: It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected 'UTC' for '8.0/no DST' instead in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\info.php on line 2
+[Mon Feb 14 15:41:53 2011] [error] [client 127.0.0.1] PHP Catchable fatal error:  Object of class DOMNodeList could not be converted to string in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 5
+[Mon Feb 14 15:43:19 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined property: DOMNodeList::$firstChild in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 5
+[Mon Feb 14 15:43:19 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 5
+[Mon Feb 14 16:01:46 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: I/O warning : failed to load external entity &quot;file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/test1.xml&quot; in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 3
+[Mon Feb 14 16:04:10 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Document labelled UTF-16 but has UTF-8 content in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 1 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 16:04:10 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:04:23 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:37 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:38 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:38 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:38 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:38 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:39 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:39 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:39 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:40 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:05:44 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:07:30 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:07:30 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:07:31 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:07:31 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:07:31 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:08:16 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:08:17 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:08:17 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:09:02 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 3 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 16:09:02 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:09:15 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:09:16 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:10:16 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method DOMNodeList::getElementsByTagName() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:17:11 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined property: DOMNodeList::$firstChild in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:17:11 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function item() on a non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 7
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined property: DOMNodeList::$firstChild in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function item() on a non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 7
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined property: DOMNodeList::$firstChild in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function item() on a non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 7
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined property: DOMNodeList::$firstChild in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 16:17:12 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function item() on a non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 7
+[Mon Feb 14 17:29:45 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:29:45 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:29:46 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:29:46 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:30:20 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:30:20 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:30:20 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:30:20 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:30:39 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:30:39 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:34:25 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:34:25 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:34:26 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:34:26 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:34:26 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:34:26 2011] [error] [client 127.0.0.1] PHP Warning:  DOMDocument::load() [<a href='domdocument.load'>domdocument.load</a>]: Extra content at the end of the document in file:///D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/LoginAgentConf.xml, line: 4 in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 4
+[Mon Feb 14 17:37:17 2011] [error] [client 127.0.0.1] PHP Notice:  Trying to get property of non-object in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\testxml.php on line 6
+[Mon Feb 14 17:43:30 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:43:30 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:43:30 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:43:30 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:43:30 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:44:22 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:44:22 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:44:22 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:44:22 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:44:22 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:44:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:44:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:44:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:44:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:44:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:01 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:01 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:01 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:01 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:01 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:45:41 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '"', expecting ',' or ';' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 47
+[Mon Feb 14 17:45:47 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:45:47 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:45:47 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:45:47 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:45:47 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:46:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:46:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:46:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:46:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:46:12 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:46:13 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:46:13 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:46:13 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:46:13 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:46:13 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:46:25 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:46:25 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:46:25 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:46:25 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:46:25 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:49:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:49:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:49:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:49:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:49:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:53:58 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:53:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:53:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:53:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:53:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:53:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 17:54:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 17:54:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 17:54:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 17:54:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 17:54:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:06:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:06:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:06:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:06:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:06:02 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:06:03 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:06:16 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:06:16 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:06:16 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:06:16 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:06:16 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:11:14 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:11:14 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:11:14 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:11:14 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:11:14 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:14:09 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:14:09 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:14:09 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:14:09 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:14:09 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:14:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:14:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:14:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:14:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:14:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Feb 14 18:14:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Feb 14 18:14:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Feb 14 18:14:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Feb 14 18:14:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Feb 14 18:14:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Sun Feb 20 15:36:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Feb 20 15:36:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Feb 20 15:36:42 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sun Feb 20 15:36:43 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Feb 20 15:36:43 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Feb 20 15:36:46 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Sun Feb 20 15:36:46 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Sun Feb 20 15:36:46 2011] [notice] Parent: Created child process 1284
+[Sun Feb 20 15:36:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Feb 20 15:36:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Feb 20 15:36:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Sun Feb 20 15:36:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Sun Feb 20 15:36:47 2011] [notice] Child 1284: Child process is running
+[Sun Feb 20 15:36:47 2011] [notice] Child 1284: Acquired the start mutex.
+[Sun Feb 20 15:36:47 2011] [notice] Child 1284: Starting 64 worker threads.
+[Sun Feb 20 15:36:47 2011] [notice] Child 1284: Starting thread to listen on port 443.
+[Sun Feb 20 15:36:47 2011] [notice] Child 1284: Starting thread to listen on port 80.
+[Tue Feb 22 15:05:11 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Tue Feb 22 15:08:52 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Feb 22 17:21:37 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Tue Feb 22 17:21:37 2011] [notice] Child 1284: Exit event signaled. Child process is ending.
+[Tue Feb 22 17:21:38 2011] [notice] Child 1284: Released the start mutex
+[Tue Feb 22 17:21:39 2011] [notice] Child 1284: All worker threads have exited.
+[Tue Feb 22 17:21:39 2011] [notice] Child 1284: Child process is exiting
+[Tue Feb 22 17:21:40 2011] [notice] Parent: Child process exited successfully.
+[Tue Feb 22 17:21:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:21:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:21:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:21:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:21:46 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Tue Feb 22 17:21:46 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Tue Feb 22 17:21:46 2011] [notice] Parent: Created child process 4360
+[Tue Feb 22 17:21:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:21:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:21:47 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:21:47 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:21:47 2011] [notice] Child 4360: Child process is running
+[Tue Feb 22 17:21:47 2011] [notice] Child 4360: Acquired the start mutex.
+[Tue Feb 22 17:21:47 2011] [notice] Child 4360: Starting 64 worker threads.
+[Tue Feb 22 17:21:47 2011] [notice] Child 4360: Starting thread to listen on port 80.
+[Tue Feb 22 17:21:47 2011] [notice] Child 4360: Starting thread to listen on port 443.
+[Tue Feb 22 17:39:36 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Tue Feb 22 17:39:36 2011] [notice] Child 4360: Exit event signaled. Child process is ending.
+[Tue Feb 22 17:39:37 2011] [notice] Child 4360: Released the start mutex
+[Tue Feb 22 17:39:38 2011] [notice] Child 4360: All worker threads have exited.
+[Tue Feb 22 17:39:38 2011] [notice] Child 4360: Child process is exiting
+[Tue Feb 22 17:39:38 2011] [notice] Parent: Child process exited successfully.
+[Tue Feb 22 17:39:52 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:39:52 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:39:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:39:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:39:53 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Tue Feb 22 17:39:53 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Tue Feb 22 17:39:53 2011] [notice] Parent: Created child process 5952
+[Tue Feb 22 17:39:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:39:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:39:54 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Feb 22 17:39:54 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Feb 22 17:39:54 2011] [notice] Child 5952: Child process is running
+[Tue Feb 22 17:39:54 2011] [notice] Child 5952: Acquired the start mutex.
+[Tue Feb 22 17:39:54 2011] [notice] Child 5952: Starting 64 worker threads.
+[Tue Feb 22 17:39:54 2011] [notice] Child 5952: Starting thread to listen on port 80.
+[Tue Feb 22 17:39:54 2011] [notice] Child 5952: Starting thread to listen on port 443.
+[Tue Feb 22 17:52:37 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Feb 22 17:52:43 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Feb 22 17:54:29 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Wed Feb 23 09:59:05 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 09:59:05 2011] [notice] Child 5952: Exit event signaled. Child process is ending.
+[Wed Feb 23 09:59:06 2011] [notice] Child 5952: Released the start mutex
+[Wed Feb 23 09:59:07 2011] [notice] Child 5952: All worker threads have exited.
+[Wed Feb 23 09:59:07 2011] [notice] Child 5952: Child process is exiting
+[Wed Feb 23 09:59:07 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 09:59:08 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 09:59:08 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 09:59:08 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 09:59:08 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 09:59:09 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 09:59:09 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 09:59:09 2011] [notice] Parent: Created child process 4284
+[Wed Feb 23 09:59:09 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 09:59:09 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 09:59:10 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 09:59:10 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 09:59:10 2011] [notice] Child 4284: Child process is running
+[Wed Feb 23 09:59:10 2011] [notice] Child 4284: Acquired the start mutex.
+[Wed Feb 23 09:59:10 2011] [notice] Child 4284: Starting 64 worker threads.
+[Wed Feb 23 09:59:10 2011] [notice] Child 4284: Starting thread to listen on port 443.
+[Wed Feb 23 09:59:10 2011] [notice] Child 4284: Starting thread to listen on port 80.
+[Wed Feb 23 10:02:23 2011] [error] [client 127.0.0.1] PHP Warning:  file_get_contents() expects parameter 1 to be string, object given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 78
+[Wed Feb 23 10:02:23 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_sign() [<a href='function.openssl-sign'>function.openssl-sign</a>]: supplied key param cannot be coerced into a private key in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 79
+[Wed Feb 23 10:02:23 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_pkey_free() expects parameter 1 to be resource, boolean given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 80
+[Wed Feb 23 10:03:09 2011] [error] [client 127.0.0.1] PHP Warning:  file_get_contents() expects parameter 1 to be string, object given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 78
+[Wed Feb 23 10:03:09 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_sign() [<a href='function.openssl-sign'>function.openssl-sign</a>]: supplied key param cannot be coerced into a private key in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 79
+[Wed Feb 23 10:03:09 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_pkey_free() expects parameter 1 to be resource, boolean given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 80
+[Wed Feb 23 10:03:34 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Wed Feb 23 10:04:20 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:04:20 2011] [notice] Child 4284: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:04:21 2011] [notice] Child 4284: Released the start mutex
+[Wed Feb 23 10:04:22 2011] [notice] Child 4284: All worker threads have exited.
+[Wed Feb 23 10:04:22 2011] [notice] Child 4284: Child process is exiting
+[Wed Feb 23 10:04:22 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:04:23 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:04:23 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:04:23 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:04:23 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:04:24 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:04:24 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:04:24 2011] [notice] Parent: Created child process 7308
+[Wed Feb 23 10:04:24 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:04:24 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:04:24 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:04:24 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:04:25 2011] [notice] Child 7308: Child process is running
+[Wed Feb 23 10:04:25 2011] [notice] Child 7308: Acquired the start mutex.
+[Wed Feb 23 10:04:25 2011] [notice] Child 7308: Starting 64 worker threads.
+[Wed Feb 23 10:04:25 2011] [notice] Child 7308: Starting thread to listen on port 443.
+[Wed Feb 23 10:04:25 2011] [notice] Child 7308: Starting thread to listen on port 80.
+[Wed Feb 23 10:04:27 2011] [error] [client 127.0.0.1] PHP Warning:  file_get_contents() expects parameter 1 to be string, object given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 79
+[Wed Feb 23 10:04:27 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_sign() [<a href='function.openssl-sign'>function.openssl-sign</a>]: supplied key param cannot be coerced into a private key in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 80
+[Wed Feb 23 10:04:27 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_pkey_free() expects parameter 1 to be resource, boolean given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 81
+[Wed Feb 23 10:04:42 2011] [error] [client 127.0.0.1] PHP Warning:  file_get_contents() expects parameter 1 to be string, object given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 79
+[Wed Feb 23 10:04:42 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_sign() [<a href='function.openssl-sign'>function.openssl-sign</a>]: supplied key param cannot be coerced into a private key in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 80
+[Wed Feb 23 10:04:42 2011] [error] [client 127.0.0.1] PHP Warning:  openssl_pkey_free() expects parameter 1 to be resource, boolean given in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 81
+[Wed Feb 23 10:07:15 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:07:15 2011] [notice] Child 7308: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:07:16 2011] [notice] Child 7308: Released the start mutex
+[Wed Feb 23 10:07:17 2011] [notice] Child 7308: All worker threads have exited.
+[Wed Feb 23 10:07:17 2011] [notice] Child 7308: Child process is exiting
+[Wed Feb 23 10:07:17 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:07:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:07:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:07:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:07:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:07:19 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:07:19 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:07:19 2011] [notice] Parent: Created child process 6820
+[Wed Feb 23 10:07:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:07:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:07:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:07:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:07:20 2011] [notice] Child 6820: Child process is running
+[Wed Feb 23 10:07:20 2011] [notice] Child 6820: Acquired the start mutex.
+[Wed Feb 23 10:07:20 2011] [notice] Child 6820: Starting 64 worker threads.
+[Wed Feb 23 10:07:20 2011] [notice] Child 6820: Starting thread to listen on port 443.
+[Wed Feb 23 10:07:20 2011] [notice] Child 6820: Starting thread to listen on port 80.
+[Wed Feb 23 10:08:00 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:08:00 2011] [notice] Child 6820: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:08:01 2011] [notice] Child 6820: Released the start mutex
+[Wed Feb 23 10:08:02 2011] [notice] Child 6820: All worker threads have exited.
+[Wed Feb 23 10:08:02 2011] [notice] Child 6820: Child process is exiting
+[Wed Feb 23 10:08:02 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:08:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:08:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:08:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:08:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:08:04 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:08:04 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:08:04 2011] [notice] Parent: Created child process 7004
+[Wed Feb 23 10:08:04 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:08:04 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:08:04 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:08:04 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:08:05 2011] [notice] Child 7004: Child process is running
+[Wed Feb 23 10:08:05 2011] [notice] Child 7004: Acquired the start mutex.
+[Wed Feb 23 10:08:05 2011] [notice] Child 7004: Starting 64 worker threads.
+[Wed Feb 23 10:08:05 2011] [notice] Child 7004: Starting thread to listen on port 443.
+[Wed Feb 23 10:08:05 2011] [notice] Child 7004: Starting thread to listen on port 80.
+[Wed Feb 23 10:09:18 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:09:18 2011] [notice] Child 7004: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:09:19 2011] [notice] Child 7004: Released the start mutex
+[Wed Feb 23 10:09:20 2011] [notice] Child 7004: All worker threads have exited.
+[Wed Feb 23 10:09:20 2011] [notice] Child 7004: Child process is exiting
+[Wed Feb 23 10:09:20 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:09:20 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:09:20 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:09:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:09:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:09:21 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:09:21 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:09:21 2011] [notice] Parent: Created child process 7092
+[Wed Feb 23 10:09:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:09:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:09:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:09:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:09:22 2011] [notice] Child 7092: Child process is running
+[Wed Feb 23 10:09:22 2011] [notice] Child 7092: Acquired the start mutex.
+[Wed Feb 23 10:09:22 2011] [notice] Child 7092: Starting 64 worker threads.
+[Wed Feb 23 10:09:22 2011] [notice] Child 7092: Starting thread to listen on port 443.
+[Wed Feb 23 10:09:22 2011] [notice] Child 7092: Starting thread to listen on port 80.
+[Wed Feb 23 10:10:18 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:10:18 2011] [notice] Child 7092: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:10:19 2011] [notice] Child 7092: Released the start mutex
+[Wed Feb 23 10:10:20 2011] [notice] Child 7092: All worker threads have exited.
+[Wed Feb 23 10:10:20 2011] [notice] Child 7092: Child process is exiting
+[Wed Feb 23 10:10:20 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:10:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:10:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:10:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:10:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:10:22 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:10:22 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:10:22 2011] [notice] Parent: Created child process 3640
+[Wed Feb 23 10:10:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:10:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:10:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:10:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:10:23 2011] [notice] Child 3640: Child process is running
+[Wed Feb 23 10:10:23 2011] [notice] Child 3640: Acquired the start mutex.
+[Wed Feb 23 10:10:23 2011] [notice] Child 3640: Starting 64 worker threads.
+[Wed Feb 23 10:10:23 2011] [notice] Child 3640: Starting thread to listen on port 443.
+[Wed Feb 23 10:10:23 2011] [notice] Child 3640: Starting thread to listen on port 80.
+[Wed Feb 23 10:11:19 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:11:19 2011] [notice] Child 3640: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:11:20 2011] [notice] Child 3640: Released the start mutex
+[Wed Feb 23 10:11:21 2011] [notice] Child 3640: All worker threads have exited.
+[Wed Feb 23 10:11:21 2011] [notice] Child 3640: Child process is exiting
+[Wed Feb 23 10:11:21 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:11:30 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:11:30 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:11:30 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:11:30 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:11:30 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:11:30 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:11:30 2011] [notice] Parent: Created child process 7336
+[Wed Feb 23 10:11:31 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:11:31 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:11:31 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:11:31 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:11:31 2011] [notice] Child 7336: Child process is running
+[Wed Feb 23 10:11:31 2011] [notice] Child 7336: Acquired the start mutex.
+[Wed Feb 23 10:11:31 2011] [notice] Child 7336: Starting 64 worker threads.
+[Wed Feb 23 10:11:31 2011] [notice] Child 7336: Starting thread to listen on port 80.
+[Wed Feb 23 10:11:31 2011] [notice] Child 7336: Starting thread to listen on port 443.
+[Wed Feb 23 10:12:49 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:12:49 2011] [notice] Child 7336: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:12:50 2011] [notice] Child 7336: Released the start mutex
+[Wed Feb 23 10:12:51 2011] [notice] Child 7336: All worker threads have exited.
+[Wed Feb 23 10:12:51 2011] [notice] Child 7336: Child process is exiting
+[Wed Feb 23 10:12:51 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:12:52 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:12:52 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:12:52 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:12:52 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:12:53 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:12:53 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:12:53 2011] [notice] Parent: Created child process 6848
+[Wed Feb 23 10:12:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:12:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:12:53 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:12:53 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:12:54 2011] [notice] Child 6848: Child process is running
+[Wed Feb 23 10:12:54 2011] [notice] Child 6848: Acquired the start mutex.
+[Wed Feb 23 10:12:54 2011] [notice] Child 6848: Starting 64 worker threads.
+[Wed Feb 23 10:12:54 2011] [notice] Child 6848: Starting thread to listen on port 443.
+[Wed Feb 23 10:12:54 2011] [notice] Child 6848: Starting thread to listen on port 80.
+[Wed Feb 23 10:13:07 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method Zeed_OAuth_Request::tuUrl() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login2game.php on line 44
+[Wed Feb 23 10:14:19 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:14:19 2011] [notice] Child 6848: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:14:20 2011] [notice] Child 6848: Released the start mutex
+[Wed Feb 23 10:14:21 2011] [notice] Child 6848: All worker threads have exited.
+[Wed Feb 23 10:14:21 2011] [notice] Child 6848: Child process is exiting
+[Wed Feb 23 10:14:21 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:14:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:14:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:14:23 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:14:23 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:14:23 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:14:23 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:14:23 2011] [notice] Parent: Created child process 7700
+[Wed Feb 23 10:14:23 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:14:23 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:14:24 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:14:24 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:14:24 2011] [notice] Child 7700: Child process is running
+[Wed Feb 23 10:14:24 2011] [notice] Child 7700: Acquired the start mutex.
+[Wed Feb 23 10:14:24 2011] [notice] Child 7700: Starting 64 worker threads.
+[Wed Feb 23 10:14:24 2011] [notice] Child 7700: Starting thread to listen on port 80.
+[Wed Feb 23 10:14:24 2011] [notice] Child 7700: Starting thread to listen on port 443.
+[Wed Feb 23 10:14:35 2011] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method Zeed_OAuth_Request::tuUrl() in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login2game.php on line 42
+[Wed Feb 23 10:15:12 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:15:12 2011] [notice] Child 7700: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:15:13 2011] [notice] Child 7700: Released the start mutex
+[Wed Feb 23 10:15:14 2011] [notice] Child 7700: All worker threads have exited.
+[Wed Feb 23 10:15:14 2011] [notice] Child 7700: Child process is exiting
+[Wed Feb 23 10:15:14 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:15:14 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:15:14 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:15:15 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:15:15 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:15:15 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:15:15 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:15:15 2011] [notice] Parent: Created child process 6860
+[Wed Feb 23 10:15:15 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:15:15 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:15:16 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:15:16 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:15:16 2011] [notice] Child 6860: Child process is running
+[Wed Feb 23 10:15:16 2011] [notice] Child 6860: Acquired the start mutex.
+[Wed Feb 23 10:15:16 2011] [notice] Child 6860: Starting 64 worker threads.
+[Wed Feb 23 10:15:16 2011] [notice] Child 6860: Starting thread to listen on port 443.
+[Wed Feb 23 10:15:16 2011] [notice] Child 6860: Starting thread to listen on port 80.
+[Wed Feb 23 10:15:26 2011] [error] [client 127.0.0.1] PHP Warning:  file_put_contents(C:\test2.txt) [<a href='function.file-put-contents'>function.file-put-contents</a>]: failed to open stream: Invalid argument in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login2game.php on line 42
+[Wed Feb 23 10:17:17 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:17:17 2011] [notice] Child 6860: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:17:18 2011] [notice] Child 6860: Released the start mutex
+[Wed Feb 23 10:17:19 2011] [notice] Child 6860: All worker threads have exited.
+[Wed Feb 23 10:17:19 2011] [notice] Child 6860: Child process is exiting
+[Wed Feb 23 10:17:19 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:17:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:17:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:17:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:17:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:17:22 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:17:22 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:17:22 2011] [notice] Parent: Created child process 588
+[Wed Feb 23 10:17:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:17:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:17:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:17:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:17:23 2011] [notice] Child 588: Child process is running
+[Wed Feb 23 10:17:23 2011] [notice] Child 588: Acquired the start mutex.
+[Wed Feb 23 10:17:23 2011] [notice] Child 588: Starting 64 worker threads.
+[Wed Feb 23 10:17:23 2011] [notice] Child 588: Starting thread to listen on port 443.
+[Wed Feb 23 10:17:23 2011] [notice] Child 588: Starting thread to listen on port 80.
+[Wed Feb 23 10:18:02 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:18:02 2011] [notice] Child 588: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:18:03 2011] [notice] Child 588: Released the start mutex
+[Wed Feb 23 10:18:04 2011] [notice] Child 588: All worker threads have exited.
+[Wed Feb 23 10:18:04 2011] [notice] Child 588: Child process is exiting
+[Wed Feb 23 10:18:04 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:18:05 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:05 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:05 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:05 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:05 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:18:05 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:18:05 2011] [notice] Parent: Created child process 5224
+[Wed Feb 23 10:18:06 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:06 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:06 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:06 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:06 2011] [notice] Child 5224: Child process is running
+[Wed Feb 23 10:18:06 2011] [notice] Child 5224: Acquired the start mutex.
+[Wed Feb 23 10:18:06 2011] [notice] Child 5224: Starting 64 worker threads.
+[Wed Feb 23 10:18:06 2011] [notice] Child 5224: Starting thread to listen on port 443.
+[Wed Feb 23 10:18:06 2011] [notice] Child 5224: Starting thread to listen on port 80.
+[Wed Feb 23 10:18:41 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:18:41 2011] [notice] Child 5224: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:18:42 2011] [notice] Child 5224: Released the start mutex
+[Wed Feb 23 10:18:43 2011] [notice] Child 5224: All worker threads have exited.
+[Wed Feb 23 10:18:43 2011] [notice] Child 5224: Child process is exiting
+[Wed Feb 23 10:18:43 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:18:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:45 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:18:45 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:18:45 2011] [notice] Parent: Created child process 2124
+[Wed Feb 23 10:18:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:46 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:18:46 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:18:46 2011] [notice] Child 2124: Child process is running
+[Wed Feb 23 10:18:46 2011] [notice] Child 2124: Acquired the start mutex.
+[Wed Feb 23 10:18:46 2011] [notice] Child 2124: Starting 64 worker threads.
+[Wed Feb 23 10:18:46 2011] [notice] Child 2124: Starting thread to listen on port 443.
+[Wed Feb 23 10:18:46 2011] [notice] Child 2124: Starting thread to listen on port 80.
+[Wed Feb 23 10:19:29 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:19:29 2011] [notice] Child 2124: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:19:30 2011] [notice] Child 2124: Released the start mutex
+[Wed Feb 23 10:19:31 2011] [notice] Child 2124: All worker threads have exited.
+[Wed Feb 23 10:19:31 2011] [notice] Child 2124: Child process is exiting
+[Wed Feb 23 10:19:31 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:19:33 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:19:33 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:19:33 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:19:33 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:19:34 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:19:34 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:19:34 2011] [notice] Parent: Created child process 6448
+[Wed Feb 23 10:19:34 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:19:34 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:19:34 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:19:34 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:19:35 2011] [notice] Child 6448: Child process is running
+[Wed Feb 23 10:19:35 2011] [notice] Child 6448: Acquired the start mutex.
+[Wed Feb 23 10:19:35 2011] [notice] Child 6448: Starting 64 worker threads.
+[Wed Feb 23 10:19:35 2011] [notice] Child 6448: Starting thread to listen on port 443.
+[Wed Feb 23 10:19:35 2011] [notice] Child 6448: Starting thread to listen on port 80.
+[Wed Feb 23 10:31:46 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:31:46 2011] [notice] Child 6448: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:31:47 2011] [notice] Child 6448: Released the start mutex
+[Wed Feb 23 10:31:48 2011] [notice] Child 6448: All worker threads have exited.
+[Wed Feb 23 10:31:48 2011] [notice] Child 6448: Child process is exiting
+[Wed Feb 23 10:31:48 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:31:50 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:31:50 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:31:50 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:31:50 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:31:50 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:31:50 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:31:50 2011] [notice] Parent: Created child process 7036
+[Wed Feb 23 10:31:51 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:31:51 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:31:51 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:31:51 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:31:51 2011] [notice] Child 7036: Child process is running
+[Wed Feb 23 10:31:51 2011] [notice] Child 7036: Acquired the start mutex.
+[Wed Feb 23 10:31:51 2011] [notice] Child 7036: Starting 64 worker threads.
+[Wed Feb 23 10:31:51 2011] [notice] Child 7036: Starting thread to listen on port 443.
+[Wed Feb 23 10:31:51 2011] [notice] Child 7036: Starting thread to listen on port 80.
+[Wed Feb 23 10:35:17 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 10:35:17 2011] [notice] Child 7036: Exit event signaled. Child process is ending.
+[Wed Feb 23 10:35:18 2011] [notice] Child 7036: Released the start mutex
+[Wed Feb 23 10:35:19 2011] [notice] Child 7036: All worker threads have exited.
+[Wed Feb 23 10:35:19 2011] [notice] Child 7036: Child process is exiting
+[Wed Feb 23 10:35:19 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 10:35:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:35:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:35:21 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:35:21 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:35:22 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 10:35:22 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 10:35:22 2011] [notice] Parent: Created child process 4264
+[Wed Feb 23 10:35:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:35:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:35:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 10:35:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 10:35:23 2011] [notice] Child 4264: Child process is running
+[Wed Feb 23 10:35:23 2011] [notice] Child 4264: Acquired the start mutex.
+[Wed Feb 23 10:35:23 2011] [notice] Child 4264: Starting 64 worker threads.
+[Wed Feb 23 10:35:23 2011] [notice] Child 4264: Starting thread to listen on port 80.
+[Wed Feb 23 10:35:23 2011] [notice] Child 4264: Starting thread to listen on port 443.
+[Wed Feb 23 17:53:15 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Feb 23 17:53:15 2011] [notice] Child 4264: Exit event signaled. Child process is ending.
+[Wed Feb 23 17:53:16 2011] [notice] Child 4264: Released the start mutex
+[Wed Feb 23 17:53:17 2011] [notice] Child 4264: All worker threads have exited.
+[Wed Feb 23 17:53:17 2011] [notice] Child 4264: Child process is exiting
+[Wed Feb 23 17:53:17 2011] [notice] Parent: Child process exited successfully.
+[Wed Feb 23 17:53:26 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 17:53:26 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 17:53:27 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 17:53:27 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 17:53:27 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Feb 23 17:53:27 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Feb 23 17:53:27 2011] [notice] Parent: Created child process 9852
+[Wed Feb 23 17:53:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 17:53:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 17:53:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Feb 23 17:53:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Feb 23 17:53:28 2011] [notice] Child 9852: Child process is running
+[Wed Feb 23 17:53:28 2011] [notice] Child 9852: Acquired the start mutex.
+[Wed Feb 23 17:53:28 2011] [notice] Child 9852: Starting 64 worker threads.
+[Wed Feb 23 17:53:28 2011] [notice] Child 9852: Starting thread to listen on port 443.
+[Wed Feb 23 17:53:28 2011] [notice] Child 9852: Starting thread to listen on port 80.
+[Thu Feb 24 10:12:59 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Feb 24 10:12:59 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Feb 24 10:13:00 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Feb 24 10:13:00 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Feb 24 10:13:00 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Feb 24 10:13:02 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Thu Feb 24 10:13:02 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Thu Feb 24 10:13:02 2011] [notice] Parent: Created child process 1856
+[Thu Feb 24 10:13:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Feb 24 10:13:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Feb 24 10:13:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Feb 24 10:13:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Feb 24 10:13:03 2011] [notice] Child 1856: Child process is running
+[Thu Feb 24 10:13:03 2011] [notice] Child 1856: Acquired the start mutex.
+[Thu Feb 24 10:13:03 2011] [notice] Child 1856: Starting 64 worker threads.
+[Thu Feb 24 10:13:03 2011] [notice] Child 1856: Starting thread to listen on port 443.
+[Thu Feb 24 10:13:03 2011] [notice] Child 1856: Starting thread to listen on port 80.
+[Sun Feb 27 13:44:35 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Sun Feb 27 13:44:35 2011] [notice] Child 1856: Exit event signaled. Child process is ending.
+[Sun Feb 27 13:44:36 2011] [notice] Child 1856: Released the start mutex
+[Sun Feb 27 13:44:38 2011] [notice] Child 1856: All worker threads have exited.
+[Sun Feb 27 13:44:42 2011] [notice] Child 1856: Child process is exiting
+[Sun Feb 27 13:44:44 2011] [notice] Parent: Child process exited successfully.
+[Tue Mar 01 09:51:02 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Mar 01 09:51:02 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Mar 01 09:51:02 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Mar 01 09:51:02 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Mar 01 09:51:04 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Tue Mar 01 09:51:04 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Tue Mar 01 09:51:04 2011] [notice] Parent: Created child process 244
+[Tue Mar 01 09:51:05 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Mar 01 09:51:05 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Mar 01 09:51:05 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue Mar 01 09:51:05 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue Mar 01 09:51:05 2011] [notice] Child 244: Child process is running
+[Tue Mar 01 09:51:06 2011] [notice] Child 244: Acquired the start mutex.
+[Tue Mar 01 09:51:06 2011] [notice] Child 244: Starting 64 worker threads.
+[Tue Mar 01 09:51:06 2011] [notice] Child 244: Starting thread to listen on port 443.
+[Tue Mar 01 09:51:06 2011] [notice] Child 244: Starting thread to listen on port 80.
+[Wed Mar 09 13:56:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:56:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:56:22 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Mar 09 13:56:23 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:56:23 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:56:26 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Mar 09 13:56:26 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Mar 09 13:56:26 2011] [notice] Parent: Created child process 1176
+[Wed Mar 09 13:56:26 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:56:26 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:56:26 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:56:26 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:56:27 2011] [notice] Child 1176: Child process is running
+[Wed Mar 09 13:56:27 2011] [notice] Child 1176: Acquired the start mutex.
+[Wed Mar 09 13:56:27 2011] [notice] Child 1176: Starting 64 worker threads.
+[Wed Mar 09 13:56:27 2011] [notice] Child 1176: Starting thread to listen on port 443.
+[Wed Mar 09 13:56:27 2011] [notice] Child 1176: Starting thread to listen on port 80.
+[Wed Mar 09 13:59:27 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:59:27 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:59:28 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Mar 09 13:59:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:59:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:59:31 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Mar 09 13:59:31 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Mar 09 13:59:31 2011] [notice] Parent: Created child process 1120
+[Wed Mar 09 13:59:31 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:59:31 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:59:32 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 09 13:59:32 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 09 13:59:32 2011] [notice] Child 1120: Child process is running
+[Wed Mar 09 13:59:32 2011] [notice] Child 1120: Acquired the start mutex.
+[Wed Mar 09 13:59:32 2011] [notice] Child 1120: Starting 64 worker threads.
+[Wed Mar 09 13:59:32 2011] [notice] Child 1120: Starting thread to listen on port 443.
+[Wed Mar 09 13:59:32 2011] [notice] Child 1120: Starting thread to listen on port 80.
+[Mon Mar 14 16:44:00 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 14 16:44:00 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 14 16:44:01 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Mar 14 16:44:01 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 14 16:44:01 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 14 16:44:02 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Mar 14 16:44:02 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Mar 14 16:44:02 2011] [notice] Parent: Created child process 1764
+[Mon Mar 14 16:44:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 14 16:44:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 14 16:44:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 14 16:44:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 14 16:44:03 2011] [notice] Child 1764: Child process is running
+[Mon Mar 14 16:44:03 2011] [notice] Child 1764: Acquired the start mutex.
+[Mon Mar 14 16:44:03 2011] [notice] Child 1764: Starting 64 worker threads.
+[Mon Mar 14 16:44:03 2011] [notice] Child 1764: Starting thread to listen on port 443.
+[Mon Mar 14 16:44:03 2011] [notice] Child 1764: Starting thread to listen on port 80.
+[Thu Mar 17 13:54:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Mar 17 13:54:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Mar 17 13:54:19 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Mar 17 13:54:19 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Mar 17 13:54:19 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Mar 17 13:54:21 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Thu Mar 17 13:54:21 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Thu Mar 17 13:54:21 2011] [notice] Parent: Created child process 568
+[Thu Mar 17 13:54:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Mar 17 13:54:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Mar 17 13:54:22 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Thu Mar 17 13:54:22 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Thu Mar 17 13:54:23 2011] [notice] Child 568: Child process is running
+[Thu Mar 17 13:54:23 2011] [notice] Child 568: Acquired the start mutex.
+[Thu Mar 17 13:54:23 2011] [notice] Child 568: Starting 64 worker threads.
+[Thu Mar 17 13:54:23 2011] [notice] Child 568: Starting thread to listen on port 443.
+[Thu Mar 17 13:54:23 2011] [notice] Child 568: Starting thread to listen on port 80.
+[Wed Mar 23 10:18:41 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Wed Mar 23 10:18:41 2011] [notice] Child 568: Exit event signaled. Child process is ending.
+[Wed Mar 23 10:18:42 2011] [notice] Child 568: Released the start mutex
+[Wed Mar 23 10:18:43 2011] [notice] Child 568: All worker threads have exited.
+[Wed Mar 23 10:18:45 2011] [notice] Child 568: Child process is exiting
+[Wed Mar 23 10:18:46 2011] [notice] Parent: Child process exited successfully.
+[Wed Mar 23 10:18:52 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 23 10:18:52 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 23 10:18:52 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 23 10:18:52 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 23 10:18:52 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Mar 23 10:18:52 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Mar 23 10:18:53 2011] [notice] Parent: Created child process 4616
+[Wed Mar 23 10:18:54 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 23 10:18:54 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 23 10:18:54 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Mar 23 10:18:54 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Mar 23 10:18:54 2011] [notice] Child 4616: Child process is running
+[Wed Mar 23 10:18:54 2011] [notice] Child 4616: Acquired the start mutex.
+[Wed Mar 23 10:18:54 2011] [notice] Child 4616: Starting 64 worker threads.
+[Wed Mar 23 10:18:54 2011] [notice] Child 4616: Starting thread to listen on port 443.
+[Wed Mar 23 10:18:54 2011] [notice] Child 4616: Starting thread to listen on port 80.
+[Wed Mar 23 11:33:05 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Mar 28 10:12:35 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Mar 28 10:12:50 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/ip=1&mac=1
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:12:59 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Mar 28 10:13:28 2011] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Mon Mar 28 10:13:29 2011] [notice] Child 4616: Exit event signaled. Child process is ending.
+[Mon Mar 28 10:13:30 2011] [notice] Child 4616: Released the start mutex
+[Mon Mar 28 10:13:31 2011] [notice] Child 4616: All worker threads have exited.
+[Mon Mar 28 10:13:32 2011] [notice] Child 4616: Child process is exiting
+[Mon Mar 28 10:13:33 2011] [notice] Parent: Child process exited successfully.
+[Mon Mar 28 10:13:39 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 10:13:39 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 10:13:40 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 10:13:40 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 10:13:40 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Mar 28 10:13:40 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Mar 28 10:13:40 2011] [notice] Parent: Created child process 428
+[Mon Mar 28 10:13:41 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 10:13:41 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 10:13:41 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 10:13:41 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 10:13:41 2011] [notice] Child 428: Child process is running
+[Mon Mar 28 10:13:41 2011] [notice] Child 428: Acquired the start mutex.
+[Mon Mar 28 10:13:41 2011] [notice] Child 428: Starting 64 worker threads.
+[Mon Mar 28 10:13:41 2011] [notice] Child 428: Starting thread to listen on port 443.
+[Mon Mar 28 10:13:41 2011] [notice] Child 428: Starting thread to listen on port 80.
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:13:49 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:13:59 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:14:08 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Mar 28 10:14:11 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:15:20 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:15:33 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:15:40 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: name in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 19
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: password in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 20
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: areaid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 21
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pos in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 22
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mbk_pwd in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 23
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: ip in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 24
+[Mon Mar 28 10:15:44 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: mac in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 26
+[Mon Mar 28 14:47:24 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 14:47:24 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 14:47:25 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Mar 28 14:47:25 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 14:47:25 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 14:47:27 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Mar 28 14:47:27 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Mar 28 14:47:27 2011] [notice] Parent: Created child process 556
+[Mon Mar 28 14:47:27 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 14:47:27 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 14:47:28 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Mar 28 14:47:28 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Mar 28 14:47:28 2011] [notice] Child 556: Child process is running
+[Mon Mar 28 14:47:28 2011] [notice] Child 556: Acquired the start mutex.
+[Mon Mar 28 14:47:28 2011] [notice] Child 556: Starting 64 worker threads.
+[Mon Mar 28 14:47:28 2011] [notice] Child 556: Starting thread to listen on port 443.
+[Mon Mar 28 14:47:28 2011] [notice] Child 556: Starting thread to listen on port 80.
+[Tue Mar 29 11:02:26 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/gbs_query
+[Tue Mar 29 11:02:36 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: userid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_query.php on line 17
+[Tue Mar 29 11:02:39 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/gbs_query
+[Tue Mar 29 11:44:28 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: userid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_query.php on line 17
+[Tue Mar 29 11:44:28 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 11:44:39 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 11:55:45 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:00:09 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:07:49 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:07:51 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:07:52 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:07:53 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:07:53 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:09:59 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:21:39 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 12:22:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: srcuserid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 17
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: touserid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 19
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: amount in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 21
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: tax in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 22
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: usemortagage in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 26
+[Tue Mar 29 14:04:24 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: tomortagage in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transfer.php on line 27
+[Tue Mar 29 14:04:25 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:30:27 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: guid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transaction.php on line 20
+[Tue Mar 29 14:30:27 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:30:37 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: memo in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transaction.php on line 19
+[Tue Mar 29 14:30:38 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:30:43 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: guid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transaction.php on line 20
+[Tue Mar 29 14:30:43 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:04 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:16 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:21 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:23 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:28 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:30 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:31 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:31 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:31 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:32 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:33 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:33 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:34 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:34 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:34 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:35 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:35 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:35 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:37 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:37 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:37 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:37 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:38 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:38 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:38 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:38 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:31:39 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:51:05 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:58:11 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:59:04 2011] [error] [client 127.0.0.1] PHP Notice:  Undefined index: guid in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\gbs_transaction.php on line 20
+[Tue Mar 29 14:59:04 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:59:15 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:59:49 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 14:59:52 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 15:00:04 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 15:00:08 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 16:56:35 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING, expecting ')' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\resetServer.php on line 49
+[Tue Mar 29 16:56:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 16:56:55 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING, expecting ')' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\resetServer.php on line 49
+[Tue Mar 29 16:56:55 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 16:57:04 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING, expecting ')' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\resetServer.php on line 49
+[Tue Mar 29 16:57:04 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 16:57:19 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING, expecting ')' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\resetServer.php on line 49
+[Tue Mar 29 17:00:46 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING, expecting ')' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\resetServer.php on line 49
+[Tue Mar 29 17:02:06 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:02:08 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:02:13 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:02:36 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:02:51 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:02:52 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:03:08 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:03:18 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:03:20 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Tue Mar 29 17:04:20 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Wed Mar 30 09:55:14 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/favicon.ico
+[Wed Apr 06 09:44:41 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 09:44:41 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 09:44:42 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Apr 06 09:44:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 09:44:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 09:44:44 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Apr 06 09:44:44 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Apr 06 09:44:44 2011] [notice] Parent: Created child process 888
+[Wed Apr 06 09:44:44 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 09:44:44 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 09:44:45 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 09:44:45 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 09:44:45 2011] [notice] Child 888: Child process is running
+[Wed Apr 06 09:44:45 2011] [notice] Child 888: Acquired the start mutex.
+[Wed Apr 06 09:44:45 2011] [notice] Child 888: Starting 64 worker threads.
+[Wed Apr 06 09:44:45 2011] [notice] Child 888: Starting thread to listen on port 443.
+[Wed Apr 06 09:44:45 2011] [notice] Child 888: Starting thread to listen on port 80.
+[Wed Apr 06 18:02:14 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 18:02:14 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 18:02:14 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Apr 06 18:02:14 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 18:02:14 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 18:02:17 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Wed Apr 06 18:02:17 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Wed Apr 06 18:02:17 2011] [notice] Parent: Created child process 1136
+[Wed Apr 06 18:02:17 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 18:02:17 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 18:02:18 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Wed Apr 06 18:02:18 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Wed Apr 06 18:02:18 2011] [notice] Child 1136: Child process is running
+[Wed Apr 06 18:02:18 2011] [notice] Child 1136: Acquired the start mutex.
+[Wed Apr 06 18:02:18 2011] [notice] Child 1136: Starting 64 worker threads.
+[Wed Apr 06 18:02:18 2011] [notice] Child 1136: Starting thread to listen on port 443.
+[Wed Apr 06 18:02:18 2011] [notice] Child 1136: Starting thread to listen on port 80.
+[Fri Apr 08 11:33:08 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 08 11:33:08 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 08 11:33:09 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Fri Apr 08 11:33:09 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 08 11:33:09 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 08 11:33:10 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Fri Apr 08 11:33:10 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Fri Apr 08 11:33:10 2011] [notice] Parent: Created child process 1216
+[Fri Apr 08 11:33:11 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 08 11:33:11 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 08 11:33:11 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 08 11:33:11 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 08 11:33:11 2011] [notice] Child 1216: Child process is running
+[Fri Apr 08 11:33:11 2011] [notice] Child 1216: Acquired the start mutex.
+[Fri Apr 08 11:33:11 2011] [notice] Child 1216: Starting 64 worker threads.
+[Fri Apr 08 11:33:11 2011] [notice] Child 1216: Starting thread to listen on port 443.
+[Fri Apr 08 11:33:11 2011] [notice] Child 1216: Starting thread to listen on port 80.
+[Mon Apr 11 10:07:59 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Apr 11 10:08:00 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Apr 11 10:08:00 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Apr 11 10:08:00 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Apr 11 10:08:00 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Apr 11 10:08:02 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Apr 11 10:08:02 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Apr 11 10:08:02 2011] [notice] Parent: Created child process 1088
+[Mon Apr 11 10:08:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Apr 11 10:08:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Apr 11 10:08:03 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Apr 11 10:08:03 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Apr 11 10:08:03 2011] [notice] Child 1088: Child process is running
+[Mon Apr 11 10:08:03 2011] [notice] Child 1088: Acquired the start mutex.
+[Mon Apr 11 10:08:03 2011] [notice] Child 1088: Starting 64 worker threads.
+[Mon Apr 11 10:08:03 2011] [notice] Child 1088: Starting thread to listen on port 443.
+[Mon Apr 11 10:08:03 2011] [notice] Child 1088: Starting thread to listen on port 80.
+[Wed Apr 27 15:01:05 2011] [error] [client 127.0.0.1] File does not exist: D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/htdocs/ads.js, referer: http://www.hackhome.com/2005/1-24/14443190334.shtml
+[Fri Apr 29 09:50:19 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 09:50:47 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 09:52:11 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 09:52:21 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 09:52:49 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 09:52:59 2011] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected '=' in D:\\ProjectT\\ProjectT\\TServerProject\\Src\\LoginAgent\\htdocs\\login.php on line 60
+[Fri Apr 29 13:45:01 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 29 13:45:01 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 29 13:45:01 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Fri Apr 29 13:45:01 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 29 13:45:01 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 29 13:45:03 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Fri Apr 29 13:45:03 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Fri Apr 29 13:45:03 2011] [notice] Parent: Created child process 1672
+[Fri Apr 29 13:45:04 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 29 13:45:04 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 29 13:45:04 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Fri Apr 29 13:45:04 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Fri Apr 29 13:45:04 2011] [notice] Child 1672: Child process is running
+[Fri Apr 29 13:45:04 2011] [notice] Child 1672: Acquired the start mutex.
+[Fri Apr 29 13:45:04 2011] [notice] Child 1672: Starting 64 worker threads.
+[Fri Apr 29 13:45:04 2011] [notice] Child 1672: Starting thread to listen on port 443.
+[Fri Apr 29 13:45:04 2011] [notice] Child 1672: Starting thread to listen on port 80.
+[Tue May 03 09:51:39 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue May 03 09:51:39 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue May 03 09:51:39 2011] [warn] pid file D:/ProjectT/ProjectT/TServerProject/Src/LoginAgent/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Tue May 03 09:51:40 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue May 03 09:51:40 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue May 03 09:51:42 2011] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Tue May 03 09:51:42 2011] [notice] Server built: Oct 18 2010 01:58:12
+[Tue May 03 09:51:42 2011] [notice] Parent: Created child process 472
+[Tue May 03 09:51:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue May 03 09:51:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue May 03 09:51:42 2011] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Tue May 03 09:51:42 2011] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Tue May 03 09:51:43 2011] [notice] Child 472: Child process is running
+[Tue May 03 09:51:43 2011] [notice] Child 472: Acquired the start mutex.
+[Tue May 03 09:51:43 2011] [notice] Child 472: Starting 64 worker threads.
+[Tue May 03 09:51:43 2011] [notice] Child 472: Starting thread to listen on port 443.
+[Tue May 03 09:51:43 2011] [notice] Child 472: Starting thread to listen on port 80.
+[Mon Oct 08 21:28:34 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 21:28:34 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 21:28:35 2012] [warn] pid file D:/Projects/Fantuan/FTServer/ConnectionService/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Oct 08 21:28:35 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 21:28:35 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 21:28:36 2012] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Oct 08 21:28:36 2012] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Oct 08 21:28:36 2012] [notice] Parent: Created child process 5088
+[Mon Oct 08 21:28:36 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 21:28:36 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 21:28:37 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 21:28:37 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 21:28:37 2012] [notice] Child 5088: Child process is running
+[Mon Oct 08 21:28:37 2012] [notice] Child 5088: Acquired the start mutex.
+[Mon Oct 08 21:28:37 2012] [notice] Child 5088: Starting 64 worker threads.
+[Mon Oct 08 21:28:37 2012] [notice] Child 5088: Starting thread to listen on port 443.
+[Mon Oct 08 21:28:37 2012] [notice] Child 5088: Starting thread to listen on port 8081.
+[Mon Oct 08 21:28:50 2012] [error] [client 127.0.0.1] File does not exist: D:/Projects/Fantuan/FTServer/ConnectionService/htdocs/favicon.ico
+[Mon Oct 08 21:28:54 2012] [error] [client 127.0.0.1] PHP Notice:  Undefined index: Account in D:\\Projects\\Fantuan\\FTServer\\ConnectionService\\htdocs\\ft_login.php on line 3
+[Mon Oct 08 21:28:54 2012] [error] [client 127.0.0.1] PHP Notice:  Undefined index: Password in D:\\Projects\\Fantuan\\FTServer\\ConnectionService\\htdocs\\ft_login.php on line 4
+[Mon Oct 08 21:28:54 2012] [error] [client 127.0.0.1] File does not exist: D:/Projects/Fantuan/FTServer/ConnectionService/htdocs/favicon.ico
+[Mon Oct 08 21:29:08 2012] [error] [client 127.0.0.1] File does not exist: D:/Projects/Fantuan/FTServer/ConnectionService/htdocs/favicon.ico
+[Mon Oct 08 21:39:42 2012] [error] [client 127.0.0.1] File does not exist: D:/Projects/Fantuan/FTServer/ConnectionService/htdocs/favicon.ico
+[Mon Oct 08 21:51:07 2012] [error] [client 127.0.0.1] File does not exist: D:/Projects/Fantuan/FTServer/ConnectionService/htdocs/favicon.ico
+[Mon Oct 08 22:54:45 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 22:54:45 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 22:54:46 2012] [warn] pid file D:/Projects/Fantuan/FTServer/ConnectionService/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Oct 08 22:54:46 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 22:54:46 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 22:54:49 2012] [notice] Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.3 configured -- resuming normal operations
+[Mon Oct 08 22:54:49 2012] [notice] Server built: Oct 18 2010 01:58:12
+[Mon Oct 08 22:54:49 2012] [notice] Parent: Created child process 156
+[Mon Oct 08 22:54:50 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 22:54:50 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 22:54:51 2012] [warn] RSA server certificate is a CA certificate (BasicConstraints: CA == TRUE !?)
+[Mon Oct 08 22:54:51 2012] [warn] RSA server certificate CommonName (CN) `www.playcool.com' does NOT match server name!?
+[Mon Oct 08 22:54:51 2012] [notice] Child 156: Child process is running
+[Mon Oct 08 22:54:51 2012] [notice] Child 156: Acquired the start mutex.
+[Mon Oct 08 22:54:51 2012] [notice] Child 156: Starting 64 worker threads.
+[Mon Oct 08 22:54:51 2012] [notice] Child 156: Starting thread to listen on port 443.
+[Mon Oct 08 22:54:51 2012] [notice] Child 156: Starting thread to listen on port 8081.

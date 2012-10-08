@@ -155,6 +155,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\SimpleNet\packet_dispatch.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\SimpleNet\simplenet.cpp"
 				>
 			</File>
@@ -173,7 +177,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\SimpleNet\data_stream.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\SimpleNet\handler.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\SimpleNet\packet.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\SimpleNet\packet_dispatch.h"
 				>
 			</File>
 			<File

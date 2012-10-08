@@ -1,5 +1,6 @@
 #include "logic_loop.h"
 #include "logic_command.h"
+#include "alarm.h"
 #include <process.h>
 #include <mmsystem.h>
 #include <ctime>
@@ -14,11 +15,13 @@ LogicLoop::LogicLoop()
 	m_dwCurrTime = 0;
 	m_dwDeltaTime = 0;
 	m_iWorldTime = 0;
+	m_pAlarm = new Alarm;
 	InitializeCriticalSection(&m_csCommandList);
 }
 
 LogicLoop::~LogicLoop()
 {
+	SAFE_DELETE(m_pAlarm);
 	DeleteCriticalSection(&m_csCommandList);
 	CloseHandle(m_hCommandEvent);
 	CloseHandle(m_hThread);
@@ -49,6 +52,9 @@ int32 LogicLoop::Start()
 	// start time line
 	m_dwCurrTime = timeGetTime();
 	m_dwDeltaTime = 0;
+
+	// start alarm clock
+	m_pAlarm->Start(m_dwCurrTime);
 
 	// create an event to control command push and pop
 	m_hCommandEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -144,6 +150,10 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 			}
 		}
 
+		// update alarm clock
+		pLogicLoop->m_pAlarm->Tick(pLogicLoop->m_dwCurrTime);
+
+		// call logic loop
 		dwSleepTime = pLogicLoop->_Loop();
 	}
 

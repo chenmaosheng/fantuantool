@@ -11,4 +11,7 @@
 
 #include "simplenet_common.h"
 
+#define MEMORY_OBJECT_MIN 8
+#define MEMORY_OBJECT_MAX 65536
+
 #endif

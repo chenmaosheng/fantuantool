@@ -3,6 +3,7 @@
 #include "login_server.h"
 #include "login_server_config.h"
 #include "login_logic_command.h"
+#include "alarm.h"
 
 LoginServerLoop::LoginServerLoop() :
 SessionServerLoop<LoginSession>(g_pServerConfig->m_iSessionMax)
@@ -42,6 +43,10 @@ int32 LoginServerLoop::Start()
 	{
 		return iRet;
 	}
+
+	// register alarm event
+	m_pAlarm->RegisterEvent(_T("CheckSession"), m_dwCurrTime, 60000, this, &LoginServerLoop::_CheckSessionState);
+	m_pAlarm->RegisterEvent(_T("ReportState"), m_dwCurrTime, 60000, this, &LoginServerLoop::_ReportState);
 
 	return 0;
 }
@@ -86,4 +91,14 @@ bool LoginServerLoop::_OnCommandOnLoginFailedAck(LogicCommandOnLoginFailedAck* p
 	}
 
 	return false;
+}
+
+void LoginServerLoop::_CheckSessionState()
+{
+
+}
+
+void LoginServerLoop::_ReportState()
+{
+
 }

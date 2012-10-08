@@ -11,9 +11,11 @@
 
 #include "client_common.h"
 #include "packet.h"
+#include "event.h"
 
 class Worker;
 struct Connector;
+class ClientConfig;
 class ClientBase
 {
 public:
@@ -30,6 +32,12 @@ public:
 
 	ClientBase();
 	~ClientBase();
+
+	/////////////////////////event definition//////////////////////////////
+	typedef Event<void> DisconnectEvent;
+	void SetDisconnectEvent(DisconnectEvent* pDisconnectEvent) { m_pDisconnectEvent = pDisconnectEvent; }
+
+	//////////////////////////////////////////////////////////////////////////
 
 	// initialize client
 	virtual int32 Init();
@@ -71,6 +79,12 @@ private:
 	bool m_bInLogin;
 
 	TokenPacket m_TokenPacket;
+
+private:
+	// define event
+	DisconnectEvent* m_pDisconnectEvent;
 };
+
+extern ClientConfig* g_pClientConfig;
 
 #endif

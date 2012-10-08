@@ -14,10 +14,10 @@
 // See Client.cpp for the implementation of this class
 //
 class CClientDlg;
+class ClientBase;
 class CClientApp : public CWinApp
 {
 public:
-	CString m_strName;
 	CClientApp();
 
 // Overrides
@@ -27,6 +27,9 @@ public:
 // Implementation
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	ClientBase* m_pClientBase;
 };
 
 extern CClientApp theApp;

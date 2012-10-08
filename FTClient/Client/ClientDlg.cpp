@@ -4,9 +4,8 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "ClientDlg.h"
-#include "ClientSocket.h"
-#include "packet.h"
-#include "data_stream.h"
+
+#include "client_base.h"
 
 #define WM_SHOWTASK (WM_USER + 1986)
 
@@ -52,14 +51,13 @@ END_MESSAGE_MAP()
 
 
 
-CClientDlg::CClientDlg(CClientSocket *p_Socket,CWnd* pParent /*=NULL*/)
+CClientDlg::CClientDlg(ClientBase* pClientBase,CWnd* pParent /*=NULL*/)
 	: CDialog(CClientDlg::IDD, pParent)
 {
 	m_strMessage = _T("");
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-	m_pSocket = p_Socket;
-	m_pSocket->chatDlg = this;
+	m_pClientBase = pClientBase;
 }
 
 void CClientDlg::DoDataExchange(CDataExchange* pDX)
@@ -276,57 +274,6 @@ void CClientDlg::DeleteUser(int connId)
 	{
 		m_UserList.AddString(m_users.at(j).second);
 	}
-}
-
-int CClientDlg::HandlePacket(ServerPacket* pPacket)
-{
-	InputStream stream(pPacket->m_iLen, pPacket->m_Buf);	// put buffer into stream
-	uint8 iFilterId = (uint8)(pPacket->m_iTypeId >> 8);
-	uint8 iFuncType = (uint8)(pPacket->m_iTypeId & 0xff);
-
-	if (iFilterId == 1)
-	{
-		if (iFuncType == 2)
-		{
-			int32 iGateIP = 0;
-			int16 iGatePort = 0;
-			stream.Serialize(iGateIP);
-			stream.Serialize(iGatePort);
-
-			in_addr addr;
-			addr.s_addr = iGateIP;
-			char* strServer = inet_ntoa(addr);
-
-			TCHAR strServerU[64] = {0};
-			MultiByteToWideChar(CP_UTF8, 0, strServer, -1, strServerU, 64);
-
-			m_pSocket->Close();
-
-			if(!m_pSocket->Create())
-			{
-				m_pSocket->Close();
-				return -1;
-			}
-			if(!m_pSocket->Connect(strServerU,iGatePort))
-			{
-				AfxMessageBox(_T("Server is not started:-("));
-				m_pSocket->Close();
-				return -1;	
-			}
-
-			m_strName = theApp.m_strName;
-
-			TokenPacket packet;
-			char nickname[64] = {0};
-			WideCharToMultiByte(CP_UTF8, 0, m_strName, m_strName.GetLength(), nickname, sizeof(nickname), 0, 0);
-			_snprintf(packet.m_TokenBuf, 256, "%s;Password", nickname);
-
-			packet.m_iTokenLen = (uint16)strlen(packet.m_TokenBuf)+1;
-			m_pSocket->Send((char*)&packet,packet.m_iTokenLen+sizeof(uint16)); // step5: send it
-		}
-	}
-
-	return 0;
 }
 
 void CClientDlg::ToTray()

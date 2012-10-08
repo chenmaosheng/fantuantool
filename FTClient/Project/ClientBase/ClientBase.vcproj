@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src\SimpleNet;..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\..\FTCommon\Src\GenFiles"
+				AdditionalIncludeDirectories="..\..\src\SimpleNet;..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\..\FTCommon\Src\GenFiles;..\..\..\FTCommon\external\tinyxml"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\src\SimpleNet;..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\..\FTCommon\Src\GenFiles"
+				AdditionalIncludeDirectories="..\..\src\SimpleNet;..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\..\FTCommon\Src\GenFiles;..\..\..\FTCommon\external\tinyxml"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -155,6 +155,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\ClientBase\client_config.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\ClientBase\packet_impl.cpp"
 				>
 			</File>
@@ -174,6 +178,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Src\ClientBase\client_common.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\ClientBase\client_config.h"
 				>
 			</File>
 			<File
@@ -210,6 +218,34 @@
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_recv.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="tinyxml"
+			>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinyxml.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\External\tinyxml\tinyxmlparser.cpp"
 				>
 			</File>
 		</Filter>

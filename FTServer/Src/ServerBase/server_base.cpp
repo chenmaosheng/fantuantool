@@ -46,6 +46,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	iRet = InitConfig(strServerName);
 	if (iRet != 0)
 	{
+		_ASSERT(false && _T("Init config error"));
 		return -1;
 	}
 
@@ -53,6 +54,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	iRet = InitLog(m_pServerConfig->GetLogLevel(), m_pServerConfig->GetLogPath(), strServerName, 0);
 	if (iRet != 0)
 	{
+		_ASSERT(false &&_T("Init log error"));
 		return -2;
 	}
 

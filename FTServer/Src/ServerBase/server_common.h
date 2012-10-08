@@ -24,7 +24,7 @@ enum
 	PEER_FILTER_CACHE,
 };
 
-#define CONFIG_PATH "..\\Config"			// config files folder
+#define CONFIG_PATH "..\\..\\Config"			// config files folder
 #define COMMON_CONFIG_FILE "common_config"	// common config's filename
 
 #define MEMORY_OBJECT_MIN 8

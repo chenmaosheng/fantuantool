@@ -48,5 +48,19 @@ bool ClientConfig::LoadConfig()
 	// get login server's port
 	m_iLoginPort = (uint16)atoi(pLoginElement->Attribute("Port"));
 
+	TiXmlElement* pConnectionServiceElement = pRootElement->FirstChildElement("ConnectionService");
+	if (!pConnectionServiceElement)
+	{
+		return false;
+	}
+
+	iRet = Char2WChar(pConnectionServiceElement->Attribute("CreateAccountPage"), m_strCreateAccountPage, MAX_PATH + 1);
+	if (iRet == 0)
+	{
+		return false;
+	}
+
+	m_strCreateAccountPage[iRet] = _T('\0');
+
 	return true;
 }

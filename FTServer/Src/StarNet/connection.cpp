@@ -193,6 +193,10 @@ Connection* Connection::Create(Handler* pHandler, ContextPool* pContextPool, Wor
 							SN_LOG_DBG(_T("Create and configure connection in client side"));
 							return pConnection;
 						}
+						else
+						{
+							_ASSERT( false && _T("Bind error") );
+						}
 					}
 					else
 					{

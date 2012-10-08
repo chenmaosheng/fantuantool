@@ -46,6 +46,7 @@ protected:
 
 public:
 	afx_msg void OnBnClickedLoginButton();
+	afx_msg void OnBnClickedCreateButton();
 };
 
 //{{AFX_INSERT_LOCATION}}

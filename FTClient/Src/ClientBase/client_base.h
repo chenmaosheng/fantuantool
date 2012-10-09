@@ -81,6 +81,8 @@ private:
 	bool m_bInLogin;
 
 	TokenPacket m_TokenPacket;
+	uint32 m_iGateIP;
+	uint16 m_iGatePort;
 
 private:
 	// define event

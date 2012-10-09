@@ -39,6 +39,7 @@ public:
 
 private:
 	DWORD _Loop();
+	void _OnDBEventResult(DBEvent* pEvent);
 
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();

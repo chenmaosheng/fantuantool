@@ -86,12 +86,30 @@ bool CacheServerLoop::IsReadyForShutdown() const
 
 DWORD CacheServerLoop::_Loop()
 {
+	DBEvent* pEvent = NULL;
+	while ((pEvent = m_pDBConnPool->PopFromDBEventReturnList()) != NULL)
+	{
+		_OnDBEventResult(pEvent);
+	}
+
 	if (m_iShutdownStatus == START_SHUTDOWN)
 	{
 		m_iShutdownStatus = READY_FOR_SHUTDOWN;
 	}
 
 	return 100;
+}
+
+void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
+{
+	switch(pEvent->m_iEventId)
+	{
+	case DB_EVENT_GETAVATARLIST:
+		break;
+
+	default:
+		break;
+	}
 }
 
 bool CacheServerLoop::_OnCommand(LogicCommand* pCommand)

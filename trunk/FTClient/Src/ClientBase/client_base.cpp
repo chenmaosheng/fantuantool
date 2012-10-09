@@ -204,16 +204,9 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 	Connection* pConnection = (Connection*)m_ConnId;
 	pConnection->AsyncDisconnect();
 
-	while (pConnection->IsConnected() || m_iState != DISCONNECTED)
-	{
-		Sleep(100);
-	}
-	
-	m_iState = NOT_CONNECT;
-	m_bInLogin = false;
-
-	// connect to gate server
-	Login(iGateIP, iGatePort, m_TokenPacket.m_TokenBuf);
+	// record gate info
+	m_iGateIP = iGateIP;
+	m_iGatePort = iGatePort;
 }
 
 
@@ -256,6 +249,15 @@ void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 	Connection* pConnection = (Connection*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
 	pClientBase->m_iState = DISCONNECTED;
+
+	if (pClientBase->m_bInLogin)
+	{
+		pClientBase->m_iState = NOT_CONNECT;
+		pClientBase->m_bInLogin = false;
+		pClientBase->Login(pClientBase->m_iGateIP, pClientBase->m_iGatePort, pClientBase->m_TokenPacket.m_TokenBuf);
+		
+		return;
+	}
 
 	// notify UI
 	if (pClientBase->m_pDisconnectEvent)

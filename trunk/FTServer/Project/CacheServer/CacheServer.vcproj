@@ -288,6 +288,14 @@
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Server Files"

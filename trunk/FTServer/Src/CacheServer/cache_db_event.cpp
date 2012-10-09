@@ -15,8 +15,8 @@ int32 PlayerDBEventGetAvatarList::FireEvent(DBConn* pDBConn)
 	char strSqlStatement[1024] = {0};
 	uint64 iAvatarId = 0;
 	
-	sprintf_s(strSqlStatement, 1024, "call SP_CreateAvatar('%s', '%s', %llu');",
-		"chen", "chen", iAvatarId);
+	sprintf_s(strSqlStatement, 1024, "call SP_CreateAvatar('%llu', '%s', %llu');",
+		1, "chen", iAvatarId);
 	int status = mysql_query(pDBConn->GetConnector(), strSqlStatement);
 	if (status != 0)
 	{

@@ -10,6 +10,7 @@
 #define _H_CACHEDB_EVENT
 
 #include "db_event.h"
+#include "ftd_define.h"
 
 enum
 {
@@ -39,6 +40,7 @@ public:
 public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	uint8 m_iAvatarCount;
+	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
 };
 
 #endif

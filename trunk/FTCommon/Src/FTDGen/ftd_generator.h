@@ -13,5 +13,6 @@ purpose:	generate ftd files
 #include <cstdio>
 
 extern void GenerateFtdDefine(const char* name, FILE* fp);
+extern void GenerateFtdImpl(const char* name, FILE* fp);
 
 #endif

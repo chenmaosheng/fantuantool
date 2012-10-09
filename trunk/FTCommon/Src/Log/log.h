@@ -44,19 +44,19 @@ public:
 
 #define LOG_DBG(LogType, Expression, ...)										\
 	if (Log::GetInstance()->GetLogLevel() <= Log::LOG_DEBUG_LEVEL)					\
-	Log::GetInstance()->Push(Log::LOG_DEBUG_LEVEL, _T("[%-8s][%u:%-20s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
+	Log::GetInstance()->Push(Log::LOG_DEBUG_LEVEL, _T("[%-8s][%u:%-30s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
 
 #define LOG_WAR(LogType, Expression, ...)										\
 	if (Log::GetInstance()->GetLogLevel() <= Log::LOG_WARNING_LEVEL)				\
-	Log::GetInstance()->Push(Log::LOG_WARNING_LEVEL, _T("[%-8s][%u:%-20s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
+	Log::GetInstance()->Push(Log::LOG_WARNING_LEVEL, _T("[%-8s][%u:%-30s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
 
 #define LOG_ERR(LogType, Expression, ...)										\
 	if (Log::GetInstance()->GetLogLevel() <= Log::LOG_ERROR_LEVEL)					\
-	Log::GetInstance()->Push(Log::LOG_ERROR_LEVEL, _T("[%-8s][%u:%-20s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
+	Log::GetInstance()->Push(Log::LOG_ERROR_LEVEL, _T("[%-8s][%u:%-30s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
 
 #define LOG_STT(LogType, Expression, ...)										\
 	if (Log::GetInstance()->GetLogLevel() <= Log::LOG_STATE_LEVEL)				\
-	Log::GetInstance()->Push(Log::LOG_STATE_LEVEL, _T("[%-8s][%u:%-20s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
+	Log::GetInstance()->Push(Log::LOG_STATE_LEVEL, _T("[%-8s][%u:%-30s][LINE:%-4u] ") Expression, Log::GetInstance()->GetLogTypeString(LogType), GetCurrentThreadId(), _T(__FUNCTION__), __LINE__, __VA_ARGS__);
 
 
 #endif

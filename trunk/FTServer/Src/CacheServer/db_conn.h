@@ -31,6 +31,13 @@ public:
 	MYSQL* GetConnector();
 	void DeleteConnector();
 
+	// mysql query, return 0 means okay
+	int32 Query(const TCHAR* strStatement);
+	// return row number
+	int32 GetNumOfRows();
+	// get data of each row
+	char** GetRowData();
+
 private:
 	bool _InitConnector();
 
@@ -38,13 +45,11 @@ private:
 
 private:
 	MYSQL* m_pMySQL;
+	MYSQL_RES* m_pResult;
 	HANDLE m_hThread;
 	bool m_bQuit;
 
 	DBConnPool* m_pDBConnPool;
-
-public:
-	MYSQL_RES* m_pResult;
 };
 
 #endif

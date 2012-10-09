@@ -11,6 +11,7 @@
 
 #include "server_common.h"
 #include "state_machine.h"
+#include "ftd_define.h"
 
 enum
 {
@@ -61,6 +62,8 @@ public:
 	void OnSessionDisconnect();
 	// receive avatar list request
 	void OnAvatarListReq();
+	// receive avatar list result
+	void OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const prdAvatar* pAvatar);
 
 private:
 	// initialize state machine

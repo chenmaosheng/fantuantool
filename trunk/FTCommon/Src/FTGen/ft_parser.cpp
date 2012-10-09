@@ -130,6 +130,7 @@ const char* CheckKeyword(const char* buffer, const char* identifier, char* value
 const char* CheckParamList(const char* buffer, Node* node)
 {
 	char name[128] = {0};
+	const char* temp_buffer;
 	buffer = CheckIdentifier(buffer, name, sizeof(name));
 	if (!buffer)
 	{
@@ -150,6 +151,28 @@ const char* CheckParamList(const char* buffer, Node* node)
 	if (!buffer)
 	{
 		return NULL;
+	}
+
+	temp_buffer = CheckChar(buffer, '[');
+	if (temp_buffer)
+	{
+		temp_buffer = CheckIdentifier(temp_buffer, name, sizeof(name));
+		if (!temp_buffer)
+		{
+			return NULL;
+		}
+		temp_buffer = CheckChar(temp_buffer, ']');
+		if (!temp_buffer)
+		{
+			return NULL;
+		}
+		strcpy(node->paramSet[node->paramCount].paramSize, name);
+		node->paramSet[node->paramCount].paramSize[strlen(node->paramSet[node->paramCount].paramSize)+1] = '\0';
+		buffer = temp_buffer;
+	}
+	else
+	{
+		node->paramSet[node->paramCount].paramSize[0] = '\0';
 	}
 
 	node->paramCount++;

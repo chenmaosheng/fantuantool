@@ -9,6 +9,7 @@ DBConn::DBConn()
 	m_hThread = NULL;
 	m_bQuit = false;
 	m_pDBConnPool = NULL;
+	m_pResult = NULL;
 }
 
 void DBConn::Init(DBConnPool* pDBConnPool)
@@ -48,6 +49,63 @@ void DBConn::DeleteConnector()
 {
 	mysql_close(m_pMySQL);
 	m_pMySQL = NULL;
+}
+
+int32 DBConn::Query(const TCHAR* strStatement)
+{
+	char strSqlStatement[SQL_STATEMENT_MAX] = {0};
+	int32 iRet = 0;
+
+	iRet = WChar2Char(strStatement, strSqlStatement, SQL_STATEMENT_MAX);
+	if (iRet == 0)
+	{
+		LOG_ERR(LOG_DB, _T("WChar2Char failed"));
+		return -1;
+	}
+
+	strSqlStatement[iRet] = '\0';
+
+	iRet = mysql_real_query(m_pMySQL, strSqlStatement, iRet+1);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_DB, _T("mysql query failed"));
+		return -2;
+	}
+
+	if (m_pResult)
+	{
+		mysql_free_result(m_pResult);
+		m_pResult = NULL;
+	}
+
+	m_pResult = mysql_store_result(m_pMySQL);
+	if (!m_pResult)
+	{
+		LOG_ERR(LOG_DB, _T("get result failed"));
+		return -3;
+	}
+
+	return 0;
+}
+
+int32 DBConn::GetNumOfRows()
+{
+	if (!m_pResult)
+	{
+		return 0;
+	}
+
+	return (int32)mysql_num_rows(m_pResult);
+}
+
+char** DBConn::GetRowData()
+{
+	if (!m_pResult)
+	{
+		return NULL;
+	}
+
+	return (char**)mysql_fetch_row(m_pResult);
 }
 
 bool DBConn::_InitConnector()
@@ -107,6 +165,8 @@ uint32 WINAPI DBConn::_HandleDBConn(PVOID pParam)
 		iRet = pEvent->FireEvent(pDBConn);
 		if (iRet < 0)
 		{
+			_ASSERT( false && _T("FireEvent failed") );
+			LOG_ERR(LOG_DB, _T("FireEvent failed"));
 			pDBConn->DeleteConnector();
 		}
 

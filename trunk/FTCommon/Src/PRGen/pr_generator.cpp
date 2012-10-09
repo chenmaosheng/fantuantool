@@ -77,12 +77,12 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
 					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
-					fprintf(fp, "    stream.Serialize(%s_length);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(%s_length, %s);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, "    stream.Serialize(%s);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s)) return false;\n", filter->node[j].paramSet[k].paramName);
 				}
 			}
 
@@ -190,12 +190,12 @@ void GenerateSendCpp(const char* name, FILE* fp)
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
 					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
-					fprintf(fp, "    stream.Serialize(%s_length);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(%s_length, %s);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length)) return -1;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return -1;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, "    stream.Serialize(%s);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s)) return -1;\n", filter->node[j].paramSet[k].paramName);
 				}
 			}
 

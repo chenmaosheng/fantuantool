@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\CacheServer\cache_event_result.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\CacheServer\cache_logic_command.cpp"
 				>
 			</File>
@@ -296,16 +300,40 @@
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Server Files"
 			>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\ftd_define.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\ftd_impl.cpp"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.h"
 				>
 			</File>
 		</Filter>

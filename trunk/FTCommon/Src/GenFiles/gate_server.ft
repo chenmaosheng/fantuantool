@@ -1,0 +1,6 @@
+#include "ftd_define.h"
+
+filter (GateServer, SERVER_FILTER_GATE)
+{
+	AvatarListAck(int32 iRet, uint8 iAvatarCount, ftdAvatar arrayAvatar[iAvatarCount]);
+}

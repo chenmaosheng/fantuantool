@@ -19,5 +19,9 @@ int main(int argc, char* argv[])
 	FILE* fp = fopen(filename, "wt");
 	GenerateFtdDefine(fileprefix, fp);
 
+	_snprintf(filename, 128, "%s_impl.cpp", fileprefix);
+	FILE* fp2 = fopen(filename, "wt");
+	GenerateFtdImpl(fileprefix, fp2);
+
 	return 0;
 }

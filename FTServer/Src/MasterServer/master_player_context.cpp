@@ -221,6 +221,11 @@ void MasterPlayerContext::OnAvatarListReq()
 	}
 }
 
+void MasterPlayerContext::OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const prdAvatar* pAvatar)
+{
+	// todo:
+}
+
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
 	return ((MasterPlayerContext*)pClient)->DelaySendData(iTypeId, iLen, pBuf);

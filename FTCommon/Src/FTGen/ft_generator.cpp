@@ -21,13 +21,20 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 			fprintf(fp, "    static void %s(void* pClient", filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 			fprintf(fp, ");\n");
@@ -55,14 +62,21 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 			fprintf(fp, "{\n");
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					bNeedLength = true;
-					fprintf(fp, "    char* %s;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    %s* %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, "    %s %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						bNeedLength = true;
+						fprintf(fp, "    char* %s;\n", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, "    %s %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 
@@ -73,16 +87,34 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    %s = (char*)_malloca(iLength + 1);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    %s[iLength] = '\\0';\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    uint16 %s_length;\n", filter->node[j].paramSet[k].paramName);
+				}
+			}
+
+			for (int k = 0; k < filter->node[j].paramCount; ++k)
+			{
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
+				{
+					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+					fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    %s = (%s*)_malloca(sizeof(%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, "    stream.Serialize(%s);\n", filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						fprintf(fp, "    if (!stream.Serialize(iLength)) return false;\n");
+						fprintf(fp, "    %s = (char*)_malloca(iLength + 1);\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    if (!stream.Serialize(iLength, %s)) return false;\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    %s[iLength] = '\\0';\n", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, "    if (!stream.Serialize(%s)) return false;\n", filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 
@@ -134,13 +166,20 @@ void GenerateSendInclude(const char* name, FILE* fp)
 			fprintf(fp, "    static int32 %s(void* pServer", filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 			fprintf(fp, ");\n");
@@ -165,14 +204,21 @@ void GenerateSendCpp(const char* name, FILE* fp)
 			fprintf(fp, "int32 %sSend::%s(void* pServer", filter->filterName, filter->node[j].funcName);
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					bNeedLength = true;
-					fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						bNeedLength = true;
+						fprintf(fp, ", const char* %s", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 			fprintf(fp, ")\n{\n");
@@ -184,15 +230,32 @@ void GenerateSendCpp(const char* name, FILE* fp)
 
 			for (int k = 0; k < filter->node[j].paramCount; ++k)
 			{
-				if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    iLength = (uint16)strlen(%s);\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    stream.Serialize(iLength);\n");
-					fprintf(fp, "    stream.Serialize(iLength, %s);\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    uint16 %s_length;\n", filter->node[j].paramSet[k].paramName);
+				}
+			}
+
+			for (int k = 0; k < filter->node[j].paramCount; ++k)
+			{
+				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
+				{
+					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+					fprintf(fp, "    if (!stream.Serialize(%s_length)) return -1;\n", filter->node[j].paramSet[k].paramName);
+					fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return -1;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 				}
 				else
 				{
-					fprintf(fp, "    stream.Serialize(%s);\n", filter->node[j].paramSet[k].paramName);
+					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
+					{
+						fprintf(fp, "    iLength = (uint16)strlen(%s);\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    if (!stream.Serialize(iLength)) return -1;\n");
+						fprintf(fp, "    if (!stream.Serialize(iLength, %s)) return -1;\n", filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, "    if (!stream.Serialize(%s)) return -1;\n", filter->node[j].paramSet[k].paramName);
+					}
 				}
 			}
 

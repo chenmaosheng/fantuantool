@@ -30,4 +30,6 @@ enum
 #define MEMORY_OBJECT_MIN 8
 #define MEMORY_OBJECT_MAX 65536
 
+#define SQL_STATEMENT_MAX 4096
+
 #endif

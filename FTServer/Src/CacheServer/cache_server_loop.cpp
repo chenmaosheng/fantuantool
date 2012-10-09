@@ -105,6 +105,29 @@ void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
 	switch(pEvent->m_iEventId)
 	{
 	case DB_EVENT_GETAVATARLIST:
+		_OnPlayerEventResult((PlayerDBEvent*)pEvent);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
+{
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pEvent->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
+	{
+		LOG_ERR(LOG_DB, _T("acc=? sid=%08x can't find player"), pEvent->m_iSessionId);
+		return;
+	}
+
+	CachePlayerContext* pCachePlayerContext = mit->second;
+
+	switch(pEvent->m_iEventId)
+	{
+	case DB_EVENT_GETAVATARLIST:
+		pCachePlayerContext->OnPlayerEventGetAvatarListResult((PlayerDBEventGetAvatarList*)pEvent);
 		break;
 
 	default:

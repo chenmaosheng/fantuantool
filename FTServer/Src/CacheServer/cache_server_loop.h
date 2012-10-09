@@ -18,6 +18,8 @@ class DBConnPool;
 class CachePlayerContext;
 struct LogicCommandOnLoginReq;
 struct LogicCommandPacketForward;
+class DBEvent;
+class PlayerDBEvent;
 class CacheServerLoop : public LogicLoop
 {
 public:
@@ -39,8 +41,7 @@ public:
 
 private:
 	DWORD _Loop();
-	void _OnDBEventResult(DBEvent* pEvent);
-
+	
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();
 
@@ -50,6 +51,11 @@ private:
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
 
+private:
+	// get result from result queue
+	void _OnDBEventResult(DBEvent* pEvent);
+	void _OnPlayerEventResult(PlayerDBEvent* pEvent);
+	
 private:
 	int32 m_iShutdownStatus;
 	ObjectPool<CachePlayerContext> m_PlayerContextPool;

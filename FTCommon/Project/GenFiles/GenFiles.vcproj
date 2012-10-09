@@ -156,6 +156,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\GenFiles\gate_server.ft"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\GenFiles\login_client.ft"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			>
 			<File
 				RelativePath="..\..\Src\GenFiles\ftd_define.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\ftd_impl.cpp"
 				>
 			</File>
 		</Filter>

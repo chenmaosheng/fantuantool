@@ -1,7 +1,6 @@
 struct Avatar
 {
 	uint64 m_iAvatarId;
-	uint64 m_iAccountId;
 	char m_strAvatarName[AVATARNAME_MAX];
 };
 

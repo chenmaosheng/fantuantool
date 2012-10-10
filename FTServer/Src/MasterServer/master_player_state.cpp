@@ -121,5 +121,40 @@ void MasterPlayerContext::_InitStateMachine()
 		return;
 	}
 
+	pState->AddTransition(PLAYER_EVENT_ONAVATARCREATEREQ, PLAYER_STATE_ONAVATARCREATEREQ);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARLISTACK);
+
+	// when state is on avatar create req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONAVATARCREATEREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_AVATARCREATEREQ, PLAYER_STATE_AVATARCREATEREQ);
+	pState->AddTransition(PLAYER_EVENT_AVATARCREATEACK, PLAYER_STATE_AVATARLISTACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONAVATARCREATEREQ);
+
+	// when state is send avatar create req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_AVATARCREATEREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONAVATARCREATEACK, PLAYER_STATE_ONAVATARCREATEACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARCREATEREQ);
+
+	// when state is receive new avatar ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONAVATARCREATEACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_AVATARCREATEACK, PLAYER_STATE_AVATARLISTACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONAVATARCREATEACK);
 }

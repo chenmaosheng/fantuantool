@@ -46,6 +46,8 @@ public:
 	void Shutdown();
 	// receive avatar list req
 	void OnAvatarListReq();
+	// receive avatar create req
+	void OnAvatarCreateReq(prdAvatarCreateData& data);
 
 public:	// receive packet handler
 	void OnLoginReq(uint32 iSessionId, TCHAR* strAccountName);
@@ -53,6 +55,7 @@ public:	// receive packet handler
 
 public: // receive db event result
 	void OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatarList*);
+	void OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCreate*);
 
 private:
 	// initialize state machine

@@ -269,6 +269,92 @@ void MasterPlayerContext::OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, con
 	}
 }
 
+void MasterPlayerContext::OnAvatarCreateReq(prdAvatarCreateData &data)
+{
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARCREATEREQ) != PLAYER_STATE_ONAVATARCREATEREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive avatar create, name=%s"), m_strAccountName, m_iSessionId, data.m_strAvatarName);
+
+	iRet = SessionPeerSend::PacketForward(g_pServer->m_pCacheServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEREQ) != PLAYER_STATE_AVATARCREATEREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
+void MasterPlayerContext::OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar)
+{
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARCREATEACK) != PLAYER_STATE_ONAVATARCREATEACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive new avatar from cache server"), m_strAccountName, m_iSessionId);
+
+	// check return value
+	if (iReturn != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x return value is nonzero"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	if (m_iAvatarCount >= AVATARCOUNT_MAX)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x avatar is full"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	memcpy(&m_arrayAvatar[m_iAvatarCount], &newAvatar, sizeof(prdAvatar));
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x name=%s send new avatar to gate server"), m_strAccountName, m_iSessionId, newAvatar.m_strAvatarName);
+	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+	}
+	
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEACK) != PLAYER_STATE_AVATARLISTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
 	return ((MasterPlayerContext*)pClient)->DelaySendData(iTypeId, iLen, pBuf);

@@ -133,6 +133,43 @@ void CachePlayerContext::OnAvatarListReq()
 	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }
 
+void CachePlayerContext::OnAvatarCreateReq(prdAvatarCreateData& data)
+{
+	int32 iRet = 0;
+	PlayerDBEventAvatarCreate* pDBEvent = NULL;
+	ftdAvatar avatar;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x create avatar"), m_strAccountName, m_iSessionId);
+
+	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarCreate>();
+	if (!pDBEvent)
+	{
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		
+		// send avatar new to client
+		iRet = GateServerSend::AvatarCreateAck(this, 0, avatar);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x send new avatar to client failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+
+		iRet = SessionPeerSend::PacketForward(g_pServer->m_pMasterServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+		}
+		
+		return;
+	}
+
+	pDBEvent->m_iSessionId = m_iSessionId;
+	wcscpy_s(pDBEvent->m_strAccountName, _countof(pDBEvent->m_strAccountName), m_strAccountName);
+	wcscpy_s(pDBEvent->m_Avatar.m_strAvatarName, _countof(pDBEvent->m_Avatar.m_strAvatarName), data.m_strAvatarName);
+
+	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
+}
+
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
 	return ((CachePlayerContext*)pClient)->DelaySendData(iTypeId, iLen, pBuf);

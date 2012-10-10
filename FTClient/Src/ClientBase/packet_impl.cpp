@@ -24,3 +24,7 @@ void GateServerRecv::AvatarListAck(void *pClient, int32 iRet, uint8 iAvatarCount
 	ClientBase* pClientBase = (ClientBase*)pClient;
 	pClientBase->AvatarListAck(iRet, iAvatarCount, arrayAvatar);
 }
+
+void GateServerRecv::AvatarCreateAck(void *pClient, int32 iRet, const ftdAvatar &newAvatar)
+{
+}

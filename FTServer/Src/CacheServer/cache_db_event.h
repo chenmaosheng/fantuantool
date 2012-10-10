@@ -15,6 +15,7 @@
 enum
 {
 	DB_EVENT_GETAVATARLIST = 1,
+	DB_EVENT_AVATARCREATE,
 };
 
 class PlayerDBEvent : public DBEvent
@@ -41,6 +42,17 @@ public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	uint8 m_iAvatarCount;
 	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
+};
+
+class PlayerDBEventAvatarCreate : public PlayerDBEvent
+{
+public:
+	PlayerDBEventAvatarCreate();
+	int32 FireEvent(DBConn*);
+
+public:
+	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+	prdAvatar m_Avatar;
 };
 
 #endif

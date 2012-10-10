@@ -55,12 +55,9 @@ int32 DBConn::Query(const TCHAR* strStatement)
 {
 	char strSqlStatement[SQL_STATEMENT_MAX] = {0};
 	int32 iRet = 0;
+	TCHAR errCode[SQL_ERROR_CODE] = {0};
 
-	if (m_pResult)
-	{
-		mysql_free_result(m_pResult);
-		m_pResult = NULL;
-	}
+	FreeResult();
 
 	iRet = WChar2Char(strStatement, strSqlStatement, SQL_STATEMENT_MAX);
 	if (iRet == 0)
@@ -74,14 +71,16 @@ int32 DBConn::Query(const TCHAR* strStatement)
 	iRet = mysql_real_query(m_pMySQL, strSqlStatement, iRet+1);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_DB, _T("mysql query failed"));
+		Char2WChar(mysql_error(m_pMySQL), errCode, SQL_ERROR_CODE);
+		LOG_ERR(LOG_DB, _T("mysql query failed, err=%s"), errCode);
 		return -2;
 	}
 
 	m_pResult = mysql_store_result(m_pMySQL);
 	if (!m_pResult)
 	{
-		LOG_ERR(LOG_DB, _T("get result failed"));
+		Char2WChar(mysql_error(m_pMySQL), errCode, SQL_ERROR_CODE);
+		LOG_ERR(LOG_DB, _T("get result failed, err=%s"), errCode);
 		return -3;
 	}
 
@@ -108,8 +107,25 @@ char** DBConn::GetRowData()
 	return (char**)mysql_fetch_row(m_pResult);
 }
 
+void DBConn::FreeResult()
+{
+	if (m_pResult)
+	{
+		mysql_free_result(m_pResult);
+	}
+
+	// reminder: here is a new concept, you have to free all results in mysql
+	// and otherwise you can't call another sql statement
+	do 
+	{
+		m_pResult = mysql_store_result(m_pMySQL);
+		mysql_free_result(m_pResult);
+	} while (!mysql_next_result(m_pMySQL));
+}
+
 bool DBConn::_InitConnector()
 {
+	TCHAR errCode[SQL_ERROR_CODE] = {0};
 	m_pMySQL = mysql_init(NULL);
 	if (m_pMySQL)
 	{
@@ -126,9 +142,13 @@ bool DBConn::_InitConnector()
 
 			mysql_close(m_pMySQL);
 		}
+
+		Char2WChar(mysql_error(m_pMySQL), errCode, SQL_ERROR_CODE);
+		LOG_ERR(LOG_DB, _T("Connect to db failed, err=%s"), errCode);
+		return false;
 	}
 
-	LOG_ERR(LOG_DB, _T("Connect to db failed"));
+	LOG_ERR(LOG_DB, _T("initialize db failed"));
 
 	return false;
 }

@@ -166,6 +166,8 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	case PLAYER_STATE_CACHELOGINREQ:
 	case PLAYER_STATE_ONAVATARLISTREQ:
 	case PLAYER_STATE_AVATARLISTREQ:
+	case PLAYER_EVENT_ONAVATARLISTACK:
+	case PLAYER_EVENT_AVATARLISTACK:
 		bSendGateDisconnect = true;
 		bSendCacheDisconnect = true;
 		break;

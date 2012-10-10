@@ -99,7 +99,7 @@ void MasterPlayerContext::_InitStateMachine()
 		return;
 	}
 
-	pState->AddTransition(PLAYER_EVENT_AVATARLISTACK, PLAYER_STATE_AVATARLISTACK);
+	pState->AddTransition(PLAYER_EVENT_ONAVATARLISTACK, PLAYER_STATE_ONAVATARLISTACK);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARLISTREQ);
 
 	// when state is on avatar list ack

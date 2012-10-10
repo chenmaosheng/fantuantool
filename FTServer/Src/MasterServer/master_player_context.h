@@ -67,7 +67,7 @@ public:
 	// receive avatar list request
 	void OnAvatarListReq();
 	// receive avatar list result
-	void OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const prdAvatar* pAvatar);
+	void OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, const prdAvatar* pAvatar);
 
 private:
 	// initialize state machine

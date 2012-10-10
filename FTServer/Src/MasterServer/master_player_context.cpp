@@ -223,7 +223,7 @@ void MasterPlayerContext::OnAvatarListReq()
 	}
 }
 
-void MasterPlayerContext::OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const prdAvatar* pAvatar)
+void MasterPlayerContext::OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, const prdAvatar* pAvatar)
 {
 	int32 iRet = 0;
 
@@ -244,7 +244,7 @@ void MasterPlayerContext::OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive avatar list from cache server"), m_strAccountName, m_iSessionId);
 
 	// check return value
-	if (iRet != 0)
+	if (iReturn != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x return value is nonzero"), m_strAccountName, m_iSessionId);
 		m_pMainLoop->ShutdownPlayer(this);

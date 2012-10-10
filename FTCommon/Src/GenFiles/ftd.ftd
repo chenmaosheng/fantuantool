@@ -4,3 +4,8 @@ struct Avatar
 	uint64 m_iAccountId;
 	char m_strAvatarName[AVATARNAME_MAX];
 };
+
+struct AvatarCreateData
+{
+	char m_strAvatarName[AVATARNAME_MAX];
+};

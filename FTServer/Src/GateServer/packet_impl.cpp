@@ -1,7 +1,9 @@
 #include "gate_session.h"
 #include "gate_server.h"
+
 #include "gate_client_recv.h"
 #include "session_peer_send.h"
+#include "ftd_define.h"
 
 // forward to master server
 void GateClientRecv::AvatarListReq(void* pClient)
@@ -17,4 +19,9 @@ void GateClientRecv::AvatarListReq(void* pClient)
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), pSession->m_strAccountName, pSession->m_iSessionId);
 		pSession->Disconnect();
 	}
+}
+
+void GateClientRecv::AvatarCreateReq(void *pClient, const ftdAvatarCreateData& data)
+{
+
 }

@@ -1,4 +1,10 @@
+#include "ftd_define.h"
+
 filter (GateClient, CLIENT_FILTER_GATE)
 {
+	// request avatar list
 	AvatarListReq();
+	
+	// request creating a new avatar
+	AvatarCreateReq(AvatarCreateData data);
 }

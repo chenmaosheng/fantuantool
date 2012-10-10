@@ -37,6 +37,8 @@ public:
 	int32 GetNumOfRows();
 	// get data of each row
 	char** GetRowData();
+	// free all result
+	void FreeResult();
 
 private:
 	bool _InitConnector();

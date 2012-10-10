@@ -47,5 +47,8 @@ int32 PlayerDBEventGetAvatarList::FireEvent(DBConn* pDBConn)
 		m_iAvatarCount++;
 	}
 
+	// free all possible results
+	pDBConn->FreeResult();
+
 	return 0;
 }

@@ -63,3 +63,8 @@ void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionid, uin
 {
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }
+
+void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}

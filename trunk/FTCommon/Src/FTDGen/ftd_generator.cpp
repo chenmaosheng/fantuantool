@@ -66,8 +66,9 @@ void GenerateFtdDefine(const char* name, FILE* fp)
 
 		fprintf(fp, "extern int32 prd%s2ftd%s(const prd%s* pPrd, ftd%s* pFtd);\n", node->structName, node->structName, node->structName, node->structName);
 		fprintf(fp, "extern int32 ftd%s2prd%s(const ftd%s* pFtd, prd%s* pPrd);\n", node->structName, node->structName, node->structName, node->structName);
+		fprintf(fp, "\n");
 	}
-	fprintf(fp, "\n#endif");
+	fprintf(fp, "#endif");
 }
 
 void GenerateFtdImpl(const char* name, FILE* fp)

@@ -1,6 +1,25 @@
 #include "ft_generator.h"
 #include <cstring>
 
+bool IsUserDefinedType(const char* name)
+{
+	if (strcmp(name, "int8") == 0 ||
+		strcmp(name, "uint8") == 0 ||
+		strcmp(name, "int16") == 0 ||
+		strcmp(name, "uint16") == 0 ||
+		strcmp(name, "int32") == 0 ||
+		strcmp(name, "uint32") == 0 ||
+		strcmp(name, "int64") == 0 ||
+		strcmp(name, "uint64") == 0 ||
+		strcmp(name, "float32") == 0 ||
+		strcmp(name, "float64") == 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void GenerateRecvInclude(const char* name, FILE* fp)
 {
 	fprintf(fp, "#ifndef _H_%s_RECV\n", name);
@@ -23,7 +42,14 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 			{
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+					{
+						fprintf(fp, ", const ftd%s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 				else
 				{
@@ -33,7 +59,14 @@ void GenerateRecvInclude(const char* name, FILE* fp)
 					}
 					else
 					{
-						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+						{
+							fprintf(fp, ", const ftd%s& %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
+						else
+						{
+							fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
 					}
 				}
 			}
@@ -64,7 +97,14 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 			{
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    %s* %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+					{
+						fprintf(fp, "    ftd%s* %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, "    %s* %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 				else
 				{
@@ -75,7 +115,15 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 					}
 					else
 					{
-						fprintf(fp, "    %s %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+						{
+							fprintf(fp, "    ftd%s %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
+						else
+						{
+							fprintf(fp, "    %s %s;\n", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
+						
 					}
 				}
 			}
@@ -168,7 +216,14 @@ void GenerateSendInclude(const char* name, FILE* fp)
 			{
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+					{
+						fprintf(fp, ", const ftd%s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 				else
 				{
@@ -178,7 +233,14 @@ void GenerateSendInclude(const char* name, FILE* fp)
 					}
 					else
 					{
-						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+						{
+							fprintf(fp, ", const ftd%s& %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
+						else
+						{
+							fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
 					}
 				}
 			}
@@ -206,7 +268,14 @@ void GenerateSendCpp(const char* name, FILE* fp)
 			{
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+					{
+						fprintf(fp, ", const ftd%s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, ", const %s* %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+					}
 				}
 				else
 				{
@@ -217,7 +286,14 @@ void GenerateSendCpp(const char* name, FILE* fp)
 					}
 					else
 					{
-						fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+						{
+							fprintf(fp, ", ftd%s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
+						else
+						{
+							fprintf(fp, ", %s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						}
 					}
 				}
 			}

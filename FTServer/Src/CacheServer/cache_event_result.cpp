@@ -13,6 +13,13 @@ void CachePlayerContext::OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatar
 	int32 iRet = 0;
 	ftdAvatar arrayAvatar[AVATARCOUNT_MAX];
 
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTACK) != PLAYER_STATE_AVATARLISTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
 	LOG_DBG(LOG_DB, _T("acc=%s sid=%08x send avatar list"), m_strAccountName, m_iSessionId);
 
 	// if success, save the data to context

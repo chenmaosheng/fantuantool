@@ -209,6 +209,10 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 	m_iGatePort = iGatePort;
 }
 
+void ClientBase::AvatarListAck(int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
+{
+
+}
 
 
 

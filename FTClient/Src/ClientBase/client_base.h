@@ -10,6 +10,7 @@
 #define _H_CLIENT_BASE
 
 #include "client_common.h"
+#include "ftd_define.h"
 #include "packet.h"
 #include "event.h"
 
@@ -61,6 +62,8 @@ public:
 public:
 	// receive login ntf from master server
 	void LoginNtf(uint32 iGateIP, uint16 iGatePort);
+	// receive avatar list from db
+	void AvatarListAck(int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar);
 
 private:
 	// connection handler

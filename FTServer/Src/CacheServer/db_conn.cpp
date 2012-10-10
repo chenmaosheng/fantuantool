@@ -56,6 +56,12 @@ int32 DBConn::Query(const TCHAR* strStatement)
 	char strSqlStatement[SQL_STATEMENT_MAX] = {0};
 	int32 iRet = 0;
 
+	if (m_pResult)
+	{
+		mysql_free_result(m_pResult);
+		m_pResult = NULL;
+	}
+
 	iRet = WChar2Char(strStatement, strSqlStatement, SQL_STATEMENT_MAX);
 	if (iRet == 0)
 	{
@@ -70,12 +76,6 @@ int32 DBConn::Query(const TCHAR* strStatement)
 	{
 		LOG_ERR(LOG_DB, _T("mysql query failed"));
 		return -2;
-	}
-
-	if (m_pResult)
-	{
-		mysql_free_result(m_pResult);
-		m_pResult = NULL;
 	}
 
 	m_pResult = mysql_store_result(m_pMySQL);

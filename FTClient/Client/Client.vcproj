@@ -276,6 +276,14 @@
 			Name="Gen Files"
 			>
 			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\ftd_define.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\ftd_impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\FTCommon\Src\GenFiles\gate_client_send.cpp"
 				>
 			</File>

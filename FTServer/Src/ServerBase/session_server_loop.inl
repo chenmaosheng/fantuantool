@@ -131,6 +131,13 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 		}
 		break;
 
+	case COMMAND_SENDDATA:
+		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
+		{
+			_OnCommandSendData((LogicCommandSendData*)pCommand);
+		}
+		break;
+
 	case COMMAND_BROADCASTDATA:
 		if ( m_iShutdownStatus <= NOT_SHUTDOWN)
 		{
@@ -204,6 +211,21 @@ void SessionServerLoop<T>::_OnCommandOnData(LogicCommandOnData* pCommand)
 	{
 		LOG_ERR(LOG_SERVER, _T("Session can't be found"));
 		pConnection->AsyncDisconnect();
+	}
+}
+
+template<typename T>
+void SessionServerLoop<T>::_OnCommandSendData(LogicCommandSendData* pCommand)
+{
+	int32 iRet = 0;
+	T* pSession = (T*)GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		iRet = pSession->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x senddata failed"), pCommand->m_iSessionId);
+		}
 	}
 }
 

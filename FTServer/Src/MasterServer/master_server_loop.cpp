@@ -3,9 +3,11 @@
 #include "master_server_config.h"
 #include "master_logic_command.h"
 #include "master_player_context.h"
+
 #include "session_peer_send.h"
 #include "login_peer_send.h"
 #include "gate_peer_send.h"
+#include "cache_peer_send.h"
 #include "session.h"
 
 #include "packet.h"
@@ -134,6 +136,7 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	bool bSendOnLoginFailedAck = false;
 	bool bSendGateReleaseReq = false;
 	bool bSendGateDisconnect = false;
+	bool bSendCacheDisconnect = false;
 
 	if (pPlayerContext->m_bFinalizing)
 	{
@@ -159,6 +162,13 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	case PLAYER_STATE_ONGATELOGINREQ:
 		bSendGateDisconnect = true;
 		break;
+
+	case PLAYER_STATE_CACHELOGINREQ:
+	case PLAYER_STATE_ONAVATARLISTREQ:
+	case PLAYER_STATE_AVATARLISTREQ:
+		bSendGateDisconnect = true;
+		bSendCacheDisconnect = true;
+		break;
 	}
 
 	if (bSendOnLoginFailedAck && !IsReadyForShutdown())
@@ -174,6 +184,11 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	if (bSendGateDisconnect && !IsReadyForShutdown())
 	{
 		SessionPeerSend::Disconnect(g_pServer->GetPeerServer(pPlayerContext->m_iGateServerId), pPlayerContext->m_iSessionId, 0);
+	}
+
+	if (bSendCacheDisconnect && !IsReadyForShutdown())
+	{
+		CachePeerSend::OnLogoutReq(g_pServer->m_pCacheServer, pPlayerContext->m_iSessionId);
 	}
 
 	AddPlayerToFinalizingQueue(pPlayerContext);

@@ -182,6 +182,10 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandDisconnect((LogicCommandDisconnect*)pCommand);
 		break;
 
+	case COMMAND_SENDDATA:
+		_OnCommandSendData((LogicCommandSendData*)pCommand);
+		break;
+
 	case COMMAND_GATERELEASEREQ:
 		_OnCommandGateReleaseReq((LogicCommandGateReleaseReq*)pCommand);
 		break;
@@ -225,6 +229,17 @@ void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
 	{
 		pSession->OnMasterDisconnect();
 	}
+}
+
+void GateServerLoop::_OnCommandSendData(LogicCommandSendData* pCommand)
+{
+	GateSession* pSession = GetSession(pCommand->m_iSessionId);
+	if (!pSession || pSession->m_bFinalizing)
+	{
+		return;
+	}
+
+	super::_OnCommandSendData(pCommand);
 }
 
 void GateServerLoop::_OnCommandShutdown()

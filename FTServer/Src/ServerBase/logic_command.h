@@ -17,6 +17,7 @@ enum
 	COMMAND_ONCONNECT,		// receive connection
 	COMMAND_ONDISCONNECT,	// receive disconnect
 	COMMAND_ONDATA,			// receive data
+	COMMAND_SENDDATA,		// send data
 	COMMAND_BROADCASTDATA,	// ready to broadcast
 	COMMAND_SHUTDOWN,		// ready to shutdown
 	COMMAND_DISCONNECT,		// force disconnect
@@ -67,6 +68,18 @@ struct LogicCommandOnData : public LogicCommandT<COMMAND_ONDATA>
 	bool CopyData(uint16 iLen, const char* pData);
 	
 	ConnID m_ConnId;
+	uint16 m_iLen;
+	char* m_pData;
+};
+
+struct LogicCommandSendData : public LogicCommandT<COMMAND_SENDDATA>
+{
+	LogicCommandSendData();
+	~LogicCommandSendData();
+	bool CopyData(uint16 iLen, const char* pData);
+
+	uint32 m_iSessionId;
+	uint16 m_iTypeId;
 	uint16 m_iLen;
 	char* m_pData;
 };

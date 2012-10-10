@@ -9,7 +9,6 @@
 
 void CachePeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR *strAccountName)
 {
-	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
 	if (!pCommand)
 	{
@@ -19,6 +18,18 @@ void CachePeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 
 	pCommand->m_iSessionId = iSessionId;
 	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void CachePeerRecv::OnLogoutReq(PEER_CLIENT pPeerClient, uint32 iSessionId)
+{
+	LogicCommandOnLogoutReq* pCommand = FT_NEW(LogicCommandOnLogoutReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnLogoutReq) failed"));
+		return;
+	}
+	pCommand->m_iSessionId = iSessionId;
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 

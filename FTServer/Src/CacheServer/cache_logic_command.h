@@ -14,6 +14,7 @@
 enum
 {
 	COMMAND_ONLOGINREQ = 1001,		// receive login request
+	COMMAND_ONLOGOUTREQ = 1002,		// receive logout request
 };
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
@@ -26,6 +27,16 @@ struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
 
 	uint32 m_iSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+};
+
+struct LogicCommandOnLogoutReq : public LogicCommandT<COMMAND_ONLOGOUTREQ>
+{
+	LogicCommandOnLogoutReq()
+	{
+		m_iSessionId = 0;
+	}
+
+	uint32 m_iSessionId;
 };
 
 #endif

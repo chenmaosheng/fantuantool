@@ -26,6 +26,9 @@ enum
 	PLAYER_STATE_AVATARLISTREQ,	// send avatar list request to cache server
 	PLAYER_STATE_ONAVATARLISTACK, // receive avatar list
 	PLAYER_STATE_AVATARLISTACK, // send avatar list
+	PLAYER_STATE_ONAVATARCREATEREQ, // receive avatar create request
+	PLAYER_STATE_AVATARCREATEREQ, // send avatar create request to cache server
+	PLAYER_STATE_ONAVATARCREATEACK, // receive new avatar
 };
 
 enum
@@ -41,6 +44,10 @@ enum
 	PLAYER_EVENT_AVATARLISTREQ,
 	PLAYER_EVENT_ONAVATARLISTACK,
 	PLAYER_EVENT_AVATARLISTACK,
+	PLAYER_EVENT_ONAVATARCREATEREQ,
+	PLAYER_EVENT_AVATARCREATEREQ,
+	PLAYER_EVENT_ONAVATARCREATEACK,
+	PLAYER_EVENT_AVATARCREATEACK,
 };
 
 class MasterServerLoop;
@@ -68,6 +75,10 @@ public:
 	void OnAvatarListReq();
 	// receive avatar list result
 	void OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, const prdAvatar* pAvatar);
+	// receive create avatar request
+	void OnAvatarCreateReq(prdAvatarCreateData& data);
+	// receive create avatar result
+	void OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar);
 
 private:
 	// initialize state machine

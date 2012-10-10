@@ -169,6 +169,9 @@ void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
 		pCachePlayerContext->OnPlayerEventGetAvatarListResult((PlayerDBEventGetAvatarList*)pEvent);
 		break;
 
+	case DB_EVENT_AVATARCREATE:
+		pCachePlayerContext->OnPlayerEventAvatarCreateResult((PlayerDBEventAvatarCreate*)pEvent);
+
 	default:
 		break;
 	}

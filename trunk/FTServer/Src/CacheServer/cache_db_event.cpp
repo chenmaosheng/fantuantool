@@ -34,8 +34,6 @@ int32 PlayerDBEventGetAvatarList::FireEvent(DBConn* pDBConn)
 	{
 		ppResult = pDBConn->GetRowData();
 		m_arrayAvatar[m_iAvatarCount].m_iAvatarId = _atoi64(ppResult[0]);
-		m_arrayAvatar[m_iAvatarCount].m_iAccountId = _atoi64(ppResult[1]);
-
 		iRet = Char2WChar(ppResult[2], m_arrayAvatar[m_iAvatarCount].m_strAvatarName, AVATARNAME_MAX+1);
 		if (iRet == 0)
 		{
@@ -45,6 +43,42 @@ int32 PlayerDBEventGetAvatarList::FireEvent(DBConn* pDBConn)
 		}
 		m_arrayAvatar[m_iAvatarCount].m_strAvatarName[iRet] = _T('\0');
 		m_iAvatarCount++;
+	}
+
+	// free all possible results
+	pDBConn->FreeResult();
+
+	return 0;
+}
+
+PlayerDBEventAvatarCreate::PlayerDBEventAvatarCreate()
+{
+	m_iEventId = DB_EVENT_AVATARCREATE;
+	m_strAccountName[0] = _T('\0');
+	memset(&m_Avatar, 0, sizeof(m_Avatar));
+}
+
+int32 PlayerDBEventAvatarCreate::FireEvent(DBConn* pDBConn)
+{
+	int32 iRet = 0;
+	TCHAR strSqlStatement[SQL_STATEMENT_MAX] = {0};
+	swprintf_s(strSqlStatement, SQL_STATEMENT_MAX, _T("call SP_CreateAvatar('%s');"), m_strAccountName);
+
+	m_iRet = pDBConn->Query(strSqlStatement);
+	if (m_iRet != 0)
+	{
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x ret=%d mysql query failed"), m_strAccountName, m_iSessionId, m_iRet);
+		return m_iRet;
+	}
+
+	char** ppResult = NULL;
+	int32 iNumOfRows = pDBConn->GetNumOfRows();
+	_ASSERT( iNumOfRows == 1 );
+	// get data of each row
+	for (int32 i = 0; i < iNumOfRows; ++i)
+	{
+		ppResult = pDBConn->GetRowData();
+		m_Avatar.m_iAvatarId = _atoi64(ppResult[0]);
 	}
 
 	// free all possible results

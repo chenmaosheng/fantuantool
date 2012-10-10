@@ -145,10 +145,20 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 			{
 				if (filter->node[j].paramSet[k].paramSize[0] != '\0')
 				{
-					fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
-					fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    %s = (%s*)_malloca(sizeof(%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
-					fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
+					if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
+					{
+						fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+						fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    %s = (ftd%s*)_malloca(sizeof(ftd%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
+					}
+					else
+					{
+						fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
+						fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    %s = (%s*)_malloca(sizeof(%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
+					}
 				}
 				else
 				{
@@ -288,7 +298,7 @@ void GenerateSendCpp(const char* name, FILE* fp)
 					{
 						if (IsUserDefinedType(filter->node[j].paramSet[k].paramType))
 						{
-							fprintf(fp, ", ftd%s %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+							fprintf(fp, ", const ftd%s& %s", filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 						}
 						else
 						{

@@ -12,7 +12,9 @@ bool IsUserDefinedType(const char* name)
 		strcmp(name, "int64") == 0 ||
 		strcmp(name, "uint64") == 0 ||
 		strcmp(name, "float32") == 0 ||
-		strcmp(name, "float64") == 0)
+		strcmp(name, "float64") == 0 ||
+		strcmp(name, "TCHAR") == 0 ||
+		strcmp(name, "char") == 0)
 	{
 		return false;
 	}

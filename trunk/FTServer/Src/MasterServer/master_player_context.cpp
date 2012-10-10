@@ -34,6 +34,8 @@ void MasterPlayerContext::Clear()
 	m_iGateServerId = 0;
 	m_bFinalizing = false;
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
+	m_iAvatarCount = 0;
+	memset(m_arrayAvatar, 0, sizeof(m_arrayAvatar));
 }
 
 int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -223,7 +225,48 @@ void MasterPlayerContext::OnAvatarListReq()
 
 void MasterPlayerContext::OnAvatarListAck(int32 iRet, uint8 iAvatarCount, const prdAvatar* pAvatar)
 {
-	// todo:
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTACK) != PLAYER_STATE_ONAVATARLISTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive avatar list from cache server"), m_strAccountName, m_iSessionId);
+
+	// check return value
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x return value is nonzero"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	m_iAvatarCount = iAvatarCount;
+	memcpy(m_arrayAvatar, pAvatar, sizeof(prdAvatar)*iAvatarCount);
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x send avatar list to gate server"), m_strAccountName, m_iSessionId);
+	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+	}
+	
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTACK) != PLAYER_STATE_AVATARLISTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

@@ -24,6 +24,32 @@ bool LogicCommandOnData::CopyData(uint16 iLen, const char *pData)
 	return false;
 }
 
+LogicCommandSendData::LogicCommandSendData()
+{
+	m_iSessionId = 0;
+	m_iTypeId = 0;
+	m_iLen = 0;
+	m_pData = NULL;
+}
+
+LogicCommandSendData::~LogicCommandSendData()
+{
+	_aligned_free(m_pData);
+}
+
+bool LogicCommandSendData::CopyData(uint16 iLen, const char* pData)
+{
+	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
+	if (m_pData)
+	{
+		m_iLen = iLen;
+		memcpy(m_pData, pData, iLen);
+		return true;
+	}
+
+	return false;
+}
+
 LogicCommandBroadcastData::LogicCommandBroadcastData()
 {
 	m_iLen = 0;

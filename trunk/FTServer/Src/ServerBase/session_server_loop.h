@@ -19,6 +19,7 @@ struct LogicCommand;
 struct LogicCommandOnConnect;
 struct LogicCommandOnDisconnect;
 struct LogicCommandOnData;
+struct LogicCommandSendData;
 struct LogicCommandBroadcastData;
 struct LogicCommandPacketForward;
 
@@ -47,6 +48,7 @@ protected:
 	void _OnCommandOnConnect(LogicCommandOnConnect*);
 	virtual void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	virtual void _OnCommandOnData(LogicCommandOnData*);
+	virtual void _OnCommandSendData(LogicCommandSendData*);
 	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	virtual void _OnCommandShutdown();
 	// handle packet forwarding to other server

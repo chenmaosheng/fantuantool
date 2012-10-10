@@ -17,11 +17,17 @@ enum
 {
 	PLAYER_STATE_NONE,
 	PLAYER_STATE_ONLOGINREQ,
+	PLAYER_STATE_AVATARLISTREQ,
+	PLAYER_STATE_AVATARLISTACK,
+	PLAYER_STATE_ONLOGOUTREQ,
 };
 
 enum
 {
 	PLAYER_EVENT_ONLOGINREQ,
+	PLAYER_EVENT_AVATARLISTREQ,
+	PLAYER_EVENT_AVATARLISTACK,
+	PLAYER_EVENT_ONLOGOUTREQ,
 };
 
 class CacheServerLoop;
@@ -43,6 +49,7 @@ public:
 
 public:	// receive packet handler
 	void OnLoginReq(uint32 iSessionId, TCHAR* strAccountName);
+	void OnLogoutReq();
 
 public: // receive db event result
 	void OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatarList*);
@@ -55,6 +62,7 @@ public:
 	uint32 m_iSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	StateMachine m_StateMachine;
+	bool m_bFinalizing; // almost leave or not
 
 	// avatar info list
 	uint8 m_iAvatarCount;

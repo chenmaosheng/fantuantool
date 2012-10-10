@@ -48,6 +48,7 @@ private:
 	void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
+	void _OnCommandSendData(LogicCommandSendData*);
 	void _OnCommandShutdown();
 	
 	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);

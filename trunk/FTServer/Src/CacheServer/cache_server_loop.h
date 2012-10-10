@@ -17,6 +17,7 @@
 class DBConnPool;
 class CachePlayerContext;
 struct LogicCommandOnLoginReq;
+struct LogicCommandOnLogoutReq;
 struct LogicCommandPacketForward;
 class DBEvent;
 class PlayerDBEvent;
@@ -38,6 +39,12 @@ public:
 	void Stop();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
+	// shutdown one player in cache server
+	void ShutdownPlayer(CachePlayerContext*);
+	// add player to finalizing queue
+	void AddPlayerToFinalizingQueue(CachePlayerContext*);
+	// totally delete a player
+	void DeletePlayer(CachePlayerContext*);
 
 private:
 	DWORD _Loop();
@@ -48,6 +55,8 @@ private:
 private:
 	// receive request about login
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
+	// receive logout request
+	void _OnCommandOnLogoutReq(LogicCommandOnLogoutReq*);
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
 

@@ -84,12 +84,51 @@ bool CacheServerLoop::IsReadyForShutdown() const
 	return m_iShutdownStatus == READY_FOR_SHUTDOWN;
 }
 
+void CacheServerLoop::ShutdownPlayer(CachePlayerContext* pPlayerContext)
+{
+	if (pPlayerContext->m_bFinalizing)
+	{
+		LOG_WAR(LOG_SERVER, _T("acc=%s sid=%08x is finalizing"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+	}
+	else
+	{
+		pPlayerContext->Shutdown();
+	}
+}
+
+void CacheServerLoop::AddPlayerToFinalizingQueue(CachePlayerContext* pPlayerContext)
+{
+	pPlayerContext->m_bFinalizing = true;
+	m_PlayerFinalizingQueue.push(pPlayerContext);
+}
+
+void CacheServerLoop::DeletePlayer(CachePlayerContext* pPlayerContext)
+{
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x delete player"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pPlayerContext->m_iSessionId);
+	if (mit != m_mPlayerContextBySessionId.end())
+	{
+		m_mPlayerContextBySessionId.erase(mit);
+	}
+
+	// put context to pool
+	pPlayerContext->Clear();
+	m_PlayerContextPool.Free(pPlayerContext);
+}
+
 DWORD CacheServerLoop::_Loop()
 {
 	DBEvent* pEvent = NULL;
 	while ((pEvent = m_pDBConnPool->PopFromDBEventReturnList()) != NULL)
 	{
 		_OnDBEventResult(pEvent);
+	}
+
+	while (!m_PlayerFinalizingQueue.empty())
+	{
+		DeletePlayer(m_PlayerFinalizingQueue.back());
+		m_PlayerFinalizingQueue.pop();
 	}
 
 	if (m_iShutdownStatus == START_SHUTDOWN)
@@ -148,6 +187,10 @@ bool CacheServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
 		break;
 
+	case COMMAND_ONLOGOUTREQ:
+		_OnCommandOnLogoutReq((LogicCommandOnLogoutReq*)pCommand);
+		break;
+
 	case COMMAND_PACKETFORWARD:
 		_OnCommandPacketForward((LogicCommandPacketForward*)pCommand);
 		break;
@@ -177,7 +220,16 @@ void CacheServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 
 	m_mPlayerContextBySessionId.insert(std::make_pair(pCommand->m_iSessionId, pPlayerContext));
 	pPlayerContext->OnLoginReq(pCommand->m_iSessionId, pCommand->m_strAccountName);
+}
 
+void CacheServerLoop::_OnCommandOnLogoutReq(LogicCommandOnLogoutReq* pCommand)
+{
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit != m_mPlayerContextBySessionId.end())
+	{
+		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive logout request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
+		mit->second->OnLogoutReq();
+	}
 }
 
 void CacheServerLoop::_OnCommandPacketForward(LogicCommandPacketForward* pCommand)

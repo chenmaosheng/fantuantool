@@ -32,6 +32,7 @@ void CachePlayerContext::Clear()
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 	m_iAvatarCount = 0;
 	memset(m_arrayAvatar, 0, sizeof(m_arrayAvatar));
+	m_bFinalizing = false;
 }
 
 int32 CachePlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -45,6 +46,24 @@ int32 CachePlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char 
 
 void CachePlayerContext::Shutdown()
 {
+	bool bNeedSave = false;
+
+	switch(m_StateMachine.GetCurrState())
+	{
+	case PLAYER_STATE_ONLOGINREQ:
+	case PLAYER_STATE_AVATARLISTREQ:
+	case PLAYER_STATE_AVATARLISTACK:
+		bNeedSave = false;
+		break;
+
+	default:
+		break;
+	}
+
+	if (!bNeedSave)
+	{
+		m_pMainLoop->AddPlayerToFinalizingQueue(this);
+	}
 }
 
 void CachePlayerContext::OnLoginReq(uint32 iSessionId, TCHAR *strAccountName)
@@ -55,14 +74,35 @@ void CachePlayerContext::OnLoginReq(uint32 iSessionId, TCHAR *strAccountName)
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLoginReq"), m_strAccountName, m_iSessionId);
+
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 	m_iSessionId = iSessionId;
+}
+
+void CachePlayerContext::OnLogoutReq()
+{
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONLOGOUTREQ) != PLAYER_STATE_ONLOGOUTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLogoutReq"), m_strAccountName, m_iSessionId);
+
+	m_pMainLoop->ShutdownPlayer(this);
 }
 
 void CachePlayerContext::OnAvatarListReq()
 {
 	int32 iRet = 0;
 	PlayerDBEventGetAvatarList* pDBEvent = NULL;
+
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTREQ) != PLAYER_STATE_AVATARLISTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x query avatar list"), m_strAccountName, m_iSessionId);
 

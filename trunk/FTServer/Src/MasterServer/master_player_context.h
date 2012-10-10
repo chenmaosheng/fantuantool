@@ -24,6 +24,8 @@ enum
 	PLAYER_STATE_CACHELOGINREQ, // send login request to cache server
 	PLAYER_STATE_ONAVATARLISTREQ, // receive avatar list request from client
 	PLAYER_STATE_AVATARLISTREQ,	// send avatar list request to cache server
+	PLAYER_STATE_ONAVATARLISTACK, // receive avatar list
+	PLAYER_STATE_AVATARLISTACK, // send avatar list
 };
 
 enum
@@ -37,6 +39,8 @@ enum
 	PLAYER_EVENT_CACHELOGINREQ,
 	PLAYER_EVENT_ONAVATARLISTREQ,
 	PLAYER_EVENT_AVATARLISTREQ,
+	PLAYER_EVENT_ONAVATARLISTACK,
+	PLAYER_EVENT_AVATARLISTACK,
 };
 
 class MasterServerLoop;
@@ -75,6 +79,10 @@ public:
 	bool m_bFinalizing; // almost leave or not
 	StateMachine m_StateMachine;
 	uint8 m_iGateServerId;		// gate server's id which this player locates
+
+	// avatar info
+	uint8 m_iAvatarCount;
+	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
 
 	static MasterServerLoop* m_pMainLoop;
 	

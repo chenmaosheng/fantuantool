@@ -45,5 +45,7 @@ void ClientLogic::OnIncomingEvent()
 		default:
 			break;
 		}
+
+		FT_DELETE(pEvent);
 	}
 }

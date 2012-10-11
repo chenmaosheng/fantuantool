@@ -74,7 +74,7 @@ void CachePlayerContext::OnLoginReq(uint32 iSessionId, TCHAR *strAccountName)
 		return;
 	}
 
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLoginReq"), m_strAccountName, m_iSessionId);
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLoginReq"), strAccountName, iSessionId);
 
 	wcscpy_s(m_strAccountName, _countof(m_strAccountName), strAccountName);
 	m_iSessionId = iSessionId;

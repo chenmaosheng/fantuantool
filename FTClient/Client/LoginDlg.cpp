@@ -31,8 +31,8 @@ CLoginDlg::CLoginDlg(ClientLogic *pClientLogic, CWnd* pParent /*=NULL*/)
 {
 	m_pClientLogic = pClientLogic;
 	//{{AFX_DATA_INIT(CLoginDlg)
-	m_strName = _T("Your name");
-	m_strPassword = _T("");
+	m_strName = g_pClientConfig->GetAcccountName();
+	m_strPassword = g_pClientConfig->GetPassword();
 	//}}AFX_DATA_INIT
 }
 
@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CLoginDlg, CDialog)
 	ON_BN_CLICKED(ID_LOGIN_BUTTON, &CLoginDlg::OnBnClickedLoginButton)
 	ON_BN_CLICKED(ID_CREATE_BUTTON, &CLoginDlg::OnBnClickedCreateButton)
 	ON_MESSAGE(WM_TIMER, &CLoginDlg::OnKickIdle)
+	ON_BN_CLICKED(IDCANCEL, &CLoginDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ void CLoginDlg::OnBnClickedLoginButton()
 
 	m_pClientLogic->Login(strToken);
 
-	//CDialog::OnOK();
+	g_pClientConfig->SaveConfig(m_strName, m_strPassword);
 }
 
 void CLoginDlg::OnBnClickedCreateButton()
@@ -93,4 +94,9 @@ LRESULT CLoginDlg::OnKickIdle(WPARAM wParam, LPARAM lParam)
 {
 	m_pClientLogic->OnIncomingEvent();
 	return 0;
+}
+void CLoginDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	OnCancel();
 }

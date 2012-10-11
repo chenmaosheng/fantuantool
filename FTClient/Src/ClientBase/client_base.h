@@ -52,19 +52,19 @@ public:
 	virtual void OnClientData(uint32 iLen, char* pBuf);
 	// send data
 	virtual void SendData(uint16 iTypeId, uint16 iLen, const char* pData);
+	// handle login packet which is analyzed from received buffer
+	int32 HandleLoginPacket(uint16 iLen, char* pBuf);
+	// handle server packet which is analyzed from received buffer
+	int32 HandlePacket(ServerPacket*);
+	// pop a event from event list;
+	ClientEvent* PopClientEvent();
 
 	// connect to login server
 	void Login(uint32 iIP, uint16 iPort, const char* strToken);
 	// disconnect
 	void Logout();
-
-	// handle login packet which is analyzed from received buffer
-	int32 HandleLoginPacket(uint16 iLen, char* pBuf);
-
-	// handle server packet which is analyzed from received buffer
-	int32 HandlePacket(ServerPacket*);
-
-	ClientEvent* PopClientEvent();
+	// request creating an avatar
+	void RequestCreateAvatar(const TCHAR* strAvatarName);
 
 public:
 	// receive login ntf from master server

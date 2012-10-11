@@ -48,6 +48,22 @@ bool ClientConfig::LoadConfig()
 	// get login server's port
 	m_iLoginPort = (uint16)atoi(pLoginElement->Attribute("Port"));
 
+	// get user name
+	iRet = Char2WChar(pLoginElement->Attribute("Account"), m_strAccountName, ACCOUNTNAME_MAX+1);
+	if (iRet == 0)
+	{
+		return false;
+	}
+	m_strAccountName[iRet] = _T('\0');
+
+	// get password
+	iRet = Char2WChar(pLoginElement->Attribute("Password"), m_strPassword, PASSWORD_MAX+1);
+	if (iRet == 0)
+	{
+		return false;
+	}
+	m_strPassword[iRet] = _T('\0');
+
 	TiXmlElement* pConnectionServiceElement = pRootElement->FirstChildElement("ConnectionService");
 	if (!pConnectionServiceElement)
 	{
@@ -63,4 +79,43 @@ bool ClientConfig::LoadConfig()
 	m_strCreateAccountPage[iRet] = _T('\0');
 
 	return true;
+}
+
+void ClientConfig::SaveConfig(const TCHAR *strAccountName, const TCHAR *strPassword)
+{
+	int32 iRet = 0;
+
+	TiXmlElement* pRootElement = m_XmlDoc.FirstChildElement("Config");
+	if (!pRootElement)
+	{
+		return;
+	}
+
+	TiXmlElement* pLoginElement = pRootElement->FirstChildElement("Login");
+	if (!pLoginElement)
+	{
+		return;
+	}
+
+	// set user name
+	char strUtf8[ACCOUNTNAME_MAX+1] = {0};
+	iRet = WChar2Char(strAccountName, strUtf8, ACCOUNTNAME_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	strUtf8[iRet] = '\0';
+	pLoginElement->SetAttribute("Account", strUtf8);
+	
+	// set password
+	char strUtf82[PASSWORD_MAX+1] = {0};
+	iRet = WChar2Char(strPassword, strUtf82, PASSWORD_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	strUtf82[iRet] = '\0';
+	pLoginElement->SetAttribute("Password", strUtf82);
+
+	m_XmlDoc.SaveFile();
 }

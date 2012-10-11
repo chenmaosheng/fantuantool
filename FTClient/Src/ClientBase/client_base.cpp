@@ -11,6 +11,7 @@
 #include "client_command.h"
 #include "client_loop.h"
 #include "client_event.h"
+#include "log_device.h"
 
 #include "login_client_send.h"
 #include "gate_client_send.h"
@@ -57,13 +58,24 @@ int32 ClientBase::Init()
 
 	StarNet::Init();
 
+	g_pClientConfig = new ClientConfig;
+	g_pClientConfig->LoadConfig();
+
+	// initialize log system
+	m_pLogSystem = Log::GetInstance();
+	m_pLogSystem->Init(g_pClientConfig->GetLogLevel());
+	LogDevice* pDevice = NULL;
+	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_FILE);
+	if (pDevice)
+	{
+		pDevice->Init(g_pClientConfig->GetLogPath(), _T("Client"));
+	}
+	m_pLogSystem->Start();
+
 	// create worker with 1 thread and context pool
 	m_pWorker = Worker::CreateWorker(1);
 	m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
 
-	g_pClientConfig = new ClientConfig;
-	g_pClientConfig->LoadConfig();
-	
 	m_pMainLoop = new ClientLoop;
 	m_pMainLoop->Init();
 	m_pMainLoop->Start();
@@ -104,6 +116,19 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 void ClientBase::Logout()
 {
 	((Connection*)m_ConnId)->AsyncDisconnect();
+}
+
+void ClientBase::RequestCreateAvatar(const TCHAR* strAvatarName)
+{
+	ftdAvatarCreateData data;
+	int32 iRet = 0;
+	iRet = WChar2Char(strAvatarName, data.m_strAvatarName, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	data.m_strAvatarName[iRet] = '\0';
+	GateClientSend::AvatarCreateReq(this, data);
 }
 
 bool ClientBase::OnClientConnection(ConnID connId)

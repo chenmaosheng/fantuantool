@@ -294,7 +294,7 @@ void GateSession::OnMasterDisconnect()
 
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONMASTERDISCONNECT) != SESSION_STATE_ONMASTERDISCONNECT)
 	{
-		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		LOG_WAR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
 

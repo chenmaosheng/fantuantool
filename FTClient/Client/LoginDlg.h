@@ -15,15 +15,14 @@ class CLoginDlg : public CDialog
 {
 	// Construction
 public:
-	CLoginDlg(ClientBase *pClientBase,CWnd* pParent=NULL);   // standard constructor
-	ClientBase *m_pClientBase;
+	CLoginDlg(ClientLogic *pClientLogic,CWnd* pParent=NULL);   // standard constructor
+	ClientLogic *m_pClientLogic;
 	// Dialog Data
 	//{{AFX_DATA(CLoginDlg)
 	enum { IDD = IDD_LOGIN_DIALOG };
 	CString	m_strName;
 	CString	m_strPassword;
 	//}}AFX_DATA
-
 
 	// Overrides
 	// ClassWizard generated virtual function overrides
@@ -40,13 +39,14 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-protected:
+public:
 	// event handler definition
 	void OnDisconnect();
-
+	
 public:
 	afx_msg void OnBnClickedLoginButton();
 	afx_msg void OnBnClickedCreateButton();
+	afx_msg LRESULT OnKickIdle(WPARAM wParam, LPARAM lParam);
 };
 
 //{{AFX_INSERT_LOCATION}}

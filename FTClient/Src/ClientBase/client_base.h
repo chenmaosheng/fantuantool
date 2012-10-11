@@ -13,14 +13,20 @@
 #include "ftd_define.h"
 #include "packet.h"
 #include "event.h"
+#include <list>
 
 class Worker;
 class ContextPool;
 struct Connector;
 class ClientConfig;
+class ClientLoop;
+struct ClientCommand;
+struct ClientEvent;
 class ClientBase
 {
 public:
+	friend class ClientLoop;
+
 	enum
 	{
 		NOT_CONNECT,
@@ -33,18 +39,15 @@ public:
 	};
 
 	ClientBase();
-	~ClientBase();
-
-	/////////////////////////event definition//////////////////////////////
-	typedef Event<void> DisconnectEvent;
-	void SetDisconnectEvent(DisconnectEvent* pDisconnectEvent) { m_pDisconnectEvent = pDisconnectEvent; }
-
-	//////////////////////////////////////////////////////////////////////////
+	virtual ~ClientBase();
+	void Clear();
 
 	// initialize client
 	virtual int32 Init();
 	// destroy client
 	virtual void Destroy();
+	virtual bool OnClientConnection(ConnID connId);
+	virtual void OnClientDisconnect(ConnID connId);
 	// receive data
 	virtual void OnClientData(uint32 iLen, char* pBuf);
 	// send data
@@ -52,12 +55,16 @@ public:
 
 	// connect to login server
 	void Login(uint32 iIP, uint16 iPort, const char* strToken);
+	// disconnect
+	void Logout();
 
 	// handle login packet which is analyzed from received buffer
 	int32 HandleLoginPacket(uint16 iLen, char* pBuf);
 
 	// handle server packet which is analyzed from received buffer
 	int32 HandlePacket(ServerPacket*);
+
+	ClientEvent* PopClientEvent();
 
 public:
 	// receive login ntf from master server
@@ -76,6 +83,8 @@ private:
 	Worker* m_pWorker;
 	ContextPool* m_pContextPool;
 	Log* m_pLogSystem;
+	ClientLoop* m_pMainLoop;
+
 	ConnID m_ConnId;		// connection id
 	SOCKADDR_IN m_SockAddr;
 	int32 m_iState;	// current state about connect
@@ -87,11 +96,10 @@ private:
 	uint32 m_iGateIP;
 	uint16 m_iGatePort;
 
-private:
-	// define event
-	DisconnectEvent* m_pDisconnectEvent;
+	std::list<ClientEvent*> m_ClientEventList;
 };
 
 extern ClientConfig* g_pClientConfig;
+extern ClientBase* g_pClientBase;
 
 #endif

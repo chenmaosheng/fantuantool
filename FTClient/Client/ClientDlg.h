@@ -6,11 +6,12 @@
 #include <vector>
 
 // CClientDlg dialog
+class ClientLogic;
 class CClientDlg : public CDialog
 {
 // Construction
 public:
-	CClientDlg(ClientBase *pClientBase,CWnd* pParent = NULL);	// standard constructor
+	CClientDlg(ClientLogic *pClientLogic,CWnd* pParent = NULL);	// standard constructor
 	BOOL GetMessage(char* message, int length);
 	void UpdateUser(char* nickname, int sessionId, int length);
 	void DeleteUser(int connId);
@@ -25,7 +26,7 @@ public:
 	CString m_strMessage;
 	CString m_strName;
 	CString m_strServer;
-	ClientBase *m_pClientBase;
+	ClientLogic *m_pClientLogic;
 	std::vector< std::pair<int, CString> > m_users;
 
 	protected:

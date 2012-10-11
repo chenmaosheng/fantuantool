@@ -8,26 +8,36 @@
 #include "memory_pool.h"
 #include "version.h"
 #include "client_config.h"
+#include "client_command.h"
+#include "client_loop.h"
+#include "client_event.h"
 
 #include "login_client_send.h"
 #include "gate_client_send.h"
 
 ClientConfig* g_pClientConfig = NULL;
+ClientBase* g_pClientBase = NULL;
 
 ClientBase::ClientBase()
 {
 	m_pWorker = NULL;
 	m_pLogSystem = NULL;
+	Clear();
+}
+
+ClientBase::~ClientBase()
+{
+	Clear();
+}
+
+void ClientBase::Clear()
+{
 	m_ConnId = NULL;
 	m_bInLogin = true;
 	m_iRecvBufLen = 0;
 	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
 
 	m_iState = NOT_CONNECT;
-}
-
-ClientBase::~ClientBase()
-{
 }
 
 int32 ClientBase::Init()
@@ -48,12 +58,17 @@ int32 ClientBase::Init()
 
 	g_pClientConfig = new ClientConfig;
 	g_pClientConfig->LoadConfig();
+	
+	m_pMainLoop = new ClientLoop;
+	m_pMainLoop->Init();
+	m_pMainLoop->Start();
 
 	return 0;
 }
 
 void ClientBase::Destroy()
 {
+	SAFE_DELETE(m_pMainLoop);
 	SAFE_DELETE(g_pClientConfig);
 	StarNet::Destroy();
 }
@@ -79,6 +94,42 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 	handler.OnConnectFailed = &OnConnectFailed;
 
 	Connection::Connect(&m_SockAddr, &handler, m_pContextPool, m_pWorker, this);
+}
+
+void ClientBase::Logout()
+{
+	((Connection*)m_ConnId)->AsyncDisconnect();
+}
+
+bool ClientBase::OnClientConnection(ConnID connId)
+{
+	m_ConnId = connId;
+	m_iState = CONNECTED;
+
+	char* buf = m_pContextPool->PopOutputBuffer();
+	memcpy(buf, (char*)&m_TokenPacket, MAX_INPUT_BUFFER);
+	((Connection*)m_ConnId)->AsyncSend(m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
+
+	return true;
+}
+
+void ClientBase::OnClientDisconnect(ConnID connId)
+{
+	m_iState = ClientBase::DISCONNECTED;
+
+	if (m_bInLogin)
+	{
+		m_iState = ClientBase::NOT_CONNECT;
+		m_bInLogin = false;
+		Login(m_iGateIP, m_iGatePort, m_TokenPacket.m_TokenBuf);
+
+		return;
+	}
+
+	// clear all states
+
+	ClientEventAvatarLogout* newEvent = FT_NEW(ClientEventAvatarLogout);
+	m_ClientEventList.push_back(newEvent);
 }
 
 void ClientBase::OnClientData(uint32 iLen, char* pBuf)
@@ -198,6 +249,17 @@ int32 ClientBase::HandlePacket(ServerPacket* pPacket)
 	return 0;
 }
 
+ClientEvent* ClientBase::PopClientEvent()
+{
+	ClientEvent* pEvent = NULL;
+	if (!m_ClientEventList.empty())
+	{
+		pEvent = m_ClientEventList.front();
+		m_ClientEventList.pop_front();
+	}
+	return pEvent;
+}
+
 void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 {
 	// disconnect to login server
@@ -211,7 +273,11 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 
 void ClientBase::AvatarListAck(int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
 {
-
+	ClientEventAvatarList* newEvent = FT_NEW(ClientEventAvatarList);
+	newEvent->m_iRet = iRet;
+	newEvent->m_iAvatarCount = iAvatarCount;
+	memcpy(newEvent->m_Avatar, arrayAvatar, iAvatarCount*sizeof(ftdAvatar));
+	m_ClientEventList.push_back(newEvent);
 }
 
 
@@ -238,13 +304,11 @@ bool CALLBACK ClientBase::OnConnection(ConnID connId)
 {
 	Connection* pConnection = (Connection*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
-	pClientBase->m_ConnId = connId;
-	pClientBase->m_iState = CONNECTED;
 	
-	char* buf = pClientBase->m_pContextPool->PopOutputBuffer();
-	memcpy(buf, (char*)&pClientBase->m_TokenPacket, MAX_INPUT_BUFFER);
-	pConnection->AsyncSend(pClientBase->m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
-
+	ClientCommandOnConnect* pCommand = FT_NEW(ClientCommandOnConnect);
+	pCommand->m_ConnId = connId;
+	pClientBase->m_pMainLoop->PushCommand(pCommand);
+	
 	return true;
 }
 
@@ -252,29 +316,20 @@ void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 {
 	Connection* pConnection = (Connection*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
-	pClientBase->m_iState = DISCONNECTED;
 
-	if (pClientBase->m_bInLogin)
-	{
-		pClientBase->m_iState = NOT_CONNECT;
-		pClientBase->m_bInLogin = false;
-		pClientBase->Login(pClientBase->m_iGateIP, pClientBase->m_iGatePort, pClientBase->m_TokenPacket.m_TokenBuf);
-		
-		return;
-	}
-
-	// notify UI
-	if (pClientBase->m_pDisconnectEvent)
-	{
-		(*pClientBase->m_pDisconnectEvent)();
-	}
+	ClientCommandOnDisconnect* pCommand = FT_NEW(ClientCommandOnDisconnect);
+	pCommand->m_ConnId = connId;
+	pClientBase->m_pMainLoop->PushCommand(pCommand);
 }
 
 void CALLBACK ClientBase::OnData(ConnID connId, uint32 iLen, char* pBuf)
 {
 	Connection* pConnection = (Connection*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
-	pClientBase->OnClientData(iLen, pBuf);
+	ClientCommandOnData* pCommand = FT_NEW(ClientCommandOnData);
+	pCommand->m_ConnId = connId;
+	pCommand->CopyData(iLen, pBuf);
+	pClientBase->m_pMainLoop->PushCommand(pCommand);
 }
 
 void CALLBACK ClientBase::OnConnectFailed(void* pClient)

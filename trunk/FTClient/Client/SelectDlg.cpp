@@ -31,6 +31,7 @@ void CSelectDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSelectDlg, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CSelectDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDOK2, &CSelectDlg::OnBnClickedOk2)
 END_MESSAGE_MAP()
 
 
@@ -40,4 +41,10 @@ void CSelectDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	m_pClientLogic->Logout();
+}
+
+void CSelectDlg::OnBnClickedOk2()
+{
+	// TODO: Add your control notification handler code here
+	m_pClientLogic->AvatarCreate();
 }

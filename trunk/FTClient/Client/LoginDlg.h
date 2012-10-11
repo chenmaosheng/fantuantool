@@ -47,6 +47,7 @@ public:
 	afx_msg void OnBnClickedLoginButton();
 	afx_msg void OnBnClickedCreateButton();
 	afx_msg LRESULT OnKickIdle(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnBnClickedCancel();
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -1,5 +1,5 @@
 <Config>
-  <Log Path="..\LogFolder" Level="0" />
-  <Login Host="127.0.0.1" Port="5001" />
-  <ConnectionService CreateAccountPage="http://localhost:8081/mimicfrontend/create_account.php" />
+    <Log Path="..\LogFolder" Level="0" />
+    <Login Host="127.0.0.1" Port="5001" Account="chen" Password="chen" />
+    <ConnectionService CreateAccountPage="http://localhost:8081/mimicfrontend/create_account.php" />
 </Config>

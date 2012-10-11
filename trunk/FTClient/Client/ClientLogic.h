@@ -21,6 +21,9 @@ public:
 
 	void Login(const TCHAR* strToken);
 	void Logout();
+	void AvatarCreate();
+	void BackToSelect();
+	void RequestCreateAvatar(const TCHAR* strAvatarName);
 
 private:
 	ClientBase* m_pClientBase;

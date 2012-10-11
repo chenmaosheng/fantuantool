@@ -15,8 +15,10 @@
 class ClientConfig
 {
 public:
-	// load server configuration
+	// load client configuration
 	bool LoadConfig();
+	// save client configuration
+	void SaveConfig(const TCHAR* strAccountName, const TCHAR* strPassword);
 
 	// get log configuration
 	int32 GetLogLevel() const
@@ -39,6 +41,16 @@ public:
 		return m_strLoginHost;
 	}
 
+	const TCHAR* GetAcccountName() const
+	{
+		return m_strAccountName;
+	}
+
+	const TCHAR* GetPassword() const
+	{
+		return m_strPassword;
+	}
+
 	const TCHAR* GetCreateAccountPage() const
 	{
 		return m_strCreateAccountPage;
@@ -49,6 +61,8 @@ private:
 	int32 m_iLogLevel;
 	char m_strLoginHost[32];
 	uint16 m_iLoginPort;
+	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+	TCHAR m_strPassword[PASSWORD_MAX+1];
 	TCHAR m_strCreateAccountPage[MAX_PATH+1];
 
 	TiXmlDocument m_XmlDoc;

@@ -27,6 +27,21 @@ void ClientLogic::Logout()
 	m_pClientBase->Logout();
 }
 
+void ClientLogic::AvatarCreate()
+{
+	theApp.TriggerPageEvent(CREATE_REQUEST_EVENT);
+}
+
+void ClientLogic::BackToSelect()
+{
+	theApp.TriggerPageEvent(BACK_EVENT);
+}
+
+void ClientLogic::RequestCreateAvatar(const TCHAR* strAvatarName)
+{
+	m_pClientBase->RequestCreateAvatar(strAvatarName);
+}
+
 void ClientLogic::OnIncomingEvent()
 {
 	ClientEvent* pEvent = m_pClientBase->PopClientEvent();

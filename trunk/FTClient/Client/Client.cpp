@@ -147,7 +147,10 @@ void CClientApp::ShowDialog(int iPage)
 			m_pLoginDlg = new CLoginDlg(m_pClientLogic);
 			m_pLoginDlg->DoModal();
 		}
-		m_pLoginDlg->ShowWindow(SW_NORMAL);
+		else
+		{
+			m_pLoginDlg->ShowWindow(SW_NORMAL);
+		}
 		
 		break;
 
@@ -157,7 +160,10 @@ void CClientApp::ShowDialog(int iPage)
 			m_pSelectDlg = new CSelectDlg(m_pClientLogic);
 			m_pSelectDlg->DoModal();
 		}
-		m_pSelectDlg->ShowWindow(SW_NORMAL);
+		else
+		{
+			m_pSelectDlg->ShowWindow(SW_NORMAL);
+		}
 		
 		break;
 
@@ -167,7 +173,10 @@ void CClientApp::ShowDialog(int iPage)
 			m_pCreateDlg = new CCreateDlg(m_pClientLogic);
 			m_pCreateDlg->DoModal();
 		}
-		m_pCreateDlg->ShowWindow(SW_NORMAL);
+		else
+		{
+			m_pCreateDlg->ShowWindow(SW_NORMAL);
+		}
 		
 		break;
 
@@ -176,9 +185,13 @@ void CClientApp::ShowDialog(int iPage)
 		{
 			m_pClientDlg = new CClientDlg(m_pClientLogic);
 			m_pClientDlg->DoModal();
+			m_pMainWnd = m_pClientDlg;
 		}
-		m_pClientDlg->ShowWindow(SW_NORMAL);
-		m_pMainWnd = m_pClientDlg;
+		else
+		{
+			m_pMainWnd = m_pClientDlg;
+			m_pClientDlg->ShowWindow(SW_NORMAL);
+		}
 		
 		break;
 	}

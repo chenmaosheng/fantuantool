@@ -36,6 +36,11 @@ void ClientBase::Clear()
 	m_bInLogin = true;
 	m_iRecvBufLen = 0;
 	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
+	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
+	m_iGateIP = 0;
+	m_iGatePort = 0;
+
+	m_ClientEventList.clear();
 
 	m_iState = NOT_CONNECT;
 }
@@ -127,6 +132,7 @@ void ClientBase::OnClientDisconnect(ConnID connId)
 	}
 
 	// clear all states
+	Clear();
 
 	ClientEventAvatarLogout* newEvent = FT_NEW(ClientEventAvatarLogout);
 	m_ClientEventList.push_back(newEvent);

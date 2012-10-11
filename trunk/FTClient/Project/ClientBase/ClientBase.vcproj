@@ -155,7 +155,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\ClientBase\client_command.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\ClientBase\client_config.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\ClientBase\client_loop.cpp"
 				>
 			</File>
 			<File
@@ -182,6 +190,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Src\ClientBase\client_config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\ClientBase\client_event.h"
 				>
 			</File>
 			<File

@@ -200,7 +200,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ClientLogic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CreateDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LoginDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SelectDlg.cpp"
 				>
 			</File>
 			<File
@@ -238,11 +250,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ClientLogic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CreateDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LoginDlg.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SelectDlg.h"
 				>
 			</File>
 			<File
@@ -289,6 +313,14 @@
 			</File>
 			<File
 				RelativePath="..\..\FTCommon\Src\GenFiles\gate_client_send.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\gate_server_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\gate_server_recv.h"
 				>
 			</File>
 			<File

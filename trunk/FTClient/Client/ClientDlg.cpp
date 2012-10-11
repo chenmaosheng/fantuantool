@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "ClientDlg.h"
+#include "ClientLogic.h"
 
 #include "client_base.h"
 
@@ -51,13 +52,11 @@ END_MESSAGE_MAP()
 
 
 
-CClientDlg::CClientDlg(ClientBase* pClientBase,CWnd* pParent /*=NULL*/)
+CClientDlg::CClientDlg(ClientLogic *pClientLogic,CWnd* pParent /*=NULL*/)
 	: CDialog(CClientDlg::IDD, pParent)
 {
 	m_strMessage = _T("");
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
-	m_pClientBase = pClientBase;
 }
 
 void CClientDlg::DoDataExchange(CDataExchange* pDX)

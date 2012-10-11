@@ -225,7 +225,7 @@ void GateServerLoop::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCommand)
 void GateServerLoop::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
 {
 	GateSession* pSession = GetSession(pCommand->m_iSessionId);
-	if (pSession)
+	if (pSession && !pSession->m_bFinalizing)
 	{
 		pSession->OnMasterDisconnect();
 	}

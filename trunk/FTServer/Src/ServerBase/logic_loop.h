@@ -57,7 +57,7 @@ protected:
 	virtual bool _OnCommand(LogicCommand*) = 0;
 
 private:
-	// thread run fnction
+	// thread run function
 	static uint32 WINAPI _ThreadMain(PVOID);
 
 private:

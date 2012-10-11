@@ -5,6 +5,7 @@
 #include "Client.h"
 #include "LoginDlg.h"
 #include "targetver.h"
+#include "ClientLogic.h"
 
 #include "client_base.h"
 #include "client_config.h"
@@ -24,19 +25,15 @@ extern CClientApp theApp;
 // CLoginDlg dialog
 
 
-CLoginDlg::CLoginDlg(ClientBase *pClientBase, CWnd* pParent /*=NULL*/)
+CLoginDlg::CLoginDlg(ClientLogic *pClientLogic, CWnd* pParent /*=NULL*/)
 : CDialog(CLoginDlg::IDD, pParent)
 
 {
-	ASSERT(pClientBase);
-	m_pClientBase = pClientBase;
+	m_pClientLogic = pClientLogic;
 	//{{AFX_DATA_INIT(CLoginDlg)
 	m_strName = _T("Your name");
 	m_strPassword = _T("");
 	//}}AFX_DATA_INIT
-
-	// register event handler
-	m_pClientBase->SetDisconnectEvent(new ClientBase::DisconnectEvent(&CLoginDlg::OnDisconnect, this));
 }
 
 
@@ -55,6 +52,7 @@ BEGIN_MESSAGE_MAP(CLoginDlg, CDialog)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(ID_LOGIN_BUTTON, &CLoginDlg::OnBnClickedLoginButton)
 	ON_BN_CLICKED(ID_CREATE_BUTTON, &CLoginDlg::OnBnClickedCreateButton)
+	ON_MESSAGE(WM_TIMER, &CLoginDlg::OnKickIdle)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,14 +69,14 @@ void CLoginDlg::OnBnClickedLoginButton()
 		return;
 	}
 
+	SetTimer(1, 100, NULL);
+
 	TCHAR strToken[MAX_TOKEN_LEN] = {0};
 	swprintf_s(strToken, MAX_TOKEN_LEN, _T("%s;%s"), m_strName, m_strPassword);
-	char strUTF8[MAX_TOKEN_LEN] = {0};
-	WChar2Char(strToken, MAX_TOKEN_LEN, strUTF8, MAX_TOKEN_LEN);
 
-	m_pClientBase->Login(inet_addr(g_pClientConfig->GetLoginHost()), g_pClientConfig->GetLoginPort(), strUTF8);
+	m_pClientLogic->Login(strToken);
 
-	CDialog::OnOK();
+	//CDialog::OnOK();
 }
 
 void CLoginDlg::OnBnClickedCreateButton()
@@ -89,4 +87,10 @@ void CLoginDlg::OnBnClickedCreateButton()
 void CLoginDlg::OnDisconnect()
 {
 
+}
+
+LRESULT CLoginDlg::OnKickIdle(WPARAM wParam, LPARAM lParam)
+{
+	m_pClientLogic->OnIncomingEvent();
+	return 0;
 }

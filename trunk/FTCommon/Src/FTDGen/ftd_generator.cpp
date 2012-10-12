@@ -37,6 +37,7 @@ void GenerateFtdDefine(const char* name, FILE* fp)
 				fprintf(fp, "    %s %s;\n", node->paramSet[j].paramType, node->paramSet[j].paramName);
 			}
 		}
+		fprintf(fp, "	ftd%s(){memset(this, 0, sizeof(ftd%s));}\n", node->structName, node->structName);
 		fprintf(fp, "};\n\n");
 
 		//if (bContainString)
@@ -61,6 +62,7 @@ void GenerateFtdDefine(const char* name, FILE* fp)
 					fprintf(fp, "    %s %s;\n", node->paramSet[j].paramType, node->paramSet[j].paramName);
 				}
 			}
+			fprintf(fp, "	prd%s(){memset(this, 0, sizeof(prd%s));}\n", node->structName, node->structName);
 			fprintf(fp, "};\n\n");
 		}
 

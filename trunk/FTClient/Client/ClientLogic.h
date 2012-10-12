@@ -24,6 +24,7 @@ public:
 	void AvatarCreate();
 	void BackToSelect();
 	void RequestCreateAvatar(const TCHAR* strAvatarName);
+	void RequestSelectAvatar(const TCHAR* strAvatarName);
 
 private:
 	ClientBase* m_pClientBase;

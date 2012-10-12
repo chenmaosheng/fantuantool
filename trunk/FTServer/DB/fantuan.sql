@@ -31,13 +31,20 @@ CREATE TABLE `avatar` (
 -- Procedure structure for SP_CreateAvatar
 -- ----------------------------
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CreateAvatar`(IN accountId_ bigint, IN avatarName_ VARCHAR(32), OUT avatarId_ bigint)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CreateAvatar`(IN accountName_ VARCHAR(32), IN avatarName_ VARCHAR(32))
 begin
-     if not exists (select 'true' from avatar where avatarName=avatarName_) then
+     DECLARE avatarId_ bigint;
+     DECLARE accountId_ bigint;
+     DECLARE CheckInt int;
+     set CheckInt = 0;
+     set avatarId_ = 0;
+     set accountId_ = (select accountId from account where accountName=accountName_);
+     select 1 into CheckInt from avatar where avatarName=avatarName_;
+     if (CheckInt = 0) then
          insert into avatar(accountId, avatarName) values(accountId_, avatarName_);
          set avatarId_ = last_insert_id();
      end if;
-end;;
+end;
 DELIMITER ;
 
 -- ----------------------------
@@ -47,9 +54,10 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GetAvatarList`(IN accountName_ VARCHAR(32))
 begin
      DECLARE accountId_ bigint;
-     if not exists (select 'true' from account where accountName=accountName_) then
+     set accountId_ = 0;
+     select accountId_ from account where accountName=accountName_;
+     if (accountId_ != 0) then
          begin
-              set accountId_ = (select accountId from account where accountname=accountName_);
               select avatarId, accountId, avatarName from avatar where accountId=accountId_;
          end;
      else
@@ -57,6 +65,7 @@ begin
               insert into account(accountName) values(accountName_);
          end;
      end if;
-end;;
+end;
+
 DELIMITER ;
 

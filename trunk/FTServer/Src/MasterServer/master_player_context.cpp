@@ -35,7 +35,8 @@ void MasterPlayerContext::Clear()
 	m_bFinalizing = false;
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 	m_iAvatarCount = 0;
-	memset(m_arrayAvatar, 0, sizeof(m_arrayAvatar));
+	m_strAvatarName[0] = _T('\0');
+	m_iAvatarId = 0;
 }
 
 int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -350,6 +351,103 @@ void MasterPlayerContext::OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar)
 	
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEACK) != PLAYER_STATE_AVATARLISTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
+void MasterPlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
+{
+	int32 iRet = 0;
+	bool bExist = false;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTREQ) != PLAYER_STATE_ONAVATARSELECTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// check if avatarname is valid
+	for (uint8 i = 0; i < m_iAvatarCount; ++i)
+	{
+		if (wcscmp(m_arrayAvatar[i].m_strAvatarName, strAvatarName) == 0)
+		{
+			bExist = true;
+			break;
+		}
+	}
+
+	if (!bExist)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x can't find avatar name=%s"), m_strAccountName, m_iSessionId, strAvatarName);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive avatar select, name=%s"), m_strAccountName, m_iSessionId, strAvatarName);
+
+	iRet = SessionPeerSend::PacketForward(g_pServer->m_pCacheServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTREQ) != PLAYER_STATE_AVATARSELECTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
+void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& data)
+{
+	int32 iRet = 0;
+	
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTACK) != PLAYER_STATE_ONAVATARSELECTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	if (iReturn != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x select avatar failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// save current avatar info
+	wcscpy_s(m_strAvatarName, _countof(m_strAvatarName), data.m_strAvatarName);
+	m_iAvatarId = data.m_iAvatarId;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x name=%s send selected avatar to gate server"), m_strAccountName, m_iSessionId, data.m_strAvatarName);
+	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 	}

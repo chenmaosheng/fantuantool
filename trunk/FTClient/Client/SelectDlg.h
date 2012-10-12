@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ClientLogic.h"
 
 // CSelectDlg dialog
 
@@ -13,6 +14,8 @@ public:
 
 	ClientLogic *m_pClientLogic;
 
+	void ReceiveAvatarList(int32 iRet, uint8 iAvatarCount, const ftdAvatar* pAvatar);
+
 // Dialog Data
 	enum { IDD = IDD_SELECT_DIALOG };
 
@@ -23,4 +26,7 @@ protected:
 public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedOk2();
+
+	CListCtrl m_AvatarList;
+	afx_msg void OnBnClickedOk();
 };

@@ -131,6 +131,19 @@ void ClientBase::RequestCreateAvatar(const TCHAR* strAvatarName)
 	GateClientSend::AvatarCreateReq(this, data);
 }
 
+void ClientBase::RequestSelectAvatar(const TCHAR* strAvatarName)
+{
+	int32 iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+	iRet = WChar2Char(strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	strUtf8[iRet] = '\0';
+	GateClientSend::AvatarSelectReq(this, strUtf8);
+}
+
 bool ClientBase::OnClientConnection(ConnID connId)
 {
 	m_ConnId = connId;

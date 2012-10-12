@@ -8,3 +8,9 @@ struct AvatarCreateData
 {
 	char m_strAvatarName[AVATARNAME_MAX];
 };
+
+struct AvatarSelectData
+{
+	char m_strAvatarName[AVATARNAME_MAX];
+	uint64 m_iAvatarId;
+};

@@ -2,6 +2,7 @@
 
 filter (GateServer, SERVER_FILTER_GATE)
 {
-	AvatarListAck(int32 iRet, uint8 iAvatarCount, Avatar arrayAvatar[iAvatarCount]);
-	AvatarCreateAck(int32 iRet, Avatar newAvatar);
+	AvatarListAck(int32 iReturn, uint8 iAvatarCount, Avatar arrayAvatar[iAvatarCount]);
+	AvatarCreateAck(int32 iReturn, Avatar newAvatar);
+	AvatarSelectAck(int32 iReturn, AvatarSelectData data);
 }

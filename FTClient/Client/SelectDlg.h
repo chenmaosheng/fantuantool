@@ -15,6 +15,7 @@ public:
 	ClientLogic *m_pClientLogic;
 
 	void ReceiveAvatarList(int32 iRet, uint8 iAvatarCount, const ftdAvatar* pAvatar);
+	void ReceiveAvatarCreate(int32 iRet, const ftdAvatar& newAvatar);
 
 // Dialog Data
 	enum { IDD = IDD_SELECT_DIALOG };
@@ -27,6 +28,6 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedOk2();
 
-	CListCtrl m_AvatarList;
+	CListBox m_AvatarList;
 	afx_msg void OnBnClickedOk();
 };

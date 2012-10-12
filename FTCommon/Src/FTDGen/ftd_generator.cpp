@@ -89,12 +89,12 @@ void GenerateFtdImpl(const char* name, FILE* fp)
 			{
 				if (strcmp(node->paramSet[j].paramType, "char") == 0)
 				{
-					fprintf(fp, "    iRet = WChar2Char(pPrd->%s, %s+1, pFtd->%s, %s+1);\n", node->paramSet[j].paramName, node->paramSet[j].paramSize, node->paramSet[j].paramName, node->paramSet[j].paramSize);
+					fprintf(fp, "    iRet = WChar2Char(pPrd->%s, pFtd->%s, %s+1);\n", node->paramSet[j].paramName, node->paramSet[j].paramName, node->paramSet[j].paramSize);
 					fprintf(fp, "    if (iRet == 0)\n");
 					fprintf(fp, "    {\n");
 					fprintf(fp, "        return -1;\n");
 					fprintf(fp, "    }\n");
-					fprintf(fp, "    pFtd->%s[iRet] = \'\\0\';\n", node->paramSet[j].paramName);
+					//fprintf(fp, "    pFtd->%s[iRet] = \'\\0\';\n", node->paramSet[j].paramName);
 				}
 				else
 				{
@@ -122,12 +122,12 @@ void GenerateFtdImpl(const char* name, FILE* fp)
 			{
 				if (strcmp(node->paramSet[j].paramType, "char") == 0)
 				{
-					fprintf(fp, "    iRet = Char2WChar(pFtd->%s, %s+1, pPrd->%s, %s+1);\n", node->paramSet[j].paramName, node->paramSet[j].paramSize, node->paramSet[j].paramName, node->paramSet[j].paramSize);
+					fprintf(fp, "    iRet = Char2WChar(pFtd->%s, pPrd->%s, %s+1);\n", node->paramSet[j].paramName, node->paramSet[j].paramName, node->paramSet[j].paramSize);
 					fprintf(fp, "    if (iRet == 0)\n");
 					fprintf(fp, "    {\n");
 					fprintf(fp, "        return -1;\n");
 					fprintf(fp, "    }\n");
-					fprintf(fp, "    pPrd->%s[iRet] = _T(\'\\0\');\n", node->paramSet[j].paramName);
+					//fprintf(fp, "    pPrd->%s[iRet] = _T(\'\\0\');\n", node->paramSet[j].paramName);
 				}
 				else
 				{

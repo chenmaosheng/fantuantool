@@ -41,6 +41,9 @@ void ClientBase::Clear()
 	m_iGateIP = 0;
 	m_iGatePort = 0;
 
+	m_iAvatarId = 0;
+	m_strAvatarName[0] = _T('\0');
+
 	m_ClientEventList.clear();
 
 	m_iState = NOT_CONNECT;
@@ -65,6 +68,7 @@ int32 ClientBase::Init()
 	m_pLogSystem = Log::GetInstance();
 	m_pLogSystem->Init(g_pClientConfig->GetLogLevel());
 	LogDevice* pDevice = NULL;
+	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_DEBUG);
 	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_FILE);
 	if (pDevice)
 	{
@@ -92,6 +96,7 @@ void ClientBase::Destroy()
 
 void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 {
+	LOG_DBG(LOG_SERVER, _T("Start to login"));
 	if (m_ConnId)
 	{
 		Connection::Close((Connection*)m_ConnId);
@@ -115,6 +120,7 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 
 void ClientBase::Logout()
 {
+	LOG_DBG(LOG_SERVER, _T("Start to logout"));
 	((Connection*)m_ConnId)->AsyncDisconnect();
 }
 
@@ -149,6 +155,8 @@ bool ClientBase::OnClientConnection(ConnID connId)
 	m_ConnId = connId;
 	m_iState = CONNECTED;
 
+	LOG_DBG(LOG_SERVER, _T("Connect success"));
+
 	char* buf = m_pContextPool->PopOutputBuffer();
 	memcpy(buf, (char*)&m_TokenPacket, MAX_INPUT_BUFFER);
 	((Connection*)m_ConnId)->AsyncSend(m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
@@ -162,12 +170,15 @@ void ClientBase::OnClientDisconnect(ConnID connId)
 
 	if (m_bInLogin)
 	{
+		LOG_DBG(LOG_SERVER, _T("Finish disconnect on login server"));
 		m_iState = ClientBase::NOT_CONNECT;
 		m_bInLogin = false;
 		Login(m_iGateIP, m_iGatePort, m_TokenPacket.m_TokenBuf);
 
 		return;
 	}
+
+	LOG_DBG(LOG_SERVER, _T("Finish disconnect on gate server"));
 
 	// clear all states
 	Clear();
@@ -262,6 +273,7 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 
 void ClientBase::SendData(uint16 iTypeId, uint16 iLen, const char* pData)
 {
+	LOG_DBG(LOG_SERVER, _T("Send Data, iTypeId=%d"), iTypeId);
 	char* buf = m_pContextPool->PopOutputBuffer();
 	ServerPacket* pPacket = (ServerPacket*)buf;
 	pPacket->m_iLen = iLen;
@@ -277,10 +289,12 @@ int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
 
 	if (m_bInLogin)
 	{
+		LOG_DBG(LOG_SERVER, _T("Receive login data on login server"));
 		LoginClientSend::VersionReq(this, CLIENT_VERSION);
 	}
 	else
 	{
+		LOG_DBG(LOG_SERVER, _T("Receive login data on gate server"));
 		GateClientSend::AvatarListReq(this);
 	}
 	
@@ -289,6 +303,7 @@ int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
 
 int32 ClientBase::HandlePacket(ServerPacket* pPacket)
 {
+	LOG_DBG(LOG_SERVER, _T("receive packet"));
 	Receiver::OnPacketReceived(this, pPacket->m_iTypeId, pPacket->m_iLen, pPacket->m_Buf);
 	return 0;
 }
@@ -315,15 +330,37 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 	m_iGatePort = iGatePort;
 }
 
-void ClientBase::AvatarListAck(int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
+void ClientBase::AvatarListAck(int32 iReturn, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
 {
 	ClientEventAvatarList* newEvent = FT_NEW(ClientEventAvatarList);
-	newEvent->m_iRet = iRet;
+	newEvent->m_iReturn = iReturn;
 	newEvent->m_iAvatarCount = iAvatarCount;
 	memcpy(newEvent->m_Avatar, arrayAvatar, iAvatarCount*sizeof(ftdAvatar));
 	m_ClientEventList.push_back(newEvent);
 }
 
+void ClientBase::AvatarCreateAck(int32 iReturn, const ftdAvatar &newAvatar)
+{
+	ClientEventAvatarCreate* newEvent = FT_NEW(ClientEventAvatarCreate);
+	newEvent->m_iReturn = iReturn;
+	memcpy(&newEvent->m_Avatar, &newAvatar, sizeof(ftdAvatar));
+	m_ClientEventList.push_back(newEvent);
+}
+
+void ClientBase::AvatarSelectAck(int32 iReturn, const ftdAvatarSelectData &data)
+{
+	ClientEventAvatarSelect* newEvent = FT_NEW(ClientEventAvatarSelect);
+	newEvent->m_iReturn = iReturn;
+	memcpy(&newEvent->m_SelectData, &data, sizeof(ftdAvatarSelectData));
+	m_ClientEventList.push_back(newEvent);
+
+	m_iAvatarId = data.m_iAvatarId;
+	Char2WChar(data.m_strAvatarName, m_strAvatarName, AVATARNAME_MAX+1);
+}
+
+void ClientBase::ChannelListNtf(uint8 iChannelCount, const ftdChannelData* arrayChannelData)
+{
+}
 
 
 

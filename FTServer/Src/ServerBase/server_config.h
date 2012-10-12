@@ -10,10 +10,9 @@
 #define _H_SERVER_CONFIG
 
 #include "server_common.h"
+#include "common_config.h"
 #include "tinyxml.h"
 
-class CommonConfig;
-struct ServerConfigItem;
 class ServerConfig
 {
 public:
@@ -26,6 +25,8 @@ public:
 	// get server basic configuration by id or name
 	ServerConfigItem* GetServerConfigItemById(uint8 iServerId);
 	ServerConfigItem* GetServerConfigItem(const TCHAR* strServerName);
+
+	std::map<std::wstring, ChannelConfigItem>& GetChannelConfigItems();
 
 	// get log configuration
 	int32 GetLogLevel() const;
@@ -42,7 +43,7 @@ public:
 	uint16 m_iPeerPort;
 
 private:
-	CommonConfig* m_pCommonConfig;
+	CommonConfig m_CommonConfig;
 
 protected:
 	TiXmlDocument m_XmlDoc;

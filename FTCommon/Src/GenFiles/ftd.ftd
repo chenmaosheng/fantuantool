@@ -14,3 +14,10 @@ struct AvatarSelectData
 	char m_strAvatarName[AVATARNAME_MAX];
 	uint64 m_iAvatarId;
 };
+
+struct ChannelData
+{
+	char m_strChannelName[CHANNELNAME_MAX];
+	// 0 means vacant, 1 means half, 2 means almost full
+	uint8 m_iState;
+};

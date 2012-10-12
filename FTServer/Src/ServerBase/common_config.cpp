@@ -59,7 +59,7 @@ bool CommonConfig::LoadConfig()
 		ServerConfigItem item;
 		memset(&item, 0, sizeof(item));
 		// server name
-		iRet = Char2WChar(pServerElement->Attribute("name"), item.m_strServerName, MAX_PATH + 1);
+		iRet = Char2WChar(pServerElement->Attribute("name"), item.m_strServerName, SERVERNAME_MAX + 1);
 		if (iRet == 0)
 		{
 			return false;
@@ -95,6 +95,41 @@ bool CommonConfig::LoadConfig()
 		item.m_strExeFile[iRet] = _T('\0');
 
 		m_mServerConfigItems.insert(std::make_pair(item.m_strServerName, item));
+	}
+
+	TiXmlElement* pChannelListElement = pRealmElement->FirstChildElement("ChannelList");
+	if (!pChannelListElement)
+	{
+		return false;
+	}
+
+	for (TiXmlElement* pChannelElement = pChannelListElement->FirstChildElement("Channel"); pChannelElement != NULL; pChannelElement = pChannelElement->NextSiblingElement("Channel"))
+	{
+		ChannelConfigItem item;
+		memset(&item, 0, sizeof(item));
+		// channel name
+		iRet = Char2WChar(pChannelElement->Attribute("name"), item.m_strChannelName, CHANNELNAME_MAX+1);
+		if (iRet == 0)
+		{
+			return false;
+		}
+
+		item.m_strChannelName[iRet] = _T('\0');
+		
+		// channel id
+		item.m_iChannelId = (uint8)atoi(pChannelElement->Attribute("id"));
+
+		// player max
+		item.m_iPlayerMax = (uint16)atoi(pChannelElement->Attribute("PlayerMax"));
+
+		for (TiXmlElement* pRegionElement = pChannelElement->FirstChildElement("Region"); pRegionElement != NULL; pRegionElement = pRegionElement->NextSiblingElement("Region"))
+		{
+			// region id
+			item.m_arrayRegionServer[item.m_iRegionCount] = (uint8)atoi(pRegionElement->Attribute("id"));
+			item.m_iRegionCount++;
+		}
+
+		m_mChannelConfigItems.insert(std::make_pair(item.m_strChannelName, item));
 	}
 
 	return true;

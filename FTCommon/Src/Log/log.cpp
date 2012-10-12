@@ -2,6 +2,7 @@
 #include "log_device.h"
 #include "log_device_console.h"
 #include "log_device_file.h"
+#include "log_device_debug.h"
 
 #include <process.h>
 #include <cstdio>
@@ -120,6 +121,9 @@ LogDevice* Log_Impl::CreateAndAddLogDevice(int32 iLogDeviceType)
 
 	case LOG_DEVICE_FILE:
 		return _AddLogDevice(new LogDeviceFile);
+
+	case LOG_DEVICE_DEBUG:
+		return _AddLogDevice(new LogDeviceDebug);
 	}
 
 	return NULL;

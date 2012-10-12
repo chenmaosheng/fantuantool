@@ -30,6 +30,7 @@
 #define MAX_TOKEN_LEN		512
 #define AVATARNAME_MAX		32
 #define AVATARCOUNT_MAX		10
+#define CHANNELNAME_MAX		32
 
 // todo: temp data
 const static char g_LoggedInNtf[] = "LoggedIn";

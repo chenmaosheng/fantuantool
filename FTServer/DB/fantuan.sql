@@ -54,8 +54,8 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GetAvatarList`(IN accountName_ VARCHAR(32))
 begin
      DECLARE accountId_ bigint;
-     set accountId_ = 0;
-     select accountId_ from account where accountName=accountName_;
+     set accountId_ = (select accountId from account where accountName=accountName_);
+
      if (accountId_ != 0) then
          begin
               select avatarId, accountId, avatarName from avatar where accountId=accountId_;

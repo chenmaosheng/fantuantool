@@ -53,6 +53,8 @@ public:
 	void DeletePlayerFromLoginServerContext(MasterPlayerContext*);
 	// delete player from gate context
 	void DeletePlayerFromGateServerContext(MasterPlayerContext*);
+	// send channel info to client
+	int32 SendChannelList(MasterPlayerContext*);
 
 private:
 	DWORD _Loop();
@@ -80,7 +82,9 @@ private:
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContextBySessionId;
 
 	LoginServerContext m_LoginServerContext;
-	GateServerContext* m_arrayGateServerContext[GATE_SERVER_MAX];
+	GateServerContext* m_arrayGateServerContext[GATE_SERVER_MAX]; // gate server's context on master server
+	ChannelContext* m_arrayChannelContext[CHANNEL_MAX]; // channel context on master server
+	uint8 m_iChannelCount; // the count of channel
 
 	std::queue<MasterPlayerContext*> m_PlayerFinalizingQueue;
 };

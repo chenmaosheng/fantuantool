@@ -319,6 +319,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_send.cpp"
 				>
 			</File>

@@ -7,6 +7,7 @@
 #include "session_peer_send.h"
 #include "cache_peer_send.h"
 #include "login_server_send.h"
+#include "gate_server_send.h"
 
 #include "packet.h"
 
@@ -450,7 +451,45 @@ void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& 
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
 	}
+
+	// send channel info
+	iRet = m_pMainLoop->SendChannelList(this);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x send channel list failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELLISTNTF) != PLAYER_STATE_CHANNELLISTNTF)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
+int32 MasterPlayerContext::SendChannelList(uint8 iChannelCount, ftdChannelData* arrayData)
+{
+	int32 iRet = 0;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x send channel list to client"), m_strAccountName, m_iSessionId);
+	
+	iRet = GateServerSend::ChannelListNtf(this, iChannelCount, arrayData);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x send channel list failed"), m_strAccountName, m_iSessionId);
+		return -1;
+	}
+
+	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		return -1;
+	}
+	return 0;
 }
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)

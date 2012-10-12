@@ -53,30 +53,50 @@ void CSelectDlg::OnBnClickedOk2()
 
 void CSelectDlg::ReceiveAvatarList(int32 iRet, uint8 iAvatarCount, const ftdAvatar *pAvatar)
 {
-	m_AvatarList.DeleteAllItems();
-	if (iRet)
+	UpdateData(TRUE);
+	m_AvatarList.ResetContent();
+	if (iRet == 0)
 	{
 		for (uint8 i = 0; i < iAvatarCount; ++i)
 		{
 			const ftdAvatar& avatar = pAvatar[i];
 			TCHAR strAvatarName[AVATARNAME_MAX+1] = {0};
-			Char2WChar(avatar.m_strAvatarName, AVATARNAME_MAX+1, strAvatarName, AVATARNAME_MAX+1);
-			m_AvatarList.InsertColumn(i, strAvatarName);
+			Char2WChar(avatar.m_strAvatarName, strAvatarName, AVATARNAME_MAX+1);
+			m_AvatarList.InsertString(i, strAvatarName);
 		}
 	}
+	UpdateData(FALSE);
 }
+
+void CSelectDlg::ReceiveAvatarCreate(int32 iRet, const ftdAvatar& newAvatar)
+{
+	UpdateData(TRUE);
+	if (iRet == 0)
+	{
+		TCHAR strAvatarName[AVATARNAME_MAX+1] = {0};
+		Char2WChar(newAvatar.m_strAvatarName, strAvatarName, AVATARNAME_MAX+1);
+		int size = m_AvatarList.GetCount();
+		m_AvatarList.InsertString(size, strAvatarName);
+	}
+	UpdateData(FALSE);
+}
+
 void CSelectDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	POSITION pos = m_AvatarList.GetFirstSelectedItemPosition();
-	if (pos == NULL)
+	UpdateData(TRUE);
+
+	CString avatarName;
+	int index = m_AvatarList.GetCurSel();
+	if(index == LB_ERR)
 	{
 		MessageBox(_T("Select avatar"));
 	}
 	else
 	{
-		int index = m_AvatarList.GetNextSelectedItem(pos);
-		CString avatarName = m_AvatarList.GetItemText(index, 0);
+		m_AvatarList.GetText(index, avatarName);
 		m_pClientLogic->RequestSelectAvatar(avatarName);
 	}
+
+	UpdateData(FALSE);
 }

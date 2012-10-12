@@ -72,7 +72,13 @@ public:
 	// receive login ntf from master server
 	void LoginNtf(uint32 iGateIP, uint16 iGatePort);
 	// receive avatar list from db
-	void AvatarListAck(int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar);
+	void AvatarListAck(int32 iReturn, uint8 iAvatarCount, const ftdAvatar *arrayAvatar);
+	// receive avatar create
+	void AvatarCreateAck(int32 iReturn, const ftdAvatar &newAvatar);
+	// receive avatar select
+	void AvatarSelectAck(int32 iReturn, const ftdAvatarSelectData &data);
+	// receive channel list
+	void ChannelListNtf(uint8 iChannelCount, const ftdChannelData* arrayChannelData);
 
 private:
 	// connection handler
@@ -97,6 +103,10 @@ private:
 	TokenPacket m_TokenPacket;
 	uint32 m_iGateIP;
 	uint16 m_iGatePort;
+
+	// avatar info
+	uint64 m_iAvatarId;
+	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 
 	std::list<ClientEvent*> m_ClientEventList;
 };

@@ -79,9 +79,17 @@ int32 DBConn::Query(const TCHAR* strStatement)
 	m_pResult = mysql_store_result(m_pMySQL);
 	if (!m_pResult)
 	{
-		Char2WChar(mysql_error(m_pMySQL), errCode, SQL_ERROR_CODE);
-		LOG_ERR(LOG_DB, _T("get result failed, err=%s"), errCode);
-		return -3;
+		// query does not return data
+		if (mysql_field_count(m_pMySQL) == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			Char2WChar(mysql_error(m_pMySQL), errCode, SQL_ERROR_CODE);
+			LOG_ERR(LOG_DB, _T("get result failed, err=%s"), errCode);
+			return -3;
+		}
 	}
 
 	return 0;

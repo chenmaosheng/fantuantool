@@ -122,6 +122,7 @@ void MasterPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONAVATARCREATEREQ, PLAYER_STATE_ONAVATARCREATEREQ);
+	pState->AddTransition(PLAYER_EVENT_ONAVATARSELECTREQ, PLAYER_STATE_ONAVATARSELECTREQ);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARLISTACK);
 
 	// when state is on avatar create req
@@ -157,4 +158,47 @@ void MasterPlayerContext::_InitStateMachine()
 
 	pState->AddTransition(PLAYER_EVENT_AVATARCREATEACK, PLAYER_STATE_AVATARLISTACK);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONAVATARCREATEACK);
+
+	// when state is receive select avatar req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONAVATARSELECTREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_AVATARSELECTREQ, PLAYER_STATE_AVATARSELECTREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARSELECTREQ);
+
+	// when state is send select avatar req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_AVATARSELECTREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONAVATARSELECTACK, PLAYER_STATE_ONAVATARSELECTACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARSELECTREQ);
+
+	// when state is receive select avatar ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONAVATARSELECTACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_AVATARSELECTACK, PLAYER_STATE_AVATARSELECTACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONAVATARSELECTACK);
+
+	// when state is send select avatar ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_AVATARSELECTACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_AVATARSELECTACK);
 }

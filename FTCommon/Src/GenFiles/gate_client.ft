@@ -7,4 +7,7 @@ filter (GateClient, CLIENT_FILTER_GATE)
 	
 	// request creating a new avatar
 	AvatarCreateReq(AvatarCreateData data);
+	
+	// request select an avatar
+	AvatarSelectReq(string strAvatarName);
 }

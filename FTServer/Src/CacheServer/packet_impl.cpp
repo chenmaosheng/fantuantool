@@ -6,6 +6,8 @@
 void GateClientRecv::AvatarListReq(void* pClient)
 {
 	CachePlayerContext* pPlayerContext = (CachePlayerContext*)pClient;
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x avatar list request"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+
 	pPlayerContext->OnAvatarListReq();
 }
 
@@ -14,6 +16,8 @@ void GateClientRecv::AvatarCreateReq(void *pClient, const ftdAvatarCreateData& d
 	CachePlayerContext* pPlayerContext = (CachePlayerContext*)pClient;
 	prdAvatarCreateData prdData;
 	int32 iRet = 0;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x create avatar request"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
 
 	iRet = ftdAvatarCreateData2prdAvatarCreateData(&data, &prdData);
 	if (iRet != 0)
@@ -24,4 +28,23 @@ void GateClientRecv::AvatarCreateReq(void *pClient, const ftdAvatarCreateData& d
 	}
 
 	pPlayerContext->OnAvatarCreateReq(prdData);
+}
+
+void GateClientRecv::AvatarSelectReq(void* pClient, const char* strAvatarName)
+{
+	CachePlayerContext* pPlayerContext = (CachePlayerContext*)pClient;
+	TCHAR strTAvatarName[AVATARNAME_MAX+1] = {0};
+	int32 iRet = 0;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x select avatar request"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+
+	iRet = Char2WChar(strAvatarName, strTAvatarName, AVATARNAME_MAX+1);
+	if (iRet != 0)
+	{
+		_ASSERT( false && "Char2WChar failed" );
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		return;
+	}
+
+	pPlayerContext->OnAvatarSelectReq(strTAvatarName);
 }

@@ -31,7 +31,6 @@ void CachePlayerContext::Clear()
 	m_strAccountName[0] = _T('\0');
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 	m_iAvatarCount = 0;
-	memset(m_arrayAvatar, 0, sizeof(m_arrayAvatar));
 	m_bFinalizing = false;
 }
 
@@ -51,7 +50,7 @@ void CachePlayerContext::Shutdown()
 	switch(m_StateMachine.GetCurrState())
 	{
 	case PLAYER_STATE_ONLOGINREQ:
-	case PLAYER_STATE_AVATARLISTREQ:
+	case PLAYER_STATE_ONAVATARLISTREQ:
 	case PLAYER_STATE_AVATARLISTACK:
 		bNeedSave = false;
 		break;
@@ -98,7 +97,7 @@ void CachePlayerContext::OnAvatarListReq()
 	int32 iRet = 0;
 	PlayerDBEventGetAvatarList* pDBEvent = NULL;
 
-	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTREQ) != PLAYER_STATE_AVATARLISTREQ)
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTREQ) != PLAYER_STATE_ONAVATARLISTREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
@@ -167,6 +166,68 @@ void CachePlayerContext::OnAvatarCreateReq(prdAvatarCreateData& data)
 	wcscpy_s(pDBEvent->m_strAccountName, _countof(pDBEvent->m_strAccountName), m_strAccountName);
 	wcscpy_s(pDBEvent->m_Avatar.m_strAvatarName, _countof(pDBEvent->m_Avatar.m_strAvatarName), data.m_strAvatarName);
 
+	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
+}
+
+void CachePlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
+{
+	PlayerDBEventAvatarSelectData* pDBEvent = NULL;
+	int32 iRet = 0;
+	bool bExist = false;
+	uint64 iSelectAvatarId = 0;
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTREQ) != PLAYER_STATE_ONAVATARSELECTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x name=%s select avatar"), m_strAccountName, m_iSessionId, strAvatarName);
+
+	// check if avatarname is valid
+	for (uint8 i = 0; i < m_iAvatarCount; ++i)
+	{
+		if (wcscmp(m_arrayAvatar[i].m_strAvatarName, strAvatarName) == 0)
+		{
+			bExist = true;
+			iSelectAvatarId = m_arrayAvatar[i].m_iAvatarId;
+			break;
+		}
+	}
+
+	if (!bExist)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d can't find avatar name=%s"), m_strAccountName, m_iSessionId, strAvatarName);
+		return;
+	}
+
+	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarSelectData>();
+	if (!pDBEvent)
+	{
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+
+		// send avatar new to client
+		ftdAvatarSelectData data;
+		iRet = GateServerSend::AvatarSelectAck(this, -1, data);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x send avatar select data to client failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+
+		iRet = SessionPeerSend::PacketForward(g_pServer->m_pMasterServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+		}
+
+		return;
+	}
+
+	pDBEvent->m_iSessionId = m_iSessionId;
+	wcscpy_s(pDBEvent->m_strAvatarName, _countof(pDBEvent->m_strAvatarName), strAvatarName);
+	pDBEvent->m_iAvatarId = iSelectAvatarId;
 	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }
 

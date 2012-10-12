@@ -29,7 +29,6 @@ struct ClientEventAvatarList : public ClientEvent
 	{ 
 		m_iEventId = EVENT_AVATAR_LIST;
 		m_iAvatarCount = 0;
-		memset(m_Avatar, 0, sizeof(m_Avatar));
 	}
 
 	int32 m_iRet;

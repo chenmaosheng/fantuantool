@@ -17,16 +17,20 @@ enum
 {
 	PLAYER_STATE_NONE,
 	PLAYER_STATE_ONLOGINREQ,
-	PLAYER_STATE_AVATARLISTREQ,
+	PLAYER_STATE_ONAVATARLISTREQ,
 	PLAYER_STATE_AVATARLISTACK,
+	PLAYER_STATE_ONAVATARSELECTREQ,
+	PLAYER_STATE_AVATARSELECTACK,
 	PLAYER_STATE_ONLOGOUTREQ,
 };
 
 enum
 {
 	PLAYER_EVENT_ONLOGINREQ,
-	PLAYER_EVENT_AVATARLISTREQ,
+	PLAYER_EVENT_ONAVATARLISTREQ,
 	PLAYER_EVENT_AVATARLISTACK,
+	PLAYER_EVENT_ONAVATARSELECTREQ,
+	PLAYER_EVENT_AVATARSELECTACK,
 	PLAYER_EVENT_ONLOGOUTREQ,
 };
 
@@ -48,6 +52,8 @@ public:
 	void OnAvatarListReq();
 	// receive avatar create req
 	void OnAvatarCreateReq(prdAvatarCreateData& data);
+	// receive avatar select req
+	void OnAvatarSelectReq(const TCHAR* strAvatarName);
 
 public:	// receive packet handler
 	void OnLoginReq(uint32 iSessionId, TCHAR* strAccountName);
@@ -56,6 +62,7 @@ public:	// receive packet handler
 public: // receive db event result
 	void OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatarList*);
 	void OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCreate*);
+	void OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSelectData*);
 
 private:
 	// initialize state machine

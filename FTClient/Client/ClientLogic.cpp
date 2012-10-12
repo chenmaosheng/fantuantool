@@ -4,6 +4,7 @@
 #include "client_event.h"
 #include "client_config.h"
 #include "LoginDlg.h"
+#include "SelectDlg.h"
 
 ClientLogic::ClientLogic(ClientBase* pClientBase) : m_pClientBase(pClientBase)
 {
@@ -42,6 +43,11 @@ void ClientLogic::RequestCreateAvatar(const TCHAR* strAvatarName)
 	m_pClientBase->RequestCreateAvatar(strAvatarName);
 }
 
+void ClientLogic::RequestSelectAvatar(const TCHAR* strAvatarName)
+{
+	m_pClientBase->RequestSelectAvatar(strAvatarName);
+}
+
 void ClientLogic::OnIncomingEvent()
 {
 	ClientEvent* pEvent = m_pClientBase->PopClientEvent();
@@ -50,7 +56,12 @@ void ClientLogic::OnIncomingEvent()
 		switch(pEvent->m_iEventId)
 		{
 		case EVENT_AVATAR_LIST:
-			theApp.TriggerPageEvent(LOGIN_SUCCESS_EVENT);
+			{
+				ClientEventAvatarList* pEventAvatarList = (ClientEventAvatarList*)pEvent;
+				theApp.TriggerPageEvent(LOGIN_SUCCESS_EVENT);
+				theApp.m_pSelectDlg->ReceiveAvatarList(pEventAvatarList->m_iRet, pEventAvatarList->m_iAvatarCount, pEventAvatarList->m_Avatar);
+			}
+			
 			break;
 
 		case EVENT_AVATAR_LOGOUT:

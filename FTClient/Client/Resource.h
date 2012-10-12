@@ -24,6 +24,7 @@
 #define ID_LOGIN_BUTTON2                1008
 #define ID_CREATE_BUTTON                1008
 #define IDC_LIST1                       1008
+#define IDC_AVATAR_LIST                 1008
 #define IDC_EDIT1                       1009
 #define IDC_NICK_EDIT                   1009
 #define IDC_EDIT2                       1010

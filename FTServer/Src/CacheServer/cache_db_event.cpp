@@ -11,7 +11,6 @@ PlayerDBEventGetAvatarList::PlayerDBEventGetAvatarList()
 	m_iEventId = DB_EVENT_GETAVATARLIST;
 	m_strAccountName[0] = _T('\0');
 	m_iAvatarCount = 0;
-	memset(m_arrayAvatar, 0, sizeof(m_arrayAvatar));
 }
 
 int32 PlayerDBEventGetAvatarList::FireEvent(DBConn* pDBConn)
@@ -55,14 +54,13 @@ PlayerDBEventAvatarCreate::PlayerDBEventAvatarCreate()
 {
 	m_iEventId = DB_EVENT_AVATARCREATE;
 	m_strAccountName[0] = _T('\0');
-	memset(&m_Avatar, 0, sizeof(m_Avatar));
 }
 
 int32 PlayerDBEventAvatarCreate::FireEvent(DBConn* pDBConn)
 {
 	int32 iRet = 0;
 	TCHAR strSqlStatement[SQL_STATEMENT_MAX] = {0};
-	swprintf_s(strSqlStatement, SQL_STATEMENT_MAX, _T("call SP_CreateAvatar('%s');"), m_strAccountName);
+	swprintf_s(strSqlStatement, SQL_STATEMENT_MAX, _T("call SP_CreateAvatar('%s, %s');"), m_strAccountName, m_Avatar.m_strAvatarName);
 
 	m_iRet = pDBConn->Query(strSqlStatement);
 	if (m_iRet != 0)
@@ -84,5 +82,17 @@ int32 PlayerDBEventAvatarCreate::FireEvent(DBConn* pDBConn)
 	// free all possible results
 	pDBConn->FreeResult();
 
+	return 0;
+}
+
+PlayerDBEventAvatarSelectData::PlayerDBEventAvatarSelectData()
+{
+	m_iEventId = DB_EVENT_AVATARSELECTDATA;
+	m_iAvatarId = 0;
+	m_strAvatarName[0] = _T('\0');
+}
+
+int32 PlayerDBEventAvatarSelectData::FireEvent(DBConn* pDBConn)
+{
 	return 0;
 }

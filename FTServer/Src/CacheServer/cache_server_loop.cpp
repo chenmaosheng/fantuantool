@@ -144,6 +144,8 @@ void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
 	switch(pEvent->m_iEventId)
 	{
 	case DB_EVENT_GETAVATARLIST:
+	case DB_EVENT_AVATARCREATE:
+	case DB_EVENT_AVATARSELECTDATA:
 		_OnPlayerEventResult((PlayerDBEvent*)pEvent);
 		break;
 
@@ -171,6 +173,10 @@ void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
 
 	case DB_EVENT_AVATARCREATE:
 		pCachePlayerContext->OnPlayerEventAvatarCreateResult((PlayerDBEventAvatarCreate*)pEvent);
+		break;
+
+	case DB_EVENT_AVATARSELECTDATA:
+		pCachePlayerContext->OnPlayerEventAvatarSelectResult((PlayerDBEventAvatarSelectData*)pEvent);
 
 	default:
 		break;

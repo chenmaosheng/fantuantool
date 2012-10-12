@@ -1,6 +1,7 @@
 #include "cache_player_context.h"
 #include "cache_db_event.h"
 #include "cache_server.h"
+#include "cache_server_loop.h"
 
 #include "ftd_define.h"
 #include "gate_server_send.h"
@@ -96,5 +97,46 @@ void CachePlayerContext::OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCrea
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+	}
+}
+
+void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSelectData* pEvent)
+{
+	int32 iRet = 0;
+	ftdAvatarSelectData data;
+
+	LOG_DBG(LOG_DB, _T("acc=%s sid=%08x name=%s avatar select result"), m_strAccountName, m_iSessionId, pEvent->m_strAvatarName);
+
+	if (pEvent->m_iRet == 0)
+	{
+		iRet = WChar2Char(pEvent->m_strAvatarName, data.m_strAvatarName, AVATARNAME_MAX+1);
+		if (iRet == 0)
+		{
+			_ASSERT( false && "WChar2Char failed" );
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x WChar2Char failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+		data.m_strAvatarName[iRet] = '\0';
+		data.m_iAvatarId = pEvent->m_iAvatarId;
+	}
+
+	iRet = GateServerSend::AvatarSelectAck(this, pEvent->m_iRet, data);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x send avatarcreate failed"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	iRet = SessionPeerSend::PacketForward(g_pServer->m_pMasterServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x PacketForward failed"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
 	}
 }

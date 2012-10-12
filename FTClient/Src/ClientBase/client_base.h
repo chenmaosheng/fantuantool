@@ -65,6 +65,8 @@ public:
 	void Logout();
 	// request creating an avatar
 	void RequestCreateAvatar(const TCHAR* strAvatarName);
+	// request select an avatar
+	void RequestSelectAvatar(const TCHAR* strAvatarName);
 
 public:
 	// receive login ntf from master server

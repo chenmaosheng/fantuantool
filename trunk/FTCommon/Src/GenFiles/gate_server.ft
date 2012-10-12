@@ -5,4 +5,6 @@ filter (GateServer, SERVER_FILTER_GATE)
 	AvatarListAck(int32 iReturn, uint8 iAvatarCount, Avatar arrayAvatar[iAvatarCount]);
 	AvatarCreateAck(int32 iReturn, Avatar newAvatar);
 	AvatarSelectAck(int32 iReturn, AvatarSelectData data);
+	
+	ChannelListNtf(uint8 iChannelCount, ChannelData arrayChannelData[iChannelCount]);
 }

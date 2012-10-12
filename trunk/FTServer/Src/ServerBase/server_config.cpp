@@ -1,9 +1,7 @@
 #include "server_config.h"
-#include "common_config.h"
 
 ServerConfig::ServerConfig(const TCHAR* strServerName)
 {
-	m_pCommonConfig = new CommonConfig;
 	m_strServerName[0] = _T('\0');
 	m_iServerId = 0;
 	m_iPeerIP = 0;
@@ -14,7 +12,6 @@ ServerConfig::ServerConfig(const TCHAR* strServerName)
 
 ServerConfig::~ServerConfig()
 {
-	SAFE_DELETE(m_pCommonConfig);
 }
 
 bool ServerConfig::LoadConfig()
@@ -23,12 +20,12 @@ bool ServerConfig::LoadConfig()
 	char serverConfigFile[MAX_PATH + 1] = {0};
 	char fullServerConfigFile[MAX_PATH + 1] = {0};
 
-	if (!m_pCommonConfig->LoadConfig())
+	if (!m_CommonConfig.LoadConfig())
 	{
 		return false;
 	}
 
-	ServerConfigItem* pServerConfigItem = m_pCommonConfig->GetServerConfigItem(m_strServerName);
+	ServerConfigItem* pServerConfigItem = m_CommonConfig.GetServerConfigItem(m_strServerName);
 	if (!pServerConfigItem)
 	{
 		return false;
@@ -59,20 +56,25 @@ bool ServerConfig::LoadConfig()
 
 ServerConfigItem* ServerConfig::GetServerConfigItemById(uint8 iServerId)
 {
-	return m_pCommonConfig->GetServerConfigItemById(iServerId);
+	return m_CommonConfig.GetServerConfigItemById(iServerId);
 }
 
 ServerConfigItem* ServerConfig::GetServerConfigItem(const TCHAR *strServerName)
 {
-	return m_pCommonConfig->GetServerConfigItem(strServerName);
+	return m_CommonConfig.GetServerConfigItem(strServerName);
+}
+
+std::map<std::wstring, ChannelConfigItem>& ServerConfig::GetChannelConfigItems()
+{
+	return m_CommonConfig.GetChannelConfigItems();
 }
 
 int32 ServerConfig::GetLogLevel() const
 {
-	return m_pCommonConfig->GetLogLevel();
+	return m_CommonConfig.GetLogLevel();
 }
 
 const TCHAR* ServerConfig::GetLogPath() const
 {
-	return m_pCommonConfig->GetLogPath();
+	return m_CommonConfig.GetLogPath();
 }

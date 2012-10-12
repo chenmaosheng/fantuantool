@@ -159,6 +159,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\Log\log_device_debug.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\Log\log_device_file.cpp"
 				>
 			</File>
@@ -182,6 +186,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Src\Log\log_device_console.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\Log\log_device_debug.h"
 				>
 			</File>
 			<File

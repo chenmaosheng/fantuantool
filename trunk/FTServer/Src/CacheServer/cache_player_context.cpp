@@ -164,7 +164,7 @@ void CachePlayerContext::OnAvatarCreateReq(prdAvatarCreateData& data)
 
 	pDBEvent->m_iSessionId = m_iSessionId;
 	wcscpy_s(pDBEvent->m_strAccountName, _countof(pDBEvent->m_strAccountName), m_strAccountName);
-	wcscpy_s(pDBEvent->m_Avatar.m_strAvatarName, _countof(pDBEvent->m_Avatar.m_strAvatarName), data.m_strAvatarName);
+	wcscpy_s(pDBEvent->m_Avatar.m_strAvatarName, AVATARNAME_MAX+1, data.m_strAvatarName);
 
 	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }

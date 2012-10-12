@@ -39,4 +39,31 @@ struct GateServerContext
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContext;
 };
 
+struct RegionServerContext
+{
+	RegionServerContext()
+	{
+		m_iServerId = 0;
+		m_iChannelId = 0;
+	}
+
+	uint8 m_iServerId;
+	uint8 m_iChannelId;
+};
+
+struct ChannelContext
+{
+	ChannelContext()
+	{
+		m_iChannelId = 0;
+		m_iAvatarMax = 0;
+		m_strChannelName[0] = _T('\0');
+	}
+
+	uint8 m_iChannelId;
+	uint16 m_iAvatarMax;
+	TCHAR m_strChannelName[CHANNELNAME_MAX];
+	RegionServerContext m_arrayRegionContext[REGIONSERVER_MAX];
+};
+
 #endif

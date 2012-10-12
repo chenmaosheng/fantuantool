@@ -19,12 +19,26 @@ void LoginServerRecv::VersionAck(void* pClient, int32 iReason)
 
 }
 
-void GateServerRecv::AvatarListAck(void *pClient, int32 iRet, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
+void GateServerRecv::AvatarListAck(void *pClient, int32 iReturn, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
 {
 	ClientBase* pClientBase = (ClientBase*)pClient;
-	pClientBase->AvatarListAck(iRet, iAvatarCount, arrayAvatar);
+	pClientBase->AvatarListAck(iReturn, iAvatarCount, arrayAvatar);
 }
 
-void GateServerRecv::AvatarCreateAck(void *pClient, int32 iRet, const ftdAvatar &newAvatar)
+void GateServerRecv::AvatarCreateAck(void *pClient, int32 iReturn, const ftdAvatar &newAvatar)
 {
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->AvatarCreateAck(iReturn, newAvatar);
+}
+
+void GateServerRecv::AvatarSelectAck(void *pClient, int32 iReturn, const ftdAvatarSelectData &data)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->AvatarSelectAck(iReturn, data);
+}
+
+void GateServerRecv::ChannelListNtf(void *pClient, uint8 iChannelCount, const ftdChannelData *arrayChannelData)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->ChannelListNtf(iChannelCount, arrayChannelData);
 }

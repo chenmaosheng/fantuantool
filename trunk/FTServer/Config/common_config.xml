@@ -6,6 +6,12 @@
 		<Server name="Master" id="1" PeerIP="127.0.0.1" PeerPort="4101" config="master_config" exe="MasterServer" />
 		<Server name="Cache" id="2" PeerIP="127.0.0.1" PeerPort="4201" config="cache_config" exe="CacheServer" />
 		<Server name="Gate" id="3" PeerIP="127.0.0.1" PeerPort="4301" config="gate_config" exe="GateServer" />
+		<Server name="Region" id="4" PeerIP="127.0.0.1" PeerPort="4401" config="region_config" exe="RegionServer" />
 	</ServerList>
+	<ChannelList>
+		<Channel name="Fantuan" id="0" PlayerMax="1000">
+			<Region id="4" />
+		</Channel>
+	</ChannelList>
   </Realm>
 </Config>

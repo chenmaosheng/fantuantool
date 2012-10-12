@@ -59,9 +59,17 @@ void ClientLogic::OnIncomingEvent()
 			{
 				ClientEventAvatarList* pEventAvatarList = (ClientEventAvatarList*)pEvent;
 				theApp.TriggerPageEvent(LOGIN_SUCCESS_EVENT);
-				theApp.m_pSelectDlg->ReceiveAvatarList(pEventAvatarList->m_iRet, pEventAvatarList->m_iAvatarCount, pEventAvatarList->m_Avatar);
+				theApp.m_pSelectDlg->ReceiveAvatarList(pEventAvatarList->m_iReturn, pEventAvatarList->m_iAvatarCount, pEventAvatarList->m_Avatar);
 			}
 			
+			break;
+
+		case EVENT_AVATAR_CREATE:
+			{
+				ClientEventAvatarCreate* pEventAvatarCreate = (ClientEventAvatarCreate*)pEvent;
+				theApp.TriggerPageEvent(CREATE_SUCCESS_EVENT);
+				theApp.m_pSelectDlg->ReceiveAvatarCreate(pEventAvatarCreate->m_iReturn, pEventAvatarCreate->m_Avatar);
+			}
 			break;
 
 		case EVENT_AVATAR_LOGOUT:

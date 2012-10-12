@@ -13,6 +13,9 @@
 
 #define PEER_SERVER_MAX 32		// max of peer server connected
 #define GATE_SERVER_MAX 64		// max of gate server started
+#define SERVERNAME_MAX	32
+#define REGIONSERVER_MAX 32
+#define CHANNEL_MAX 16
 
 enum
 {

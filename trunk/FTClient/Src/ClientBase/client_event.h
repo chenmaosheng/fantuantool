@@ -15,6 +15,8 @@
 enum
 {
 	EVENT_AVATAR_LIST,
+	EVENT_AVATAR_CREATE,
+	EVENT_AVATAR_SELECT,
 	EVENT_AVATAR_LOGOUT,
 };
 
@@ -28,12 +30,36 @@ struct ClientEventAvatarList : public ClientEvent
 	ClientEventAvatarList() 
 	{ 
 		m_iEventId = EVENT_AVATAR_LIST;
+		m_iReturn = 0;
 		m_iAvatarCount = 0;
 	}
 
-	int32 m_iRet;
+	int32 m_iReturn;
 	uint8 m_iAvatarCount;
 	ftdAvatar m_Avatar[AVATARCOUNT_MAX];
+};
+
+struct ClientEventAvatarCreate: public ClientEvent
+{
+	ClientEventAvatarCreate()
+	{
+		m_iEventId = EVENT_AVATAR_CREATE;
+		m_iReturn = 0;
+	}
+
+	int32 m_iReturn;
+	ftdAvatar m_Avatar;
+};
+
+struct ClientEventAvatarSelect : public ClientEvent
+{
+	ClientEventAvatarSelect()
+	{
+		m_iEventId = EVENT_AVATAR_SELECT;
+		m_iReturn = 0;
+	}
+	int32 m_iReturn;
+	ftdAvatarSelectData m_SelectData;
 };
 
 struct ClientEventAvatarLogout: public ClientEvent

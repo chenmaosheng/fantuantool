@@ -27,6 +27,7 @@ public:
 	{
 		LOG_DEVICE_CONSOLE,
 		LOG_DEVICE_FILE,
+		LOG_DEVICE_DEBUG,
 	};
 
 	static Log* GetInstance();

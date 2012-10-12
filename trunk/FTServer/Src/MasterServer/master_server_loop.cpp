@@ -17,6 +17,8 @@ m_iShutdownStatus(NOT_SHUTDOWN),
 m_PlayerContextPool(5000)
 {
 	memset(&m_arrayGateServerContext, 0, sizeof(m_arrayGateServerContext));
+	memset(&m_arrayChannelContext, 0, sizeof(m_arrayChannelContext));
+	m_iChannelCount = 0;
 }
 
 int32 MasterServerLoop::Init()
@@ -45,6 +47,31 @@ int32 MasterServerLoop::Init()
 		m_arrayGateServerContext[pConfig->m_iServerId] = new GateServerContext;
 		m_arrayGateServerContext[pConfig->m_iServerId]->m_iServerId = pConfig->m_iServerId;
 		m_arrayGateServerContext[pConfig->m_iServerId]->m_iSessionMax = pConfig->m_iSessionMax;
+	}
+
+	// record channel count
+	m_iChannelCount = (uint8)g_pServerConfig->GetChannelConfigItems().size();
+
+	ChannelConfigItem* pChannelConfig = NULL;
+	for (std::map<std::wstring, ChannelConfigItem>::iterator mit2 = g_pServerConfig->GetChannelConfigItems().begin();
+		mit2 != g_pServerConfig->GetChannelConfigItems().end(); ++mit2)
+	{
+		pChannelConfig = &(mit2->second);
+		if (pChannelConfig->m_iChannelId > CHANNEL_MAX || m_arrayChannelContext[pChannelConfig->m_iChannelId] != NULL)
+		{
+			LOG_ERR(LOG_SERVER, _T("channel config got some error"));
+			continue;
+		}
+
+		m_arrayChannelContext[pChannelConfig->m_iChannelId] = new ChannelContext;
+		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iChannelId = pChannelConfig->m_iChannelId;
+		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iAvatarMax = pChannelConfig->m_iPlayerMax;
+		wcscpy_s(m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_strChannelName, CHANNELNAME_MAX+1, pChannelConfig->m_strChannelName);
+		for (uint8 i = 0; i < REGIONSERVER_MAX; ++i)
+		{
+			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iServerId = pChannelConfig->m_arrayRegionServer[i];
+			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iChannelId = pChannelConfig->m_iChannelId;
+		}
 	}
 
 	return 0;
@@ -278,7 +305,24 @@ void MasterServerLoop::DeletePlayerFromGateServerContext(MasterPlayerContext* pP
 			pContext->m_mPlayerContext.erase(mit);
 		}
 	}
-	
+}
+
+int32 MasterServerLoop::SendChannelList(MasterPlayerContext* pPlayerContext)
+{
+	int32 iRet = 0;
+	ftdChannelData arrayChannelData[CHANNEL_MAX];
+	for (uint8 i = 0; i < m_iChannelCount; ++i)
+	{
+		iRet = WChar2Char(m_arrayChannelContext[i]->m_strChannelName, arrayChannelData[i].m_strChannelName, CHANNELNAME_MAX+1);
+		if (iRet == 0)
+		{
+			return -1;
+		}
+		arrayChannelData[i].m_strChannelName[iRet] = '\0';
+		arrayChannelData[i].m_iState = 0; // todo
+	}
+
+	return pPlayerContext->SendChannelList(m_iChannelCount, arrayChannelData);
 }
 
 DWORD MasterServerLoop::_Loop()

@@ -15,6 +15,7 @@ enum
 	LOGIN_PAGE,
 	SELECT_PAGE,
 	CREATE_PAGE,
+	CHANNEL_PAGE,
 	CLIENT_PAGE,
 };
 
@@ -24,7 +25,9 @@ enum
 	CREATE_REQUEST_EVENT,
 	CREATE_SUCCESS_EVENT,
 	SELECT_REQUEST_EVENT,
+	CHANNEL_REQUEST_EVENT,
 	BACK_EVENT,
+	CHANNEL_BACK_EVENT,
 	LOGOUT_SUCCESS_EVENT,
 };
 
@@ -45,6 +48,7 @@ class CClientDlg;
 class CLoginDlg;
 class CSelectDlg;
 class CCreateDlg;
+class CChannelDlg;
 class ClientLogic;
 class CClientApp : public CWinApp
 {
@@ -72,6 +76,7 @@ public:
 	CClientDlg* m_pClientDlg;
 	CSelectDlg* m_pSelectDlg;
 	CCreateDlg* m_pCreateDlg;
+	CChannelDlg* m_pChannelDlg;
 	ClientLogic* m_pClientLogic;
 };
 

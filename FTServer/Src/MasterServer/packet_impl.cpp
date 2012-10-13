@@ -111,6 +111,47 @@ void GateServerRecv::AvatarSelectAck(void* pClient, int32 iReturn, const ftdAvat
 	pPlayerContext->OnAvatarSelectAck(iReturn, prdData);
 }
 
+void GateClientRecv::ChannelSelectReq(void* pClient, const char* strChannelName)
+{
+	int32 iRet = 0;
+	MasterPlayerContext* pPlayerContext = (MasterPlayerContext*)pClient;
+	TCHAR strTChannelName[CHANNELNAME_MAX+1] = {0};
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x select channel request"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+
+	iRet = Char2WChar(strChannelName, strTChannelName, CHANNELNAME_MAX+1);
+	if (iRet == 0)
+	{
+		_ASSERT( false && "Char2WChar failed" );
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		return;
+	}
+	strTChannelName[iRet] = _T('\0');
+
+	pPlayerContext->OnChannelSelectReq(strTChannelName);
+}
+
+void GateClientRecv::ChannelLeaveReq(void* pClient)
+{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void GateServerRecv::ChannelListNtf(void *pClient, uint8 iChannelCount, const ftdChannelData *arrayChannelData)
 {
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));

@@ -1,3 +1,3 @@
 <Config>
-	<CacheServer DBName="Fantuan" DBHost="127.0.0.1" DBPort="3306" DBUser="root" DBPassword="passw0rD" DBConnCount="2" />
+	<CacheServer DBName="Fantuan" DBHost="127.0.0.1" DBPort="3306" DBUser="root" DBPassword="passw0rD" DBConnCount="1" />
 </Config>

@@ -67,6 +67,10 @@ public:
 	void RequestCreateAvatar(const TCHAR* strAvatarName);
 	// request select an avatar
 	void RequestSelectAvatar(const TCHAR* strAvatarName);
+	// request select channel
+	void RequestSelectChannel(const TCHAR* strChannelName);
+	// request leave channel
+	void RequestLeaveChannel();
 
 public:
 	// receive login ntf from master server
@@ -107,8 +111,10 @@ private:
 	// avatar info
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+	uint8 m_iLastChannelId;
 
 	std::list<ClientEvent*> m_ClientEventList;
+	CRITICAL_SECTION m_csClientEvent;
 };
 
 extern ClientConfig* g_pClientConfig;

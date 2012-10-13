@@ -7,6 +7,7 @@
 #include "LoginDlg.h"
 #include "SelectDlg.h"
 #include "CreateDlg.h"
+#include "ChannelDlg.h"
 #include "ClientLogic.h"
 
 #ifdef _DEBUG
@@ -29,13 +30,17 @@ CClientApp::CClientApp() : m_pCreateDlg(NULL), m_pLoginDlg(NULL), m_pClientDlg(N
 	
 	m_vPageState.push_back(PageState(SELECT_PAGE, CREATE_REQUEST_EVENT, CREATE_PAGE));
 	m_vPageState.push_back(PageState(SELECT_PAGE, LOGOUT_SUCCESS_EVENT, LOGIN_PAGE));
-	m_vPageState.push_back(PageState(SELECT_PAGE, SELECT_REQUEST_EVENT, CLIENT_PAGE));
+	m_vPageState.push_back(PageState(SELECT_PAGE, SELECT_REQUEST_EVENT, CHANNEL_PAGE));
 
 	m_vPageState.push_back(PageState(CREATE_PAGE, CREATE_SUCCESS_EVENT, SELECT_PAGE));
 	m_vPageState.push_back(PageState(CREATE_PAGE, BACK_EVENT, SELECT_PAGE));
 
+	m_vPageState.push_back(PageState(CHANNEL_PAGE, CHANNEL_REQUEST_EVENT, CLIENT_PAGE));
+	m_vPageState.push_back(PageState(CHANNEL_PAGE, LOGOUT_SUCCESS_EVENT, LOGIN_PAGE));
+
 	m_vPageState.push_back(PageState(CLIENT_PAGE, LOGOUT_SUCCESS_EVENT, LOGIN_PAGE));
 	m_vPageState.push_back(PageState(CLIENT_PAGE, BACK_EVENT, SELECT_PAGE));
+	m_vPageState.push_back(PageState(CLIENT_PAGE, CHANNEL_BACK_EVENT, CHANNEL_PAGE));
 }
 
 
@@ -158,7 +163,8 @@ void CClientApp::ShowDialog(int iPage)
 		if (!m_pSelectDlg)
 		{
 			m_pSelectDlg = new CSelectDlg(m_pClientLogic);
-			m_pSelectDlg->DoModal();
+			m_pSelectDlg->Create(IDD_SELECT_DIALOG, m_pSelectDlg);
+			m_pSelectDlg->ShowWindow(SW_NORMAL);
 		}
 		else
 		{
@@ -171,7 +177,8 @@ void CClientApp::ShowDialog(int iPage)
 		if (!m_pCreateDlg)
 		{
 			m_pCreateDlg = new CCreateDlg(m_pClientLogic);
-			m_pCreateDlg->DoModal();
+			m_pCreateDlg->Create(IDD_CREATE_DIALOG, m_pCreateDlg);
+			m_pCreateDlg->ShowWindow(SW_NORMAL);
 		}
 		else
 		{
@@ -180,8 +187,21 @@ void CClientApp::ShowDialog(int iPage)
 		
 		break;
 
+	case CHANNEL_PAGE:
+		if (!m_pChannelDlg)
+		{
+			m_pChannelDlg = new CChannelDlg(m_pClientLogic);
+			m_pChannelDlg->Create(IDD_CHANNEL_DIALOG, m_pChannelDlg);
+			m_pChannelDlg->ShowWindow(SW_NORMAL);
+		}
+		else
+		{
+			m_pChannelDlg->ShowWindow(SW_NORMAL);
+		}
+		break;
+
 	case CLIENT_PAGE:
-		if (!m_pCreateDlg)
+		if (!m_pClientDlg)
 		{
 			m_pClientDlg = new CClientDlg(m_pClientLogic);
 			m_pClientDlg->DoModal();
@@ -211,6 +231,10 @@ void CClientApp::DeleteDialog(int iPage)
 
 	case CREATE_PAGE:
 		m_pCreateDlg->ShowWindow(SW_HIDE);
+		break;
+
+	case CHANNEL_PAGE:
+		m_pChannelDlg->ShowWindow(SW_HIDE);
 		break;
 
 	case CLIENT_PAGE:

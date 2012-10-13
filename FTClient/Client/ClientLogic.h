@@ -25,6 +25,8 @@ public:
 	void BackToSelect();
 	void RequestCreateAvatar(const TCHAR* strAvatarName);
 	void RequestSelectAvatar(const TCHAR* strAvatarName);
+	void RequestSelectChannel(const TCHAR* strChannelName);
+	void RequestLeaveChannel();
 
 private:
 	ClientBase* m_pClientBase;

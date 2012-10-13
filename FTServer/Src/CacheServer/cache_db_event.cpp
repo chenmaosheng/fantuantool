@@ -98,9 +98,38 @@ PlayerDBEventAvatarSelectData::PlayerDBEventAvatarSelectData()
 	m_iEventId = DB_EVENT_AVATARSELECTDATA;
 	m_iAvatarId = 0;
 	m_strAvatarName[0] = _T('\0');
+	m_iLastChannelId = 0;
 }
 
 int32 PlayerDBEventAvatarSelectData::FireEvent(DBConn* pDBConn)
 {
+	int32 iRet = 0;
+	TCHAR strSqlStatement[SQL_STATEMENT_MAX] = {0};
+	swprintf_s(strSqlStatement, SQL_STATEMENT_MAX, _T("call SP_SelectAvatar('%llu');"), m_iAvatarId);
+
+	iRet = pDBConn->Query(strSqlStatement);
+	if (iRet < 0)
+	{
+		LOG_ERR(LOG_DB, _T("name=%s sid=%08x ret=%d mysql query failed"), m_strAvatarName, m_iSessionId, m_iRet);
+		return iRet;
+	}
+
+	if (iRet == 0)
+	{
+		char** ppResult = NULL;
+		int32 iNumOfRows = pDBConn->GetNumOfRows();
+		_ASSERT( iNumOfRows == 1 );
+		// get data of each row
+		for (int32 i = 0; i < iNumOfRows; ++i)
+		{
+			ppResult = pDBConn->GetRowData();
+			m_iLastChannelId = (uint8)atoi(ppResult[0]);
+		}
+	}
+
+	// free all possible results
+	pDBConn->FreeResult();
+
+	m_iRet = 0;
 	return 0;
 }

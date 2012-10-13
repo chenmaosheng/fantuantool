@@ -193,8 +193,17 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	case PLAYER_STATE_CACHELOGINREQ:
 	case PLAYER_STATE_ONAVATARLISTREQ:
 	case PLAYER_STATE_AVATARLISTREQ:
-	case PLAYER_EVENT_ONAVATARLISTACK:
-	case PLAYER_EVENT_AVATARLISTACK:
+	case PLAYER_STATE_ONAVATARLISTACK:
+	case PLAYER_STATE_AVATARLISTACK:
+	case PLAYER_STATE_ONAVATARCREATEREQ:
+	case PLAYER_STATE_AVATARCREATEREQ:
+	case PLAYER_STATE_ONAVATARCREATEACK:
+	case PLAYER_STATE_ONAVATARSELECTREQ:
+	case PLAYER_STATE_AVATARSELECTREQ:
+	case PLAYER_STATE_ONAVATARSELECTACK:
+	case PLAYER_STATE_AVATARSELECTACK:
+	case PLAYER_STATE_CHANNELLISTNTF:
+	case PLAYER_STATE_ONCHANNELSELECTREQ:
 		bSendGateDisconnect = true;
 		bSendCacheDisconnect = true;
 		break;
@@ -323,6 +332,20 @@ int32 MasterServerLoop::SendChannelList(MasterPlayerContext* pPlayerContext)
 	}
 
 	return pPlayerContext->SendChannelList(m_iChannelCount, arrayChannelData);
+}
+
+uint8 MasterServerLoop::GetChannelId(const TCHAR *strChannelName)
+{
+	for (uint8 i = 0; i < m_iChannelCount; ++i)
+	{
+		ChannelContext* context = m_arrayChannelContext[i];
+		if (context && wcscmp(context->m_strChannelName, strChannelName) == 0)
+		{
+			return context->m_iChannelId;
+		}
+	}
+
+	return INVALID_CHANNEL_ID;
 }
 
 DWORD MasterServerLoop::_Loop()

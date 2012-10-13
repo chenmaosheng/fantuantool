@@ -118,6 +118,7 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 		}
 		data.m_strAvatarName[iRet] = '\0';
 		data.m_iAvatarId = pEvent->m_iAvatarId;
+		data.m_iLastChannelId = pEvent->m_iLastChannelId;
 	}
 
 	iRet = GateServerSend::AvatarSelectAck(this, pEvent->m_iRet, data);

@@ -211,6 +211,17 @@ void MasterPlayerContext::_InitStateMachine()
 		return;
 	}
 
+	pState->AddTransition(PLAYER_EVENT_ONCHANNELSELECTREQ, PLAYER_STATE_ONCHANNELSELECTREQ);
 	pState->AddTransition(PLAYER_EVENT_ONAVATARLISTREQ, PLAYER_STATE_ONAVATARLISTREQ);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_CHANNELLISTNTF);
+
+	// when state is receive channel select
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONCHANNELSELECTREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONCHANNELSELECTREQ);
 }

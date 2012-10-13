@@ -34,6 +34,7 @@ enum
 	PLAYER_STATE_ONAVATARSELECTACK, // receive avatar select ack
 	PLAYER_STATE_AVATARSELECTACK, // send avatar select ack
 	PLAYER_STATE_CHANNELLISTNTF, // send channel list to client
+	PLAYER_STATE_ONCHANNELSELECTREQ, // receive channel select request
 };
 
 enum
@@ -58,6 +59,7 @@ enum
 	PLAYER_EVENT_ONAVATARSELECTACK,
 	PLAYER_EVENT_AVATARSELECTACK,
 	PLAYER_EVENT_CHANNELLISTNTF,
+	PLAYER_EVENT_ONCHANNELSELECTREQ,
 };
 
 class MasterServerLoop;
@@ -95,6 +97,8 @@ public:
 	void OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& data);
 	// send channel list to client
 	int32 SendChannelList(uint8 iChannelCount, ftdChannelData* arrayData);
+	// receive select channel request
+	void OnChannelSelectReq(const TCHAR* strChannelName);
 
 private:
 	// initialize state machine
@@ -112,6 +116,7 @@ public:
 	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint64 m_iAvatarId;
+	uint8 m_iLastChannelId;
 
 	static MasterServerLoop* m_pMainLoop;
 	

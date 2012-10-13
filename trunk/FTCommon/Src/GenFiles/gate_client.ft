@@ -10,4 +10,10 @@ filter (GateClient, CLIENT_FILTER_GATE)
 	
 	// request select an avatar
 	AvatarSelectReq(string strAvatarName);
+	
+	// request select channel
+	ChannelSelectReq(string strChannelName);
+	
+	// request leave channel
+	ChannelLeaveReq();
 }

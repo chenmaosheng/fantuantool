@@ -9,7 +9,7 @@
 		<Server name="Region" id="4" PeerIP="127.0.0.1" PeerPort="4401" config="region_config" exe="RegionServer" />
 	</ServerList>
 	<ChannelList>
-		<Channel name="Fantuan" id="0" PlayerMax="1000">
+		<Channel name="Fantuan" id="0" PlayerMax="1000" InitialRegion="4">
 			<Region id="4" />
 		</Channel>
 	</ChannelList>

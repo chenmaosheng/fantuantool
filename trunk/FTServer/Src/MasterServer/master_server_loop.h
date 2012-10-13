@@ -55,6 +55,8 @@ public:
 	void DeletePlayerFromGateServerContext(MasterPlayerContext*);
 	// send channel info to client
 	int32 SendChannelList(MasterPlayerContext*);
+	// get channel id by channel name, failed return INVALID_CHANNEL_ID
+	uint8 GetChannelId(const TCHAR* strChannelName);
 
 private:
 	DWORD _Loop();

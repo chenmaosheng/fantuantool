@@ -17,6 +17,7 @@ enum
 	EVENT_AVATAR_LIST,
 	EVENT_AVATAR_CREATE,
 	EVENT_AVATAR_SELECT,
+	EVENT_CHANNEL_LIST,
 	EVENT_AVATAR_LOGOUT,
 };
 
@@ -60,6 +61,20 @@ struct ClientEventAvatarSelect : public ClientEvent
 	}
 	int32 m_iReturn;
 	ftdAvatarSelectData m_SelectData;
+};
+
+struct ClientEventChannelList : public ClientEvent
+{
+	ClientEventChannelList()
+	{
+		m_iEventId = EVENT_CHANNEL_LIST;
+		m_iReturn = 0;
+		m_iChannelCount = 0;
+	}
+
+	int32 m_iReturn;
+	ftdChannelData m_arrayChannelData[CHANNEL_MAX];
+	uint8 m_iChannelCount;
 };
 
 struct ClientEventAvatarLogout: public ClientEvent

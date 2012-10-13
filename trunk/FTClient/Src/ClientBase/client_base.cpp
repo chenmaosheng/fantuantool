@@ -24,11 +24,13 @@ ClientBase::ClientBase()
 	m_pWorker = NULL;
 	m_pLogSystem = NULL;
 	Clear();
+	InitializeCriticalSection(&m_csClientEvent);
 }
 
 ClientBase::~ClientBase()
 {
 	Clear();
+	DeleteCriticalSection(&m_csClientEvent);
 }
 
 void ClientBase::Clear()
@@ -43,6 +45,7 @@ void ClientBase::Clear()
 
 	m_iAvatarId = 0;
 	m_strAvatarName[0] = _T('\0');
+	m_iLastChannelId = 0;
 
 	m_ClientEventList.clear();
 
@@ -150,6 +153,24 @@ void ClientBase::RequestSelectAvatar(const TCHAR* strAvatarName)
 	GateClientSend::AvatarSelectReq(this, strUtf8);
 }
 
+void ClientBase::RequestSelectChannel(const TCHAR* strChannelName)
+{
+	int32 iRet = 0;
+	char strUtf8[CHANNELNAME_MAX+1] = {0};
+	iRet = WChar2Char(strChannelName, strUtf8, CHANNELNAME_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	strUtf8[iRet] = '\0';
+	GateClientSend::ChannelSelectReq(this, strUtf8);
+}
+
+void ClientBase::RequestLeaveChannel()
+{
+	GateClientSend::ChannelLeaveReq(this);
+}
+
 bool ClientBase::OnClientConnection(ConnID connId)
 {
 	m_ConnId = connId;
@@ -161,6 +182,8 @@ bool ClientBase::OnClientConnection(ConnID connId)
 	memcpy(buf, (char*)&m_TokenPacket, MAX_INPUT_BUFFER);
 	((Connection*)m_ConnId)->AsyncSend(m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
 
+	LOG_DBG(LOG_SERVER, _T("Send token"));
+	
 	return true;
 }
 
@@ -184,7 +207,9 @@ void ClientBase::OnClientDisconnect(ConnID connId)
 	Clear();
 
 	ClientEventAvatarLogout* newEvent = FT_NEW(ClientEventAvatarLogout);
+	EnterCriticalSection(&m_csClientEvent);	
 	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
 }
 
 void ClientBase::OnClientData(uint32 iLen, char* pBuf)
@@ -303,7 +328,7 @@ int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
 
 int32 ClientBase::HandlePacket(ServerPacket* pPacket)
 {
-	LOG_DBG(LOG_SERVER, _T("receive packet"));
+	LOG_DBG(LOG_SERVER, _T("receive packet, typeid=%d, len=%d"), pPacket->m_iTypeId, pPacket->m_iLen);
 	Receiver::OnPacketReceived(this, pPacket->m_iTypeId, pPacket->m_iLen, pPacket->m_Buf);
 	return 0;
 }
@@ -311,11 +336,13 @@ int32 ClientBase::HandlePacket(ServerPacket* pPacket)
 ClientEvent* ClientBase::PopClientEvent()
 {
 	ClientEvent* pEvent = NULL;
+	EnterCriticalSection(&m_csClientEvent);
 	if (!m_ClientEventList.empty())
 	{
 		pEvent = m_ClientEventList.front();
 		m_ClientEventList.pop_front();
 	}
+	LeaveCriticalSection(&m_csClientEvent);
 	return pEvent;
 }
 
@@ -332,34 +359,48 @@ void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)
 
 void ClientBase::AvatarListAck(int32 iReturn, uint8 iAvatarCount, const ftdAvatar *arrayAvatar)
 {
+	LOG_DBG(LOG_SERVER, _T("AvatarListAck"));
+
 	ClientEventAvatarList* newEvent = FT_NEW(ClientEventAvatarList);
 	newEvent->m_iReturn = iReturn;
 	newEvent->m_iAvatarCount = iAvatarCount;
 	memcpy(newEvent->m_Avatar, arrayAvatar, iAvatarCount*sizeof(ftdAvatar));
+	EnterCriticalSection(&m_csClientEvent);
 	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
 }
 
 void ClientBase::AvatarCreateAck(int32 iReturn, const ftdAvatar &newAvatar)
 {
+	LOG_DBG(LOG_SERVER, _T("AvatarCreateAck"));
+
 	ClientEventAvatarCreate* newEvent = FT_NEW(ClientEventAvatarCreate);
 	newEvent->m_iReturn = iReturn;
 	memcpy(&newEvent->m_Avatar, &newAvatar, sizeof(ftdAvatar));
+	EnterCriticalSection(&m_csClientEvent);
 	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
 }
 
 void ClientBase::AvatarSelectAck(int32 iReturn, const ftdAvatarSelectData &data)
 {
-	ClientEventAvatarSelect* newEvent = FT_NEW(ClientEventAvatarSelect);
-	newEvent->m_iReturn = iReturn;
-	memcpy(&newEvent->m_SelectData, &data, sizeof(ftdAvatarSelectData));
-	m_ClientEventList.push_back(newEvent);
+	LOG_DBG(LOG_SERVER, _T("AvatarSelectAck"));
 
 	m_iAvatarId = data.m_iAvatarId;
 	Char2WChar(data.m_strAvatarName, m_strAvatarName, AVATARNAME_MAX+1);
+	m_iLastChannelId = data.m_iLastChannelId;
 }
 
 void ClientBase::ChannelListNtf(uint8 iChannelCount, const ftdChannelData* arrayChannelData)
 {
+	LOG_DBG(LOG_SERVER, _T("ChannelListNtf"));
+
+	ClientEventChannelList* newEvent = FT_NEW(ClientEventChannelList);
+	newEvent->m_iChannelCount = iChannelCount;
+	memcpy(newEvent->m_arrayChannelData, arrayChannelData, sizeof(ftdChannelData)*iChannelCount);
+	EnterCriticalSection(&m_csClientEvent);
+	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
 }
 
 

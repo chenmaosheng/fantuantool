@@ -254,6 +254,7 @@ void SessionServerLoop<T>::_OnCommandShutdown()
 template<typename T>
 void SessionServerLoop<T>::_OnCommandPacketForward(LogicCommandPacketForward* pCommand)
 {
+	LOG_DBG(LOG_SERVER, _T(""));
 	T* pSession = GetSession(pCommand->m_iSessionId);
 	if (pSession)
 	{
@@ -261,6 +262,10 @@ void SessionServerLoop<T>::_OnCommandPacketForward(LogicCommandPacketForward* pC
 		{
 			LOG_ERR(LOG_SERVER, _T("SendPacket failed, sid=%08x"), pCommand->m_iSessionId);
 		}
+	}
+	else
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't find session, sid=%08x"), pCommand->m_iSessionId);
 	}
 }
 

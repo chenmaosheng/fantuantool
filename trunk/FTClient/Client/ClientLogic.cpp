@@ -5,6 +5,7 @@
 #include "client_config.h"
 #include "LoginDlg.h"
 #include "SelectDlg.h"
+#include "ChannelDlg.h"
 
 ClientLogic::ClientLogic(ClientBase* pClientBase) : m_pClientBase(pClientBase)
 {
@@ -48,6 +49,16 @@ void ClientLogic::RequestSelectAvatar(const TCHAR* strAvatarName)
 	m_pClientBase->RequestSelectAvatar(strAvatarName);
 }
 
+void ClientLogic::RequestSelectChannel(const TCHAR* strChannelName)
+{
+	m_pClientBase->RequestSelectChannel(strChannelName);
+}
+
+void ClientLogic::RequestLeaveChannel()
+{
+	m_pClientBase->RequestLeaveChannel();
+}
+
 void ClientLogic::OnIncomingEvent()
 {
 	ClientEvent* pEvent = m_pClientBase->PopClientEvent();
@@ -70,6 +81,19 @@ void ClientLogic::OnIncomingEvent()
 				theApp.TriggerPageEvent(CREATE_SUCCESS_EVENT);
 				theApp.m_pSelectDlg->ReceiveAvatarCreate(pEventAvatarCreate->m_iReturn, pEventAvatarCreate->m_Avatar);
 			}
+			break;
+
+		case EVENT_AVATAR_SELECT:
+			{
+			}
+			break;
+
+		case EVENT_CHANNEL_LIST:
+			{
+				ClientEventChannelList* pEventChannelList = (ClientEventChannelList*)pEvent;
+				theApp.TriggerPageEvent(SELECT_REQUEST_EVENT);
+				theApp.m_pChannelDlg->ReceiveChannelList(pEventChannelList->m_iChannelCount, pEventChannelList->m_arrayChannelData);
+			};
 			break;
 
 		case EVENT_AVATAR_LOGOUT:

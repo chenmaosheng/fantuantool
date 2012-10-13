@@ -39,12 +39,21 @@ void GateClientRecv::AvatarSelectReq(void* pClient, const char* strAvatarName)
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x select avatar request"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
 
 	iRet = Char2WChar(strAvatarName, strTAvatarName, AVATARNAME_MAX+1);
-	if (iRet != 0)
+	if (iRet == 0)
 	{
 		_ASSERT( false && "Char2WChar failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
 		return;
 	}
+	strTAvatarName[iRet] = _T('\0');
 
 	pPlayerContext->OnAvatarSelectReq(strTAvatarName);
+}
+
+void GateClientRecv::ChannelSelectReq(void* pClient, const char* strChannelName)
+{
+}
+
+void GateClientRecv::ChannelLeaveReq(void* pClient)
+{
 }

@@ -13,6 +13,7 @@ struct AvatarSelectData
 {
 	char m_strAvatarName[AVATARNAME_MAX];
 	uint64 m_iAvatarId;
+	uint8 m_iLastChannelId;
 };
 
 struct ChannelData

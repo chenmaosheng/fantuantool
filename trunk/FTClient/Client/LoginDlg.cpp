@@ -92,7 +92,13 @@ void CLoginDlg::OnDisconnect()
 
 LRESULT CLoginDlg::OnKickIdle(WPARAM wParam, LPARAM lParam)
 {
-	m_pClientLogic->OnIncomingEvent();
+	static bool bAllowed = true;
+	if (bAllowed)
+	{
+		bAllowed = false;
+		m_pClientLogic->OnIncomingEvent();
+		bAllowed = true;
+	}
 	return 0;
 }
 void CLoginDlg::OnBnClickedCancel()

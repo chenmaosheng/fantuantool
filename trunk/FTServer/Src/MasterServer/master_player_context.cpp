@@ -38,6 +38,7 @@ void MasterPlayerContext::Clear()
 	m_iAvatarCount = 0;
 	m_strAvatarName[0] = _T('\0');
 	m_iAvatarId = 0;
+	m_iLastChannelId = 0;
 }
 
 int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -132,6 +133,8 @@ void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionI
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("typeid=%d len=%d"), m_iDelayTypeId, m_iDelayLen);
+
 	// set state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCNTF) != PLAYER_STATE_GATEALLOCNTF)
 	{
@@ -216,6 +219,8 @@ void MasterPlayerContext::OnAvatarListReq()
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("typeid=%d len=%d"), m_iDelayTypeId, m_iDelayLen);
+
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTREQ) != PLAYER_STATE_AVATARLISTREQ)
 	{
@@ -298,6 +303,8 @@ void MasterPlayerContext::OnAvatarCreateReq(prdAvatarCreateData &data)
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
+
+	LOG_DBG(LOG_SERVER, _T("typeid=%d len=%d"), m_iDelayTypeId, m_iDelayLen);
 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEREQ) != PLAYER_STATE_AVATARCREATEREQ)
@@ -403,6 +410,8 @@ void MasterPlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("typeid=%d len=%d"), m_iDelayTypeId, m_iDelayLen);
+
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTREQ) != PLAYER_STATE_AVATARSELECTREQ)
 	{
@@ -438,6 +447,7 @@ void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& 
 	// save current avatar info
 	wcscpy_s(m_strAvatarName, _countof(m_strAvatarName), data.m_strAvatarName);
 	m_iAvatarId = data.m_iAvatarId;
+	m_iLastChannelId = data.m_iLastChannelId;
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x name=%s send selected avatar to gate server"), m_strAccountName, m_iSessionId, data.m_strAvatarName);
 	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
@@ -491,6 +501,56 @@ int32 MasterPlayerContext::SendChannelList(uint8 iChannelCount, ftdChannelData* 
 	}
 	return 0;
 }
+
+void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
+{
+	int32 iRet = 0;
+	uint8 iChannelId = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONCHANNELSELECTREQ) != PLAYER_STATE_ONCHANNELSELECTREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// get channel id
+	iChannelId = m_pMainLoop->GetChannelId(strChannelName);
+	if (iChannelId == INVALID_CHANNEL_ID)
+	{
+	}
+
+	// todo:
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {

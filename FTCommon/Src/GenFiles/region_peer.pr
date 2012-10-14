@@ -1,0 +1,4 @@
+filter (RegionPeer, PEER_FILTER_REGION)
+{
+	RegionAllocReq(uint32 iSessionId, uint64 iAvatarId, uint16 iLen, TCHAR strAvatarName[iLen]);
+}

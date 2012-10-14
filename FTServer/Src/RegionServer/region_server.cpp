@@ -1,17 +1,17 @@
-#include "master_server.h"
-#include "master_server_loop.h"
-#include "master_server_config.h"
+#include "region_server.h"
+#include "region_server_loop.h"
+#include "region_server_config.h"
 
-MasterServer* g_pServer = NULL;
-MasterServerConfig* g_pServerConfig = NULL;
+RegionServer* g_pServer = NULL;
+RegionServerConfig* g_pServerConfig = NULL;
 
-MasterServer::MasterServer()
+RegionServer::RegionServer()
 {
-	m_pLoginServer = NULL;
+	m_pMasterServer = NULL;
 	m_pCacheServer = NULL;
 }
 
-int32 MasterServer::Init(const TCHAR* strServerName)
+int32 RegionServer::Init(const TCHAR* strServerName)
 {
 	int32 iRet = 0;
 	iRet = super::Init(strServerName);
@@ -30,24 +30,24 @@ int32 MasterServer::Init(const TCHAR* strServerName)
 
 	LOG_STT(LOG_SERVER, _T("StartPeerServer success, IP=%d, port=%d"), g_pServerConfig->m_iPeerIP, g_pServerConfig->m_iPeerPort);
 
-	// start master server's main loop
+	// start region server's main loop
 	iRet = StartMainLoop();
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("Start master server's main loop failed"));
+		LOG_ERR(LOG_SERVER, _T("Start region server's main loop failed"));
 		return -3;
 	}
 
-	LOG_STT(LOG_SERVER, _T("Initialize master server success"));
+	LOG_STT(LOG_SERVER, _T("Initialize region server success"));
 
 	return 0;
 }
 
-void MasterServer::Destroy()
+void RegionServer::Destroy()
 {
-	LOG_STT(LOG_SERVER, _T("Destroy master server"));
+	LOG_STT(LOG_SERVER, _T("Destroy region server"));
 
-	// stop all the master server issues
+	// stop all the region server issues
 	StopMainLoop();
 
 	StopPeerServer();
@@ -55,9 +55,9 @@ void MasterServer::Destroy()
 	super::Destroy();
 }
 
-void MasterServer::Shutdown()
+void RegionServer::Shutdown()
 {
-	LOG_STT(LOG_SERVER, _T("Shutdown master server"));
+	LOG_STT(LOG_SERVER, _T("Shutdown region server"));
 
 	m_pMainLoop->PushShutdownCommand();
 
@@ -67,19 +67,19 @@ void MasterServer::Shutdown()
 	}
 }
 
-ServerConfig* MasterServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
+ServerConfig* RegionServer::CreateConfig(uint32 iRealmId, const TCHAR* strServerName)
 {
-	g_pServerConfig = new MasterServerConfig(strServerName);
+	g_pServerConfig = new RegionServerConfig(strServerName);
 	return g_pServerConfig;
 }
 
-int32 MasterServer::InitMainLoop()
+int32 RegionServer::InitMainLoop()
 {
-	// get login peer server by name
-	m_pLoginServer = GetPeerServer(_T("Login"));
-	if (!m_pLoginServer)
+	// get master peer server by name
+	m_pMasterServer = GetPeerServer(_T("Master"));
+	if (!m_pMasterServer)
 	{
-		LOG_ERR(LOG_SERVER, _T("Get login peer server failed"));
+		LOG_ERR(LOG_SERVER, _T("Get master peer server failed"));
 		return -1;
 	}
 
@@ -91,12 +91,12 @@ int32 MasterServer::InitMainLoop()
 		return -1;
 	}
 
-	m_pMainLoop = new MasterServerLoop;
+	m_pMainLoop = new RegionServerLoop;
 
 	return m_pMainLoop->Init();
 }
 
-void MasterServer::DestroyMainLoop()
+void RegionServer::DestroyMainLoop()
 {
 	if (m_pMainLoop)
 	{

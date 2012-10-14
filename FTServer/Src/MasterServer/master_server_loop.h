@@ -57,6 +57,8 @@ public:
 	int32 SendChannelList(MasterPlayerContext*);
 	// get channel id by channel name, failed return INVALID_CHANNEL_ID
 	uint8 GetChannelId(const TCHAR* strChannelName);
+	// get initial region server id
+	uint8 GetInitialRegionServerId(uint8 iChannelId);
 
 private:
 	DWORD _Loop();

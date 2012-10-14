@@ -133,6 +133,9 @@ bool CommonConfig::LoadConfig()
 		// player max
 		item.m_iPlayerMax = (uint16)atoi(pChannelElement->Attribute("PlayerMax"));
 
+		// initial region server id
+		item.m_iInitialRegionServerId = (uint8)atoi(pChannelElement->Attribute("InitialRegion"));
+
 		for (TiXmlElement* pRegionElement = pChannelElement->FirstChildElement("Region"); pRegionElement != NULL; pRegionElement = pRegionElement->NextSiblingElement("Region"))
 		{
 			// region id

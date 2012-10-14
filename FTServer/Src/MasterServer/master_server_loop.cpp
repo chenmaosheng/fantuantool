@@ -14,7 +14,7 @@
 
 MasterServerLoop::MasterServerLoop() :
 m_iShutdownStatus(NOT_SHUTDOWN),
-m_PlayerContextPool(5000)
+m_PlayerContextPool(5000) // todo:
 {
 	memset(&m_arrayGateServerContext, 0, sizeof(m_arrayGateServerContext));
 	memset(&m_arrayChannelContext, 0, sizeof(m_arrayChannelContext));
@@ -67,6 +67,7 @@ int32 MasterServerLoop::Init()
 		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iChannelId = pChannelConfig->m_iChannelId;
 		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iAvatarMax = pChannelConfig->m_iPlayerMax;
 		wcscpy_s(m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_strChannelName, CHANNELNAME_MAX+1, pChannelConfig->m_strChannelName);
+		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iInitialRegionServerId = pChannelConfig->m_iInitialRegionServerId;
 		for (uint8 i = 0; i < REGIONSERVER_MAX; ++i)
 		{
 			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iServerId = pChannelConfig->m_arrayRegionServer[i];
@@ -346,6 +347,20 @@ uint8 MasterServerLoop::GetChannelId(const TCHAR *strChannelName)
 	}
 
 	return INVALID_CHANNEL_ID;
+}
+
+uint8 MasterServerLoop::GetInitialRegionServerId(uint8 iChannelId)
+{
+	for (uint8 i = 0; i < m_iChannelCount; ++i)
+	{
+		ChannelContext* context = m_arrayChannelContext[i];
+		if (context && context->m_iChannelId == iChannelId)
+		{
+			return context->m_iInitialRegionServerId;
+		}
+	}
+
+	return INVALID_SERVER_ID;
 }
 
 DWORD MasterServerLoop::_Loop()

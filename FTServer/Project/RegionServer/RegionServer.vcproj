@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="MasterServer"
-	ProjectGUID="{B7CB19AC-2A23-4E94-B693-8573B23C8C75}"
-	RootNamespace="MasterServer"
+	Name="RegionServer"
+	ProjectGUID="{B723F567-128D-4157-B91E-A9A486FBCBBB}"
+	RootNamespace="RegionServer"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -175,35 +175,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\Src\MasterServer\main.cpp"
+				RelativePath="..\..\Src\RegionServer\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_player_context.cpp"
+				RelativePath="..\..\Src\RegionServer\peer_impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_player_state.cpp"
+				RelativePath="..\..\Src\RegionServer\region_player_context.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server.cpp"
+				RelativePath="..\..\Src\RegionServer\region_server.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server_config.cpp"
+				RelativePath="..\..\Src\RegionServer\region_server_config.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server_loop.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Src\MasterServer\packet_impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Src\MasterServer\peer_impl.cpp"
+				RelativePath="..\..\Src\RegionServer\region_server_loop.cpp"
 				>
 			</File>
 		</Filter>
@@ -213,27 +205,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_logic_command.h"
+				RelativePath="..\..\Src\RegionServer\region_logic_command.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_player_context.h"
+				RelativePath="..\..\Src\RegionServer\region_player_context.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server.h"
+				RelativePath="..\..\Src\RegionServer\region_server.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server_config.h"
+				RelativePath="..\..\Src\RegionServer\region_server_config.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\Src\MasterServer\master_server_loop.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Src\MasterServer\server_context.h"
+				RelativePath="..\..\Src\RegionServer\region_server_loop.h"
 				>
 			</File>
 		</Filter>
@@ -243,59 +231,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_send.cpp"
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_recv.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_peer_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_peer_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.h"
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_recv.h"
 				>
 			</File>
 		</Filter>
@@ -308,38 +248,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\ftd_impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_recv.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_recv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_server_send.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_send.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\FTCommon\Src\GenFiles\login_server_send.h"
 				>
 			</File>
 		</Filter>

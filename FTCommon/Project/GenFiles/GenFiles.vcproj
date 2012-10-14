@@ -130,6 +130,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\GenFiles\region_peer_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_peer_recv.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\GenFiles\session_peer_recv.cpp"
 				>
 			</File>
@@ -239,6 +255,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Src\GenFiles\master_peer.pr"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_peer.pr"
 				>
 			</File>
 			<File

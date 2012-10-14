@@ -7,4 +7,6 @@ filter (GateServer, SERVER_FILTER_GATE)
 	AvatarSelectAck(int32 iReturn, AvatarSelectData data);
 	
 	ChannelListNtf(uint8 iChannelCount, ChannelData arrayChannelData[iChannelCount]);
+	// 0 means success, other means failed
+	ChannelSelectAck(int32 iReturn);
 }

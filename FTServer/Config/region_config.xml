@@ -1,0 +1,8 @@
+<Config>
+	<RegionServer PlayerMax="500" />
+	<RegionDesc InstanceCount="1">
+		<MapList>
+			<Map id="1" />
+		</MapList>
+	</RegionDesc>
+</Config>

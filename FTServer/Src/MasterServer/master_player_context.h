@@ -35,6 +35,8 @@ enum
 	PLAYER_STATE_AVATARSELECTACK, // send avatar select ack
 	PLAYER_STATE_CHANNELLISTNTF, // send channel list to client
 	PLAYER_STATE_ONCHANNELSELECTREQ, // receive channel select request
+	PLAYER_STATE_REGIONALLOCREQ, // send region alloc req to region server
+	PLAYER_STATE_ONREGIONALLOCACK, // receive region alloc ack
 };
 
 enum
@@ -60,6 +62,8 @@ enum
 	PLAYER_EVENT_AVATARSELECTACK,
 	PLAYER_EVENT_CHANNELLISTNTF,
 	PLAYER_EVENT_ONCHANNELSELECTREQ,
+	PLAYER_EVENT_REGIONALLOCREQ,
+	PLAYER_EVENT_ONREGIONALLOCACK,
 };
 
 class MasterServerLoop;

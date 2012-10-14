@@ -32,7 +32,7 @@ bool LoginServerConfig::_LoadConfig()
 	m_iServerPort = (uint16)atoi(pServerElement->Attribute("Port"));
 
 	// thread count
-	m_iThreadCount = atoi(pServerElement->Attribute("ThreadCount"));
+	m_iThreadCount = (uint32)atoi(pServerElement->Attribute("ThreadCount"));
 
 	TiXmlElement* pSessionElement = pRootElement->FirstChildElement("Session");
 	if (!pSessionElement)

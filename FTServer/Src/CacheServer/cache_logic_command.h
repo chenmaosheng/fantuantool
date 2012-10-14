@@ -13,8 +13,8 @@
 
 enum
 {
-	COMMAND_ONLOGINREQ = 1001,		// receive login request
-	COMMAND_ONLOGOUTREQ = 1002,		// receive logout request
+	COMMAND_ONLOGINREQ = COMMAND_APPSTART+1,		// receive login request
+	COMMAND_ONLOGOUTREQ,		// receive logout request
 };
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>

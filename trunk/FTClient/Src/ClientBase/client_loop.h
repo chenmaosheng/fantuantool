@@ -40,9 +40,10 @@ private:
 
 private:
 	HANDLE m_hThread;
-	HANDLE m_hCommandEvent;
+	HANDLE m_hCommandSemaphore;
 	std::list<ClientCommand*> m_CommandList;
 	CRITICAL_SECTION m_csCommandList;
+	CRITICAL_SECTION m_csLogic;
 	BOOL m_bQuit;
 };
 

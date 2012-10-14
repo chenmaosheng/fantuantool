@@ -46,6 +46,7 @@ Context* ContextPool::PopInputContext()
 	if (!pContext)
 	{
 		pContext = (Context*)_aligned_malloc(sizeof(Context)+input_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
+		_ASSERT(pContext);
 		if (!pContext)
 		{
 			SN_LOG_ERR(_T("Allocate context failed, err=%d"), GetLastError());
@@ -68,6 +69,7 @@ Context* ContextPool::PopOutputContext()
 	if (!pContext)
 	{
 		pContext = (Context*)_aligned_malloc(sizeof(Context)+output_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
+		_ASSERT(pContext);
 		if (!pContext)
 		{
 			SN_LOG_ERR(_T("Allocate context failed, err=%d"), GetLastError());
@@ -97,6 +99,7 @@ void ContextPool::PushOutputContext(Context* pContext)
 char* ContextPool::PopOutputBuffer()
 {
 	Context* pContext = PopOutputContext();
+	_ASSERT(pContext);
 	if (pContext)
 	{
 		return pContext->buffer_;

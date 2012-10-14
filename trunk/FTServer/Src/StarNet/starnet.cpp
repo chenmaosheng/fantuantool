@@ -22,6 +22,7 @@ int32 StarNet::Init()
 
 	// create a socket to initialize asynchorous operation function pointer, need to close when finished
 	s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	_ASSERT(s != INVALID_SOCKET);
 	if (s == INVALID_SOCKET)
 	{
 		SN_LOG_ERR(_T("Create socket failed"));

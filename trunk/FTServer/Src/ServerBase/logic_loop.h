@@ -63,8 +63,9 @@ private:
 private:
 	static LogicLoop* m_pMainLoop;
 	HANDLE m_hThread;
-	HANDLE m_hCommandEvent;
+	HANDLE m_hCommandSemaphore;
 	CRITICAL_SECTION m_csCommandList;
+	CRITICAL_SECTION m_csLogic;
 	std::list<LogicCommand*> m_CommandList;
 	BOOL m_bQuit;
 

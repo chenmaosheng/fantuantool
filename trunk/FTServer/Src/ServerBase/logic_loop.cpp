@@ -10,25 +10,28 @@ LogicLoop* LogicLoop::m_pMainLoop = NULL;
 LogicLoop::LogicLoop()
 {
 	m_hThread = NULL;
-	m_hCommandEvent = NULL;
+	m_hCommandSemaphore = NULL;
 	m_bQuit = 0;
 	m_dwCurrTime = 0;
 	m_dwDeltaTime = 0;
 	m_iWorldTime = 0;
 	m_pAlarm = new Alarm;
 	InitializeCriticalSection(&m_csCommandList);
+	InitializeCriticalSection(&m_csLogic);
 }
 
 LogicLoop::~LogicLoop()
 {
 	SAFE_DELETE(m_pAlarm);
+	DeleteCriticalSection(&m_csLogic);
 	DeleteCriticalSection(&m_csCommandList);
-	CloseHandle(m_hCommandEvent);
+	CloseHandle(m_hCommandSemaphore);
 	CloseHandle(m_hThread);
 }
 
 int32 LogicLoop::Init()
 {
+	_ASSERT(m_pMainLoop == NULL);
 	if (!m_pMainLoop)
 	{
 		m_pMainLoop = this;
@@ -56,10 +59,20 @@ int32 LogicLoop::Start()
 	// start alarm clock
 	m_pAlarm->Start(m_dwCurrTime);
 
-	// create an event to control command push and pop
-	m_hCommandEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
+	// create a semaphore to control command push and pop
+	m_hCommandSemaphore = ::CreateSemaphore(NULL, 0, MAXINT, NULL);
+	if (m_hCommandSemaphore == NULL)
+	{
+		return -1;
+	}
+
 	// create a thread to handle command
 	m_hThread = (HANDLE)_beginthreadex(NULL, 0, &LogicLoop::_ThreadMain, this, 0, NULL);
+	if (m_hThread == (HANDLE)1)
+	{
+		CloseHandle(m_hThread);
+		return -2;
+	}
 
 	return 0;
 }
@@ -73,16 +86,25 @@ void LogicLoop::Join()
 {
 	// let the thread join, and close the command event
 	WaitForSingleObject(m_hThread, INFINITE);
-	CloseHandle(m_hCommandEvent);
+	if (m_hCommandSemaphore)
+	{
+		CloseHandle(m_hCommandSemaphore);
+	}
+	m_CommandList.clear();
 }
 
 void LogicLoop::PushCommand(LogicCommand* pCommand)
 {
+	BOOL bRet = 0;
 	// push asynchorous command into command list and activate the event
 	EnterCriticalSection(&m_csCommandList);
 	m_CommandList.push_back(pCommand);
 	LeaveCriticalSection(&m_csCommandList);
-	::SetEvent(m_hCommandEvent);
+	bRet = ReleaseSemaphore(m_hCommandSemaphore, 1, NULL);
+	if (!bRet)
+	{
+		_ASSERT(false);
+	}
 }
 
 void LogicLoop::PushShutdownCommand()
@@ -115,6 +137,8 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 
 	while (!pLogicLoop->m_bQuit)
 	{
+		EnterCriticalSection(&pLogicLoop->m_csLogic);
+
 		// update time control
 		dwLastTickTime = pLogicLoop->m_dwCurrTime;
 		pLogicLoop->m_dwCurrTime = timeGetTime();
@@ -124,8 +148,14 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 		while (true)
 		{
 			// sleep time depends on each server system
-			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, dwSleepTime);
-			if (dwRet == WAIT_FAILED || dwRet == WAIT_TIMEOUT)
+			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandSemaphore, dwSleepTime);
+			if (dwRet == WAIT_FAILED)
+			{
+				_ASSERT(false && _T("failed to wait for single object"));
+				break;
+			}
+			else
+			if (dwRet == WAIT_TIMEOUT)
 			{
 				break;
 			}
@@ -141,9 +171,11 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 					pCommand = pLogicLoop->m_CommandList.front();
 					pLogicLoop->m_CommandList.pop_front();
 				}
+				else
+				{
+					_ASSERT(false && _T("Semaphore has problem"));
+				}
 				LeaveCriticalSection(&pLogicLoop->m_csCommandList);
-				// deactivate the command event
-				ResetEvent(pLogicLoop->m_hCommandEvent);
 				pLogicLoop->_OnCommand(pCommand);
 
 				FT_DELETE(pCommand);
@@ -155,6 +187,8 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 
 		// call logic loop
 		dwSleepTime = pLogicLoop->_Loop();
+
+		LeaveCriticalSection(&pLogicLoop->m_csLogic);
 	}
 
 	return 0;

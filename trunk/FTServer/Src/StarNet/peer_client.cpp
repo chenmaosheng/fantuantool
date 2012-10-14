@@ -11,6 +11,7 @@ void PeerClient::OnPeerData(uint32 iLen, char* pBuf)
 	bool bRet = false;
 	Connection* pConnection = (Connection*)m_ConnId;
 	// check if peer client is connected
+	_ASSERT(pConnection->IsConnected());
 	if (!pConnection->IsConnected())
 	{
 		SN_LOG_ERR(_T("Peer client is not connected"));
@@ -74,6 +75,7 @@ bool PeerClient::Dispatch(PeerPacket* pPeerPacket)
 
 int32 PeerOutputStream::Send(PEER_CLIENT pPeerClient)
 {
+	SN_LOG_DBG(_T("Peer client send"));
 	((Connection*)((PeerClient*)pPeerClient)->m_ConnId)->AsyncSend(PEER_PACKET_HEAD + m_pPacket->m_iLen, (char*)m_pPacket);
 	m_pPacket = NULL;
 	return 0;
@@ -102,6 +104,7 @@ bool PeerClientSet::Init(uint32 iIP, uint16 iPort)
 
 	// create acceptor
 	m_pAcceptor = Acceptor::CreateAcceptor(&addr, m_pWorker, m_pContextPool, &handler);
+	_ASSERT(m_pAcceptor);
 	if (m_pAcceptor)
 	{
 		m_pAcceptor->Start();
@@ -174,6 +177,7 @@ void PeerClientSet::DeleteConnector(ConnID connId)
 bool CALLBACK PeerClientSet::OnConnection(ConnID connId)
 {
 	PeerClient* pConnector = (PeerClient*)_aligned_malloc(sizeof(PeerClient), MEMORY_ALLOCATION_ALIGNMENT);
+	_ASSERT(pConnector);
 	if (pConnector)
 	{
 		if (PeerClientSet::Instance()->AddConnector(pConnector))

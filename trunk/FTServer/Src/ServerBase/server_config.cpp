@@ -37,6 +37,7 @@ bool ServerConfig::LoadConfig()
 	m_iPeerPort = pServerConfigItem->m_iPeerPort;
 
 	iRet = WChar2Char(pServerConfigItem->m_strConfigFile, serverConfigFile, MAX_PATH + 1);
+	_ASSERT(iRet);
 	if (iRet == 0)
 	{
 		return false;

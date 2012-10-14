@@ -15,16 +15,19 @@ bool CommonConfig::LoadConfig()
 	_snprintf_s(commonConfigFile, MAX_PATH + 1, "%s\\%s.xml", CONFIG_PATH, COMMON_CONFIG_FILE);
 	if (!m_XmlDoc.LoadFile(commonConfigFile))
 	{
+		_ASSERT(false);
 		return false;
 	}
 
 	TiXmlElement* pRootElement = m_XmlDoc.FirstChildElement("Config");
+	_ASSERT(pRootElement);
 	if (!pRootElement)
 	{
 		return false;
 	}
 
 	TiXmlElement* pLogElement = pRootElement->FirstChildElement("Log");
+	_ASSERT(pLogElement);
 	if (!pLogElement)
 	{
 		return false;
@@ -32,6 +35,7 @@ bool CommonConfig::LoadConfig()
 
 	// get log path
 	iRet = Char2WChar(pLogElement->Attribute("Path"), m_strLogPath, MAX_PATH + 1);
+	_ASSERT(iRet);
 	if (iRet == 0)
 	{
 		return false;
@@ -43,12 +47,14 @@ bool CommonConfig::LoadConfig()
 	m_iLogLevel = atoi(pLogElement->Attribute("Level"));
 
 	TiXmlElement* pRealmElement = pRootElement->FirstChildElement("Realm");
+	_ASSERT(pRealmElement);
 	if (!pRealmElement)
 	{
 		return false;
 	}
 
 	TiXmlElement* pServerListElement = pRealmElement->FirstChildElement("ServerList");
+	_ASSERT(pServerListElement);
 	if (!pServerListElement)
 	{
 		return false;
@@ -60,6 +66,7 @@ bool CommonConfig::LoadConfig()
 		memset(&item, 0, sizeof(item));
 		// server name
 		iRet = Char2WChar(pServerElement->Attribute("name"), item.m_strServerName, SERVERNAME_MAX + 1);
+		_ASSERT(iRet);
 		if (iRet == 0)
 		{
 			return false;
@@ -78,6 +85,7 @@ bool CommonConfig::LoadConfig()
 
 		// config file
 		iRet = Char2WChar(pServerElement->Attribute("config"), item.m_strConfigFile, MAX_PATH + 1);
+		_ASSERT(iRet);
 		if (iRet == 0)
 		{
 			return false;
@@ -87,6 +95,7 @@ bool CommonConfig::LoadConfig()
 
 		// exe file
 		iRet = Char2WChar(pServerElement->Attribute("exe"), item.m_strExeFile, MAX_PATH + 1);
+		_ASSERT(iRet);
 		if (iRet == 0)
 		{
 			return false;
@@ -98,6 +107,7 @@ bool CommonConfig::LoadConfig()
 	}
 
 	TiXmlElement* pChannelListElement = pRealmElement->FirstChildElement("ChannelList");
+	_ASSERT(pChannelListElement);
 	if (!pChannelListElement)
 	{
 		return false;
@@ -109,6 +119,7 @@ bool CommonConfig::LoadConfig()
 		memset(&item, 0, sizeof(item));
 		// channel name
 		iRet = Char2WChar(pChannelElement->Attribute("name"), item.m_strChannelName, CHANNELNAME_MAX+1);
+		_ASSERT(iRet);
 		if (iRet == 0)
 		{
 			return false;

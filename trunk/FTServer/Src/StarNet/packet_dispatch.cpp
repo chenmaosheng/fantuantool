@@ -12,8 +12,11 @@ bool Receiver::OnPacketReceived(void* pSession, uint16 iTypeId, uint16 iLen, con
 {
 	uint8 iFilterId = (uint8)(iTypeId >> 8);
 	uint8 iFuncType = (uint8)(iTypeId & 0xff);
+
+	SN_LOG_DBG(_T("FilterId=%d FuncType=%d Len=%d"), iFilterId, iFuncType, iLen);
 	DispatchFilter& filter = DispatchFilterArray::GetFilter(iFilterId);
 	// check if func type is valid
+	_ASSERT(iFuncType < filter.m_iFuncCount);
 	if (iFuncType >= filter.m_iFuncCount)
 	{
 		SN_LOG_ERR(_T("invalid funcType=%d, funcCount=%d"), iFuncType, filter.m_iFuncCount);

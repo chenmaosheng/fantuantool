@@ -14,6 +14,8 @@ bool PeerServer::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* p
 {
 	PeerServerDispatchFilter& filter = PeerServerDispatchFilterArray::GetFilter(iFilterId);
 	// check if func type is valid
+	_ASSERT(iFuncId < filter.m_iFuncCount);
+	SN_LOG_DBG(_T("FilterId=%d FuncId=%d Len=%d"), iFilterId, iFuncId, iLen);
 	if (iFuncId >= filter.m_iFuncCount)
 	{
 		SN_LOG_ERR(_T("invalid funcId=%d, funcCount=%d"), iFuncId, filter.m_iFuncCount);
@@ -33,6 +35,8 @@ bool PeerClient::Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* p
 {
 	PeerClientDispatchFilter& filter = PeerClientDispatchFilterArray::GetFilter(iFilterId);
 	// check if func type is valid
+	_ASSERT(iFuncId < filter.m_iFuncCount);
+	SN_LOG_DBG(_T("FilterId=%d FuncId=%d Len=%d"), iFilterId, iFuncId, iLen);
 	if (iFuncId >= filter.m_iFuncCount)
 	{
 		SN_LOG_ERR(_T("invalid funcId=%d, funcCount=%d"), iFuncId, filter.m_iFuncCount);

@@ -7,15 +7,17 @@
 ClientLoop::ClientLoop()
 {
 	m_hThread = NULL;
-	m_hCommandEvent = NULL;
+	m_hCommandSemaphore = NULL;
 	m_bQuit = 0;
 	InitializeCriticalSection(&m_csCommandList);
+	InitializeCriticalSection(&m_csLogic);
 }
 
 ClientLoop::~ClientLoop()
 {
+	DeleteCriticalSection(&m_csLogic);
 	DeleteCriticalSection(&m_csCommandList);
-	CloseHandle(m_hCommandEvent);
+	CloseHandle(m_hCommandSemaphore);
 	CloseHandle(m_hThread);
 }
 
@@ -35,8 +37,8 @@ void ClientLoop::Destroy()
 
 int32 ClientLoop::Start()
 {
-	// create an event to control command push and pop
-	m_hCommandEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
+	// create a semaphore to control command push and pop
+	m_hCommandSemaphore = ::CreateSemaphore(NULL, 0, MAXINT, NULL);
 	// create a thread to handle command
 	m_hThread = (HANDLE)_beginthreadex(NULL, 0, &ClientLoop::_ThreadMain, this, 0, NULL);
 
@@ -50,11 +52,16 @@ void ClientLoop::Stop()
 
 void ClientLoop::PushCommand(ClientCommand* pCommand)
 {
+	BOOL bRet = 0;
 	// push asynchorous command into command list and activate the event
 	EnterCriticalSection(&m_csCommandList);
 	m_CommandList.push_back(pCommand);
 	LeaveCriticalSection(&m_csCommandList);
-	::SetEvent(m_hCommandEvent);
+	bRet = ReleaseSemaphore(m_hCommandSemaphore, 1, NULL);
+	if (!bRet)
+	{
+		_ASSERT(false);
+	}
 }
 
 uint32 WINAPI ClientLoop::_ThreadMain(PVOID pParam)
@@ -67,10 +74,12 @@ uint32 WINAPI ClientLoop::_ThreadMain(PVOID pParam)
 
 	while (!pLogicLoop->m_bQuit)
 	{
+		EnterCriticalSection(&pLogicLoop->m_csLogic);
+
 		while (true)
 		{
 			// sleep time depends on each server system
-			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandEvent, dwSleepTime);
+			dwRet = WaitForSingleObject(pLogicLoop->m_hCommandSemaphore, dwSleepTime);
 			if (dwRet == WAIT_FAILED || dwRet == WAIT_TIMEOUT)
 			{
 				break;
@@ -87,9 +96,11 @@ uint32 WINAPI ClientLoop::_ThreadMain(PVOID pParam)
 					pCommand = pLogicLoop->m_CommandList.front();
 					pLogicLoop->m_CommandList.pop_front();
 				}
+				else
+				{
+					_ASSERT(false && _T("Semaphore has problem"));
+				}
 				LeaveCriticalSection(&pLogicLoop->m_csCommandList);
-				// deactivate the command event
-				ResetEvent(pLogicLoop->m_hCommandEvent);
 				pLogicLoop->_OnCommand(pCommand);
 
 				FT_DELETE(pCommand);
@@ -98,6 +109,8 @@ uint32 WINAPI ClientLoop::_ThreadMain(PVOID pParam)
 
 		// call logic loop
 		dwSleepTime = pLogicLoop->_Loop();
+
+		LeaveCriticalSection(&pLogicLoop->m_csLogic);
 	}
 
 	return 0;

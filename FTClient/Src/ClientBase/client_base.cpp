@@ -446,6 +446,7 @@ void CALLBACK ClientBase::OnDisconnect(ConnID connId)
 
 void CALLBACK ClientBase::OnData(ConnID connId, uint32 iLen, char* pBuf)
 {
+	LOG_DBG(LOG_SERVER, _T("Len=%d"), iLen);
 	Connection* pConnection = (Connection*)connId;
 	ClientBase* pClientBase = (ClientBase*)pConnection->GetClient();
 	ClientCommandOnData* pCommand = FT_NEW(ClientCommandOnData);

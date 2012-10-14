@@ -79,6 +79,8 @@ void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("sid=%d iTypeId=%d iLen=%d"), iSessionId, iTypeId, iLen);
+
 	pCommand->m_iSessionId = iSessionId;
 	pCommand->m_iTypeId = iTypeId;
 	if (!pCommand->CopyData(iLen, pBuf))

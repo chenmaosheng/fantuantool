@@ -72,6 +72,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	LOG_STT(LOG_SERVER, _T("Initialize memory pool success"));
 
 	iRet = StarNet::Init();
+	_ASSERT(iRet == 0);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("Initialize StarNet failed"));
@@ -81,6 +82,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	LOG_STT(LOG_SERVER, _T("Initialize StarNet success"));
 
 	iRet = InitMainLoop();
+	_ASSERT(iRet == 0);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("Initialize main loop failed"));
@@ -114,6 +116,7 @@ PEER_SERVER ServerBase::GetPeerServer(uint8 iServerId)
 	uint16 iPort = 0;
 	ServerConfigItem* pConfigItem = NULL;
 
+	_ASSERT(iServerId < PEER_SERVER_MAX);
 	if (iServerId >= PEER_SERVER_MAX)
 	{
 		LOG_ERR(LOG_SERVER, _T("ServerId is invalid, id=%d"), iServerId);
@@ -140,6 +143,7 @@ PEER_SERVER ServerBase::GetPeerServer(const TCHAR* strServerName)
 	uint32 iIP = 0;
 	uint16 iPort = 0;
 	ServerConfigItem* pConfigItem = m_pServerConfig->GetServerConfigItem(strServerName);
+	_ASSERT(pConfigItem);
 	if (pConfigItem)
 	{
 		iIP = pConfigItem->m_iPeerIP;

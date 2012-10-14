@@ -212,8 +212,10 @@ bool PeerServer::Connect()
 int32 PeerOutputStream::Send(PEER_SERVER pPeerServer)
 {
 	ConnID connId = ((PeerServer*)pPeerServer)->GetConnId();
+	_ASSERT(connId);
 	if (connId)
 	{
+		SN_LOG_DBG(_T("Send to Peer server"));
 		((Connection*)connId)->AsyncSend(PEER_PACKET_HEAD + m_pPacket->m_iLen, (char*)m_pPacket);
 		m_pPacket = NULL;
 		return 0;

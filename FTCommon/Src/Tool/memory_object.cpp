@@ -12,20 +12,24 @@ void MemoryObject::operator delete(void* p, MemoryPool* pPool)
 
 void* MemoryObject::operator new(size_t)
 {
+	_ASSERT(false);
 	return NULL;
 }
 
 void* MemoryObject::operator new[](size_t)
 {
+	_ASSERT(false);
 	return NULL;
 }
 
 void MemoryObject::operator delete(void*)
 {
+	_ASSERT(false);
 	return;
 }
 
 void MemoryObject::operator delete[](void*)
 {
+	_ASSERT(false);
 	return;
 }

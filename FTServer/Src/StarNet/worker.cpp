@@ -89,6 +89,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 						// post another accept request
 						pAcceptor->Accept();
 						rc = setsockopt(pConnection->socket_, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (const char*)&pAcceptor->socket_, sizeof(pAcceptor->socket_));
+						_ASSERT(rc == 0);
 						if (rc == 0)
 						{
 							// confirm connected and invoke handler
@@ -97,6 +98,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 								(pContext = pConnection->context_pool_->PopInputContext()))
 							{
 								// post a receive request
+								SN_LOG_DBG(_T("Post a WSARecv after accept"));
 								pConnection->AsyncRecv(pContext);
 							}
 							else
@@ -120,12 +122,14 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 						
 						pConnection->connected_ = 1;
 						rc = setsockopt(pConnection->socket_, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0);
+						_ASSERT(rc == 0);
 						if (rc == 0)
 						{
 							if (pConnection->handler_.OnConnection((ConnID)pConnection) &&
 								(pContext = pConnection->context_pool_->PopInputContext()))
 							{
 								// post a receive request
+								SN_LOG_DBG(_T("Post a WSARecv after connect"));
 								pConnection->AsyncRecv(pContext);
 							}
 							else
@@ -148,6 +152,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 
 			case OPERATION_DISCONNECT:
 				{
+					SN_LOG_DBG(_T("OnDisconnect, iorefs=%d"), pConnection->iorefs_);
 					if (pConnection->iorefs_)
 					{
 						PostQueuedCompletionStatus(pWorker->iocp_, dwNumRead, key, lpOverlapped);
@@ -171,6 +176,7 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 					else
 					{
 						pConnection->handler_.OnData((ConnID)pConnection, (uint32)dwNumRead, pContext->buffer_);
+						SN_LOG_DBG(_T("Post a WSARecv after recv"));
 						pConnection->AsyncRecv(pContext);
 					}
 					

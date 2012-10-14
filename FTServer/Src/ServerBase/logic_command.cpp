@@ -14,6 +14,7 @@ LogicCommandOnData::~LogicCommandOnData()
 bool LogicCommandOnData::CopyData(uint16 iLen, const char *pData)
 {
 	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
+	_ASSERT(m_pData);
 	if (m_pData)
 	{
 		m_iLen = iLen;
@@ -40,6 +41,7 @@ LogicCommandSendData::~LogicCommandSendData()
 bool LogicCommandSendData::CopyData(uint16 iLen, const char* pData)
 {
 	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
+	_ASSERT(m_pData);
 	if (m_pData)
 	{
 		m_iLen = iLen;
@@ -65,6 +67,7 @@ LogicCommandBroadcastData::~LogicCommandBroadcastData()
 bool LogicCommandBroadcastData::CopyData(uint16 iLen, const char *pData)
 {
 	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
+	_ASSERT(m_pData);
 	if (m_pData)
 	{
 		m_iLen = iLen;
@@ -91,6 +94,7 @@ LogicCommandPacketForward::~LogicCommandPacketForward()
 bool LogicCommandPacketForward::CopyData(uint16 iLen, const char *pData)
 {
 	m_pData = (char*)_aligned_malloc(iLen, MEMORY_ALLOCATION_ALIGNMENT);
+	_ASSERT(m_pData);
 	if (m_pData)
 	{
 		m_iLen = iLen;

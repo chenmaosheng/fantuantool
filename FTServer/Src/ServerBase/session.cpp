@@ -58,6 +58,7 @@ int32 Session::OnConnection(ConnID connId)
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION, false) != SESSION_STATE_ONCONNECTION)
 	{
 		LOG_ERR(LOG_SERVER, _T("Session state error, state=%d"), m_StateMachine.GetCurrState());
+		_ASSERT(false);
 		return -1;
 	}
 
@@ -77,6 +78,7 @@ int32 Session::OnConnection(ConnID connId)
 	if (iRet < 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		_ASSERT(false);
 		return -1;
 	}
 
@@ -91,6 +93,7 @@ void Session::OnDisconnect()
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		_ASSERT(false);
 		return;
 	}
 
@@ -115,6 +118,7 @@ void Session::OnData(uint16 iLen, char* pBuf)
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDATA, false) != m_StateMachine.GetCurrState())
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x, Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false);
 		return;
 	}
 
@@ -206,6 +210,7 @@ void Session::Disconnect()
 int32 Session::SendData(uint16 iTypeId, uint16 len, const char *data)
 {
 	char* buf = m_pServer->GetContextPool()->PopOutputBuffer();
+	_ASSERT(buf);
 	if (!buf)
 	{
 		return -1;
@@ -303,6 +308,7 @@ int32 Session::LoggedInNtf()
 	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN) != SESSION_STATE_LOGGEDIN)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false);
 		return -1;
 	}
 	

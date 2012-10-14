@@ -65,11 +65,8 @@ MemoryPoolImpl::~MemoryPoolImpl()
 			_aligned_free(InterlockedPopEntrySList(&m_Headers[i]));
 		}
 	}
-
-	if (m_iCount != 0)
-	{
-		// todo: fatal error
-	}
+		
+	_ASSERT(m_iCount == 0 && _T("m_iCount != 0"));
 }
 
 void* MemoryPoolImpl::Allocate(uint32 iSize)
@@ -86,6 +83,7 @@ void* MemoryPoolImpl::Allocate(const char *file, int32 line, uint32 iSize)
 {
 	// get the 2nd power of this size
 	uint8 iPower = NumberPower(iSize);
+	_ASSERT(iPower <= m_iMaxPower);
 	if (iPower > m_iMaxPower)
 	{
 		return NULL;

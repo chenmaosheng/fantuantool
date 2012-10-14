@@ -13,7 +13,7 @@
 
 enum
 {
-	COMMAND_ONLOGINREQ = 1001,		// receive login request
+	COMMAND_ONLOGINREQ = COMMAND_APPSTART+1,		// receive login request
 	COMMAND_GATEALLOCACK,	// acknowledge gate session alloc request
 	COMMAND_ONGATELOGINREQ,	// receive gate login request
 };

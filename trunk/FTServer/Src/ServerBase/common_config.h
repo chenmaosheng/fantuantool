@@ -32,6 +32,7 @@ struct ChannelConfigItem
 	uint8 m_iChannelId;
 	uint16 m_iPlayerMax;
 	uint8 m_iRegionCount;
+	uint8 m_iInitialRegionServerId;
 	uint8 m_arrayRegionServer[REGIONSERVER_MAX];
 };
 

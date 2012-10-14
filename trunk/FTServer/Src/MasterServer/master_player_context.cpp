@@ -8,6 +8,7 @@
 #include "cache_peer_send.h"
 #include "login_server_send.h"
 #include "gate_server_send.h"
+#include "region_peer_send.h"
 
 #include "packet.h"
 
@@ -506,6 +507,7 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 {
 	int32 iRet = 0;
 	uint8 iChannelId = 0;
+	uint8 iRegionServerId = 0;
 
 	// check whether player will disconnect
 	if (m_bFinalizing)
@@ -525,9 +527,51 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 	iChannelId = m_pMainLoop->GetChannelId(strChannelName);
 	if (iChannelId == INVALID_CHANNEL_ID)
 	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x channelName=%s not exists"), m_strAccountName, m_iSessionId, strChannelName);
+
+		iRet = GateServerSend::ChannelSelectAck(this, -1);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ChannelSelectAck failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+
+		iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+			return;
+		}
+
+		return;
 	}
 
-	// todo:
+	// check if channelId is last channel Id
+	if (iChannelId != m_iLastChannelId)
+	{
+		// todo: clear player in last channel
+	}
+
+	// todo: it will depend on region which last time logged in
+	iRegionServerId = m_pMainLoop->GetInitialRegionServerId(iChannelId);
+
+	iRet = RegionPeerSend::RegionAllocReq(g_pServer->GetPeerServer(iRegionServerId), m_iSessionId, m_iAvatarId, wcslen(m_strAvatarName)+1, m_strAvatarName);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x RegionAllocReq failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+	// update channel Id
+	m_iLastChannelId = iChannelId;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Send RegionAllocReq"), m_strAccountName, m_iSessionId);
+
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONALLOCREQ) != PLAYER_STATE_REGIONALLOCREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
 }
 
 

@@ -223,5 +223,27 @@ void MasterPlayerContext::_InitStateMachine()
 		return;
 	}
 
+	pState->AddTransition(PLAYER_EVENT_REGIONALLOCREQ, PLAYER_STATE_REGIONALLOCREQ);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONCHANNELSELECTREQ);
+
+	// when state is region alloc req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_REGIONALLOCREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONREGIONALLOCACK, PLAYER_STATE_ONREGIONALLOCACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_REGIONALLOCREQ);
+
+	// when state is receive region alloc ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONREGIONALLOCACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONREGIONALLOCACK);
 }

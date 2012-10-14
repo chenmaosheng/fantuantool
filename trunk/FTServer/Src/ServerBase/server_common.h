@@ -15,6 +15,7 @@
 #define GATE_SERVER_MAX 64		// max of gate server started
 #define SERVERNAME_MAX	32
 #define REGIONSERVER_MAX 32
+#define INVALID_SERVER_ID 0xff
 
 enum
 {
@@ -24,6 +25,7 @@ enum
 	PEER_FILTER_MASTER,
 	PEER_FILTER_GATE,
 	PEER_FILTER_CACHE,
+	PEER_FILTER_REGION,
 };
 
 #define CONFIG_PATH "..\\..\\Config"			// config files folder

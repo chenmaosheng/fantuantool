@@ -23,6 +23,8 @@ enum
 	COMMAND_DISCONNECT,		// force disconnect
 	COMMAND_PACKETFORWARD,	// forward packet to another server
 	COMMAND_ONSESSIONDISCONNECT, // receive session disconnect
+
+	COMMAND_APPSTART = 1000,
 };
 
 struct LogicCommand : public MemoryObject 

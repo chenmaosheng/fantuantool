@@ -131,6 +131,10 @@ void GateClientRecv::ChannelSelectReq(void* pClient, const char* strChannelName)
 	pPlayerContext->OnChannelSelectReq(strTChannelName);
 }
 
+void GateServerRecv::ChannelSelectAck(void* pClient, int32 iReturn)
+{
+}
+
 void GateClientRecv::ChannelLeaveReq(void* pClient)
 {
 }

@@ -4,6 +4,8 @@
 #include "region_server.h"
 #include "region_logic_command.h"
 
+#include "session.h"
+
 GateServerContext::GateServerContext()
 {
 	// todo:
@@ -63,6 +65,64 @@ bool RegionServerLoop::IsReadyForShutdown() const
 {
 	return m_iShutdownStatus == READY_FOR_SHUTDOWN;
 }
+
+void RegionServerLoop::ShutdownPlayer(RegionPlayerContext* pPlayerContext)
+{
+	int32 iRet = 0;
+	bool bNeedDelete = false;
+
+	if (pPlayerContext->m_bFinalizing)
+	{
+		return;
+	}
+
+	switch(pPlayerContext->m_StateMachine.GetCurrState())
+	{
+	case PLAYER_STATE_ONREGIONALLOCREQ:
+	case PLAYER_STATE_REGIONALLOCACK:
+		bNeedDelete = true;
+		break;
+	}
+
+	if (bNeedDelete)
+	{
+		AddPlayerToFinalizingQueue(pPlayerContext);
+	}
+}
+
+void RegionServerLoop::AddPlayerToFinalizingQueue(RegionPlayerContext* pPlayerContext)
+{
+	pPlayerContext->m_bFinalizing = true;
+	m_PlayerFinalizingQueue.push(pPlayerContext);
+}
+
+void RegionServerLoop::DeletePlayer(RegionPlayerContext* pPlayerContext)
+{
+	uint8 iServerId = 0;
+	uint16 iSessionIndex = 0;
+	uint32 iSessionId = pPlayerContext->m_iSessionId;
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x DeletePlayer"), pPlayerContext->m_strAvatarName, pPlayerContext->m_iAvatarId, iSessionId);
+
+	stdext::hash_map<uint64, RegionPlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.find(pPlayerContext->m_iAvatarId);
+	if (mit != m_mPlayerContextByAvatarId.end())
+	{
+		// can't garantee two avatars with same charid have same sessionid
+		if (mit->second->m_iSessionId == iSessionId)
+		{
+			m_mPlayerContextByAvatarId.erase(mit);
+		}
+	}
+
+	iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
+	iSessionIndex = ((SessionId*)&iSessionId)->sValue_.session_index_;
+	m_arrayGateServerContext[iServerId]->m_arrayPlayerContext[iSessionIndex] = NULL;
+
+	pPlayerContext->Clear();
+	m_iPlayerCount--;
+	m_PlayerContextPool.Free(pPlayerContext);
+}
+
 
 DWORD RegionServerLoop::_Loop()
 {
@@ -144,7 +204,7 @@ void RegionServerLoop::OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* p
 	// check session id is valid
 	if (iServerId >= SERVERCOUNT_MAX || iSessionIndex >= g_pServerConfig->GetGateSessionIndexMax())
 	{
-		ASSERT(false);
+		_ASSERT(false);
 		LOG_ERR(LOG_PLAYER, _T("sid=%08x serverId=%d or session index=%d invalid"), pCommand->m_iSessionId, iServerId, iSessionIndex);
 		return;
 	}

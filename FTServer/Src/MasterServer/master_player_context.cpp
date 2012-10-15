@@ -40,6 +40,7 @@ void MasterPlayerContext::Clear()
 	m_strAvatarName[0] = _T('\0');
 	m_iAvatarId = 0;
 	m_iLastChannelId = 0;
+	m_iRegionServerId = 0;
 }
 
 int32 MasterPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -583,6 +584,57 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 	}
 }
 
+void MasterPlayerContext::OnChannelLeaveReq()
+{
+	// todo:
+}
+
+void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
+{
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCACK) != PLAYER_STATE_ONREGIONALLOCACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x region=%d Record player region info"), m_strAccountName, m_iSessionId, iRegionServerId);
+
+	m_iRegionServerId = iRegionServerId;
+
+	// notify client
+	iRet = GateServerSend::ChannelSelectAck(this, iReturn);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ChannelSelectAck failed"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELSELECTACK) != PLAYER_STATE_CHANNELSELECTACK)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	// todo: notify region server
+}
 
 
 

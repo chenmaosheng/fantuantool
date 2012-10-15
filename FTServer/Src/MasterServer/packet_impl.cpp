@@ -131,14 +131,13 @@ void GateClientRecv::ChannelSelectReq(void* pClient, const char* strChannelName)
 	pPlayerContext->OnChannelSelectReq(strTChannelName);
 }
 
-void GateServerRecv::ChannelSelectAck(void* pClient, int32 iReturn)
-{
-}
-
 void GateClientRecv::ChannelLeaveReq(void* pClient)
 {
-}
+	MasterPlayerContext* pPlayerContext = (MasterPlayerContext*)pClient;
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x select channel leave"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
 
+	pPlayerContext->OnChannelLeaveReq();
+}
 
 
 
@@ -158,5 +157,12 @@ void GateClientRecv::ChannelLeaveReq(void* pClient)
 
 void GateServerRecv::ChannelListNtf(void *pClient, uint8 iChannelCount, const ftdChannelData *arrayChannelData)
 {
+	_ASSERT(false);
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}
+
+void GateServerRecv::ChannelSelectAck(void* pClient, int32 iReturn)
+{
+	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }

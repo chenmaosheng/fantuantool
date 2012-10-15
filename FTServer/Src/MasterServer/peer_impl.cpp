@@ -10,7 +10,6 @@
 
 void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
-	uint32 iRet = 0;
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);
 	if (!pCommand)
 	{
@@ -41,7 +40,6 @@ void MasterPeerRecv::GateAllocAck(PEER_CLIENT pPeerClient, uint8 iServerId, uint
 
 void MasterPeerRecv::OnGateLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
-	uint32 iRet = 0;
 	LogicCommandOnGateLoginReq* pCommand = FT_NEW(LogicCommandOnGateLoginReq);
 	if (!pCommand)
 	{
@@ -51,6 +49,22 @@ void MasterPeerRecv::OnGateLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, 
 
 	pCommand->m_iSessionId = iSessionId;
 	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void MasterPeerRecv::OnRegionAllocAck(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iServerId, int32 iReturn)
+{
+	LogicCommandOnRegionAllocAck* pCommand = FT_NEW(LogicCommandOnRegionAllocAck);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnRegionAllocAck) failed"));
+		return;
+	}
+
+	pCommand->m_iSessionId = iSessionId;
+	pCommand->m_iServerId = iServerId;
+	pCommand->m_iReturn = iReturn;
+
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
@@ -87,6 +101,21 @@ void SessionPeerRecv::PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, 
 
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionid, uint8 iReason)
 {

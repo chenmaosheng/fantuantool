@@ -15,12 +15,14 @@
 enum
 {
 	PLAYER_STATE_NONE,
-	PLAYER_STATE_ONALLOCREQ, // receive alloc req
+	PLAYER_STATE_ONREGIONALLOCREQ, // receive alloc req
+	PLAYER_STATE_REGIONALLOCACK, // send alloc ack to master server
 };
 
 enum
 {
-	PLAYER_EVENT_ONALLOCREQ,
+	PLAYER_EVENT_ONREGIONALLOCREQ,
+	PLAYER_EVENT_REGIONALLOCACK,
 };
 
 class RegionServerLoop;
@@ -36,6 +38,10 @@ public:
 
 	void OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, const TCHAR* strAvatarName);
 
+private:
+	// initialize state machine
+	void _InitStateMachine();
+	
 public:
 	uint32 m_iSessionId;
 	uint64 m_iAvatarId;

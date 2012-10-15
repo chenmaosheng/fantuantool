@@ -42,6 +42,12 @@ public:
 	int32 Start();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
+	// shutdown one player in master server
+	void ShutdownPlayer(RegionPlayerContext*);
+	// add player to finalizing queue
+	void AddPlayerToFinalizingQueue(RegionPlayerContext*);
+	// totally delete a player
+	void DeletePlayer(RegionPlayerContext*);
 
 private:
 	DWORD _Loop();

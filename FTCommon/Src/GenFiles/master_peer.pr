@@ -3,4 +3,7 @@ filter (MasterPeer, PEER_FILTER_MASTER)
 	OnLoginReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
 	GateAllocAck(uint8 iServerId, uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen], uint32 iGateSessionId);
 	OnGateLoginReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+	
+	// iReturn: 0 means ok, others means error
+	OnRegionAllocAck(uint32 iSessionId, uint8 iServerId, int32 iReturn);
 }

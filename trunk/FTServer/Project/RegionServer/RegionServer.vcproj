@@ -187,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\RegionServer\region_player_state.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\RegionServer\region_server.cpp"
 				>
 			</File>
@@ -230,6 +234,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_recv.cpp"
 				>

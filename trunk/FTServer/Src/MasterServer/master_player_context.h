@@ -37,6 +37,7 @@ enum
 	PLAYER_STATE_ONCHANNELSELECTREQ, // receive channel select request
 	PLAYER_STATE_REGIONALLOCREQ, // send region alloc req to region server
 	PLAYER_STATE_ONREGIONALLOCACK, // receive region alloc ack
+	PLAYER_STATE_CHANNELSELECTACK, // send channel select ack
 };
 
 enum
@@ -64,6 +65,7 @@ enum
 	PLAYER_EVENT_ONCHANNELSELECTREQ,
 	PLAYER_EVENT_REGIONALLOCREQ,
 	PLAYER_EVENT_ONREGIONALLOCACK,
+	PLAYER_EVENT_CHANNELSELECTACK,
 };
 
 class MasterServerLoop;
@@ -103,6 +105,10 @@ public:
 	int32 SendChannelList(uint8 iChannelCount, ftdChannelData* arrayData);
 	// receive select channel request
 	void OnChannelSelectReq(const TCHAR* strChannelName);
+	// receive leave channel request
+	void OnChannelLeaveReq();
+	// receive region alloc ack
+	void OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn);
 
 private:
 	// initialize state machine
@@ -121,6 +127,7 @@ public:
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint64 m_iAvatarId;
 	uint8 m_iLastChannelId;
+	uint8 m_iRegionServerId;
 
 	static MasterServerLoop* m_pMainLoop;
 	

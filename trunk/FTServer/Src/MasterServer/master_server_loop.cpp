@@ -407,6 +407,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandOnGateLoginReq((LogicCommandOnGateLoginReq*)pCommand);
 		break;
 
+	case COMMAND_ONREGIONALLOCACK:
+		_OnCommandOnRegionAllocAck((LogicCommandOnRegionAllocAck*)pCommand);
+		break;
+
 	case COMMAND_ONSESSIONDISCONNECT:
 		_OnCommandOnSessionDisconnect((LogicCommandOnSessionDisconnect*)pCommand);
 		break;
@@ -507,6 +511,18 @@ void MasterServerLoop::_OnCommandOnGateLoginReq(LogicCommandOnGateLoginReq* pCom
 	}
 
 	mit->second->OnGateLoginReq();
+}
+
+void MasterServerLoop::_OnCommandOnRegionAllocAck(LogicCommandOnRegionAllocAck* pCommand)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
+	{
+		LOG_WAR(LOG_SERVER, _T("acc=? sid=%08x can't find context"), pCommand->m_iSessionId);
+		return;
+	}
+
+	mit->second->OnRegionAllocAck(pCommand->m_iServerId, pCommand->m_iReturn);
 }
 
 void MasterServerLoop::_OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect* pCommand)

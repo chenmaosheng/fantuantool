@@ -16,6 +16,7 @@ enum
 	COMMAND_ONLOGINREQ = COMMAND_APPSTART+1,		// receive login request
 	COMMAND_GATEALLOCACK,	// acknowledge gate session alloc request
 	COMMAND_ONGATELOGINREQ,	// receive gate login request
+	COMMAND_ONREGIONALLOCACK, // acknowledge region alloc
 };
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
@@ -56,6 +57,20 @@ struct LogicCommandGateAllocAck : public LogicCommandT<COMMAND_GATEALLOCACK>
 	uint32 m_iGateSessionId;
 	uint8 m_iServerId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX + 1];
+};
+
+struct LogicCommandOnRegionAllocAck: public LogicCommandT<COMMAND_ONREGIONALLOCACK>
+{
+	LogicCommandOnRegionAllocAck()
+	{
+		m_iSessionId = 0;
+		m_iServerId = 0;
+		m_iReturn = 0;
+	}
+
+	uint32 m_iSessionId;
+	uint8 m_iServerId;
+	int32 m_iReturn;
 };
 
 #endif

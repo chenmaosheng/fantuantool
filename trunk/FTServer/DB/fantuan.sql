@@ -24,6 +24,7 @@ CREATE TABLE `avatar` (
   `avatarId` bigint(15) NOT NULL AUTO_INCREMENT,
   `accountId` bigint(15) NOT NULL DEFAULT '0',
   `avatarName` varchar(32) NOT NULL DEFAULT '',
+  `lastChannel` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`avatarId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
@@ -35,16 +36,14 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS `SP_CreateAvatar` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CreateAvatar`(IN accountName_ VARCHAR(32), IN avatarName_ VARCHAR(32))
 begin
-     DECLARE avatarId_ bigint;
      DECLARE accountId_ bigint;
      DECLARE CheckInt int;
      set CheckInt = 0;
-     set avatarId_ = 0;
      set accountId_ = (select accountId from account where accountName=accountName_);
      select 1 into CheckInt from avatar where avatarName=avatarName_;
      if (CheckInt = 0) then
          insert into avatar(accountId, avatarName, lastChannel) values(accountId_, avatarName_, 0);
-         set avatarId_ = last_insert_id();
+         select last_insert_id();
      end if;
 end $$
 

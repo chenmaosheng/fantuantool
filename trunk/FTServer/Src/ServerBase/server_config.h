@@ -32,6 +32,9 @@ public:
 	int32 GetLogLevel() const;
 	const TCHAR* GetLogPath() const;
 
+	// get misc issue
+	uint16 GetGateSessionIndexMax() const;
+
 private:
 	// need implemented by each server
 	virtual bool _LoadConfig() = 0;

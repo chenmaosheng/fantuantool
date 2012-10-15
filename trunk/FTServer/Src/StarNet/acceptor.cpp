@@ -180,7 +180,7 @@ void Acceptor::Accept()
 		}
 		else
 		{
-			SN_LOG_WAR(_T("Acceptex pending"));
+			SN_LOG_DBG(_T("Acceptex pending"));
 		}
 	}
 

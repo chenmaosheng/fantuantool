@@ -48,7 +48,15 @@ void CSelectDlg::OnBnClickedCancel()
 void CSelectDlg::OnBnClickedOk2()
 {
 	// TODO: Add your control notification handler code here
-	m_pClientLogic->AvatarCreate();
+	int size = m_AvatarList.GetCount();
+	if (size < AVATARCOUNT_MAX)
+	{
+		m_pClientLogic->AvatarCreate();
+	}
+	else
+	{
+		MessageBox(_T("No vacant for new avatar"));
+	}
 }
 
 void CSelectDlg::ReceiveAvatarList(int32 iRet, uint8 iAvatarCount, const ftdAvatar *pAvatar)

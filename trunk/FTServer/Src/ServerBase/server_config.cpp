@@ -79,3 +79,8 @@ const TCHAR* ServerConfig::GetLogPath() const
 {
 	return m_CommonConfig.GetLogPath();
 }
+
+uint16 ServerConfig::GetGateSessionIndexMax() const
+{
+	return m_CommonConfig.GetGateSessionIndexMax();
+}

@@ -4,6 +4,7 @@ CommonConfig::CommonConfig()
 {
 	m_strLogPath[0] = _T('\0');
 	m_iLogLevel = Log::LOG_DEBUG_LEVEL;
+	m_iGateSessionIndexMax = 0;
 }
 
 bool CommonConfig::LoadConfig()
@@ -45,6 +46,16 @@ bool CommonConfig::LoadConfig()
 
 	// get log level
 	m_iLogLevel = atoi(pLogElement->Attribute("Level"));
+
+	TiXmlElement* pMiscElement = pRootElement->FirstChildElement("Misc");
+	_ASSERT(pMiscElement);
+	if (!pMiscElement)
+	{
+		return false;
+	}
+
+	// get gate session_index max value
+	m_iGateSessionIndexMax = (uint16)atoi(pMiscElement->Attribute("GateSessionIndexMax"));
 
 	TiXmlElement* pRealmElement = pRootElement->FirstChildElement("Realm");
 	_ASSERT(pRealmElement);

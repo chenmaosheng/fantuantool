@@ -63,9 +63,15 @@ public:
 		return m_strLogPath;
 	}
 
+	uint16 GetGateSessionIndexMax() const
+	{
+		return m_iGateSessionIndexMax;
+	}
+
 private:
 	TCHAR m_strLogPath[MAX_PATH+1];
 	int32 m_iLogLevel;
+	uint16 m_iGateSessionIndexMax;
 	std::map<std::wstring, ServerConfigItem> m_mServerConfigItems;
 	std::map<std::wstring, ChannelConfigItem> m_mChannelConfigItems;
 	TiXmlDocument m_XmlDoc;

@@ -70,6 +70,7 @@ int32 ClientBase::Init()
 	// initialize log system
 	m_pLogSystem = Log::GetInstance();
 	m_pLogSystem->Init(g_pClientConfig->GetLogLevel());
+	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Client"));
 	LogDevice* pDevice = NULL;
 	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_DEBUG);
 	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_FILE);
@@ -124,7 +125,10 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 void ClientBase::Logout()
 {
 	LOG_DBG(LOG_SERVER, _T("Start to logout"));
-	((Connection*)m_ConnId)->AsyncDisconnect();
+	if (m_ConnId)
+	{
+		((Connection*)m_ConnId)->AsyncDisconnect();
+	}
 }
 
 void ClientBase::RequestCreateAvatar(const TCHAR* strAvatarName)

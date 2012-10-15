@@ -38,7 +38,7 @@ int32 MasterServerLoop::Init()
 		mit != g_pServerConfig->m_mGateConfigItems.end(); ++mit)
 	{
 		pConfig = &(mit->second);
-		if (pConfig->m_iServerId > GATE_SERVER_MAX || m_arrayGateServerContext[pConfig->m_iServerId] != NULL)
+		if (pConfig->m_iServerId > SERVERCOUNT_MAX || m_arrayGateServerContext[pConfig->m_iServerId] != NULL)
 		{
 			LOG_ERR(LOG_SERVER, _T("gate config got some error"));
 			continue;
@@ -80,7 +80,7 @@ int32 MasterServerLoop::Init()
 
 void MasterServerLoop::Destroy()
 {
-	for (int32 i = 0; i < GATE_SERVER_MAX; ++i)
+	for (int32 i = 0; i < SERVERCOUNT_MAX; ++i)
 	{
 		if (m_arrayGateServerContext[i])
 		{
@@ -143,7 +143,7 @@ int32 MasterServerLoop::GateAllocReq()
 	GateServerContext* pContext = NULL;
 	int32 iGateServerId = -1;
 
-	for (int32 i = 0; i < GATE_SERVER_MAX; ++i)
+	for (int32 i = 0; i < SERVERCOUNT_MAX; ++i)
 	{
 		pContext = m_arrayGateServerContext[i];
 		if (pContext &&
@@ -300,7 +300,7 @@ void MasterServerLoop::DeletePlayerFromLoginServerContext(MasterPlayerContext* p
 
 void MasterServerLoop::DeletePlayerFromGateServerContext(MasterPlayerContext* pPlayerContext)
 {
-	if (pPlayerContext->m_iGateServerId >= GATE_SERVER_MAX)
+	if (pPlayerContext->m_iGateServerId >= SERVERCOUNT_MAX)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x serverid=%d serverid invalid"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId, pPlayerContext->m_iGateServerId);
 		return;

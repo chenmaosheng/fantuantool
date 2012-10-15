@@ -42,4 +42,6 @@ bool RegionServerConfig::_LoadConfig()
 	{
 		m_RegionDesc.m_arrayMapList.push_back((uint16)atoi(pMapElement->Attribute("id")));
 	}
+
+	return true;
 }

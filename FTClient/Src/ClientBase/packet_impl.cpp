@@ -42,3 +42,8 @@ void GateServerRecv::ChannelListNtf(void *pClient, uint8 iChannelCount, const ft
 	ClientBase* pClientBase = (ClientBase*)pClient;
 	pClientBase->ChannelListNtf(iChannelCount, arrayChannelData);
 }
+
+void GateServerRecv::ChannelSelectAck(void *pClient, int32 iReturn)
+{
+
+}

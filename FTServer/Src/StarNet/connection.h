@@ -30,13 +30,13 @@ struct Connection : SLIST_ENTRY
 	LONG			connected_;		// is connected
 	LONG			iorefmax_;		// max io reference allowed
 	
-	// asynchorous connect
+	// asynchronous connect
 	bool AsyncConnect(PSOCKADDR_IN addr, void* client);
-	// asynchorous disconnect
+	// asynchronous disconnect
 	void AsyncDisconnect();
-	// asynchorous send, need pop a context first
+	// asynchronous send, need pop a context first
 	void AsyncSend(Context*);
-	// asynchorous receive, need pop a context first
+	// asynchronous receive, need pop a context first
 	void AsyncRecv(Context*);
 	void AsyncSend(uint32 len, char* buf);
 
@@ -48,7 +48,7 @@ struct Connection : SLIST_ENTRY
 	// static function to create and close
 	static Connection* Create(Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, Acceptor* pAcceptor);
 	static bool Connect(PSOCKADDR_IN pAddr, Handler* pHandler, ContextPool* pContextPool, Worker* pWorker, void* pClient);
-	static void Close(Connection*);
+	static void Close(Connection*);	// attention: don't call this function if disconnect not called
 	static void Delete(Connection*);
 };
 

@@ -297,6 +297,14 @@ void MasterPlayerContext::OnAvatarCreateReq(prdAvatarCreateData &data)
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive avatar create, name=%s"), m_strAccountName, m_iSessionId, data.m_strAvatarName);
 
+	// avatar is full
+	if (m_iAvatarCount >= AVATARCOUNT_MAX)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x avatar is full"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
 	iRet = SessionPeerSend::PacketForward(g_pServer->m_pCacheServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 	if (iRet != 0)
 	{
@@ -349,6 +357,7 @@ void MasterPlayerContext::OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar)
 	}
 
 	memcpy(&m_arrayAvatar[m_iAvatarCount], &newAvatar, sizeof(prdAvatar));
+	m_iAvatarCount++;
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x name=%s send new avatar to gate server"), m_strAccountName, m_iSessionId, newAvatar.m_strAvatarName);
 	iRet = SessionPeerSend::SendData(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);

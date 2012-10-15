@@ -92,7 +92,78 @@ void RegionServerLoop::_OnCommandShutdown()
 	m_iShutdownStatus = START_SHUTDOWN;
 }
 
+bool RegionServerLoop::_PushPlayerToGateServerContext(uint32 iSessionId, RegionPlayerContext* pPlayerContext)
+{
+	uint8 iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
+	uint16 iSessionIndex = ((SessionId*)&iSessionId)->sValue_.session_index_;
+
+	GateServerContext* pContext = m_arrayGateServerContext[iServerId];
+	if (!pContext)
+	{
+		pContext = new GateServerContext;
+		m_arrayGateServerContext[iServerId] = pContext;
+	}
+
+	// if session index is allocated
+	if (pContext->m_arrayPlayerContext[iSessionIndex])
+	{
+		_ASSERT(false);
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x session index is allocated"), iSessionId);
+		return false;
+	}
+
+	pContext->m_arrayPlayerContext[iSessionIndex] = pPlayerContext;
+	return true;
+}
+
+void RegionServerLoop::_PopPlayerFromGateServerContext(uint32 iSessionId)
+{
+	uint8 iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
+	uint16 iSessionIndex = ((SessionId*)&iSessionId)->sValue_.session_index_;
+
+	GateServerContext* pContext = m_arrayGateServerContext[iServerId];
+	if (!pContext)
+	{
+		return;
+	}
+
+	pContext->m_arrayPlayerContext[iSessionIndex] = NULL;
+}
+
 void RegionServerLoop::OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* pCommand)
 {
-	// todo:
+	int32 iRet = 0;
+	uint8 iServerId = 0;
+	uint16 iSessionIndex = 0;
+	GateServerContext* pContext = NULL;
+	RegionPlayerContext* pPlayerContext = NULL;
+
+	iServerId = ((SessionId*)&pCommand->m_iSessionId)->sValue_.serverId_;
+	iSessionIndex = ((SessionId*)&pCommand->m_iSessionId)->sValue_.session_index_;
+
+	// check session id is valid
+	if (iServerId >= SERVERCOUNT_MAX || iSessionIndex >= g_pServerConfig->GetGateSessionIndexMax())
+	{
+		ASSERT(false);
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x serverId=%d or session index=%d invalid"), pCommand->m_iSessionId, iServerId, iSessionIndex);
+		return;
+	}
+
+	// allocate a new player
+	pPlayerContext = m_PlayerContextPool.Allocate();
+	if (!pPlayerContext)
+	{
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x alloc failed"), pCommand->m_iSessionId);
+		return;
+	}
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x alloc a new player"), pCommand->m_strAvatarName, pCommand->m_iAvatarId, pCommand->m_iSessionId);
+
+	m_iPlayerCount++;
+	m_mPlayerContextByAvatarId.insert(std::make_pair(pCommand->m_iAvatarId, pPlayerContext));
+
+	// put player into gate context
+	_PushPlayerToGateServerContext(pCommand->m_iSessionId, pPlayerContext);
+
+	pPlayerContext->OnRegionAllocReq(pCommand->m_iSessionId, pCommand->m_iAvatarId, pCommand->m_strAvatarName);
 }

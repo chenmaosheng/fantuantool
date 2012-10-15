@@ -81,6 +81,8 @@ void CachePlayerContext::OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCrea
 			return;
 		}
 
+		LOG_DBG(LOG_DB, _T("acc=%s sid=%08x add new avatar"), m_strAccountName, m_iSessionId);
+
 		memcpy(&m_arrayAvatar[m_iAvatarCount], &pEvent->m_Avatar, sizeof(prdAvatar));
 		++m_iAvatarCount;
 	}

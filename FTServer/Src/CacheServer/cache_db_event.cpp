@@ -65,6 +65,7 @@ int32 PlayerDBEventAvatarCreate::FireEvent(DBConn* pDBConn)
 	int32 iRet = 0;
 	TCHAR strSqlStatement[SQL_STATEMENT_MAX] = {0};
 	swprintf_s(strSqlStatement, SQL_STATEMENT_MAX, _T("call SP_CreateAvatar('%s', '%s');"), m_strAccountName, m_Avatar.m_strAvatarName);
+	LOG_DBG(LOG_DB, _T("acc=%s sid=%08x sql=%s"), m_strAccountName, m_iSessionId, strSqlStatement);
 
 	iRet = pDBConn->Query(strSqlStatement);
 	if (iRet < 0)

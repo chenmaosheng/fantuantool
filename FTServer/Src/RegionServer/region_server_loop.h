@@ -48,6 +48,10 @@ private:
 	
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();
+	// push player into gate context
+	bool _PushPlayerToGateServerContext(uint32 iSessionId, RegionPlayerContext* pPlayerContext);
+	// pop player from gate context
+	void _PopPlayerFromGateServerContext(uint32 iSessionId);
 
 private:
 	// receive region alloc request
@@ -61,7 +65,7 @@ private:
 	ObjectPool<RegionPlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint64, RegionPlayerContext*> m_mPlayerContextByAvatarId;
 
-	GateServerContext* m_arrayGateServerContext[GATE_SERVER_MAX]; // gate server's context on master server
+	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on master server
 	
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 };

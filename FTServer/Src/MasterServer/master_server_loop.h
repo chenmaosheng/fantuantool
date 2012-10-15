@@ -86,7 +86,7 @@ private:
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContextBySessionId;
 
 	LoginServerContext m_LoginServerContext;
-	GateServerContext* m_arrayGateServerContext[GATE_SERVER_MAX]; // gate server's context on master server
+	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on master server
 	ChannelContext* m_arrayChannelContext[CHANNEL_MAX]; // channel context on master server
 	uint8 m_iChannelCount; // the count of channel
 

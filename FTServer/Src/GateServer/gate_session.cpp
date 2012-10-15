@@ -301,7 +301,7 @@ void GateSession::OnMasterDisconnect()
 	switch(m_StateMachine.GetCurrState())
 	{
 	case SESSION_STATE_ONMASTERDISCONNECT:
-		Connection::Close(m_pConnection);
+		m_pConnection->AsyncDisconnect();
 		break;
 
 	case SESSION_STATE_ONDISCONNECT:

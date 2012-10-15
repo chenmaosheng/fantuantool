@@ -29,7 +29,7 @@ bool Connection::AsyncConnect(PSOCKADDR_IN addr, void* client)
 		}
 		else
 		{
-			SN_LOG_WAR(_T("ConnectEx pending"));
+			SN_LOG_DBG(_T("ConnectEx pending"));
 		}
 	}
 
@@ -58,7 +58,7 @@ void Connection::AsyncDisconnect()
 			}
 			else
 			{
-				SN_LOG_WAR(_T("DisconnectEx pending"));
+				SN_LOG_DBG(_T("DisconnectEx pending"));
 			}
 		}
 
@@ -96,7 +96,7 @@ void Connection::AsyncSend(Context* pContext)
 		}
 		else
 		{
-			SN_LOG_WAR(_T("WSASend Pending"));
+			SN_LOG_DBG(_T("WSASend Pending"));
 		}
 	}
 }
@@ -122,7 +122,7 @@ void Connection::AsyncRecv(Context* pContext)
 		}
 		else
 		{
-			SN_LOG_WAR(_T("WSARecv Pending"));
+			SN_LOG_DBG(_T("WSARecv Pending"));
 		}
 	}
 }

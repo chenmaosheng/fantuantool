@@ -28,6 +28,7 @@ enum
 {
 	LOG_NET,
 	LOG_SERVER,
+	LOG_PLAYER,
 	LOG_DB,
 
 	LOG_TYPE_MAX = LOG_DB + 1,

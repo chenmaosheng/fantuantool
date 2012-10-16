@@ -183,6 +183,14 @@
 				RelativePath="..\..\Src\GenFiles\login_server.ft"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_client.ft"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Src\GenFiles\region_server.ft"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Server Files"

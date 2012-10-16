@@ -204,8 +204,9 @@ void CClientApp::ShowDialog(int iPage)
 		if (!m_pClientDlg)
 		{
 			m_pClientDlg = new CClientDlg(m_pClientLogic);
-			m_pClientDlg->DoModal();
+			m_pClientDlg->Create(IDD_CHAT_DIALOG, m_pClientDlg);
 			m_pMainWnd = m_pClientDlg;
+			m_pClientDlg->ShowWindow(SW_NORMAL);
 		}
 		else
 		{

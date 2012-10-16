@@ -15,6 +15,7 @@ enum
 {
 	COMMAND_ONLOGINREQ = COMMAND_APPSTART+1,		// receive login request
 	COMMAND_ONLOGOUTREQ,		// receive logout request
+	COMMAND_ONREGIONENTERREQ, // receive region enter request
 };
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>
@@ -37,6 +38,20 @@ struct LogicCommandOnLogoutReq : public LogicCommandT<COMMAND_ONLOGOUTREQ>
 	}
 
 	uint32 m_iSessionId;
+};
+
+struct LogicCommandOnRegionEnterReq : public LogicCommandT<COMMAND_ONREGIONENTERREQ>
+{
+	LogicCommandOnRegionEnterReq()
+	{
+		m_iSessionId = 0;
+		m_iServerId = 0;
+		m_strAvatarName[0] = _T('\0');
+	}
+
+	uint32 m_iSessionId;
+	uint8 m_iServerId;
+	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 };
 
 #endif

@@ -134,3 +134,16 @@ int32 PlayerDBEventAvatarSelectData::FireEvent(DBConn* pDBConn)
 	m_iRet = 0;
 	return 0;
 }
+
+PlayerDBEventAvatarEnterRegion::PlayerDBEventAvatarEnterRegion()
+{
+	m_iEventId = DB_EVENT_AVATARENTERREGION;
+	m_iAvatarId = 0;
+	m_strAvatarName[0] = _T('\0');
+}
+
+int32 PlayerDBEventAvatarEnterRegion::FireEvent(DBConn* pDBConn)
+{
+	m_iRet = 0;
+	return 0;
+}

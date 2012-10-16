@@ -14,6 +14,9 @@
 enum
 {
 	COMMAND_ONREGIONALLOCREQ = COMMAND_APPSTART+1,		// receive alloc req
+	COMMAND_ONREGIONRELEASEREQ,
+	COMMAND_ONREGIONENTERREQ,
+	COMMAND_ONREGIONENTERACK,
 };
 
 struct LogicCommandOnRegionAllocReq : public LogicCommandT<COMMAND_ONREGIONALLOCREQ>
@@ -28,6 +31,28 @@ struct LogicCommandOnRegionAllocReq : public LogicCommandT<COMMAND_ONREGIONALLOC
 	uint32 m_iSessionId;
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+};
+
+struct LogicCommandOnRegionEnterReq : public LogicCommandT<COMMAND_ONREGIONENTERREQ>
+{
+	LogicCommandOnRegionEnterReq()
+	{
+		m_iSessionId = 0;
+	}
+
+	uint32 m_iSessionId;
+};
+
+struct LogicCommandOnRegionEnterAck : public LogicCommandT<COMMAND_ONREGIONENTERACK>
+{
+	LogicCommandOnRegionEnterAck()
+	{
+		m_iSessionId = 0;
+		m_iReturn = 0;
+	}
+
+	uint32 m_iSessionId;
+	int32 m_iReturn;
 };
 
 #endif

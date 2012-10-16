@@ -616,6 +616,7 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ChannelSelectAck failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
@@ -623,6 +624,7 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x SendData failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
@@ -634,6 +636,21 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	}
 
 	// todo: notify region server
+	iRet = RegionPeerSend::RegionEnterReq(g_pServer->GetPeerServer(m_iRegionServerId), m_iSessionId);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x RegionEnterReq failed"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x Request enter region"), m_strAccountName, m_iSessionId);
+
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONENTERREQ) != PLAYER_STATE_REGIONENTERREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
 }
 
 

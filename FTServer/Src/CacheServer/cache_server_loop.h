@@ -18,6 +18,7 @@ class DBConnPool;
 class CachePlayerContext;
 struct LogicCommandOnLoginReq;
 struct LogicCommandOnLogoutReq;
+struct LogicCommandOnRegionEnterReq;
 struct LogicCommandPacketForward;
 class DBEvent;
 class PlayerDBEvent;
@@ -57,6 +58,8 @@ private:
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
 	// receive logout request
 	void _OnCommandOnLogoutReq(LogicCommandOnLogoutReq*);
+	// receive region enter request
+	void _OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq*);
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
 

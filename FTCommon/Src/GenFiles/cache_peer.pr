@@ -2,4 +2,5 @@ filter (CachePeer, PEER_FILTER_CACHE)
 {
 	OnLoginReq(uint32 iSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
 	OnLogoutReq(uint32 iSessionId);
+	OnRegionEnterReq(uint32 iSessionId, uint8 iServerId, uint16 iNameLen, TCHAR strAvatarName[iNameLen]);
 }

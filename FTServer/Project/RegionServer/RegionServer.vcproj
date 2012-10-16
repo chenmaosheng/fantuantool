@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\RegionServer\packet_impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\RegionServer\peer_impl.cpp"
 				>
 			</File>
@@ -213,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\RegionServer\region_logic_loop.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\RegionServer\region_player_context.h"
 				>
 			</File>
@@ -235,6 +243,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.cpp"
 				>
 			</File>
@@ -250,6 +266,14 @@
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_send.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Gen Server Files"
@@ -260,6 +284,22 @@
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\ftd_impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_client_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_client_recv.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_server_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_server_send.h"
 				>
 			</File>
 		</Filter>

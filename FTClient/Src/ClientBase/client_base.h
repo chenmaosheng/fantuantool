@@ -83,6 +83,8 @@ public:
 	void AvatarSelectAck(int32 iReturn, const ftdAvatarSelectData &data);
 	// receive channel list
 	void ChannelListNtf(uint8 iChannelCount, const ftdChannelData* arrayChannelData);
+	// receive channel select result
+	void ChannelSelectAck(int32 iReturn);
 
 private:
 	// connection handler

@@ -33,6 +33,20 @@ void CachePeerRecv::OnLogoutReq(PEER_CLIENT pPeerClient, uint32 iSessionId)
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
+void CachePeerRecv::OnRegionEnterReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iServerId, uint16 iNameLen, const TCHAR* strAvatarName)
+{
+	LogicCommandOnRegionEnterReq* pCommand = FT_NEW(LogicCommandOnRegionEnterReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnRegionEnterReq) failed"));
+		return;
+	}
+	pCommand->m_iSessionId = iSessionId;
+	pCommand->m_iServerId = iServerId;
+	wcscpy_s(pCommand->m_strAvatarName, _countof(pCommand->m_strAvatarName), strAvatarName);
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
 void SessionPeerRecv::PacketForward(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iTypeId, uint16 iLen, const char *pBuf)
 {
 	LogicCommandPacketForward* pCommand = FT_NEW(LogicCommandPacketForward);

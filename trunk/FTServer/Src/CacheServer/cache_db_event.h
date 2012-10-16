@@ -17,6 +17,7 @@ enum
 	DB_EVENT_GETAVATARLIST = 1,
 	DB_EVENT_AVATARCREATE,
 	DB_EVENT_AVATARSELECTDATA,
+	DB_EVENT_AVATARENTERREGION,
 };
 
 class PlayerDBEvent : public DBEvent
@@ -66,6 +67,18 @@ public:
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint8 m_iLastChannelId;
+};
+
+class PlayerDBEventAvatarEnterRegion : public PlayerDBEvent
+{
+public:
+	PlayerDBEventAvatarEnterRegion();
+	int32 FireEvent(DBConn*);
+
+public:
+	uint64 m_iAvatarId;
+	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+
 };
 
 #endif

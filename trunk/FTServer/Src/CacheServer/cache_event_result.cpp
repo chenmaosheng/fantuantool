@@ -6,6 +6,7 @@
 #include "ftd_define.h"
 #include "gate_server_send.h"
 #include "session_peer_send.h"
+#include "region_peer_send.h"
 
 #include "db_conn_pool.h"
 
@@ -141,5 +142,24 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		m_pMainLoop->ShutdownPlayer(this);
+	}
+}
+
+void CachePlayerContext::OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvatarEnterRegion* pEvent)
+{
+	int32 iRet = 0;
+	
+	LOG_DBG(LOG_DB, _T("acc=%s sid=%08x name=%s enter region result"), m_strAccountName, m_iSessionId, pEvent->m_strAvatarName);
+
+	if (pEvent->m_iRet == 0)
+	{
+		// todo:
+	}
+
+	iRet = RegionPeerSend::RegionEnterAck(g_pServer->GetPeerServer(m_iRegionServerId), m_iSessionId, pEvent->m_iRet);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x RegionEnterAck failed"), m_strAccountName, m_iSessionId);
+		return;
 	}
 }

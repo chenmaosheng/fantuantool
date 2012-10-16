@@ -26,6 +26,8 @@ struct GateServerContext
 };
 
 struct LogicCommandOnRegionAllocReq;
+struct LogicCommandOnRegionEnterReq;
+struct LogicCommandOnRegionEnterAck;
 class RegionServerLoop : public LogicLoop
 {
 public:
@@ -34,20 +36,23 @@ public:
 	// cstr
 	RegionServerLoop();
 	
-	// initialize master server loop
+	// initialize region server loop
 	int32 Init();
-	// destroy master server loop
+	// destroy region server loop
 	void Destroy();
-	// start master server loop
+	// start region server loop
 	int32 Start();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
-	// shutdown one player in master server
+	// shutdown one player in region server
 	void ShutdownPlayer(RegionPlayerContext*);
 	// add player to finalizing queue
 	void AddPlayerToFinalizingQueue(RegionPlayerContext*);
 	// totally delete a player
 	void DeletePlayer(RegionPlayerContext*);
+	// get player by sessionid/avatarid
+	RegionPlayerContext* GetPlayerContextBySessionId(uint32 iSessionId);
+	RegionPlayerContext* GetPlayerContextByAvatarId(uint64 iAvatarId);
 
 private:
 	DWORD _Loop();
@@ -61,7 +66,11 @@ private:
 
 private:
 	// receive region alloc request
-	void OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq*);
+	void _OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq*);
+	// receive region enter request
+	void _OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq*);
+	// receive region enter ack
+	void _OnCommandOnRegionEnterAck(LogicCommandOnRegionEnterAck*);
 
 private:
 	int32 m_iShutdownStatus;
@@ -71,7 +80,7 @@ private:
 	ObjectPool<RegionPlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint64, RegionPlayerContext*> m_mPlayerContextByAvatarId;
 
-	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on master server
+	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on region server
 	
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 };

@@ -123,6 +123,37 @@ void RegionServerLoop::DeletePlayer(RegionPlayerContext* pPlayerContext)
 	m_PlayerContextPool.Free(pPlayerContext);
 }
 
+RegionPlayerContext* RegionServerLoop::GetPlayerContextBySessionId(uint32 iSessionId)
+{
+	uint8 iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
+	uint16 iSessionIndex = ((SessionId*)&iSessionId)->sValue_.session_index_;
+
+	if (iServerId >= SERVERCOUNT_MAX ||
+		iSessionIndex > g_pServerConfig->GetGateSessionIndexMax())
+	{
+		return NULL;
+	}
+
+	GateServerContext* pContext = m_arrayGateServerContext[iServerId];
+	if (!pContext)
+	{
+		return NULL;
+	}
+
+	return pContext->m_arrayPlayerContext[iSessionIndex];
+}
+
+RegionPlayerContext* RegionServerLoop::GetPlayerContextByAvatarId(uint64 iAvatarId)
+{
+	stdext::hash_map<uint64, RegionPlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.find(iAvatarId);
+	if (mit != m_mPlayerContextByAvatarId.end())
+	{
+		return mit->second;
+	}
+
+	return NULL;
+}
+
 
 DWORD RegionServerLoop::_Loop()
 {
@@ -136,7 +167,21 @@ bool RegionServerLoop::_OnCommand(LogicCommand* pCommand)
 	case COMMAND_ONREGIONALLOCREQ:
 		if (m_iShutdownStatus < START_SHUTDOWN)
 		{
-			OnCommandOnRegionAllocReq((LogicCommandOnRegionAllocReq*)pCommand);
+			_OnCommandOnRegionAllocReq((LogicCommandOnRegionAllocReq*)pCommand);
+		}
+		break;
+
+	case COMMAND_ONREGIONENTERREQ:
+		if (m_iShutdownStatus < START_SHUTDOWN)
+		{
+			_OnCommandOnRegionEnterReq((LogicCommandOnRegionEnterReq*)pCommand);
+		}
+		break;
+
+	case COMMAND_ONREGIONENTERACK:
+		if (m_iShutdownStatus < START_SHUTDOWN)
+		{
+			_OnCommandOnRegionEnterAck((LogicCommandOnRegionEnterAck*)pCommand);
 		}
 		break;
 
@@ -190,7 +235,7 @@ void RegionServerLoop::_PopPlayerFromGateServerContext(uint32 iSessionId)
 	pContext->m_arrayPlayerContext[iSessionIndex] = NULL;
 }
 
-void RegionServerLoop::OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* pCommand)
+void RegionServerLoop::_OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* pCommand)
 {
 	int32 iRet = 0;
 	uint8 iServerId = 0;
@@ -226,4 +271,35 @@ void RegionServerLoop::OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* p
 	_PushPlayerToGateServerContext(pCommand->m_iSessionId, pPlayerContext);
 
 	pPlayerContext->OnRegionAllocReq(pCommand->m_iSessionId, pCommand->m_iAvatarId, pCommand->m_strAvatarName);
+}
+
+void RegionServerLoop::_OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq* pCommand)
+{
+	RegionPlayerContext* pPlayerContext = GetPlayerContextBySessionId(pCommand->m_iSessionId);
+	if (!pPlayerContext)
+	{
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x can't find player"), pCommand->m_iSessionId);
+		return;
+	}
+
+	pPlayerContext->OnRegionEnterReq();
+}
+
+void RegionServerLoop::_OnCommandOnRegionEnterAck(LogicCommandOnRegionEnterAck* pCommand)
+{
+	RegionPlayerContext* pPlayerContext = GetPlayerContextBySessionId(pCommand->m_iSessionId);
+	if (!pPlayerContext)
+	{
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x can't find player"), pCommand->m_iSessionId);
+		return;
+	}
+
+	if (pCommand->m_iReturn != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("sid=%08x region enter failed"), pCommand->m_iSessionId);
+		ShutdownPlayer(pPlayerContext);
+		return;
+	}
+
+	pPlayerContext->OnRegionEnterAck();
 }

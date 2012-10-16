@@ -407,7 +407,15 @@ void ClientBase::ChannelListNtf(uint8 iChannelCount, const ftdChannelData* array
 	LeaveCriticalSection(&m_csClientEvent);
 }
 
-
+void ClientBase::ChannelSelectAck(int32 iReturn)
+{
+	LOG_DBG(LOG_SERVER, _T("ChannelSelectAck"));
+	ClientEventChannelSelect* newEvent = FT_NEW(ClientEventChannelSelect);
+	newEvent->m_iReturn = iReturn;
+	EnterCriticalSection(&m_csClientEvent);
+	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
+}
 
 
 

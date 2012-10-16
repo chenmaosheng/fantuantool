@@ -1,0 +1,4 @@
+filter (RegionServer, SERVER_FILTER_REGION)
+{
+	ServerTimeNtf(uint32 iServerTime);
+}

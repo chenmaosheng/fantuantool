@@ -177,6 +177,11 @@ void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
 
 	case DB_EVENT_AVATARSELECTDATA:
 		pCachePlayerContext->OnPlayerEventAvatarSelectResult((PlayerDBEventAvatarSelectData*)pEvent);
+		break;
+		
+	case DB_EVENT_AVATARENTERREGION:
+		pCachePlayerContext->OnPlayerEventAvatarEnterRegionResult((PlayerDBEventAvatarEnterRegion*)pEvent);
+		break;
 
 	default:
 		break;
@@ -198,6 +203,10 @@ bool CacheServerLoop::_OnCommand(LogicCommand* pCommand)
 
 	case COMMAND_ONLOGOUTREQ:
 		_OnCommandOnLogoutReq((LogicCommandOnLogoutReq*)pCommand);
+		break;
+
+	case COMMAND_ONREGIONENTERREQ:
+		_OnCommandOnRegionEnterReq((LogicCommandOnRegionEnterReq*)pCommand);
 		break;
 
 	case COMMAND_PACKETFORWARD:
@@ -238,6 +247,16 @@ void CacheServerLoop::_OnCommandOnLogoutReq(LogicCommandOnLogoutReq* pCommand)
 	{
 		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive logout request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
 		mit->second->OnLogoutReq();
+	}
+}
+
+void CacheServerLoop::_OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq* pCommand)
+{
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iServerId);
+	if (mit != m_mPlayerContextBySessionId.end())
+	{
+		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive region enter request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
+		mit->second->OnRegionEnterReq(pCommand->m_iServerId, pCommand->m_strAvatarName);
 	}
 }
 

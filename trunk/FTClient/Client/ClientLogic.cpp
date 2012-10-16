@@ -96,6 +96,13 @@ void ClientLogic::OnIncomingEvent()
 			};
 			break;
 
+		case EVENT_CHANNEL_SELECT:
+			{
+				ClientEventChannelSelect* pEventChannelSelect = (ClientEventChannelSelect*)pEvent;
+				theApp.TriggerPageEvent(CHANNEL_REQUEST_EVENT);
+			}
+			break;
+
 		case EVENT_AVATAR_LOGOUT:
 			theApp.TriggerPageEvent(LOGOUT_SUCCESS_EVENT);
 			break;

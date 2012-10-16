@@ -58,11 +58,13 @@ public:
 public:	// receive packet handler
 	void OnLoginReq(uint32 iSessionId, TCHAR* strAccountName);
 	void OnLogoutReq();
+	void OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName);
 
 public: // receive db event result
 	void OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatarList*);
 	void OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCreate*);
 	void OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSelectData*);
+	void OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvatarEnterRegion*);
 
 private:
 	// initialize state machine
@@ -77,6 +79,7 @@ public:
 	// avatar info list
 	uint8 m_iAvatarCount;
 	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
+	uint8 m_iRegionServerId;
 
 	static CacheServerLoop* m_pMainLoop;
 

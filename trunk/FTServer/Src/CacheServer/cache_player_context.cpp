@@ -32,6 +32,7 @@ void CachePlayerContext::Clear()
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 	m_iAvatarCount = 0;
 	m_bFinalizing = false;
+	m_iRegionServerId = 0;
 }
 
 int32 CachePlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -90,6 +91,10 @@ void CachePlayerContext::OnLogoutReq()
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLogoutReq"), m_strAccountName, m_iSessionId);
 
 	m_pMainLoop->ShutdownPlayer(this);
+}
+
+void CachePlayerContext::OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName)
+{
 }
 
 void CachePlayerContext::OnAvatarListReq()

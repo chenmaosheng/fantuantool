@@ -16,7 +16,7 @@ LoginServerLoop::~LoginServerLoop()
 
 int32 LoginServerLoop::Init()
 {
-	PERF_PROFILER;
+	//PERF_PROFILER;
 
 	int32 iRet = 0;
 
@@ -38,7 +38,7 @@ void LoginServerLoop::Destroy()
 
 int32 LoginServerLoop::Start()
 {
-	PERF_PROFILER;
+	//PERF_PROFILER;
 
 	int32 iRet = 0;
 

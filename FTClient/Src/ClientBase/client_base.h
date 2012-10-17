@@ -85,6 +85,8 @@ public:
 	void ChannelListNtf(uint8 iChannelCount, const ftdChannelData* arrayChannelData);
 	// receive channel select result
 	void ChannelSelectAck(int32 iReturn);
+	// receive server time
+	void ServerTimeNtf(uint32 iServerTime);
 
 private:
 	// connection handler
@@ -114,6 +116,7 @@ private:
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint8 m_iLastChannelId;
+	uint32 m_iServerTime;
 
 	std::list<ClientEvent*> m_ClientEventList;
 	CRITICAL_SECTION m_csClientEvent;

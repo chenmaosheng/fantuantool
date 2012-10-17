@@ -47,6 +47,10 @@ void GatePeerRecv::RegionBindReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uin
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
+void GatePeerRecv::BroadcastData(PEER_CLIENT pPeerClient, uint16 iSessionCount, const uint32* arraySessionId, uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+}
+
 void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iReason)
 {
 	LogicCommandDisconnect* pCommand = FT_NEW(LogicCommandDisconnect);
@@ -104,6 +108,31 @@ void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
 {

@@ -293,6 +293,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.cpp"
 				>
 			</File>

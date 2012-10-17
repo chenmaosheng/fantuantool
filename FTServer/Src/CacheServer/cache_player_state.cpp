@@ -65,5 +65,14 @@ void CachePlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONAVATARLISTREQ, PLAYER_STATE_ONAVATARLISTREQ);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONENTERREQ, PLAYER_STATE_ONREGIONENTERREQ);
 	pState->AddTransition(PLAYER_EVENT_ONLOGOUTREQ, PLAYER_STATE_ONLOGOUTREQ);
+
+	// when state is receive region enter req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONREGIONENTERREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
 }

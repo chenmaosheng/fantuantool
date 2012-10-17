@@ -146,6 +146,7 @@ void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
 	case DB_EVENT_GETAVATARLIST:
 	case DB_EVENT_AVATARCREATE:
 	case DB_EVENT_AVATARSELECTDATA:
+	case DB_EVENT_AVATARENTERREGION:
 		_OnPlayerEventResult((PlayerDBEvent*)pEvent);
 		break;
 
@@ -243,21 +244,27 @@ void CacheServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 void CacheServerLoop::_OnCommandOnLogoutReq(LogicCommandOnLogoutReq* pCommand)
 {
 	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
-	if (mit != m_mPlayerContextBySessionId.end())
+	if (mit == m_mPlayerContextBySessionId.end())
 	{
-		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive logout request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
-		mit->second->OnLogoutReq();
+		LOG_ERR(LOG_SERVER, _T("sid=%08x can't find player"), pCommand->m_iSessionId);
+		return;
 	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive logout request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
+	mit->second->OnLogoutReq();
 }
 
 void CacheServerLoop::_OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq* pCommand)
 {
-	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iServerId);
-	if (mit != m_mPlayerContextBySessionId.end())
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
 	{
-		LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive region enter request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
-		mit->second->OnRegionEnterReq(pCommand->m_iServerId, pCommand->m_strAvatarName);
+		LOG_ERR(LOG_SERVER, _T("sid=%08x can't find player"), pCommand->m_iSessionId);
+		return;
 	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive region enter request"), mit->second->m_strAccountName, pCommand->m_iSessionId);
+	mit->second->OnRegionEnterReq(pCommand->m_iServerId, pCommand->m_strAvatarName);
 }
 
 void CacheServerLoop::_OnCommandPacketForward(LogicCommandPacketForward* pCommand)

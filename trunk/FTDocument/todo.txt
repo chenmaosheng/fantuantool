@@ -12,6 +12,7 @@
 12, profiler
 13, master server can't find PacketForward
 14, client disconnection state error
+15, use srw lock instead of critical section
 
 client
 1, rpc->server, with parameters

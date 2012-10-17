@@ -7,6 +7,7 @@
 #include "cache_peer_send.h"
 #include "region_server_send.h"
 #include "session_peer_send.h"
+#include "gate_peer_send.h"
 #include "session.h"
 
 RegionServerLoop* RegionPlayerContext::m_pMainLoop = NULL;
@@ -86,7 +87,11 @@ void RegionPlayerContext::OnRegionEnterReq()
 {
 	int32 iRet = 0;
 
-	// todo: check if shutdown
+	// check if shutdown
+	if (m_bFinalizing)
+	{
+		return;
+	}
 
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x receive region enter request"), m_strAvatarName, m_iAvatarId, m_iSessionId);
 
@@ -117,7 +122,11 @@ void RegionPlayerContext::OnRegionEnterAck()
 {
 	int32 iRet = 0;
 
-	// todo: check if shutdown
+	// check if shutdown
+	if (m_bFinalizing)
+	{
+		return;
+	}
 
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x receive region enter ack"), m_strAvatarName, m_iAvatarId, m_iSessionId);
 
@@ -125,6 +134,15 @@ void RegionPlayerContext::OnRegionEnterAck()
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONENTERACK) != PLAYER_STATE_ONREGIONENTERACK)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	// send region server info to related gate server
+	iRet = GatePeerSend::RegionBindReq(m_pGateServer, m_iSessionId, g_pServerConfig->m_iServerId);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionBindReq failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
 
@@ -157,7 +175,11 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	int32 iRet = 0;
 	uint32 iCurrTime = m_pMainLoop->GetCurrTime();
 
-	// todo: check if shutdown
+	// check if shutdown
+	if (m_bFinalizing)
+	{
+		return;
+	}
 
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x receive client time req"), m_strAvatarName, m_iAvatarId, m_iSessionId);
 
@@ -190,6 +212,31 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 	}
+}
+
+void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
+{
+	int32 iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+
+	iRet = WChar2Char(m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		_ASSERT( false && "WChar2Char failed" );
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x WChar2Char failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		return;
+	}
+	strUtf8[iRet] = '\0';
+
+	iRet = RegionServerSend::RegionChatNtf(this, m_iAvatarId, strUtf8, strMessage);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionChatNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 }
 
 

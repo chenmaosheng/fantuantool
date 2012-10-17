@@ -15,6 +15,7 @@ enum
 {
 	COMMAND_GATEALLOCREQ = COMMAND_APPSTART+1,
 	COMMAND_GATERELEASEREQ,
+	COMMAND_REGIONBINDREQ,
 };
 
 
@@ -40,6 +41,18 @@ struct LogicCommandGateReleaseReq : public LogicCommandT<COMMAND_GATERELEASEREQ>
 
 	uint32 m_iLoginSessionId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
+};
+
+struct LogicCommandRegionBindReq : public LogicCommandT<COMMAND_REGIONBINDREQ>
+{
+	LogicCommandRegionBindReq()
+	{
+		m_iSessionId = 0;
+		m_iRegionServerId = 0;
+	}
+
+	uint32 m_iSessionId;
+	uint8 m_iRegionServerId;
 };
 
 #endif

@@ -49,11 +49,13 @@ public:
 	void Clear();
 	// save need send data to buffer, delay to send by some means, only send to client
 	int32 DelaySendData(uint16 iTypeId, uint16 iLen, const char* pBuf);
-
+	
 	void OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, const TCHAR* strAvatarName);
 	void OnRegionEnterReq();
 	void OnRegionEnterAck();
 	void OnClientTimeReq(uint32 iClientTime);
+
+	void OnRegionChatReq(const char* strMessage);
 
 private:
 	// initialize state machine

@@ -190,6 +190,10 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandGateReleaseReq((LogicCommandGateReleaseReq*)pCommand);
 		break;
 
+	case COMMAND_REGIONBINDREQ:
+		_OnCommandRegionBindReq((LogicCommandRegionBindReq*)pCommand);
+		break;
+
 	default:
 		return super::_OnCommand(pCommand);
 		break;
@@ -284,4 +288,16 @@ void GateServerLoop::_OnCommandGateReleaseReq(LogicCommandGateReleaseReq* pComma
 
 	// in theory, will not arrive here, because session will receive ondisconnect first and then close the session 
 	mit->second->OnGateReleaseReq();
+}
+
+void GateServerLoop::_OnCommandRegionBindReq(LogicCommandRegionBindReq* pCommand)
+{
+	GateSession* pSession = GetSession(pCommand->m_iSessionId);
+	if (!pSession)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x can't find session"), pCommand->m_iSessionId);
+		return;
+	}
+
+	pSession->OnRegionBindReq(pCommand->m_iRegionServerId);
 }

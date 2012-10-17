@@ -11,6 +11,7 @@
 #include "log_device_file.h"
 #include "minidump.h"
 #include "memory_pool.h"
+#include "auto_locker.h"
 // logic
 #include "logic_loop.h"
 #include "session.h"
@@ -64,6 +65,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Server"));
 	m_pLogSystem->SetLogTypeString(LOG_PLAYER, _T("Player"));
 	m_pLogSystem->SetLogTypeString(LOG_DB, _T("DB"));
+	m_pLogSystem->SetLogTypeString(LOG_PROFILER, _T("Profiler"));
 
 	LOG_STT(LOG_SERVER, _T("Initialize log system success"));
 
@@ -306,4 +308,23 @@ int32 ServerBase::StartPeerServer(uint32 iIP, uint16 iPort)
 void ServerBase::StopPeerServer()
 {
 	StarNet::StopPeerServer();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void FuncProfiler::Print()
+{
+	AutoLocker locker(&PerfCounter::Instance()->m_csPerfCounter);
+	LOG_DBG(LOG_PROFILER, _T("%s() time: %.8f count: %d"), m_strFuncName, m_iTimeCost/(double)PerfCounter::Instance()->GetFrequency(), m_iCallCount);
 }

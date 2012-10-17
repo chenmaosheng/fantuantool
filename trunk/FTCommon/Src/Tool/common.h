@@ -33,6 +33,7 @@
 #define CHANNELNAME_MAX		32
 #define CHANNEL_MAX			16
 #define INVALID_CHANNEL_ID	0xff
+#define CHATMESSAGE_MAX		512
 
 // todo: temp data
 const static char g_LoggedInNtf[] = "LoggedIn";

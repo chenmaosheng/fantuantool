@@ -30,6 +30,7 @@ enum
 	LOG_SERVER,
 	LOG_PLAYER,
 	LOG_DB,
+	LOG_PROFILER,
 
 	LOG_TYPE_MAX = LOG_DB + 1,
 };

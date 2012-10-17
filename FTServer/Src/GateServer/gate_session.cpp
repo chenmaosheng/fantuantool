@@ -29,6 +29,7 @@ void GateSession::Clear()
 	m_strAccountName[0] = _T('\0');
 	m_bTempSession = true;
 	m_bFinalizing = false;
+	m_pRegionServer = NULL;
 }
 
 int32 GateSession::OnConnection(ConnID connId)
@@ -145,6 +146,18 @@ void GateSession::OnGateReleaseReq()
 	}
 
 	m_pMainLoop->CloseSession(this);
+}
+
+void GateSession::OnRegionBindReq(uint8 iRegionServerId)
+{
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnRegionBindReq"), m_strAccountName, m_iSessionId);
+
+	m_pRegionServer = g_pServer->GetPeerServer(iRegionServerId);
 }
 
 void GateSession::Clone(GateSession* pSession)

@@ -10,6 +10,7 @@
 #define _H_SERVER_COMMON
 
 #include "starnet_common.h"
+#include "perf_counter.h"
 
 #define PEER_SERVER_MAX 32		// max of peer server connected
 #define SERVERNAME_MAX	32

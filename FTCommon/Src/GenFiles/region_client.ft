@@ -1,4 +1,6 @@
 filter (RegionClient, CLIENT_FILTER_REGION)
 {
 	ClientTimeReq(uint32 iClientTime);
+	
+	RegionChatReq(string strMessage);
 }

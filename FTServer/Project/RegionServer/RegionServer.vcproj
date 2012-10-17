@@ -251,6 +251,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_peer_send.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.cpp"
 				>
 			</File>

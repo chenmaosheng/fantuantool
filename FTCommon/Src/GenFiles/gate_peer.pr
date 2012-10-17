@@ -2,4 +2,8 @@ filter (GatePeer, PEER_FILTER_GATE)
 {
 	GateAllocReq(uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
 	GateReleaseReq(uint32 iLoginSessionId, uint16 iAccountNameLen, TCHAR strAccountName[iAccountNameLen]);
+	
+	RegionBindReq(uint32 iSessionId, uint8 iRegionServerId);
+	
+	BroadcastData(uint16 iSessionCount, uint32 arraySessionId[iSessionCount], uint16 iTypeId, uint16 iLen, char pBuf[iLen]);
 }

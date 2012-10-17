@@ -282,6 +282,14 @@
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_client_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\region_client_recv.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

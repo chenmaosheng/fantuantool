@@ -188,6 +188,8 @@ uint32 WINAPI LogicLoop::_ThreadMain(PVOID pParam)
 		// call logic loop
 		dwSleepTime = pLogicLoop->_Loop();
 
+		PerfCounter::Instance()->Print();
+
 		LeaveCriticalSection(&pLogicLoop->m_csLogic);
 	}
 

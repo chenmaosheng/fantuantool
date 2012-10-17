@@ -7,7 +7,6 @@
 
 void GatePeerRecv::GateAllocReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
-	uint32 iRet = 0;
 	LogicCommandGateAllocReq* pCommand = FT_NEW(LogicCommandGateAllocReq);
 	if (!pCommand)
 	{
@@ -22,7 +21,6 @@ void GatePeerRecv::GateAllocReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId,
 
 void GatePeerRecv::GateReleaseReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
-	uint32 iRet = 0;
 	LogicCommandGateReleaseReq* pCommand = FT_NEW(LogicCommandGateReleaseReq);
 	if (!pCommand)
 	{
@@ -32,6 +30,20 @@ void GatePeerRecv::GateReleaseReq(PEER_CLIENT pPeerClient, uint32 iLoginSessionI
 
 	pCommand->m_iLoginSessionId = iLoginSessionId;
 	wcscpy_s(pCommand->m_strAccountName, _countof(pCommand->m_strAccountName), strAccountName);
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void GatePeerRecv::RegionBindReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iRegionServerId)
+{
+	LogicCommandRegionBindReq* pCommand = FT_NEW(LogicCommandRegionBindReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateReleaseReq) failed"));
+		return;
+	}
+
+	pCommand->m_iSessionId = iSessionId;
+	pCommand->m_iRegionServerId = iRegionServerId;
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 

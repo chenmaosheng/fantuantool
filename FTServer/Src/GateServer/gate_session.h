@@ -48,6 +48,7 @@ public:
 	void OnMasterDisconnect();
 	void OnGateAllocReq(uint32 iLoginSessionId, const TCHAR* strAccountName);
 	void OnGateReleaseReq();
+	void OnRegionBindReq(uint8 iRegionServerId);
 	// clone session from source
 	void Clone(GateSession* pSession);
 	// finish session transfered
@@ -70,6 +71,9 @@ public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	uint32 m_iLoginSessionId;
 	bool m_bFinalizing;
+
+	// each session may have their own region server
+	PEER_SERVER m_pRegionServer;
 
 	// restore delayed send data, only for single thread condition
 	static uint16 m_iDelayTypeId;

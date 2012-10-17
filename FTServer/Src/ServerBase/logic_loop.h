@@ -39,7 +39,7 @@ public:
 	// hang up the thread
 	virtual void Join();
 	
-	virtual void PushCommand(LogicCommand*);
+	void PushCommand(LogicCommand*);
 	void PushShutdownCommand();
 
 	// get current time from server start

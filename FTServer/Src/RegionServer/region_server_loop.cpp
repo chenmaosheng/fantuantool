@@ -39,6 +39,12 @@ int32 RegionServerLoop::Init()
 	}
 
 	RegionPlayerContext::m_pMainLoop = this;
+
+	// initialize broadcast helper
+	for(uint32 i = 0; i < SERVERCOUNT_MAX; ++i)
+	{
+		m_BroadcastHelper.SetGateServer(i, g_pServer->GetPeerServer(i));
+	}
 	
 	return 0;
 }
@@ -152,6 +158,16 @@ RegionPlayerContext* RegionServerLoop::GetPlayerContextByAvatarId(uint64 iAvatar
 	}
 
 	return NULL;
+}
+
+void RegionServerLoop::BroadcastData(uint16 iTypeId, uint16 iLen, const char* pBuf)
+{
+	m_BroadcastHelper.Clear();
+	for (stdext::hash_map<uint64, RegionPlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.begin(); mit != m_mPlayerContextByAvatarId.end(); ++mit)
+	{
+		m_BroadcastHelper.AddGateSession(mit->second->m_iSessionId);
+	}
+	m_BroadcastHelper.SendData(iTypeId, iLen, pBuf);
 }
 
 

@@ -18,6 +18,7 @@
 struct LogicCommandGateAllocReq;
 struct LogicCommandDisconnect;
 struct LogicCommandGateReleaseReq;
+struct LogicCommandRegionBindReq;
 class GateSession;
 class GateServerLoop : public SessionServerLoop<GateSession>
 {
@@ -53,6 +54,7 @@ private:
 	
 	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);
 	void _OnCommandGateReleaseReq(LogicCommandGateReleaseReq*);
+	void _OnCommandRegionBindReq(LogicCommandRegionBindReq*);
 
 private:
 	stdext::hash_map<std::wstring, GateSession*> m_mSessionMapByName;

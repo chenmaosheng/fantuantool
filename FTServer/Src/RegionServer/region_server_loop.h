@@ -11,6 +11,7 @@
 
 #include "logic_loop.h"
 #include "object_pool.h"
+#include "server_helper.h"
 #include <queue>
 #include <hash_map>
 
@@ -54,6 +55,9 @@ public:
 	RegionPlayerContext* GetPlayerContextBySessionId(uint32 iSessionId);
 	RegionPlayerContext* GetPlayerContextByAvatarId(uint64 iAvatarId);
 
+	// todo: temp function
+	void BroadcastData(uint16 iTypeId, uint16 iLen, const char* pBuf);
+
 private:
 	DWORD _Loop();
 	
@@ -83,6 +87,8 @@ private:
 	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on region server
 	
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
+
+	BroadcastHelper m_BroadcastHelper;
 };
 
 #endif

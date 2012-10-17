@@ -119,8 +119,8 @@ PEER_SERVER ServerBase::GetPeerServer(uint8 iServerId)
 	uint16 iPort = 0;
 	ServerConfigItem* pConfigItem = NULL;
 
-	_ASSERT(iServerId < PEER_SERVER_MAX);
-	if (iServerId >= PEER_SERVER_MAX)
+	_ASSERT(iServerId < SERVERCOUNT_MAX);
+	if (iServerId >= SERVERCOUNT_MAX)
 	{
 		LOG_ERR(LOG_SERVER, _T("ServerId is invalid, id=%d"), iServerId);
 		return NULL;

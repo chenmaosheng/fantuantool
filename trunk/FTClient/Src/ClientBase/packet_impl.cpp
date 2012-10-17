@@ -1,5 +1,6 @@
 #include "login_server_recv.h"
 #include "gate_server_recv.h"
+#include "region_server_recv.h"
 #include "ftd_define.h"
 #include "client_base.h"
 
@@ -47,4 +48,10 @@ void GateServerRecv::ChannelSelectAck(void *pClient, int32 iReturn)
 {
 	ClientBase* pClientBase = (ClientBase*)pClient;
 	pClientBase->ChannelSelectAck(iReturn);
+}
+
+void RegionServerRecv::ServerTimeNtf(void *pClient, uint32 iServerTime)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->ServerTimeNtf(iServerTime);
 }

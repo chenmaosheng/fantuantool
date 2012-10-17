@@ -15,6 +15,7 @@
 
 #include "login_client_send.h"
 #include "gate_client_send.h"
+#include "region_client_send.h"
 
 ClientConfig* g_pClientConfig = NULL;
 ClientBase* g_pClientBase = NULL;
@@ -46,6 +47,7 @@ void ClientBase::Clear()
 	m_iAvatarId = 0;
 	m_strAvatarName[0] = _T('\0');
 	m_iLastChannelId = 0;
+	m_iServerTime = 0;
 
 	m_ClientEventList.clear();
 
@@ -410,11 +412,22 @@ void ClientBase::ChannelListNtf(uint8 iChannelCount, const ftdChannelData* array
 void ClientBase::ChannelSelectAck(int32 iReturn)
 {
 	LOG_DBG(LOG_SERVER, _T("ChannelSelectAck"));
-	ClientEventChannelSelect* newEvent = FT_NEW(ClientEventChannelSelect);
+	/*ClientEventChannelSelect* newEvent = FT_NEW(ClientEventChannelSelect);
 	newEvent->m_iReturn = iReturn;
 	EnterCriticalSection(&m_csClientEvent);
 	m_ClientEventList.push_back(newEvent);
-	LeaveCriticalSection(&m_csClientEvent);
+	LeaveCriticalSection(&m_csClientEvent);*/
+}
+
+void ClientBase::ServerTimeNtf(uint32 iServerTime)
+{
+	uint32 iCurrTime = timeGetTime();
+	if (m_iServerTime == 0)
+	{
+		RegionClientSend::ClientTimeReq(this, iCurrTime);
+	}
+	
+	m_iServerTime = iServerTime;
 }
 
 

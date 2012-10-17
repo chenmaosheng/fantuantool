@@ -95,6 +95,33 @@ void CachePlayerContext::OnLogoutReq()
 
 void CachePlayerContext::OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName)
 {
+	int32 iRet = 0;
+	PlayerDBEventAvatarEnterRegion* pDBEvent = NULL;
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONENTERREQ) != PLAYER_STATE_ONREGIONENTERREQ)
+	{
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive region enter request"), m_strAccountName, m_iSessionId);
+
+	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarEnterRegion>();
+	if (!pDBEvent)
+	{
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+
+		// todo:
+		return;
+	}
+
+	// record region server id
+	m_iRegionServerId = iServerId;
+
+	pDBEvent->m_iSessionId = m_iSessionId;
+	wcscpy_s(pDBEvent->m_strAvatarName, _countof(pDBEvent->m_strAvatarName), strAvatarName);
+	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }
 
 void CachePlayerContext::OnAvatarListReq()
@@ -102,6 +129,7 @@ void CachePlayerContext::OnAvatarListReq()
 	int32 iRet = 0;
 	PlayerDBEventGetAvatarList* pDBEvent = NULL;
 
+	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTREQ) != PLAYER_STATE_ONAVATARLISTREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());

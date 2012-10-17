@@ -72,7 +72,7 @@ private:
 	Acceptor* m_pAcceptor;
 	Worker* m_pWorker;
 	ContextPool* m_pContextPool;
-	PEER_SERVER m_arrayPeerServer[PEER_SERVER_MAX];
+	PEER_SERVER m_arrayPeerServer[SERVERCOUNT_MAX];
 
 	ServerConfig* m_pServerConfig;
 	Log* m_pLogSystem;

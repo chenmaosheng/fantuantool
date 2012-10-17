@@ -19,6 +19,7 @@ RegionPlayerContext::RegionPlayerContext() :
 m_StateMachine(PLAYER_STATE_NONE)
 {
 	Clear();
+	_InitStateMachine();
 }
 
 RegionPlayerContext::~RegionPlayerContext()
@@ -68,7 +69,7 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 
 	m_pGateServer = g_pServer->GetPeerServer(iServerId);
 	
-	iRet = MasterPeerSend::OnRegionAllocAck(g_pServer->m_pMasterServer, m_iSessionId, iServerId, 0);
+	iRet = MasterPeerSend::OnRegionAllocAck(g_pServer->m_pMasterServer, m_iSessionId, g_pServerConfig->m_iServerId, 0);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAllocAck failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);

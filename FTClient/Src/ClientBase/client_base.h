@@ -14,6 +14,7 @@
 #include "packet.h"
 #include "event.h"
 #include <list>
+#include <hash_map>
 
 class Worker;
 class ContextPool;
@@ -22,6 +23,7 @@ class ClientConfig;
 class ClientLoop;
 struct ClientCommand;
 struct ClientEvent;
+class Avatar;
 class ClientBase
 {
 public:
@@ -87,6 +89,12 @@ public:
 	void ChannelSelectAck(int32 iReturn);
 	// receive server time
 	void ServerTimeNtf(uint32 iServerTime);
+	// receive avatar enter ntf
+	void RegionAvatarEnterNtf(uint64 iAvatarId, const char* strAvatarName);
+	// receive avatar leave ntf
+	void RegionAvatarLeaveNtf(uint64 iAvatarId);
+	// receive region chat
+	void RegionChatNtf(uint64 iAvatarId, const char* strMessage);
 
 private:
 	// connection handler
@@ -117,6 +125,8 @@ private:
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint8 m_iLastChannelId;
 	uint32 m_iServerTime;
+
+	stdext::hash_map<uint64, Avatar*> m_mAvatarListById;
 
 	std::list<ClientEvent*> m_ClientEventList;
 	CRITICAL_SECTION m_csClientEvent;

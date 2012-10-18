@@ -92,5 +92,13 @@ void RegionPlayerContext::_InitStateMachine()
 		return;
 	}
 
-	// todo: finish time synchronization
+	pState->AddTransition(PLAYER_EVENT_INITAVATARNTF, PLAYER_STATE_INITAVATARNTF);
+
+	// when state is send initial avatar data
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_INITAVATARNTF);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
 }

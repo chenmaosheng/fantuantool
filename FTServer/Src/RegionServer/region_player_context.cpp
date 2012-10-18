@@ -213,6 +213,43 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 	}
+
+	//_SendInitialAvatarData();
+	_BroadcastAvatarData();
+	_SendRegionAvatars();
+}
+
+void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext)
+{
+	int iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x send avatar enter"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	iRet = WChar2Char(pPlayerContext->m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		_ASSERT( false && "WChar2Char failed" );
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x WChar2Char failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		return;
+	}
+	strUtf8[iRet] = '\0';
+
+	iRet = RegionServerSend::RegionAvatarEnterNtf(this, pPlayerContext->m_iAvatarId, strUtf8);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarEnterNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
 }
 
 void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
@@ -229,7 +266,7 @@ void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
 	}
 	strUtf8[iRet] = '\0';
 
-	iRet = RegionServerSend::RegionChatNtf(this, m_iAvatarId, strUtf8, strMessage);
+	iRet = RegionServerSend::RegionChatNtf(this, m_iAvatarId, strMessage);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionChatNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -238,6 +275,71 @@ void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
 	}
 
 	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+}
+
+void RegionPlayerContext::_SendInitialAvatarData()
+{
+	int iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x send initial avatar data"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	iRet = WChar2Char(m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		_ASSERT( false && "WChar2Char failed" );
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x WChar2Char failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		return;
+	}
+	strUtf8[iRet] = '\0';
+
+	iRet = RegionServerSend::InitialAvatarDataNtf(this, m_iAvatarId, strUtf8);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x InitialAvatarDataNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+}
+
+void RegionPlayerContext::_BroadcastAvatarData()
+{
+	int iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x BroadcastAvatarData"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	iRet = WChar2Char(m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		_ASSERT( false && "WChar2Char failed" );
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x WChar2Char failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		return;
+	}
+	strUtf8[iRet] = '\0';
+
+	iRet = RegionServerSend::RegionAvatarEnterNtf(this, m_iAvatarId, strUtf8);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarEnterNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+}
+
+void RegionPlayerContext::_SendRegionAvatars()
+{
+	m_pMainLoop->SendRegionAvatars(this);
 }
 
 

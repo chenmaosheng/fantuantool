@@ -55,3 +55,21 @@ void RegionServerRecv::ServerTimeNtf(void *pClient, uint32 iServerTime)
 	ClientBase* pClientBase = (ClientBase*)pClient;
 	pClientBase->ServerTimeNtf(iServerTime);
 }
+
+void RegionServerRecv::RegionAvatarEnterNtf(void* pClient, uint64 iAvatarId, const char* strAvatarName)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->RegionAvatarEnterNtf(iAvatarId, strAvatarName);
+}
+
+void RegionServerRecv::RegionAvatarLeaveNtf(void* pClient, uint64 iAvatarId)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->RegionAvatarLeaveNtf(iAvatarId);
+}
+
+void RegionServerRecv::RegionChatNtf(void* pClient, uint64 iAvatarId, const char* strMessage)
+{
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->RegionChatNtf(iAvatarId, strMessage);
+}

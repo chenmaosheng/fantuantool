@@ -205,15 +205,25 @@ void CClientDlg::OnBnClickedSendButton()
 	pEdit->SetFocus();*/
 }
 
-BOOL CClientDlg::GetMessage(char* message, int length)
+BOOL CClientDlg::GetMessage(uint64 iAvatarId, TCHAR* strMessage)
 {
-	TCHAR chatMessage[1024] = {0};
-	MultiByteToWideChar(CP_UTF8, 0, message, length, chatMessage, sizeof(chatMessage)/sizeof(TCHAR));
+	std::vector< std::pair<uint64, CString> >::iterator it = m_AvatarList.begin();
+	while (it != m_AvatarList.end())
+	{
+		if ((*it).first == iAvatarId)
+		{
+			break;
+		}
 
-	CString strTemp = chatMessage;
-	strTemp += _T("\r\n");
+		++it;
+	}
+
+	CTime time = CTime::GetCurrentTime();
+	CString t = time.Format("%H:%M:%S");
+	CString chatMessage = (*it).second + _T("   ") + t + _T("\r\n") + _T("   ") + strMessage;
+	chatMessage += _T("\r\n");
 	m_MessageList.SetSel(-1);
-	m_MessageList.ReplaceSel(strTemp);
+	m_MessageList.ReplaceSel(chatMessage);
 
 	if (!IsIconic())
 	{
@@ -221,7 +231,7 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 		wcscpy_s(nid.szTip, sizeof(nid.szTip)/sizeof(TCHAR), TEXT("Fantuan"));
 		if (wcslen(chatMessage) < sizeof(nid.szInfo)/sizeof(TCHAR))
 		{
-			wcscpy_s(nid.szInfo, sizeof(nid.szInfo)/sizeof(TCHAR), strTemp);
+			wcscpy_s(nid.szInfo, sizeof(nid.szInfo)/sizeof(TCHAR), chatMessage);
 		}
 		
 		wcscpy_s(nid.szInfoTitle, sizeof(nid.szInfoTitle)/sizeof(TCHAR), _T("Fantuan Chat"));
@@ -239,29 +249,25 @@ BOOL CClientDlg::GetMessage(char* message, int length)
 	return TRUE;
 }
 
-void CClientDlg::UpdateUser(char* nickname, int sessionId, int length)
+void CClientDlg::UpdateUser(uint64 iAvatarId, TCHAR* strAvatarName)
 {
-	TCHAR user[128] = {0};
-	MultiByteToWideChar(CP_UTF8, 0, nickname, length, user, 128);
-	CString user_info = user;
-
-	m_users.push_back( std::pair<int, CString>(sessionId, user_info) );
+	m_AvatarList.push_back( std::pair<uint64, CString>(iAvatarId, strAvatarName) );
 
 	m_UserList.ResetContent();
-	for(int j=0; j<int(m_users.size()); j++)
+	for(int j=0; j<int(m_AvatarList.size()); j++)
 	{
-		m_UserList.AddString(m_users.at(j).second);
+		m_UserList.AddString(m_AvatarList.at(j).second);
 	}
 }
 
-void CClientDlg::DeleteUser(int connId)
+void CClientDlg::DeleteUser(uint64 iAvatarId)
 {
-	std::vector< std::pair<int, CString> >::iterator it = m_users.begin();
-	while (it != m_users.end())
+	std::vector< std::pair<uint64, CString> >::iterator it = m_AvatarList.begin();
+	while (it != m_AvatarList.end())
 	{
-		if ((*it).first == connId)
+		if ((*it).first == iAvatarId)
 		{
-			m_users.erase(it);
+			m_AvatarList.erase(it);
 			break;
 		}
 
@@ -269,9 +275,9 @@ void CClientDlg::DeleteUser(int connId)
 	}
 
 	m_UserList.ResetContent();
-	for(int j=0; j<int(m_users.size()); j++)
+	for(int j=0; j<int(m_AvatarList.size()); j++)
 	{
-		m_UserList.AddString(m_users.at(j).second);
+		m_UserList.AddString(m_AvatarList.at(j).second);
 	}
 }
 

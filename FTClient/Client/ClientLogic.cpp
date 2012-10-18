@@ -6,6 +6,7 @@
 #include "LoginDlg.h"
 #include "SelectDlg.h"
 #include "ChannelDlg.h"
+#include "ClientDlg.h"
 
 ClientLogic::ClientLogic(ClientBase* pClientBase) : m_pClientBase(pClientBase)
 {
@@ -99,7 +100,34 @@ void ClientLogic::OnIncomingEvent()
 		case EVENT_CHANNEL_SELECT:
 			{
 				ClientEventChannelSelect* pEventChannelSelect = (ClientEventChannelSelect*)pEvent;
+				//theApp.TriggerPageEvent(CHANNEL_REQUEST_EVENT);
+			}
+			break;
+
+		case EVENT_REGION_ENTER:
+			{
 				theApp.TriggerPageEvent(CHANNEL_REQUEST_EVENT);
+			}
+			break;
+
+		case EVENT_AVATAR_ENTER:
+			{
+				ClientEventAvatarEnter* pEventAvatarEnter = (ClientEventAvatarEnter*)pEvent;
+				theApp.m_pClientDlg->UpdateUser(pEventAvatarEnter->m_iAvatarId, pEventAvatarEnter->m_strAvatarName);
+			}
+			break;
+
+		case EVENT_AVATAR_LEAVE:
+			{
+				ClientEventAvatarLeave* pEventAvatarLeave = (ClientEventAvatarLeave*)pEvent;
+				theApp.m_pClientDlg->DeleteUser(pEventAvatarLeave->m_iAvatarId);
+			}
+			break;
+
+		case EVENT_AVATAR_CHAT:
+			{
+				ClientEventAvatarChat* pEventAvatarChat = (ClientEventAvatarChat*)pEvent;
+				theApp.m_pClientDlg->GetMessage(pEventAvatarChat->m_iAvatarId, pEventAvatarChat->m_strMessage);
 			}
 			break;
 

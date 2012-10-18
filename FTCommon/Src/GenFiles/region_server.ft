@@ -1,6 +1,9 @@
 filter (RegionServer, SERVER_FILTER_REGION)
 {
 	ServerTimeNtf(uint32 iServerTime);
+	InitialAvatarDataNtf(uint64 iAvatarId, string strAvatarName);
 	
-	RegionChatNtf(uint64 iAvatarId, string strAvatarName, string strMessage);
+	RegionAvatarEnterNtf(uint64 iAvatarId, string strAvatarName);
+	RegionAvatarLeaveNtf(uint64 iAvatarId);
+	RegionChatNtf(uint64 iAvatarId, string strMessage);
 }

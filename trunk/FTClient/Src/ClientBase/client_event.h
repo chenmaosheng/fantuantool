@@ -19,6 +19,10 @@ enum
 	EVENT_AVATAR_SELECT,
 	EVENT_CHANNEL_LIST,
 	EVENT_CHANNEL_SELECT,
+	EVENT_REGION_ENTER,
+	EVENT_AVATAR_ENTER,
+	EVENT_AVATAR_LEAVE,
+	EVENT_AVATAR_CHAT,
 	EVENT_AVATAR_LOGOUT,
 };
 
@@ -87,6 +91,50 @@ struct ClientEventChannelSelect : public ClientEvent
 	}
 
 	int32 m_iReturn;
+};
+
+struct ClientEventRegionEnter : public ClientEvent
+{
+	ClientEventRegionEnter()
+	{
+		m_iEventId = EVENT_REGION_ENTER;
+	}
+};
+
+struct ClientEventAvatarEnter: public ClientEvent
+{
+	ClientEventAvatarEnter()
+	{
+		m_iEventId = EVENT_AVATAR_ENTER;
+		m_iAvatarId = 0;
+		m_strAvatarName[0] = _T('\0');
+	}
+	uint64 m_iAvatarId;
+	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+};
+
+struct ClientEventAvatarLeave : public ClientEvent
+{
+	ClientEventAvatarLeave()
+	{
+		m_iEventId = EVENT_AVATAR_LEAVE;
+		m_iAvatarId = 0;
+	}
+
+	uint64 m_iAvatarId;
+};
+
+struct ClientEventAvatarChat : public ClientEvent
+{
+	ClientEventAvatarChat()
+	{
+		m_iEventId = EVENT_AVATAR_CHAT;
+		m_iAvatarId = 0;
+		m_strMessage[0] = _T('\0');
+	}
+
+	uint64 m_iAvatarId;
+	TCHAR m_strMessage[CHATMESSAGE_MAX+1];
 };
 
 struct ClientEventAvatarLogout: public ClientEvent

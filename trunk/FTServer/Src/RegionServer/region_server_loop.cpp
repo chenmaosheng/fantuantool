@@ -86,6 +86,12 @@ void RegionServerLoop::ShutdownPlayer(RegionPlayerContext* pPlayerContext)
 	{
 	case PLAYER_STATE_ONREGIONALLOCREQ:
 	case PLAYER_STATE_REGIONALLOCACK:
+	case PLAYER_STATE_ONREGIONENTERREQ:
+	case PLAYER_STATE_REGIONENTERREQ:
+	case PLAYER_STATE_ONREGIONENTERACK:
+	case PLAYER_STATE_SERVERTIMENTF:
+	case PLAYER_STATE_ONCLIENTTIMEREQ:
+	case PLAYER_STATE_SERVERTIME2NTF:
 		bNeedDelete = true;
 		break;
 	}
@@ -168,6 +174,17 @@ void RegionServerLoop::BroadcastData(uint16 iTypeId, uint16 iLen, const char* pB
 		m_BroadcastHelper.AddGateSession(mit->second->m_iSessionId);
 	}
 	m_BroadcastHelper.SendData(iTypeId, iLen, pBuf);
+}
+
+void RegionServerLoop::SendRegionAvatars(RegionPlayerContext* pPlayerContext)
+{
+	for (stdext::hash_map<uint64, RegionPlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.begin(); mit != m_mPlayerContextByAvatarId.end(); ++mit)
+	{
+		if (pPlayerContext != mit->second)
+		{
+			pPlayerContext->SendAvatarEnterNtf(mit->second);
+		}
+	}
 }
 
 

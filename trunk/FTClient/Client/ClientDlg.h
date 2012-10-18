@@ -4,6 +4,7 @@
 #pragma once
 
 #include <vector>
+#include "type.h"
 
 // CClientDlg dialog
 class ClientLogic;
@@ -12,9 +13,9 @@ class CClientDlg : public CDialog
 // Construction
 public:
 	CClientDlg(ClientLogic *pClientLogic,CWnd* pParent = NULL);	// standard constructor
-	BOOL GetMessage(char* message, int length);
-	void UpdateUser(char* nickname, int sessionId, int length);
-	void DeleteUser(int connId);
+	BOOL GetMessage(uint64 iAvatarId, TCHAR* strMessage);
+	void UpdateUser(uint64 iAvatarId, TCHAR* strAvatarName);
+	void DeleteUser(uint64 iAvatarId);
 	
 	void ToTray();
 
@@ -27,7 +28,7 @@ public:
 	CString m_strName;
 	CString m_strServer;
 	ClientLogic *m_pClientLogic;
-	std::vector< std::pair<int, CString> > m_users;
+	std::vector< std::pair<uint64, CString> > m_AvatarList;
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support

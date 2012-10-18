@@ -12,6 +12,7 @@
 #include "client_loop.h"
 #include "client_event.h"
 #include "log_device.h"
+#include "avatar.h"
 
 #include "login_client_send.h"
 #include "gate_client_send.h"
@@ -421,13 +422,77 @@ void ClientBase::ChannelSelectAck(int32 iReturn)
 
 void ClientBase::ServerTimeNtf(uint32 iServerTime)
 {
+	LOG_DBG(LOG_SERVER, _T("ServerTimeNtf"));
+
 	uint32 iCurrTime = timeGetTime();
 	if (m_iServerTime == 0)
 	{
 		RegionClientSend::ClientTimeReq(this, iCurrTime);
 	}
+	else
+	{
+		ClientEventRegionEnter* newEvent = FT_NEW(ClientEventRegionEnter);
+		EnterCriticalSection(&m_csClientEvent);
+		m_ClientEventList.push_back(newEvent);
+		LeaveCriticalSection(&m_csClientEvent);
+	}
 	
 	m_iServerTime = iServerTime;
+}
+
+void ClientBase::RegionAvatarEnterNtf(uint64 iAvatarId, const char* strAvatarName)
+{
+	LOG_DBG(LOG_SERVER, _T("RegionAvatarEnterNtf"));
+	Avatar* pAvatar = new Avatar;
+	pAvatar->m_iAvatarId = iAvatarId;
+
+	Char2WChar(strAvatarName, pAvatar->m_strAvatarName, AVATARNAME_MAX + 1);
+	
+	stdext::hash_map<uint64, Avatar*>::iterator mit = m_mAvatarListById.find(iAvatarId);
+	if (mit != m_mAvatarListById.end())
+	{
+		m_mAvatarListById.erase(mit);
+		SAFE_DELETE(mit->second);
+	}
+
+	m_mAvatarListById.insert(std::make_pair(iAvatarId, pAvatar));
+
+	ClientEventAvatarEnter* newEvent = FT_NEW(ClientEventAvatarEnter);
+	newEvent->m_iAvatarId = iAvatarId;
+	wcscpy_s(newEvent->m_strAvatarName, _countof(newEvent->m_strAvatarName), pAvatar->m_strAvatarName);
+	EnterCriticalSection(&m_csClientEvent);
+	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
+}
+
+void ClientBase::RegionAvatarLeaveNtf(uint64 iAvatarId)
+{
+	LOG_DBG(LOG_SERVER, _T("RegionAvatarLeaveNtf"));
+
+	stdext::hash_map<uint64, Avatar*>::iterator mit = m_mAvatarListById.find(iAvatarId);
+	if (mit != m_mAvatarListById.end())
+	{
+		m_mAvatarListById.erase(mit);
+		SAFE_DELETE(mit->second);
+	}
+
+	ClientEventAvatarLeave* newEvent = FT_NEW(ClientEventAvatarLeave);
+	newEvent->m_iAvatarId = iAvatarId;
+	EnterCriticalSection(&m_csClientEvent);
+	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
+}
+
+void ClientBase::RegionChatNtf(uint64 iAvatarId, const char* strMessage)
+{
+	LOG_DBG(LOG_SERVER, _T("RegionChatNtf"));
+
+	ClientEventAvatarChat* newEvent = FT_NEW(ClientEventAvatarChat);
+	newEvent->m_iAvatarId = iAvatarId;
+	Char2WChar(strMessage, newEvent->m_strMessage, CHATMESSAGE_MAX+1);
+	EnterCriticalSection(&m_csClientEvent);
+	m_ClientEventList.push_back(newEvent);
+	LeaveCriticalSection(&m_csClientEvent);
 }
 
 

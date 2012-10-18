@@ -23,6 +23,7 @@ enum
 	PLAYER_STATE_SERVERTIMENTF, // send server time to client
 	PLAYER_STATE_ONCLIENTTIMEREQ, // receive client time
 	PLAYER_STATE_SERVERTIME2NTF, // send server time 2nd time to client
+	PLAYER_STATE_INITAVATARNTF, // send initial avatardata to client
 };
 
 enum
@@ -35,6 +36,7 @@ enum
 	PLAYER_EVENT_SERVERTIMENTF,
 	PLAYER_EVENT_ONCLIENTTIMEREQ,
 	PLAYER_EVENT_SERVERTIME2NTF,
+	PLAYER_EVENT_INITAVATARNTF,
 };
 
 class RegionServerLoop;
@@ -55,11 +57,20 @@ public:
 	void OnRegionEnterAck();
 	void OnClientTimeReq(uint32 iClientTime);
 
+	void SendAvatarEnterNtf(RegionPlayerContext*);
 	void OnRegionChatReq(const char* strMessage);
 
 private:
 	// initialize state machine
 	void _InitStateMachine();
+
+	// todo: temporary 
+	// send initial data to client
+	void _SendInitialAvatarData();
+	// send to others
+	void _BroadcastAvatarData();
+	// send others to client
+	void _SendRegionAvatars();
 	
 public:
 	uint32 m_iSessionId;

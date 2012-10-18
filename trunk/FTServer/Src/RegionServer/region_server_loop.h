@@ -57,6 +57,7 @@ public:
 
 	// todo: temp function
 	void BroadcastData(uint16 iTypeId, uint16 iLen, const char* pBuf);
+	void SendRegionAvatars(RegionPlayerContext*);
 
 private:
 	DWORD _Loop();

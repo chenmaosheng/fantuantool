@@ -347,6 +347,14 @@
 				RelativePath="..\..\FTCommon\Src\GenFiles\login_server_recv.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\region_server_recv.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\FTCommon\Src\GenFiles\region_server_recv.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

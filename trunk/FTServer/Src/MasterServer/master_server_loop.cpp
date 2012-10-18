@@ -8,6 +8,7 @@
 #include "login_peer_send.h"
 #include "gate_peer_send.h"
 #include "cache_peer_send.h"
+#include "region_peer_send.h"
 #include "session.h"
 
 #include "packet.h"
@@ -165,6 +166,8 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	bool bSendGateReleaseReq = false;
 	bool bSendGateDisconnect = false;
 	bool bSendCacheDisconnect = false;
+	bool bSendRegionRelease = false;
+	bool bSendRegionLeave = false;
 
 	if (pPlayerContext->m_bFinalizing)
 	{
@@ -208,6 +211,34 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 		bSendGateDisconnect = true;
 		bSendCacheDisconnect = true;
 		break;
+
+	case PLAYER_STATE_REGIONALLOCREQ:
+	case PLAYER_STATE_ONREGIONALLOCACK:
+	case PLAYER_STATE_CHANNELSELECTACK:
+		bSendGateDisconnect = true;
+		bSendCacheDisconnect = true;
+		bSendRegionRelease = true;
+		break;
+
+	case PLAYER_STATE_REGIONENTERREQ:
+	case PLAYER_STATE_ONCHANNELLEAVEREQ:
+		bSendGateDisconnect = true;
+		bSendCacheDisconnect = true;
+		bSendRegionLeave = true;
+		break;
+	}
+
+	if (bSendRegionRelease && !IsReadyForShutdown())
+	{
+		RegionPeerSend::RegionReleaseReq(g_pServer->GetPeerServer(pPlayerContext->m_iRegionServerId), pPlayerContext->m_iSessionId);
+	}
+
+	if (bSendRegionLeave)
+	{
+		if (!IsReadyForShutdown())
+		{
+			RegionPeerSend::RegionLeaveReq(g_pServer->GetPeerServer(pPlayerContext->m_iRegionServerId), pPlayerContext->m_iSessionId);
+		}
 	}
 
 	if (bSendOnLoginFailedAck && !IsReadyForShutdown())

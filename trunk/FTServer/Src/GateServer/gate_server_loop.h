@@ -19,6 +19,7 @@ struct LogicCommandGateAllocReq;
 struct LogicCommandDisconnect;
 struct LogicCommandGateReleaseReq;
 struct LogicCommandRegionBindReq;
+struct LogicCommandBroadcastData;
 class GateSession;
 class GateServerLoop : public SessionServerLoop<GateSession>
 {
@@ -50,6 +51,7 @@ private:
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
 	void _OnCommandSendData(LogicCommandSendData*);
+	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	void _OnCommandShutdown();
 	
 	void _OnCommandGateAllocReq(LogicCommandGateAllocReq*);

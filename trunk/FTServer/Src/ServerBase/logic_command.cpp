@@ -54,9 +54,11 @@ bool LogicCommandSendData::CopyData(uint16 iLen, const char* pData)
 
 LogicCommandBroadcastData::LogicCommandBroadcastData()
 {
+	m_iSessionCount = 0;
 	m_iLen = 0;
 	m_iTypeId = 0;
 	m_pData = NULL;
+	memset(m_arraySessionId, 0, sizeof(m_arraySessionId));
 }
 
 LogicCommandBroadcastData::~LogicCommandBroadcastData()

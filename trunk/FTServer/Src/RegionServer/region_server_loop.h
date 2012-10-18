@@ -27,8 +27,11 @@ struct GateServerContext
 };
 
 struct LogicCommandOnRegionAllocReq;
+struct LogicCommandOnRegionReleaseReq;
 struct LogicCommandOnRegionEnterReq;
 struct LogicCommandOnRegionEnterAck;
+struct LogicCommandOnRegionLeaveReq;
+struct LogicCommandPacketForward;
 class RegionServerLoop : public LogicLoop
 {
 public:
@@ -72,10 +75,16 @@ private:
 private:
 	// receive region alloc request
 	void _OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq*);
+	// receive region release request
+	void _OnCommandOnRegionReleaseReq(LogicCommandOnRegionReleaseReq*);
 	// receive region enter request
 	void _OnCommandOnRegionEnterReq(LogicCommandOnRegionEnterReq*);
 	// receive region enter ack
 	void _OnCommandOnRegionEnterAck(LogicCommandOnRegionEnterAck*);
+	// receive region leave ack
+	void _OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq*);
+	// handle packet forwarding to other server
+	void _OnCommandPacketForward(LogicCommandPacketForward*);
 
 private:
 	int32 m_iShutdownStatus;

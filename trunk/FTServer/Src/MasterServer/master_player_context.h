@@ -39,6 +39,7 @@ enum
 	PLAYER_STATE_ONREGIONALLOCACK, // receive region alloc ack
 	PLAYER_STATE_CHANNELSELECTACK, // send channel select ack
 	PLAYER_STATE_REGIONENTERREQ, // send region enter req
+	PLAYER_STATE_ONCHANNELLEAVEREQ, // receive channel leave request
 };
 
 enum
@@ -68,6 +69,7 @@ enum
 	PLAYER_EVENT_ONREGIONALLOCACK,
 	PLAYER_EVENT_CHANNELSELECTACK,
 	PLAYER_EVENT_REGIONENTERREQ,
+	PLAYER_EVENT_ONCHANNELLEAVEREQ,
 };
 
 class MasterServerLoop;

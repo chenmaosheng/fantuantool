@@ -232,10 +232,17 @@ void SessionServerLoop<T>::_OnCommandSendData(LogicCommandSendData* pCommand)
 template<typename T>
 void SessionServerLoop<T>::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand)
 {
-	for (stdext::hash_map<uint32, T*>::iterator mit = m_mSessionMap.begin();
-		mit != m_mSessionMap.end(); ++mit)
+	T* pSession = NULL;
+	for (uint16 i = 0; i < pCommand->m_iSessionCount; ++i)
 	{
-		mit->second->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData);
+		pSession = (T*)GetSession(pCommand->m_arraySessionId[i]);
+		if (pSession)
+		{
+			if (pSession->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData))
+			{
+				LOG_ERR(LOG_SERVER, _T("sid=%08x broadcastdata failed"), pSession->m_iSessionId);
+			}
+		}
 	}
 }
 

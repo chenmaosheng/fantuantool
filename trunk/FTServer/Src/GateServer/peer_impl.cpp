@@ -38,7 +38,7 @@ void GatePeerRecv::RegionBindReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uin
 	LogicCommandRegionBindReq* pCommand = FT_NEW(LogicCommandRegionBindReq);
 	if (!pCommand)
 	{
-		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateReleaseReq) failed"));
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandRegionBindReq) failed"));
 		return;
 	}
 
@@ -49,6 +49,27 @@ void GatePeerRecv::RegionBindReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uin
 
 void GatePeerRecv::BroadcastData(PEER_CLIENT pPeerClient, uint16 iSessionCount, const uint32* arraySessionId, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
+	LogicCommandBroadcastData* pCommand = FT_NEW(LogicCommandBroadcastData);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandBroadcastData) failed"));
+		return;
+	}
+
+	pCommand->m_iSessionCount = iSessionCount;
+	for (uint16 i = 0; i < iSessionCount; ++i)
+	{
+		pCommand->m_arraySessionId[i] = arraySessionId[i];
+	}
+	pCommand->m_iTypeId = iTypeId;
+	if (!pCommand->CopyData(iLen, pBuf))
+	{
+		LOG_ERR(LOG_SERVER, _T("Copy data failed"));
+		FT_DELETE(pCommand);
+		return;
+	}
+
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
 void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iReason)
@@ -56,7 +77,7 @@ void SessionPeerRecv::Disconnect(PEER_CLIENT pPeerClient, uint32 iSessionId, uin
 	LogicCommandDisconnect* pCommand = FT_NEW(LogicCommandDisconnect);
 	if (!pCommand)
 	{
-		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandGateReleaseReq) failed"));
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandDisconnect) failed"));
 		return;
 	}
 
@@ -91,7 +112,7 @@ void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 	LogicCommandSendData* pCommand = FT_NEW(LogicCommandSendData);
 	if (!pCommand)
 	{
-		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandPacketForward) failed"));
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandSendData) failed"));
 		return;
 	}
 
@@ -136,5 +157,6 @@ void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 
 void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
 {
+	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }

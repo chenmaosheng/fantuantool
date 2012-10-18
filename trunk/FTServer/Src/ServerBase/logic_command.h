@@ -92,7 +92,8 @@ struct LogicCommandBroadcastData : public LogicCommandT<COMMAND_BROADCASTDATA>
 	~LogicCommandBroadcastData();
 	bool CopyData(uint16 iLen, const char* pData);
 
-	ConnID m_ConnId;
+	uint16 m_iSessionCount;
+	uint32 m_arraySessionId[BROADCAST_SESSION_MAX];
 	uint16 m_iTypeId;
 	uint16 m_iLen;
 	char* m_pData;

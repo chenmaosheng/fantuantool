@@ -3,6 +3,7 @@ filter (RegionPeer, PEER_FILTER_REGION)
 	RegionAllocReq(uint32 iSessionId, uint64 iAvatarId, uint16 iLen, TCHAR strAvatarName[iLen]);
 	RegionReleaseReq(uint32 iSessionId);
 	RegionEnterReq(uint32 iSessionId);
+	RegionLeaveReq(uint32 iSessionId);
 	
 	RegionEnterAck(uint32 iSessionId, int32 iReturn);
 }

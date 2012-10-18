@@ -49,7 +49,7 @@ protected:
 	virtual void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	virtual void _OnCommandOnData(LogicCommandOnData*);
 	virtual void _OnCommandSendData(LogicCommandSendData*);
-	void _OnCommandBroadcastData(LogicCommandBroadcastData*);
+	virtual void _OnCommandBroadcastData(LogicCommandBroadcastData*);
 	virtual void _OnCommandShutdown();
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);

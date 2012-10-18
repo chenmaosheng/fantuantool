@@ -4,12 +4,12 @@
 
 GateServerSessionDesc::GateServerSessionDesc()
 {
+	m_pGateServer = NULL;
 	Clear();
 }
 
 void GateServerSessionDesc::Clear()
 {
-	m_pGateServer = NULL;
 	m_iSessionCount = 0;
 	memset(m_arraySessionId, 0, sizeof(m_arraySessionId));
 }

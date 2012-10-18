@@ -84,6 +84,26 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 	}
 }
 
+void RegionPlayerContext::OnRegionReleaseReq()
+{
+	// check if shutdown
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x receive region release request"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONRELEASEREQ) != PLAYER_STATE_ONREGIONRELEASEREQ)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	m_pMainLoop->ShutdownPlayer(this);
+}
+
 void RegionPlayerContext::OnRegionEnterReq()
 {
 	int32 iRet = 0;
@@ -171,6 +191,28 @@ void RegionPlayerContext::OnRegionEnterAck()
 	}
 }
 
+void RegionPlayerContext::OnRegionLeaveReq()
+{
+	int32 iRet = 0;
+
+	// check if shutdown
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x receive region leave req"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONLEAVEREQ) != PLAYER_STATE_ONREGIONLEAVEREQ)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
+		return;
+	}
+
+	m_pMainLoop->ShutdownPlayer(this);
+}
+
 void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 {
 	int32 iRet = 0;
@@ -209,7 +251,7 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	}
 
 	// check state again
-	if (m_StateMachine.StateTransition(PLAYER_EVENT_SERVERTIMENTF) != PLAYER_STATE_SERVERTIMENTF)
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_SERVERTIME2NTF) != PLAYER_STATE_SERVERTIME2NTF)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 	}

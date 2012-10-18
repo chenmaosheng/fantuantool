@@ -266,4 +266,7 @@ void MasterPlayerContext::_InitStateMachine()
 		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
 		return;
 	}
+
+	pState->AddTransition(PLAYER_EVENT_ONCHANNELLEAVEREQ, PLAYER_STATE_ONCHANNELLEAVEREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_REGIONENTERREQ);	// todo:
 }

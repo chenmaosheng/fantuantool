@@ -11,8 +11,6 @@
 
 #include "server_common.h"
 
-#define BROADCAST_SESSION_MAX 128
-
 // describe a list of sessions on gate server
 struct GateServerSessionDesc
 {

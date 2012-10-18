@@ -186,6 +186,10 @@ bool GateServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandSendData((LogicCommandSendData*)pCommand);
 		break;
 
+	case COMMAND_BROADCASTDATA:
+		_OnCommandBroadcastData((LogicCommandBroadcastData*)pCommand);
+		break;
+
 	case COMMAND_GATERELEASEREQ:
 		_OnCommandGateReleaseReq((LogicCommandGateReleaseReq*)pCommand);
 		break;
@@ -244,6 +248,34 @@ void GateServerLoop::_OnCommandSendData(LogicCommandSendData* pCommand)
 	}
 
 	super::_OnCommandSendData(pCommand);
+}
+
+void GateServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand)
+{
+	GateSession* pSession = NULL;
+	for (uint16 i = 0; i < pCommand->m_iSessionCount; ++i)
+	{
+		pSession = GetSession(pCommand->m_arraySessionId[i]);
+		if (!pSession || 
+			pSession->m_bFinalizing ||
+			!pSession->m_pRegionServer)
+		{
+			LOG_ERR(LOG_SERVER, _T("session failed"));
+			continue;
+		}
+
+		// check state
+		if (pSession->m_StateMachine.StateTransition(SESSION_EVENT_SEND, false) < 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), pSession->m_iSessionId, pSession->m_StateMachine.GetCurrState());
+			continue;
+		}
+
+		if (!pSession->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData))
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x broadcastdata failed"), pSession->m_iSessionId);
+		}
+	}
 }
 
 void GateServerLoop::_OnCommandShutdown()

@@ -56,6 +56,11 @@ void RegionServerRecv::ServerTimeNtf(void *pClient, uint32 iServerTime)
 	pClientBase->ServerTimeNtf(iServerTime);
 }
 
+void RegionServerRecv::InitialAvatarDataNtf(void* pClient, uint64 iAvatarId, const char* strAvatarName)
+{
+
+}
+
 void RegionServerRecv::RegionAvatarEnterNtf(void* pClient, uint64 iAvatarId, const char* strAvatarName)
 {
 	ClientBase* pClientBase = (ClientBase*)pClient;

@@ -23,6 +23,15 @@ typedef float				float32;
 typedef double				float64;
 typedef const char*			cpint8;
 
+struct Vector3
+{
+	Vector3(float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f) : m_fX(fX), m_fY(fY), m_fZ(fZ){}
+
+	float m_fX;
+	float m_fY;
+	float m_fZ;
+};
+
 // log type define
 enum
 {

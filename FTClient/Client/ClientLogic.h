@@ -27,6 +27,7 @@ public:
 	void RequestSelectAvatar(const TCHAR* strAvatarName);
 	void RequestSelectChannel(const TCHAR* strChannelName);
 	void RequestLeaveChannel();
+	void SendChatMessage(const TCHAR* strMessage);
 
 private:
 	ClientBase* m_pClientBase;

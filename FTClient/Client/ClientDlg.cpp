@@ -57,6 +57,7 @@ CClientDlg::CClientDlg(ClientLogic *pClientLogic,CWnd* pParent /*=NULL*/)
 {
 	m_strMessage = _T("");
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_pClientLogic = pClientLogic;
 }
 
 void CClientDlg::DoDataExchange(CDataExchange* pDX)
@@ -189,6 +190,8 @@ void CClientDlg::OnBnClickedSendButton()
 		return;
 	}
 
+	m_pClientLogic->SendChatMessage(m_strMessage);
+
 	/*SendMessagePkt pkt;
 
 	CTime time = CTime::GetCurrentTime();
@@ -197,12 +200,12 @@ void CClientDlg::OnBnClickedSendButton()
 	char buf[1024] = {0};
 	WideCharToMultiByte(CP_UTF8, 0, str, str.GetLength(), pkt.message, sizeof(pkt.message), 0, 0);
 	pkt.len = (int)strlen(pkt.message)+1;
-	m_pSocket->Send((char *)&pkt,sizeof(SendMessagePkt));
+	m_pSocket->Send((char *)&pkt,sizeof(SendMessagePkt));*/
 
 	m_strMessage = "";
 	UpdateData(FALSE);
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_MESSAGE_EDIT);
-	pEdit->SetFocus();*/
+	pEdit->SetFocus();
 }
 
 BOOL CClientDlg::GetMessage(uint64 iAvatarId, TCHAR* strMessage)
@@ -361,5 +364,6 @@ BOOL CClientDlg::PreTranslateMessage(MSG*   pMsg)
 void CClientDlg::OnBnClickedCloseButton()
 {
 	// TODO: Add your control notification handler code here
+	exit(0);
 	OnCancel();
 }

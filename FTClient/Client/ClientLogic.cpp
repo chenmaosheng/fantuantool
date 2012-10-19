@@ -60,6 +60,11 @@ void ClientLogic::RequestLeaveChannel()
 	m_pClientBase->RequestLeaveChannel();
 }
 
+void ClientLogic::SendChatMessage(const TCHAR* strMessage)
+{
+	m_pClientBase->SendChatMessage(strMessage);
+}
+
 void ClientLogic::OnIncomingEvent()
 {
 	ClientEvent* pEvent = m_pClientBase->PopClientEvent();

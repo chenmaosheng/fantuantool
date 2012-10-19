@@ -211,6 +211,9 @@ void RegionPlayerContext::OnRegionLeaveReq()
 	}
 
 	m_pMainLoop->ShutdownPlayer(this);
+
+	// notify all clients
+	_BroadcastAvatarLeaveNtf();
 }
 
 void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
@@ -257,13 +260,13 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	}
 
 	//_SendInitialAvatarData();
-	_BroadcastAvatarData();
+	_BroadcastAvatarEnterNtf();
 	_SendRegionAvatars();
 }
 
 void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext)
 {
-	int iRet = 0;
+	int32 iRet = 0;
 	char strUtf8[AVATARNAME_MAX+1] = {0};
 
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x send avatar enter"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -321,7 +324,7 @@ void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
 
 void RegionPlayerContext::_SendInitialAvatarData()
 {
-	int iRet = 0;
+	int32 iRet = 0;
 	char strUtf8[AVATARNAME_MAX+1] = {0};
 
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x send initial avatar data"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -352,12 +355,12 @@ void RegionPlayerContext::_SendInitialAvatarData()
 	}
 }
 
-void RegionPlayerContext::_BroadcastAvatarData()
+void RegionPlayerContext::_BroadcastAvatarEnterNtf()
 {
-	int iRet = 0;
+	int32 iRet = 0;
 	char strUtf8[AVATARNAME_MAX+1] = {0};
 
-	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x BroadcastAvatarData"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x BroadcastAvatarEnter"), m_strAvatarName, m_iAvatarId, m_iSessionId);
 
 	iRet = WChar2Char(m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
 	if (iRet == 0)
@@ -382,6 +385,23 @@ void RegionPlayerContext::_BroadcastAvatarData()
 void RegionPlayerContext::_SendRegionAvatars()
 {
 	m_pMainLoop->SendRegionAvatars(this);
+}
+
+void RegionPlayerContext::_BroadcastAvatarLeaveNtf()
+{
+	int32 iRet = 0;
+	
+	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x BroadcastAvatarLeave"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+
+	iRet = RegionServerSend::RegionAvatarLeaveNtf(this, m_iAvatarId);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarLeaveNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
 }
 
 

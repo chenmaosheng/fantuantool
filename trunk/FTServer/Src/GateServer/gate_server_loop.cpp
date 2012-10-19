@@ -271,7 +271,7 @@ void GateServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand
 			continue;
 		}
 
-		if (!pSession->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData))
+		if (pSession->SendData(pCommand->m_iTypeId, pCommand->m_iLen, pCommand->m_pData) != 0)
 		{
 			LOG_ERR(LOG_SERVER, _T("sid=%08x broadcastdata failed"), pSession->m_iSessionId);
 		}

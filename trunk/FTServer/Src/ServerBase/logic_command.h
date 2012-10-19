@@ -29,7 +29,7 @@ enum
 
 struct LogicCommand : public MemoryObject 
 {
-	int m_iCmdId;
+	int32 m_iCmdId;
 };
 
 template<uint16 iCmdId>

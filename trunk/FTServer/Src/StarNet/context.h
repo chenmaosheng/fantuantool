@@ -30,7 +30,7 @@ struct Context : SLIST_ENTRY
 {
 	WSAOVERLAPPED	overlapped_;		// overlapped io
 	WSABUF			wsabuf_;			// overlapped buf
-	int				operation_type_;	// overlapped operation type
+	int32			operation_type_;	// overlapped operation type
 	Connection*		connection_;		// context's connection
 	ContextPool*	context_pool_;		// the pool which is based on
 

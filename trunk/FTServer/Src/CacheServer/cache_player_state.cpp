@@ -75,4 +75,6 @@ void CachePlayerContext::_InitStateMachine()
 		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
 		return;
 	}
+
+	pState->AddTransition(PLAYER_EVENT_ONLOGOUTREQ, PLAYER_STATE_ONLOGOUTREQ);
 }

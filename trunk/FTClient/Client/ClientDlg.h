@@ -52,4 +52,5 @@ public:
 public:
 	afx_msg void OnBnClickedSendButton();
 	afx_msg void OnBnClickedCloseButton();
+	afx_msg void OnFileExit();
 };

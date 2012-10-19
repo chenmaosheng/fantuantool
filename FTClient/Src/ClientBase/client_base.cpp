@@ -74,6 +74,7 @@ int32 ClientBase::Init()
 	m_pLogSystem = Log::GetInstance();
 	m_pLogSystem->Init(g_pClientConfig->GetLogLevel());
 	m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Client"));
+	m_pLogSystem->SetLogTypeString(LOG_NET, _T("Network"));
 	LogDevice* pDevice = NULL;
 	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_DEBUG);
 	pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_FILE);
@@ -464,8 +465,8 @@ void ClientBase::RegionAvatarEnterNtf(uint64 iAvatarId, const char* strAvatarNam
 	stdext::hash_map<uint64, Avatar*>::iterator mit = m_mAvatarListById.find(iAvatarId);
 	if (mit != m_mAvatarListById.end())
 	{
-		m_mAvatarListById.erase(mit);
 		SAFE_DELETE(mit->second);
+		m_mAvatarListById.erase(mit);
 	}
 
 	m_mAvatarListById.insert(std::make_pair(iAvatarId, pAvatar));
@@ -485,8 +486,8 @@ void ClientBase::RegionAvatarLeaveNtf(uint64 iAvatarId)
 	stdext::hash_map<uint64, Avatar*>::iterator mit = m_mAvatarListById.find(iAvatarId);
 	if (mit != m_mAvatarListById.end())
 	{
-		m_mAvatarListById.erase(mit);
 		SAFE_DELETE(mit->second);
+		m_mAvatarListById.erase(mit);
 	}
 
 	ClientEventAvatarLeave* newEvent = FT_NEW(ClientEventAvatarLeave);

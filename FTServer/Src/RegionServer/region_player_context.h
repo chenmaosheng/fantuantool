@@ -73,10 +73,12 @@ private:
 	// todo: temporary 
 	// send initial data to client
 	void _SendInitialAvatarData();
-	// send to others
-	void _BroadcastAvatarData();
+	// broadcast avatar enter
+	void _BroadcastAvatarEnterNtf();
 	// send others to client
 	void _SendRegionAvatars();
+	// broadcast avatar leave
+	void _BroadcastAvatarLeaveNtf();
 	
 public:
 	uint32 m_iSessionId;

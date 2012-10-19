@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_SEND_BUTTON, &CClientDlg::OnBnClickedSendButton)
 	ON_MESSAGE(WM_SHOWTASK, &CClientDlg::OnNotifyIcon)
 	ON_BN_CLICKED(IDC_CLOSE_BUTTON, &CClientDlg::OnBnClickedCloseButton)
+	ON_COMMAND(ID_FILE_EXIT, &CClientDlg::OnFileExit)
 END_MESSAGE_MAP()
 
 
@@ -364,6 +365,13 @@ BOOL CClientDlg::PreTranslateMessage(MSG*   pMsg)
 void CClientDlg::OnBnClickedCloseButton()
 {
 	// TODO: Add your control notification handler code here
+	m_UserList.ResetContent();
+	m_AvatarList.clear();
+	m_pClientLogic->Logout();
+}
+
+void CClientDlg::OnFileExit()
+{
+	// TODO: Add your command handler code here
 	exit(0);
-	OnCancel();
 }

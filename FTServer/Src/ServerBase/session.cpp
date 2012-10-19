@@ -16,7 +16,7 @@ void Session::Initialize(const TCHAR* strPrivateKeyFile, ServerBase* pServer)
 {
 	m_pServer = pServer;
 	// todo: fake secret key
-	m_pPrivateKey = _strdup("private key");
+	m_pPrivateKey = _strdup("key");
 	m_iPrivateKeyLen = (uint16)strlen(m_pPrivateKey);
 }
 
@@ -199,7 +199,7 @@ void Session::Disconnect()
 {
 	if (m_pConnection)
 	{
-		Connection::Close(m_pConnection);
+		m_pConnection->AsyncDisconnect();
 	}
 	else
 	{

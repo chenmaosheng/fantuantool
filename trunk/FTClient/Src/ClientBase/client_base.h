@@ -73,6 +73,8 @@ public:
 	void RequestSelectChannel(const TCHAR* strChannelName);
 	// request leave channel
 	void RequestLeaveChannel();
+	// send chat message
+	void SendChatMessage(const TCHAR* strMessage);
 
 public:
 	// receive login ntf from master server

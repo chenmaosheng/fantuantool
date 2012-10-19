@@ -178,6 +178,19 @@ void ClientBase::RequestLeaveChannel()
 	GateClientSend::ChannelLeaveReq(this);
 }
 
+void ClientBase::SendChatMessage(const TCHAR* strMessage)
+{
+	int32 iRet = 0;
+	char strUtf8[CHATMESSAGE_MAX+1] = {0};
+	iRet = WChar2Char(strMessage, strUtf8, CHATMESSAGE_MAX+1);
+	if (iRet == 0)
+	{
+		return;
+	}
+	strUtf8[iRet] = '\0';
+	RegionClientSend::RegionChatReq(this, strUtf8);
+}
+
 bool ClientBase::OnClientConnection(ConnID connId)
 {
 	m_ConnId = connId;

@@ -68,6 +68,7 @@ void RegionPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONREGIONENTERACK, PLAYER_STATE_ONREGIONENTERACK);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONREGIONLEAVEREQ);
 
 	// when state is receive region enter ack
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONREGIONENTERACK);
@@ -78,6 +79,7 @@ void RegionPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_SERVERTIMENTF, PLAYER_STATE_SERVERTIMENTF);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONREGIONLEAVEREQ);
 
 	// when state is send server time
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_SERVERTIMENTF);
@@ -88,6 +90,7 @@ void RegionPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONCLIENTTIMEREQ, PLAYER_STATE_ONCLIENTTIMEREQ);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONREGIONLEAVEREQ);
 
 	// when state is receive client time
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONCLIENTTIMEREQ);
@@ -98,6 +101,7 @@ void RegionPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_SERVERTIME2NTF, PLAYER_STATE_SERVERTIME2NTF);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONREGIONLEAVEREQ);
 
 	// when state is send server time 2nd
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_SERVERTIME2NTF);
@@ -108,6 +112,7 @@ void RegionPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_INITAVATARNTF, PLAYER_STATE_INITAVATARNTF);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONREGIONLEAVEREQ);
 
 	// when state is send initial avatar data
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_INITAVATARNTF);

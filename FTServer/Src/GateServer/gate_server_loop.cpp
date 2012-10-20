@@ -17,7 +17,7 @@ int32 GateServerLoop::Init()
 {
 	int32 iRet = 0;
 
-	iRet = super::Init(g_pServerConfig->m_iServerId, g_pServer);
+	iRet = super::Init(g_pServerConfig->m_iServerId, g_pServerConfig->m_strPrivateKey, g_pServer);
 	if (iRet != 0)
 	{
 		return iRet;

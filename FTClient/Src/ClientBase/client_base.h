@@ -11,10 +11,18 @@
 
 #include "client_common.h"
 #include "ftd_define.h"
-#include "packet.h"
 #include "event.h"
+#include "packet.h"
 #include <list>
 #include <hash_map>
+#include "des.h"
+
+struct TokenPacket
+{
+	DES_cblock des;
+	uint16 m_iTokenLen;
+	char m_TokenBuf[MAX_TOKEN_LEN];
+};
 
 class Worker;
 class ContextPool;
@@ -119,6 +127,10 @@ private:
 	bool m_bInLogin;
 
 	TokenPacket m_TokenPacket;
+	rsa_st* m_pRSA;
+	DES_cblock m_Des;
+	DES_key_schedule m_DesSchedule;
+
 	uint32 m_iGateIP;
 	uint16 m_iGatePort;
 

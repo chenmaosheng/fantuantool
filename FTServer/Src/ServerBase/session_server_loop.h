@@ -32,7 +32,7 @@ public:
 	virtual ~SessionServerLoop();
 
 	// initialize session logic loop
-	int32 Init(uint8 iServerId, ServerBase* pServer);
+	int32 Init(uint8 iServerId, TCHAR* strPrivateKey, ServerBase* pServer);
 	// destroy session logic loop
 	void Destroy();
 	// clear session

@@ -56,6 +56,11 @@ public:
 		return m_strCreateAccountPage;
 	}
 
+	const TCHAR* GetPublicKey() const
+	{
+		return m_strPublicKey;
+	}
+
 private:
 	TCHAR m_strLogPath[MAX_PATH+1];
 	int32 m_iLogLevel;
@@ -64,6 +69,7 @@ private:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	TCHAR m_strPassword[PASSWORD_MAX+1];
 	TCHAR m_strCreateAccountPage[MAX_PATH+1];
+	TCHAR m_strPublicKey[MAX_PATH+1];
 
 	TiXmlDocument m_XmlDoc;
 };

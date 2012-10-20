@@ -13,15 +13,19 @@ LoginServerConfig::~LoginServerConfig()
 
 bool LoginServerConfig::_LoadConfig()
 {
+	int32 iRet = 0;
+
 	TiXmlElement* pRootElement = m_XmlDoc.FirstChildElement("Config");
 	if (!pRootElement)
 	{
+		_ASSERT(false);
 		return false;
 	}
 
 	TiXmlElement* pServerElement = pRootElement->FirstChildElement("Server");
 	if (!pServerElement)
 	{
+		_ASSERT(false);
 		return false;
 	}
 
@@ -37,11 +41,28 @@ bool LoginServerConfig::_LoadConfig()
 	TiXmlElement* pSessionElement = pRootElement->FirstChildElement("Session");
 	if (!pSessionElement)
 	{
+		_ASSERT(false);
 		return false;
 	}
 
 	// session max
 	m_iSessionMax = (uint16)atoi(pSessionElement->Attribute("Max"));
+
+	TiXmlElement* pSecurityElement = pRootElement->FirstChildElement("Security");
+	if (!pSecurityElement)
+	{
+		_ASSERT(false);
+		return false;
+	}
+
+	// private key
+	iRet = Char2WChar(pSecurityElement->Attribute("PrivateKey"), m_strPrivateKey, MAX_PATH+1);
+	if (iRet == 0)
+	{
+		_ASSERT(false);
+		return false;
+	}
+	m_strPrivateKey[iRet] = _T('\0');
 
 	return true;
 }

@@ -14,9 +14,52 @@
 #include "log_device.h"
 #include "avatar.h"
 
+// openssl
+#include "rsa.h"
+#include "pem.h"
+
 #include "login_client_send.h"
 #include "gate_client_send.h"
 #include "region_client_send.h"
+
+static bool TOKEN2BIN(const char* token, uint16& len, char (&buf)[MAX_TOKEN_LEN])
+{
+	static uint8 HEXVAL[] = {
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+	};
+	bool shift = true;
+	len = 0;
+	memset(buf, 0, MAX_TOKEN_LEN);
+	while(*token) {
+		if(len==MAX_TOKEN_LEN || HEXVAL[*token]==0xFF)
+			return(false);
+		if(shift) {
+			buf[len] += HEXVAL[*token] << 4;
+			shift = false;
+		} else {
+			buf[len] += HEXVAL[*token];
+			++len;
+			shift = true;
+		}
+		++token;
+	}
+	return(shift);
+}
 
 ClientConfig* g_pClientConfig = NULL;
 ClientBase* g_pClientBase = NULL;
@@ -44,6 +87,9 @@ void ClientBase::Clear()
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
 	m_iGateIP = 0;
 	m_iGatePort = 0;
+	m_pRSA = NULL;
+	memset(&m_Des, 0, sizeof(m_Des));
+	memset(&m_DesSchedule, 0, sizeof(m_DesSchedule));
 
 	m_iAvatarId = 0;
 	m_strAvatarName[0] = _T('\0');
@@ -109,6 +155,17 @@ void ClientBase::Login(uint32 iIP, uint16 iPort, const char *strToken)
 	{
 		Connection::Close((Connection*)m_ConnId);
 	}
+
+	FILE* fp = _wfopen(g_pClientConfig->GetPublicKey(), _T("rt"));
+	if (!fp)
+	{
+		return;
+	}
+
+	m_pRSA = PEM_read_RSAPublicKey(fp, NULL, NULL, NULL);
+	fclose(fp);
+
+	TOKEN2BIN(strToken, m_TokenPacket.m_iTokenLen, m_TokenPacket.m_TokenBuf);
 
 	strcpy_s(m_TokenPacket.m_TokenBuf, MAX_TOKEN_LEN, strToken);
 	m_TokenPacket.m_iTokenLen = strlen(m_TokenPacket.m_TokenBuf) + 1;
@@ -199,9 +256,27 @@ bool ClientBase::OnClientConnection(ConnID connId)
 
 	LOG_DBG(LOG_SERVER, _T("Connect success"));
 
+	DES_random_key(&m_TokenPacket.des);
+	DES_set_key(&m_TokenPacket.des, &m_DesSchedule);
+
 	char* buf = m_pContextPool->PopOutputBuffer();
-	memcpy(buf, (char*)&m_TokenPacket, MAX_INPUT_BUFFER);
-	((Connection*)m_ConnId)->AsyncSend(m_TokenPacket.m_iTokenLen + sizeof(uint16), buf);
+	char* outBuf = buf;
+	char* packet = (char*)&m_TokenPacket;
+	int32 iPacketLen = sizeof(DES_cblock) + sizeof(uint16) + m_TokenPacket.m_iTokenLen;
+	int32 rsaChunk = RSA_size(m_pRSA);
+	int32 packetChunk = rsaChunk - 12;
+	do
+	{
+		int32 realLen = packetChunk > iPacketLen ? iPacketLen : packetChunk;
+		if (RSA_public_encrypt(realLen, (uint8*)packet, (uint8*)outBuf, m_pRSA, RSA_PKCS1_PADDING) != rsaChunk)
+		{
+			return false;
+		}
+		outBuf += rsaChunk;
+		packet += realLen;
+		iPacketLen -= realLen;
+	}while (iPacketLen);
+	((Connection*)m_ConnId)->AsyncSend((uint32)(outBuf-buf), buf);
 
 	LOG_DBG(LOG_SERVER, _T("Send token"));
 	
@@ -266,7 +341,7 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 
 		if (m_iState == CONNECTED)
 		{
-			while (m_iRecvBufLen >= strlen(g_LoggedInNtf))
+			while (m_iRecvBufLen >= sizeof(const_DES_cblock))
 			{
 				iRet = HandleLoginPacket(m_iRecvBufLen, m_RecvBuf);
 				if (iRet < 0)
@@ -274,17 +349,15 @@ void ClientBase::OnClientData(uint32 iLen, char* pBuf)
 					return;
 				}
 
-				if (m_iRecvBufLen > strlen(g_LoggedInNtf))
+				if (m_iRecvBufLen > sizeof(const_DES_cblock))
 				{
-					memmove(m_RecvBuf, m_RecvBuf + strlen(g_LoggedInNtf), m_iRecvBufLen - strlen(g_LoggedInNtf));
+					memmove(m_RecvBuf, m_RecvBuf + sizeof(const_DES_cblock), m_iRecvBufLen - sizeof(const_DES_cblock));
 				}
-				m_iRecvBufLen -= strlen(g_LoggedInNtf);
+				m_iRecvBufLen -= sizeof(const_DES_cblock);
 
-				if (iRet == 1 && m_iRecvBufLen != 0)
+				if (iRet == 1)
 				{
-					/*LOG_ERR(LOG_SERVER, _T("sid=%08x why there is other data received"), m_iSessionId);
-					return;*/
-					m_iRecvBufLen = 0;
+					_ASSERT(m_iRecvBufLen == 0);
 				}
 			}
 		}
@@ -331,20 +404,30 @@ void ClientBase::SendData(uint16 iTypeId, uint16 iLen, const char* pData)
 
 int32 ClientBase::HandleLoginPacket(uint16 iLen, char *pBuf)
 {
-	m_iState = LOGGEDIN;
+	DES_ecb_encrypt((const_DES_cblock*)pBuf, &m_Des, &m_DesSchedule, DES_DECRYPT);
+	uint32 res[2];
+	memcpy(res, &m_Des, sizeof(res));
+	if (res[0])
+	{
+		if (DES_set_key_checked(&m_Des, &m_DesSchedule) == 0)
+		{
+			m_iState = LOGGEDIN;
+			if (m_bInLogin)
+			{
+				LOG_DBG(LOG_SERVER, _T("Receive login data on login server"));
+				LoginClientSend::VersionReq(this, CLIENT_VERSION);
+			}
+			else
+			{
+				LOG_DBG(LOG_SERVER, _T("Receive login data on gate server"));
+				GateClientSend::AvatarListReq(this);
+			}
+			
+			return 0;
+		}
+	}
 
-	if (m_bInLogin)
-	{
-		LOG_DBG(LOG_SERVER, _T("Receive login data on login server"));
-		LoginClientSend::VersionReq(this, CLIENT_VERSION);
-	}
-	else
-	{
-		LOG_DBG(LOG_SERVER, _T("Receive login data on gate server"));
-		GateClientSend::AvatarListReq(this);
-	}
-	
-	return 0;
+	return -1;
 }
 
 int32 ClientBase::HandlePacket(ServerPacket* pPacket)

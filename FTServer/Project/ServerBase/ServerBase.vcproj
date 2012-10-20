@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\FTCommon\Src\Tool;..\..\..\FTCommon\Src\log;..\..\src\starnet;..\..\..\FTCommon\External\tinyxml"
+				AdditionalIncludeDirectories="..\..\..\FTCommon\Src\Tool;..\..\..\FTCommon\Src\log;..\..\src\starnet;..\..\..\FTCommon\External\tinyxml;..\..\..\FTCommon\External\openssl;..\..\..\FTCommon\External\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\FTCommon\Src\Tool;..\..\..\FTCommon\Src\log;..\..\src\starnet;..\..\..\FTCommon\External\tinyxml"
+				AdditionalIncludeDirectories="..\..\..\FTCommon\Src\Tool;..\..\..\FTCommon\Src\log;..\..\src\starnet;..\..\..\FTCommon\External\tinyxml;..\..\..\FTCommon\External\openssl;..\..\..\FTCommon\External\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

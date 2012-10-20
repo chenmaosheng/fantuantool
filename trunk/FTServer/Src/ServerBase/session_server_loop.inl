@@ -21,7 +21,7 @@ SessionServerLoop<T>::~SessionServerLoop()
 }
 
 template<typename T>
-int32 SessionServerLoop<T>::Init(uint8 iServerId, ServerBase* pServer)
+int32 SessionServerLoop<T>::Init(uint8 iServerId, TCHAR* strPrivateKey, ServerBase* pServer)
 {
 	T* pSession = NULL;
 	int32 iRet = 0;
@@ -56,8 +56,8 @@ int32 SessionServerLoop<T>::Init(uint8 iServerId, ServerBase* pServer)
 
 	LOG_STT(LOG_SERVER, _T("Initialize session pool success"));
 
-	// todo: don't forget private key file
-	Session::Initialize(_T(""), pServer);
+	// load private key file
+	Session::Initialize(strPrivateKey, pServer);
 	LOG_STT(LOG_SERVER, _T("Initialize session server success"));
 
 	return 0;

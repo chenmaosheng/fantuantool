@@ -48,6 +48,14 @@ bool ClientConfig::LoadConfig()
 	// get login server's port
 	m_iLoginPort = (uint16)atoi(pLoginElement->Attribute("Port"));
 
+	// get public key file
+	iRet = Char2WChar(pLoginElement->Attribute("PublicKey"), m_strPublicKey, MAX_PATH+1);
+	if (iRet == 0)
+	{
+		return false;
+	}
+	m_strPublicKey[iRet] = _T('\0');
+
 	// get user name
 	iRet = Char2WChar(pLoginElement->Attribute("Account"), m_strAccountName, ACCOUNTNAME_MAX+1);
 	if (iRet == 0)

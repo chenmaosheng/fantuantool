@@ -41,9 +41,6 @@ enum
 	ACTOR_TYPE_NPC,
 };
 
-// todo: temp data
-const static char g_LoggedInNtf[] = "LoggedIn";
-
 enum
 {
 	// all C/S filters defined

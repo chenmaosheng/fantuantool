@@ -10,8 +10,9 @@
 #define _H_SESSION
 
 #include "server_common.h"
-#include "packet.h"
 #include "state_machine.h"
+#include "packet.h"
+#include "..\openssl\des.h"
 
 // session base state definition
 enum
@@ -38,6 +39,13 @@ enum
 	SESSION_EVENT_USERDEFINED,
 };
 
+struct TokenPacket
+{
+	DES_cblock m_DesBlock;			// encrption key
+	uint16 m_iTokenLen;
+	char m_TokenBuf[MAX_TOKEN_LEN];
+};
+
 #pragma pack(1)
 // better way to generate sessionid
 union SessionId
@@ -61,6 +69,7 @@ union SessionId
 class ServerBase;
 struct Connection;
 struct ServerPacket;
+struct rsa_st;
 class Session
 {
 public:
@@ -78,7 +87,7 @@ public:
 	virtual int32 SendData(uint16 iTypeId, uint16 iLen, const char* pData);
 
 	// intialize static session
-	static void Initialize(const TCHAR* strPrivateKeyFile, ServerBase* pServer);
+	static int32 Initialize(const TCHAR* strPrivateKey, ServerBase* pServer);
 
 protected:
 	// handle server packet which is analyzed from received buffer
@@ -94,23 +103,26 @@ private:
 	virtual int32 CheckLoginToken(uint16 iLen, char* pBuf) = 0;
 
 public:
-	uint32 m_iSessionId;
-	Connection* m_pConnection;
-	StateMachine m_StateMachine;
+	uint32 m_iSessionId;			// preallocated sessionid
+	Connection* m_pConnection;		// connection from network
+	StateMachine m_StateMachine;	// session's fsm
 
 	DWORD m_dwConnectionTime;	// onconnection time
 	DWORD m_dwLoggedInTime;		// loggedin time
 
 protected:
-	uint16 m_iRecvBufLen;
+	static ServerBase* m_pServer;
+	
+	uint16 m_iRecvBufLen;				// received buffer length from client
 	char m_RecvBuf[MAX_INPUT_BUFFER];	// received buffer from client
 	uint16 m_iLoginBufLen;
 	TokenPacket m_TokenPacket;
 
 protected:
-	static ServerBase* m_pServer;
-	// todo: fake secret key issue
-	static char* m_pPrivateKey;
+	static rsa_st* m_pPrivateKey;
 	static uint16 m_iPrivateKeyLen;
+
+	DES_key_schedule m_DesSchedule;	// speed up des encryption
+	DES_cblock m_DesBlock; // des encrption key;
 };
 #endif

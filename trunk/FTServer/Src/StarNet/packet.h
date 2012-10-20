@@ -18,12 +18,6 @@ struct ServerPacket
 	char m_Buf[1];		// the 1st byte of buffer
 };
 
-struct TokenPacket
-{
-	uint16 m_iTokenLen;
-	char m_TokenBuf[MAX_TOKEN_LEN];
-};
-
 #define SERVER_PACKET_HEAD sizeof(uint16) + sizeof(uint16)
 
 class Receiver

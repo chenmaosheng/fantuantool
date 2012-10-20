@@ -8,16 +8,36 @@
 #include "logic_command.h"
 #include "logic_loop.h"
 
+// openssl
+#include "rsa.h"
+#include "pem.h"
+
 ServerBase* Session::m_pServer = NULL;
-char* Session::m_pPrivateKey = NULL;
+RSA* Session::m_pPrivateKey = NULL;
 uint16 Session::m_iPrivateKeyLen = 0;
 
-void Session::Initialize(const TCHAR* strPrivateKeyFile, ServerBase* pServer)
+int32 Session::Initialize(const TCHAR* strPrivateKey, ServerBase* pServer)
 {
 	m_pServer = pServer;
-	// todo: fake secret key
-	m_pPrivateKey = _strdup("key");
-	m_iPrivateKeyLen = (uint16)strlen(m_pPrivateKey);
+	FILE* fp = _wfopen(strPrivateKey, _T("rt"));
+	if (!fp)
+	{
+		_ASSERT(false && _T("open private key failed"));
+		LOG_ERR(LOG_SERVER, _T("open private key failed"));
+		return -1;
+	}
+
+	m_pPrivateKey = PEM_read_RSAPrivateKey(fp, NULL, NULL, NULL);
+	fclose(fp);
+	if (!m_pPrivateKey)
+	{
+		_ASSERT(false && _T("m_pPrivateKey=NULL"));
+		LOG_ERR(LOG_SERVER, _T("m_pPrivateKey=NULL"));
+		return -2;
+	}
+
+	m_iPrivateKeyLen = RSA_size(m_pPrivateKey);
+	return 0;
 }
 
 Session::Session() :
@@ -31,6 +51,8 @@ m_StateMachine(SESSION_STATE_NONE) // reset state machine
 	m_dwLoggedInTime = 0;
 	m_iLoginBufLen = 0;
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
+	memset(&m_DesSchedule, 0, sizeof(m_DesSchedule));
+	memset(&m_DesBlock, 0, sizeof(m_DesBlock));
 }
 
 Session::~Session()
@@ -48,6 +70,8 @@ void Session::Clear()
 	m_iLoginBufLen = 0;
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
 	m_StateMachine.SetCurrState(SESSION_STATE_NONE);
+	memset(&m_DesSchedule, 0, sizeof(m_DesSchedule));
+	memset(&m_DesBlock, 0, sizeof(m_DesBlock));
 }
 
 int32 Session::OnConnection(ConnID connId)
@@ -61,8 +85,6 @@ int32 Session::OnConnection(ConnID connId)
 		_ASSERT(false);
 		return -1;
 	}
-
-	int32 i = sizeof(SessionId);
 
 	// reset sequence
 	((SessionId*)(&m_iSessionId))->sValue_.sequence_++;
@@ -158,11 +180,9 @@ void Session::OnData(uint16 iLen, char* pBuf)
 				}
 				m_iRecvBufLen -= m_iPrivateKeyLen;
 
-				if (iRet == 1 && m_iRecvBufLen != 0)
+				if (iRet == 1)
 				{
-					/*LOG_ERR(LOG_SERVER, _T("sid=%08x why there is other data received"), m_iSessionId);
-					return;*/
-					m_iRecvBufLen = 0;
+					_ASSERT(m_iRecvBufLen == 0);
 				}
 			}
 		}
@@ -236,20 +256,28 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 {
 	int32 iRet = 0;
 
-	// todo: decrypt by private key, now is fake
-	iRet = iLen;
-	memcpy((char*)&m_TokenPacket+m_iLoginBufLen, pBuf, iLen);
+	iRet = RSA_private_decrypt(m_iPrivateKeyLen, (uint8*)pBuf, 
+		(uint8*)&m_TokenPacket+m_iLoginBufLen, m_pPrivateKey, RSA_PKCS1_PADDING);
+	if (iRet < 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("sid=%08x decrypt data error"), m_iSessionId);
+		Disconnect();
+		return -1;
+	}
 
 	m_iLoginBufLen += iLen;
 
-	if (m_iLoginBufLen < sizeof(uint16))
+	if (m_iLoginBufLen < sizeof(uint16) + sizeof(DES_cblock))
 	{
 		// continue receiving
 		return 0;
 	}
 
+	// calculate total length
+	uint16 iTotalLen = sizeof(DES_cblock) + sizeof(uint16) + m_TokenPacket.m_iTokenLen;
+
 	// check if token buffer is larger than normal
-	if (m_iLoginBufLen > m_TokenPacket.m_iTokenLen + sizeof(uint16) ||
+	if (m_iLoginBufLen > iTotalLen ||
 		m_TokenPacket.m_iTokenLen > MAX_TOKEN_LEN)
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x token data error"), m_iSessionId);
@@ -257,8 +285,16 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 		return -1;
 	}
 
-	if (m_TokenPacket.m_iTokenLen + sizeof(uint16) == m_iLoginBufLen)
+	if (iTotalLen == m_iLoginBufLen)
 	{
+		// check des key
+		if (DES_set_key_checked(&m_TokenPacket.m_DesBlock, &m_DesSchedule) != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x check des key error"), m_iSessionId);
+			Disconnect();
+			return -3;
+		}
+
 		// check token packet is valid
 		iRet = CheckLoginToken(m_TokenPacket.m_iTokenLen, m_TokenPacket.m_TokenBuf);
 		if (iRet != 0)
@@ -267,6 +303,20 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 			Disconnect();
 			return -2;
 		}
+
+		DES_cblock* pDes = (DES_cblock*)m_pServer->GetContextPool()->PopOutputBuffer();
+		if (!pDes)
+		{
+			LOG_ERR(LOG_SERVER, _T("sid=%08x allocate buffer failed"), m_iSessionId);
+			Disconnect();
+			return -3;
+		}
+
+		// generate new des key
+		DES_random_key(&m_DesBlock);
+		// use server's key to encrypt client's key
+		DES_ecb_encrypt(&m_DesBlock, pDes, &m_DesSchedule, DES_ENCRYPT);
+		DES_set_key(&m_DesBlock, &m_DesSchedule);
 
 		Connection* pConnection = m_pConnection;
 
@@ -279,17 +329,7 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 			return -3;
 		}
 
-		char* strLoggedInNtf = (char*)pConnection->context_pool_->PopOutputBuffer();
-		if (!strLoggedInNtf)
-		{
-			LOG_ERR(LOG_SERVER, _T("sid=%08x PopOutputBuffer failed"), m_iSessionId);
-			Disconnect();
-			return -4;
-		}
-
-		strcpy_s(strLoggedInNtf, MAX_OUTPUT_BUFFER, g_LoggedInNtf);
-
-		pConnection->AsyncSend(strlen(strLoggedInNtf), (char*)strLoggedInNtf);
+		pConnection->AsyncSend(sizeof(DES_cblock), (char*)pDes);
 
 		LOG_DBG(LOG_SERVER, _T("sid=%08x LoggedIn success"), m_iSessionId);
 

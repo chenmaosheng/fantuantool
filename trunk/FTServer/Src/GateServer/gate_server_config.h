@@ -25,6 +25,7 @@ public:
 	uint16 m_iServerPort;
 	uint32 m_iThreadCount;
 	uint16 m_iSessionMax;
+	TCHAR m_strPrivateKey[MAX_PATH+1];
 };
 
 #endif

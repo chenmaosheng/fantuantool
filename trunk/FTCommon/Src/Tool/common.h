@@ -35,6 +35,12 @@
 #define INVALID_CHANNEL_ID	0xff
 #define CHATMESSAGE_MAX		512
 
+enum
+{
+	ACTOR_TYPE_AVATAR,
+	ACTOR_TYPE_NPC,
+};
+
 // todo: temp data
 const static char g_LoggedInNtf[] = "LoggedIn";
 

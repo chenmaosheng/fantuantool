@@ -1,6 +1,7 @@
 #include "map.h"
+#include <algorithm>
 
-float MapGrid::m_fGridSize = 0.0f;
+float32 MapGrid::m_fGridSize = 0.0f;
 
 MapGrid::MapGrid() : m_iGridX(0), m_iGridY(0), m_fMinPositionX(0.0f), m_fMaxPositionX(0.0f), m_fMinPositionY(0.0f), m_fMaxPositionY(0.0f)
 {
@@ -30,4 +31,14 @@ void MapGrid::RemoveActor(Actor *pActor)
 	{
 		m_ActorList.erase(it);
 	}
+}
+
+Map::Map() : m_iMapId(0), m_pRegionLogicLoop(NULL), m_iActorMax(0),
+			m_arrayActor(NULL), m_iAvatarCount(0), m_iHorizonGridCount(0),
+			m_iVerticalGridCount(0), m_array2dMapGrid(NULL)
+{
+}
+
+Map::~Map()
+{
 }

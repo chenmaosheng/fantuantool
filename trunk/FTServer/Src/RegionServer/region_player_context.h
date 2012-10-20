@@ -44,6 +44,9 @@ enum
 };
 
 class RegionServerLoop;
+class RegionLogicLoop;
+class Map;
+class Avatar;
 class RegionPlayerContext
 {
 public:
@@ -90,6 +93,9 @@ public:
 
 	// map info
 	uint32 m_iMapId;
+	Map* m_pMap;
+	RegionLogicLoop* m_pLogicLoop;
+	Avatar* m_pAvatar;
 
 	static RegionServerLoop* m_pMainLoop;
 

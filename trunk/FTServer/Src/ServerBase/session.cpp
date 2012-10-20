@@ -265,7 +265,7 @@ int32 Session::HandleLoginPacket(uint16 iLen, char *pBuf)
 		return -1;
 	}
 
-	m_iLoginBufLen += iLen;
+	m_iLoginBufLen += (uint16)iRet;
 
 	if (m_iLoginBufLen < sizeof(uint16) + sizeof(DES_cblock))
 	{

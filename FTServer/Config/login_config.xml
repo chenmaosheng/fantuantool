@@ -1,5 +1,5 @@
 <Config>
 	<Server IP="0.0.0.0" Port="5001" ThreadCount="1" />
 	<Session Max="500" />
-	<Security PrivateKey="rsa.prv" />
+	<Security PrivateKey="..\..\Config\rsa.prv" />
 </Config>

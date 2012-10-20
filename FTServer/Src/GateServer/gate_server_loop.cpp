@@ -260,7 +260,6 @@ void GateServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand
 			pSession->m_bFinalizing ||
 			!pSession->m_pRegionServer)
 		{
-			LOG_ERR(LOG_SERVER, _T("session failed"));
 			continue;
 		}
 

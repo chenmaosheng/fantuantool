@@ -2,6 +2,7 @@
 #include "region_server_loop.h"
 #include "region_server.h"
 #include "region_server_config.h"
+#include "avatar.h"
 
 #include "master_peer_send.h"
 #include "cache_peer_send.h"
@@ -38,6 +39,9 @@ void RegionPlayerContext::Clear()
 	m_StateMachine.SetCurrState(PLAYER_STATE_NONE);
 
 	m_iMapId = 0;
+	m_pMap = NULL;
+	m_pLogicLoop = NULL;
+	m_pAvatar = NULL;
 }
 
 int32 RegionPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -121,6 +125,25 @@ void RegionPlayerContext::OnRegionEnterReq()
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
+	}
+
+	// initialize avatar
+	if (!m_pAvatar)
+	{
+		m_pAvatar = FT_NEW(Avatar);
+		if (!m_pAvatar)
+		{
+			_ASSERT(false);
+			LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x allocate avatar failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+			m_pMainLoop->ShutdownPlayer(this);
+			return;
+		}
+
+		m_pAvatar->m_pPlayerContext = this;
+	}
+	else
+	{
+		// todo: resume connection
 	}
 
 	iRet = CachePeerSend::OnRegionEnterReq(g_pServer->m_pCacheServer, m_iSessionId, g_pServerConfig->m_iServerId, wcslen(m_strAvatarName)+1, m_strAvatarName);

@@ -19,13 +19,13 @@ public:
 	Actor();
 	virtual ~Actor(){}
 
-	void SetPosition(float fX, float fY, float fZ);
+	void SetPosition(float32 fX, float32 fY, float32 fZ);
 	void SetPosition(const Vector3& position);
 
-	void SetRotation(float fX, float fY, float fZ);
+	void SetRotation(float32 fX, float32 fY, float32 fZ);
 	void SetRotation(const Vector3& rotation);
 
-	void SetVelocity(float fX, float fY, float fZ);
+	void SetVelocity(float32 fX, float32 fY, float32 fZ);
 	void SetVelocity(const Vector3& velocity);
 
 	// check if other actors near this one
@@ -33,6 +33,7 @@ public:
 
 public:
 	uint32 m_iActorId;
+	uint8 m_iActorType;
 	Vector3 m_vPosition;
 	Vector3 m_vRotation;
 	Vector3 m_vVelocity;

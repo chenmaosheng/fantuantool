@@ -23,24 +23,51 @@ bool RegionServerConfig::_LoadConfig()
 	// player max
 	m_iPlayerMax = (uint16)atoi(pRegionServerElement->Attribute("PlayerMax"));
 
-	TiXmlElement* pRegionDescElement = pRootElement->FirstChildElement("RegionDesc");
-	if (!pRegionDescElement)
+	TiXmlElement* pRegionDescListElement = pRootElement->FirstChildElement("RegionDescList");
+	if (!pRegionDescListElement)
 	{
 		return false;
 	}
 
-	// instance count
-	m_RegionDesc.m_iInstanceCount = (uint16)atoi(pRegionDescElement->Attribute("InstanceCount"));
+	for (TiXmlElement* pRegionDescElement = pRegionDescListElement->FirstChildElement("RegionDesc");
+		pRegionDescElement != NULL; pRegionDescElement = pRegionDescElement->NextSiblingElement("RegionDesc"))
+	{
+		RegionDesc desc;
 
-	TiXmlElement* pMapListElement = pRegionDescElement->FirstChildElement("MapList");
-	if (!pMapListElement)
+		// instance count
+		desc.m_iInstanceCount = (uint16)atoi(pRegionDescElement->Attribute("InstanceCount"));
+
+		// map id list
+		TiXmlElement* pMapListElement = pRegionDescElement->FirstChildElement("MapIdList");
+		if (!pMapListElement)
+		{
+			return false;
+		}
+
+		for (TiXmlElement* pMapElement = pMapListElement->FirstChildElement("MapId"); pMapElement != NULL; pMapElement = pMapElement->NextSiblingElement("Map"))
+		{
+			desc.m_arrayMapList.push_back((uint32)atoi(pMapElement->Attribute("value")));
+		}
+
+		m_vRegionDesc.push_back(desc);
+	}
+
+	TiXmlElement* pSpawnPointListElement = pRootElement->FirstChildElement("SpawnPointList");
+	if (!pSpawnPointListElement)
 	{
 		return false;
 	}
 
-	for (TiXmlElement* pMapElement = pMapListElement->FirstChildElement("Map"); pMapElement != NULL; pMapElement = pMapElement->NextSiblingElement("Map"))
+	for (TiXmlElement* pSpawnPointElement = pSpawnPointListElement->FirstChildElement("SpawnPoint"); pSpawnPointElement != NULL;
+		pSpawnPointElement = pSpawnPointElement->NextSiblingElement("SpawnPoint"))
 	{
-		m_RegionDesc.m_arrayMapList.push_back((uint16)atoi(pMapElement->Attribute("id")));
+		SpawnPointDesc desc;
+
+		// map id
+		desc.m_iMapId = (uint32)atoi(pSpawnPointElement->Attribute("MapId"));
+		desc.m_iPointId = (uint32)atoi(pSpawnPointElement->Attribute("PointId"));
+
+		m_vSpawnPointDesc.push_back(desc);
 	}
 
 	return true;

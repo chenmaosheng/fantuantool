@@ -25,18 +25,19 @@ public:
 	void RemoveActor(Actor* pActor);
 
 public:
-	static float m_fGridSize;
+	static float32 m_fGridSize;
 	uint32 m_iGridX;
 	uint32 m_iGridY;
 
-	float m_fMinPositionX;
-	float m_fMaxPositionX;
-	float m_fMinPositionY;
-	float m_fMaxPositionY;
+	float32 m_fMinPositionX;
+	float32 m_fMaxPositionX;
+	float32 m_fMinPositionY;
+	float32 m_fMaxPositionY;
 
 	std::list<Actor*> m_ActorList;
 };
 
+class RegionLogicLoop;
 class Map : public MemoryObject
 {
 public:
@@ -44,7 +45,19 @@ public:
 	Map();
 	~Map();
 
+public:
+	uint32 m_iMapId;
+	RegionLogicLoop* m_pRegionLogicLoop;
 
+private:
+	uint32 m_iActorMax;			// max count of actors on this map
+	Actor** m_arrayActor;		// all actors
+	std::list<uint32> m_ActorIdPool; // actor id allocator
+	uint32 m_iAvatarCount;	// the count of avatars on this map
+
+	uint32 m_iHorizonGridCount;	// the count of grid horizontally
+	uint32 m_iVerticalGridCount; // the count of grid vertically
+	MapGrid*** m_array2dMapGrid;
 };
 
 #endif

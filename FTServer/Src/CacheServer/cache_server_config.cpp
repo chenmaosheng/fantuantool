@@ -41,5 +41,8 @@ bool CacheServerConfig::_LoadConfig()
 	// report interval
 	m_iReportInterval = (uint32)atoi(pCacheServerListElement->Attribute("ReportInterval"));
 
+	// save interval
+	m_iSaveDBInterval = (uint32)atoi(pCacheServerListElement->Attribute("SaveDBInterval"));
+
 	return true;
 }

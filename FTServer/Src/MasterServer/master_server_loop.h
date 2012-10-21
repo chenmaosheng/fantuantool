@@ -22,6 +22,7 @@ struct LogicCommandOnLoginReq;
 struct LogicCommandGateAllocAck;
 struct LogicCommandOnGateLoginReq;
 struct LogicCommandOnRegionAllocAck;
+struct LogicCommandOnRegionLeaveReq;
 struct LogicCommandOnSessionDisconnect;
 struct LogicCommandPacketForward;
 class MasterServerLoop : public LogicLoop
@@ -56,6 +57,10 @@ public:
 	void DeletePlayerFromLoginServerContext(MasterPlayerContext*);
 	// delete player from gate context
 	void DeletePlayerFromGateServerContext(MasterPlayerContext*);
+	// add player to region context
+	void AddPlayerToRegionServerContext(MasterPlayerContext*);
+	// delete player from region context
+	void DeletePlayerFromRegionServerContext(MasterPlayerContext*);
 	// send channel info to client
 	int32 SendChannelList(MasterPlayerContext*);
 	// get channel id by channel name, failed return INVALID_CHANNEL_ID
@@ -82,6 +87,8 @@ private:
 	void _OnCommandOnGateLoginReq(LogicCommandOnGateLoginReq*);
 	// receive region alloc ack from region server
 	void _OnCommandOnRegionAllocAck(LogicCommandOnRegionAllocAck*);
+	// receive region leave req from region server
+	void _OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq*);
 	// receive disconnect from session server
 	void _OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect*);
 	// handle packet forwarding to other server

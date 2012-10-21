@@ -81,6 +81,7 @@ int32 Session::OnConnection(ConnID connId)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION, false) != SESSION_STATE_ONCONNECTION)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("Session state error, state=%d"), m_StateMachine.GetCurrState());
 		_ASSERT(false);
 		return -1;
@@ -96,10 +97,10 @@ int32 Session::OnConnection(ConnID connId)
 	m_pConnection->SetRefMax(256);
 
 	// set new state
-	iRet = m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION);
-	if (iRet < 0)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION) < 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		_ASSERT(false && _T("state error"));
+		LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), m_iSessionId, m_StateMachine.GetCurrState());
 		_ASSERT(false);
 		return -1;
 	}
@@ -114,7 +115,8 @@ void Session::OnDisconnect()
 	// check and set state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
 	{
-		LOG_ERR(LOG_SERVER, _T("sid=%08x Set new state failed"), m_iSessionId);
+		_ASSERT(false && _T("state error"));
+		LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), m_iSessionId, m_StateMachine.GetCurrState());
 		_ASSERT(false);
 		return;
 	}
@@ -139,6 +141,7 @@ void Session::OnData(uint16 iLen, char* pBuf)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDATA, false) != m_StateMachine.GetCurrState())
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x, Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
 		_ASSERT(false);
 		return;
@@ -347,6 +350,7 @@ int32 Session::LoggedInNtf()
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN) != SESSION_STATE_LOGGEDIN)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
 		_ASSERT(false);
 		return -1;

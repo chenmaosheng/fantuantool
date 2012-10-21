@@ -19,6 +19,7 @@ enum
 	PLAYER_STATE_ONLOGINREQ,	// receive login request from login server
 	PLAYER_STATE_GATEALLOCREQ,	// send alloc request to gate server
 	PLAYER_STATE_GATEALLOCACK,	// receive alloc ack from gate server
+	PLAYER_STATE_GATEALLOCFAILACK, // receive allock failed ack from gate server
 	PLAYER_STATE_GATEALLOCNTF,	// send alloc ntf to client
 	PLAYER_STATE_ONGATELOGINREQ, // receive login request from gate server
 	PLAYER_STATE_CACHELOGINREQ, // send login request to cache server
@@ -37,9 +38,17 @@ enum
 	PLAYER_STATE_ONCHANNELSELECTREQ, // receive channel select request
 	PLAYER_STATE_REGIONALLOCREQ, // send region alloc req to region server
 	PLAYER_STATE_ONREGIONALLOCACK, // receive region alloc ack
+	PLAYER_STATE_ONREGIONALLOCFAILACK, // receive region alloc failed ack
 	PLAYER_STATE_CHANNELSELECTACK, // send channel select ack
+	PLAYER_STATE_CHANNELSELECTFAILACK, // send channel select failed ack
 	PLAYER_STATE_REGIONENTERREQ, // send region enter req
 	PLAYER_STATE_ONCHANNELLEAVEREQ, // receive channel leave request
+	PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ, // receive region leave after channel leave
+	PLAYER_STATE_ONCHANNELLEAVE_REGIONLEAVEACK, // send region leave after channel leave
+	PLAYER_STATE_FINALIZING, // start finalizing
+	PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ, // receive region leave after finalizing
+	PLAYER_STATE_FINALIZING_REGIONLEAVEACK, // send region leave after finalizing
+	PLAYER_STATE_LOGOUT, // send logout to cache
 };
 
 enum
@@ -47,6 +56,7 @@ enum
 	PLAYER_EVENT_ONLOGINREQ,
 	PLAYER_EVENT_GATEALLOCREQ,
 	PLAYER_EVENT_GATEALLOCACK,
+	PLAYER_EVENT_GATEALLOCFAILACK,
 	PLAYER_EVENT_GATEALLOCNTF,
 	PLAYER_EVENT_ONGATELOGINREQ,
 	PLAYER_EVENT_ONSESSIONDISCONNECT,
@@ -67,9 +77,14 @@ enum
 	PLAYER_EVENT_ONCHANNELSELECTREQ,
 	PLAYER_EVENT_REGIONALLOCREQ,
 	PLAYER_EVENT_ONREGIONALLOCACK,
+	PLAYER_EVENT_ONREGIONALLOCFAILACK,
 	PLAYER_EVENT_CHANNELSELECTACK,
 	PLAYER_EVENT_REGIONENTERREQ,
 	PLAYER_EVENT_ONCHANNELLEAVEREQ,
+	PLAYER_EVENT_ONREGIONLEAVEREQ,
+	PLAYER_EVENT_REGIONLEAVEACK,
+	PLAYER_EVENT_FINALIZE,
+	PLAYER_EVENT_LOGOUT,
 };
 
 class MasterServerLoop;
@@ -113,6 +128,8 @@ public:
 	void OnChannelLeaveReq();
 	// receive region alloc ack
 	void OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn);
+	// receive region leave req
+	void OnRegionLeaveReq(uint8 iRegionServerId);
 
 private:
 	// initialize state machine

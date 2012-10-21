@@ -77,6 +77,7 @@ void LoginSession::OnLoginFailedAck(int8 iReturn)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINFAILEDACK) != SESSION_STATE_ONLOGINFAILEDACK)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		Disconnect();
 		return;
@@ -101,6 +102,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONVERSIONREQ) != SESSION_STATE_ONVERSIONREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		Disconnect();
 		return;
@@ -139,6 +141,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ) != SESSION_STATE_ONLOGINREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}

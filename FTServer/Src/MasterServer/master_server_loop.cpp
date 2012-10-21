@@ -69,10 +69,11 @@ int32 MasterServerLoop::Init()
 		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iAvatarMax = pChannelConfig->m_iPlayerMax;
 		wcscpy_s(m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_strChannelName, CHANNELNAME_MAX+1, pChannelConfig->m_strChannelName);
 		m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_iInitialRegionServerId = pChannelConfig->m_iInitialRegionServerId;
-		for (uint8 i = 0; i < REGIONSERVER_MAX; ++i)
+		for (uint8 i = 0; i < SERVERCOUNT_MAX; ++i)
 		{
-			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iServerId = pChannelConfig->m_arrayRegionServer[i];
-			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iChannelId = pChannelConfig->m_iChannelId;
+			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iServerId = pChannelConfig->m_arrayRegionConfig[i].m_iServerId;
+			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iChannelId = pChannelConfig->m_arrayRegionConfig[i].m_iChannelId;
+			m_arrayChannelContext[pChannelConfig->m_iChannelId]->m_arrayRegionContext[i].m_iPlayerMax = pChannelConfig->m_arrayRegionConfig[i].m_iPlayerMax;
 		}
 	}
 
@@ -348,6 +349,29 @@ void MasterServerLoop::DeletePlayerFromGateServerContext(MasterPlayerContext* pP
 	}
 }
 
+void MasterServerLoop::AddPlayerToRegionServerContext(MasterPlayerContext* pPlayerContext)
+{
+	ChannelContext* pChannelContext = m_arrayChannelContext[pPlayerContext->m_iLastChannelId];
+	if (pChannelContext)
+	{
+		pChannelContext->m_arrayRegionContext[pPlayerContext->m_iRegionServerId].m_mPlayerContext.insert(std::make_pair(pPlayerContext->m_iSessionId, pPlayerContext));
+	}
+}
+
+void MasterServerLoop::DeletePlayerFromRegionServerContext(MasterPlayerContext* pPlayerContext)
+{
+	ChannelContext* pChannelContext = m_arrayChannelContext[pPlayerContext->m_iLastChannelId];
+	if (pChannelContext)
+	{
+		RegionServerContext& regionContext = pChannelContext->m_arrayRegionContext[pPlayerContext->m_iRegionServerId];
+		stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = regionContext.m_mPlayerContext.find(pPlayerContext->m_iSessionId);
+		if (mit != regionContext.m_mPlayerContext.end())
+		{
+			regionContext.m_mPlayerContext.erase(mit);
+		}
+	}
+}
+
 int32 MasterServerLoop::SendChannelList(MasterPlayerContext* pPlayerContext)
 {
 	int32 iRet = 0;
@@ -448,6 +472,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 
 	case COMMAND_ONREGIONALLOCACK:
 		_OnCommandOnRegionAllocAck((LogicCommandOnRegionAllocAck*)pCommand);
+		break;
+
+	case COMMAND_ONREGIONLEAVEREQ:
+		_OnCommandOnRegionLeaveReq((LogicCommandOnRegionLeaveReq*)pCommand);
 		break;
 
 	case COMMAND_ONSESSIONDISCONNECT:
@@ -600,6 +628,18 @@ void MasterServerLoop::_OnCommandOnRegionAllocAck(LogicCommandOnRegionAllocAck* 
 	}
 
 	mit->second->OnRegionAllocAck(pCommand->m_iServerId, pCommand->m_iReturn);
+}
+
+void MasterServerLoop::_OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq* pCommand)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
+	{
+		LOG_WAR(LOG_SERVER, _T("acc=? sid=%08x can't find context"), pCommand->m_iSessionId);
+		return;
+	}
+
+	mit->second->OnRegionLeaveReq(pCommand->m_iRegionServerId);
 }
 
 void MasterServerLoop::_OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect* pCommand)

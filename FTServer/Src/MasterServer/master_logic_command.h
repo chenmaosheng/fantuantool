@@ -21,6 +21,7 @@ enum
 	COMMAND_GATEALLOCACK,	// acknowledge gate session alloc request
 	COMMAND_ONGATELOGINREQ,	// receive gate login request
 	COMMAND_ONREGIONALLOCACK, // acknowledge region alloc
+	COMMAND_ONREGIONLEAVEREQ, // receive region leave request
 };
 
 struct LogicCommandOnLoginReport : public LogicCommandT<COMMAND_ONLOGINREPORT>
@@ -119,6 +120,18 @@ struct LogicCommandOnRegionAllocAck: public LogicCommandT<COMMAND_ONREGIONALLOCA
 	uint32 m_iSessionId;
 	uint8 m_iServerId;
 	int32 m_iReturn;
+};
+
+struct LogicCommandOnRegionLeaveReq : public LogicCommandT<COMMAND_ONREGIONLEAVEREQ>
+{
+	LogicCommandOnRegionLeaveReq()
+	{
+		m_iSessionId = 0;
+		m_iRegionServerId = 0;
+	}
+
+	uint32 m_iSessionId;
+	uint8 m_iRegionServerId;
 };
 
 #endif

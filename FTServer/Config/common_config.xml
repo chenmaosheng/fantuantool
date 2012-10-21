@@ -11,7 +11,7 @@
 	</ServerList>
 	<ChannelList>
 		<Channel name="Fantuan" id="0" PlayerMax="1000" InitialRegion="4">
-			<Region id="4" />
+			<Region id="4" PlayerMax="500" />
 		</Channel>
 	</ChannelList>
   </Realm>

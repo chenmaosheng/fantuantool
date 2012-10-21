@@ -3,6 +3,7 @@
 #include "cache_db_event.h"
 #include "cache_server.h"
 #include "db_conn_pool.h"
+#include "cache_server_config.h"
 
 #include "gate_server_send.h"
 #include "session_peer_send.h"
@@ -33,6 +34,7 @@ void CachePlayerContext::Clear()
 	m_iAvatarCount = 0;
 	m_bFinalizing = false;
 	m_iRegionServerId = 0;
+	m_iNextSaveDataTime = 0;
 	m_AvatarContext.Clear();
 }
 
@@ -109,6 +111,12 @@ void CachePlayerContext::OnLogoutReq()
 
 	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x OnLogoutReq"), m_strAccountName, m_iSessionId);
 
+	// if player is in region
+	if (m_AvatarContext.m_bEnterRegion)
+	{
+		OnAvatarLogoutReq();
+	}
+
 	m_pMainLoop->ShutdownPlayer(this);
 }
 
@@ -141,6 +149,7 @@ void CachePlayerContext::OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName)
 	m_iRegionServerId = iServerId;
 
 	pDBEvent->m_iSessionId = m_iSessionId;
+	pDBEvent->m_iAvatarId = m_AvatarContext.m_iAvatarId;
 	wcscpy_s(pDBEvent->m_strAvatarName, _countof(pDBEvent->m_strAvatarName), strAvatarName);
 	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }
@@ -287,6 +296,54 @@ void CachePlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 	pDBEvent->m_iSessionId = m_iSessionId;
 	wcscpy_s(pDBEvent->m_strAvatarName, _countof(pDBEvent->m_strAvatarName), strAvatarName);
 	pDBEvent->m_iAvatarId = iSelectAvatarId;
+	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
+}
+
+void CachePlayerContext::OnSaveDataReq(bool bSendNtf)
+{
+	PlayerDBEventAvatarSaveData* pDBEvent = NULL;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x save data"), m_strAccountName, m_iSessionId);
+
+	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarSaveData>();
+	if (!pDBEvent)
+	{
+		_ASSERT(false && _T("failed to allocate event"));
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		return;
+	}
+
+	pDBEvent->m_iSessionId = m_iSessionId;
+	pDBEvent->m_iLastChannelId = m_AvatarContext.m_iLastChannelId;
+	wcscpy_s(pDBEvent->m_strAvatarName, _countof(pDBEvent->m_strAvatarName), m_AvatarContext.m_strAvatarName);
+
+	// if need not send to region, that means no response required
+	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent, bSendNtf);
+
+	// clear dirty flag
+	memset(&m_AvatarContext.m_arrayDirty, 0, sizeof(m_AvatarContext.m_arrayDirty));
+	// reset save time
+	m_iNextSaveDataTime = m_pMainLoop->GetCurrTime() + g_pServerConfig->m_iSaveDBInterval;
+}
+
+void CachePlayerContext::OnAvatarLogoutReq()
+{
+	PlayerDBEventAvatarLogout* pDBEvent = NULL;
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x avatar logout"), m_strAccountName, m_iSessionId);
+
+	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarLogout>();
+	if (!pDBEvent)
+	{
+		_ASSERT(false && _T("failed to allocate event"));
+		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	pDBEvent->m_iSessionId = m_iSessionId;
+	pDBEvent->m_iAvatarId = m_AvatarContext.m_iAvatarId;
+
 	m_pMainLoop->m_pDBConnPool->PushSequenceEvent(m_iSessionId, pDBEvent);
 }
 

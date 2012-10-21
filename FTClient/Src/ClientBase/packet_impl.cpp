@@ -51,6 +51,10 @@ void GateServerRecv::ChannelSelectAck(void *pClient, int32 iReturn)
 	pClientBase->ChannelSelectAck(iReturn);
 }
 
+void GateServerRecv::ChannelLeaveAck(void* pClient)
+{
+}
+
 void RegionServerRecv::ServerTimeNtf(void *pClient, uint32 iServerTime)
 {
 	ClientBase* pClientBase = (ClientBase*)pClient;

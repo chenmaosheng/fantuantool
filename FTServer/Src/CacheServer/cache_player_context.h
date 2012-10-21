@@ -59,6 +59,10 @@ public:
 	void OnAvatarCreateReq(prdAvatarCreateData& data);
 	// receive avatar select req
 	void OnAvatarSelectReq(const TCHAR* strAvatarName);
+	// receive save data req, sendntf: if need to send to region
+	void OnSaveDataReq(bool bSendNtf=false);
+	// receive avatar logout req
+	void OnAvatarLogoutReq();
 
 public:	// receive packet handler
 	void OnLoginReq(uint32 iSessionId, TCHAR* strAccountName);
@@ -71,6 +75,8 @@ public: // receive db event result
 	void OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSelectData*);
 	void OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvatarEnterRegion*);
 	void OnPlayerEventAvatarFinalizeResult(PlayerDBEventAvatarFinalize*);
+	void OnPlayerEventAvatarSaveDataResult(PlayerDBEventAvatarSaveData*);
+	void OnPlayerEventAvatarLogoutResult(PlayerDBEventAvatarLogout*);
 
 private:
 	// initialize state machine
@@ -82,6 +88,7 @@ public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	StateMachine m_StateMachine;
 	bool m_bFinalizing; // almost leave or not
+	uint32 m_iNextSaveDataTime;
 
 	// avatar info list
 	uint8 m_iAvatarCount;

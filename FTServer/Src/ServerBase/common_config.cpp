@@ -150,7 +150,11 @@ bool CommonConfig::LoadConfig()
 		for (TiXmlElement* pRegionElement = pChannelElement->FirstChildElement("Region"); pRegionElement != NULL; pRegionElement = pRegionElement->NextSiblingElement("Region"))
 		{
 			// region id
-			item.m_arrayRegionServer[item.m_iRegionCount] = (uint8)atoi(pRegionElement->Attribute("id"));
+			item.m_arrayRegionConfig[item.m_iRegionCount].m_iServerId = (uint8)atoi(pRegionElement->Attribute("id"));
+			// player max
+			item.m_arrayRegionConfig[item.m_iRegionCount].m_iPlayerMax = (uint8)atoi(pRegionElement->Attribute("PlayerMax"));
+			item.m_arrayRegionConfig[item.m_iRegionCount].m_iChannelId = item.m_iChannelId;
+
 			item.m_iRegionCount++;
 		}
 

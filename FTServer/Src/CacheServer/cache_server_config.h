@@ -27,6 +27,7 @@ public:
 	uint16 m_iDBPort;
 	uint16 m_iDBConnCount;
 	uint32 m_iReportInterval;	// interval of reporting to master server
+	uint32 m_iSaveDBInterval;	// interval of saving data to db
 };
 
 #endif

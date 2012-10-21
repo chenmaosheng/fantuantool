@@ -9,4 +9,5 @@ filter (GateServer, SERVER_FILTER_GATE)
 	ChannelListNtf(uint8 iChannelCount, ChannelData arrayChannelData[iChannelCount]);
 	// 0 means success, other means failed
 	ChannelSelectAck(int32 iReturn);
+	ChannelLeaveAck();
 }

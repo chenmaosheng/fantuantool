@@ -53,10 +53,19 @@ struct RegionServerContext
 	{
 		m_iServerId = 0;
 		m_iChannelId = 0;
+		m_dwLastReportTime = 0;
+		m_bIsConnected = false;
+		m_iPlayerMax = 0;
+		m_iPlayerCount = 0;
 	}
 
 	uint8 m_iServerId;
 	uint8 m_iChannelId;
+	DWORD m_dwLastReportTime;
+	bool m_bIsConnected;
+	uint16 m_iPlayerMax;
+	uint16 m_iPlayerCount;
+	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContext;
 };
 
 struct ChannelContext
@@ -73,7 +82,7 @@ struct ChannelContext
 	uint16 m_iAvatarMax;
 	TCHAR m_strChannelName[CHANNELNAME_MAX];
 	uint8 m_iInitialRegionServerId;
-	RegionServerContext m_arrayRegionContext[REGIONSERVER_MAX];
+	RegionServerContext m_arrayRegionContext[SERVERCOUNT_MAX];
 };
 
 #endif

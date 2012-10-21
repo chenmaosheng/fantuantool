@@ -14,10 +14,12 @@
 
 enum
 {
-	DB_EVENT_GETAVATARLIST = 1,
-	DB_EVENT_AVATARCREATE,
-	DB_EVENT_AVATARSELECTDATA,
-	DB_EVENT_AVATARENTERREGION,
+	DB_EVENT_GETAVATARLIST = 1,	// get list of avatars
+	DB_EVENT_AVATARCREATE,		// create an avatar
+	DB_EVENT_AVATARSELECTDATA,	// select all data of an avatar
+	DB_EVENT_AVATARENTERREGION,	// enter the region
+	DB_EVENT_AVATARSAVEDATA,	// save data
+	DB_EVENT_AVATARLOGOUT,		// avatar logout
 
 	DB_EVENT_AVATARFINALIZE = 999,
 };
@@ -80,6 +82,27 @@ public:
 public:
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+};
+
+class PlayerDBEventAvatarSaveData : public PlayerDBEvent
+{
+public:
+	PlayerDBEventAvatarSaveData();
+	int32 FireEvent(DBConn*);
+
+public:
+	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+	uint8 m_iLastChannelId;
+};
+
+class PlayerDBEventAvatarLogout : public PlayerDBEvent
+{
+public:
+	PlayerDBEventAvatarLogout();
+	int32 FireEvent(DBConn*);
+
+public:
+	uint64 m_iAvatarId;
 };
 
 

@@ -17,5 +17,8 @@ void CacheAvatarContext::Clear()
 
 	m_iLevel = 0;
 
+	m_iLastChannelId = 0;
+	m_bEnterRegion = false;
+
 	memset(m_arrayDirty, 0, sizeof(m_arrayDirty));
 }

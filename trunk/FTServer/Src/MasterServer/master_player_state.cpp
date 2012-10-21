@@ -34,6 +34,7 @@ void MasterPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_GATEALLOCACK, PLAYER_STATE_GATEALLOCACK);
+	pState->AddTransition(PLAYER_EVENT_GATEALLOCFAILACK, PLAYER_STATE_GATEALLOCFAILACK);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEALLOCACK);
 
 	// when state is gate allocate ack
@@ -46,6 +47,16 @@ void MasterPlayerContext::_InitStateMachine()
 
 	pState->AddTransition(PLAYER_EVENT_GATEALLOCNTF, PLAYER_STATE_GATEALLOCNTF);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEALLOCACK);
+
+	// when state is gate allocate failed ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_GATEALLOCFAILACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_GATEALLOCFAILACK);
 
 	// when state is gate allocate ntf
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_GATEALLOCNTF);
@@ -235,6 +246,7 @@ void MasterPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONREGIONALLOCACK, PLAYER_STATE_ONREGIONALLOCACK);
+	pState->AddTransition(PLAYER_EVENT_ONREGIONALLOCFAILACK, PLAYER_STATE_ONREGIONALLOCFAILACK);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_REGIONALLOCREQ);
 
 	// when state is receive region alloc ack
@@ -248,6 +260,17 @@ void MasterPlayerContext::_InitStateMachine()
 	pState->AddTransition(PLAYER_EVENT_CHANNELSELECTACK, PLAYER_STATE_CHANNELSELECTACK);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONREGIONALLOCACK);
 
+	// when state is receive region alloc failed ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONREGIONALLOCFAILACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_CHANNELSELECTACK, PLAYER_STATE_CHANNELSELECTFAILACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONREGIONALLOCFAILACK);
+
 	// when state is send channel select ack
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_CHANNELSELECTACK);
 	if (!pState)
@@ -259,6 +282,17 @@ void MasterPlayerContext::_InitStateMachine()
 	pState->AddTransition(PLAYER_EVENT_REGIONENTERREQ, PLAYER_STATE_REGIONENTERREQ);
 	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_CHANNELSELECTACK);
 
+	// when state is send channel select failedack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_CHANNELSELECTFAILACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_CHANNELLISTNTF, PLAYER_STATE_CHANNELLISTNTF);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_CHANNELSELECTFAILACK);
+
 	// when state is send region enter req
 	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_REGIONENTERREQ);
 	if (!pState)
@@ -268,5 +302,82 @@ void MasterPlayerContext::_InitStateMachine()
 	}
 
 	pState->AddTransition(PLAYER_EVENT_ONCHANNELLEAVEREQ, PLAYER_STATE_ONCHANNELLEAVEREQ);
-	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_REGIONENTERREQ);	// todo:
+	pState->AddTransition(PLAYER_EVENT_FINALIZE, PLAYER_STATE_FINALIZING);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_FINALIZING);
+
+	// when state is receive channel leave req
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONCHANNELLEAVEREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_REGIONLEAVEACK, PLAYER_STATE_ONCHANNELLEAVE_REGIONLEAVEACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_EVENT_ONCHANNELLEAVEREQ);
+
+	// when state is send region leave after channel leave
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONCHANNELLEAVE_REGIONLEAVEACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_FINALIZING_REGIONLEAVEACK);
+
+	// when state is receive region leave after channel leave
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_CHANNELLISTNTF, PLAYER_STATE_CHANNELLISTNTF);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ);
+
+	// when state is start finalizing
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_FINALIZING);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_REGIONLEAVEACK, PLAYER_STATE_FINALIZING_REGIONLEAVEACK);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_FINALIZING);
+
+	// when state is send region leave after finalizing
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_FINALIZING_REGIONLEAVEACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONREGIONLEAVEREQ, PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_FINALIZING_REGIONLEAVEACK);
+
+	// when state is receive region leave after finalizing
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_LOGOUT, PLAYER_STATE_LOGOUT);
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ);
+
+	// send logout to cache
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_LOGOUT);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(PLAYER_EVENT_ONSESSIONDISCONNECT, PLAYER_STATE_LOGOUT);
 }

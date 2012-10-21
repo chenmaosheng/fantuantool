@@ -33,6 +33,10 @@ struct CacheAvatarContext
 	// level data
 	uint16 m_iLevel;
 
+	// channel data
+	uint8 m_iLastChannelId;
+	bool m_bEnterRegion;
+
 	bool m_arrayDirty[AVATAR_DATA_MAX];	// check which data is dirty
 };
 

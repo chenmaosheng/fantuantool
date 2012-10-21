@@ -25,6 +25,14 @@ struct ServerConfigItem
 	TCHAR m_strExeFile[MAX_PATH+1];		// the executable file name of this server
 };
 
+// record the configuration of one region
+struct RegionConfigItem
+{
+	uint8 m_iServerId;
+	uint8 m_iChannelId;
+	uint16 m_iPlayerMax;
+};
+
 // record the configuration of one channel
 struct ChannelConfigItem
 {
@@ -33,7 +41,7 @@ struct ChannelConfigItem
 	uint16 m_iPlayerMax;
 	uint8 m_iRegionCount;
 	uint8 m_iInitialRegionServerId;
-	uint8 m_arrayRegionServer[REGIONSERVER_MAX];
+	RegionConfigItem m_arrayRegionConfig[SERVERCOUNT_MAX];
 };
 
 class CommonConfig

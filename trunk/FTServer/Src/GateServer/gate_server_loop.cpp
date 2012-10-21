@@ -156,7 +156,7 @@ void GateServerLoop::CloseSession(GateSession* pSession, bool isByMaster)
 		iRet = MasterPeerSend::GateAllocAck(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, pSession->m_iLoginSessionId, wcslen(pSession->m_strAccountName)+1, pSession->m_strAccountName, pSession->m_iSessionId);
 		if (iRet != 0)
 		{
-			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnGateLoginReq failed"), pSession->m_strAccountName, pSession->m_iSessionId);
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x GateAllocAck failed"), pSession->m_strAccountName, pSession->m_iSessionId);
 		}
 	}
 

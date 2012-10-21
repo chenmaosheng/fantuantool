@@ -147,3 +147,28 @@ int32 PlayerDBEventAvatarEnterRegion::FireEvent(DBConn* pDBConn)
 	m_iRet = 0;
 	return 0;
 }
+
+PlayerDBEventAvatarSaveData::PlayerDBEventAvatarSaveData()
+{
+	m_iEventId = DB_EVENT_AVATARSAVEDATA;
+	m_strAvatarName[0] = _T('\0');
+	m_iLastChannelId = 0;
+}
+
+int32 PlayerDBEventAvatarSaveData::FireEvent(DBConn* pDBConn)
+{
+	m_iRet = 0;
+	return 0;
+}
+
+PlayerDBEventAvatarLogout::PlayerDBEventAvatarLogout()
+{
+	m_iEventId = DB_EVENT_AVATARLOGOUT;
+	m_iAvatarId = 0;
+}
+
+int32 PlayerDBEventAvatarLogout::FireEvent(DBConn* pDBConn)
+{
+	m_iRet = 0;
+	return 0;
+}

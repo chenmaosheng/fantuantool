@@ -18,6 +18,7 @@ void CachePlayerContext::OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatar
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTACK) != PLAYER_STATE_AVATARLISTACK)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -112,6 +113,17 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 
 	if (pEvent->m_iRet == 0)
 	{
+		// clear context
+		if (m_AvatarContext.m_iAvatarId)
+		{
+			m_AvatarContext.Clear();
+		}
+
+		// initialize avatar context
+		wcscpy_s(m_AvatarContext.m_strAvatarName, _countof(m_AvatarContext.m_strAvatarName), pEvent->m_strAvatarName);
+		m_AvatarContext.m_iAvatarId = pEvent->m_iAvatarId;
+		m_AvatarContext.m_iLastChannelId = pEvent->m_iLastChannelId;
+
 		iRet = WChar2Char(pEvent->m_strAvatarName, data.m_strAvatarName, AVATARNAME_MAX+1);
 		if (iRet == 0)
 		{
@@ -140,6 +152,7 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		m_pMainLoop->ShutdownPlayer(this);
 	}
@@ -154,6 +167,9 @@ void CachePlayerContext::OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvata
 	if (pEvent->m_iRet == 0)
 	{
 		// todo:
+		// add player context to map
+		m_pMainLoop->AddPlayerContextByAvatarId(this);
+		m_AvatarContext.m_bEnterRegion = true;
 	}
 
 	iRet = RegionPeerSend::RegionEnterAck(g_pServer->GetPeerServer(m_iRegionServerId), m_iSessionId, pEvent->m_iRet);
@@ -173,4 +189,14 @@ void CachePlayerContext::OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvata
 void CachePlayerContext::OnPlayerEventAvatarFinalizeResult(PlayerDBEventAvatarFinalize* pEvent)
 {
 	m_pMainLoop->AddPlayerToFinalizingQueue(this);
+}
+
+void CachePlayerContext::OnPlayerEventAvatarSaveDataResult(PlayerDBEventAvatarSaveData* pEvent)
+{
+	// todo:
+}
+
+void CachePlayerContext::OnPlayerEventAvatarLogoutResult(PlayerDBEventAvatarLogout* pEvent)
+{
+	m_AvatarContext.m_bEnterRegion = false;
 }

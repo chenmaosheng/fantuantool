@@ -61,6 +61,7 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCREQ) != PLAYER_STATE_ONREGIONALLOCREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), strAvatarName, iAvatarId, iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -84,6 +85,7 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONALLOCACK) != PLAYER_STATE_REGIONALLOCACK)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), strAvatarName, iAvatarId, iSessionId, m_StateMachine.GetCurrState());
 	}
 }
@@ -101,6 +103,7 @@ void RegionPlayerContext::OnRegionReleaseReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONRELEASEREQ) != PLAYER_STATE_ONREGIONRELEASEREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -123,6 +126,7 @@ void RegionPlayerContext::OnRegionEnterReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONENTERREQ) != PLAYER_STATE_ONREGIONENTERREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -157,6 +161,7 @@ void RegionPlayerContext::OnRegionEnterReq()
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONENTERREQ) != PLAYER_STATE_REGIONENTERREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -177,6 +182,7 @@ void RegionPlayerContext::OnRegionEnterAck()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONENTERACK) != PLAYER_STATE_ONREGIONENTERACK)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -210,6 +216,7 @@ void RegionPlayerContext::OnRegionEnterAck()
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_SERVERTIMENTF) != PLAYER_STATE_SERVERTIMENTF)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 	}
 }
@@ -229,6 +236,7 @@ void RegionPlayerContext::OnRegionLeaveReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONLEAVEREQ) != PLAYER_STATE_ONREGIONLEAVEREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -255,6 +263,7 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONCLIENTTIMEREQ) != PLAYER_STATE_ONCLIENTTIMEREQ)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 		return;
 	}
@@ -279,6 +288,7 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_SERVERTIME2NTF) != PLAYER_STATE_SERVERTIME2NTF)
 	{
+		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
 	}
 

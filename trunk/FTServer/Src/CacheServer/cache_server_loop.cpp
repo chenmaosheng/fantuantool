@@ -5,6 +5,7 @@
 #include "cache_server_config.h"
 
 #include "db_conn_pool.h"
+#include "alarm.h"
 
 #include "master_peer_send.h"
 #include "packet.h"
@@ -72,6 +73,10 @@ int32 CacheServerLoop::Start()
 		return iRet;
 	}
 
+	// register alarm event
+	m_pAlarm->RegisterEvent(_T("ReportState"), m_dwCurrTime, g_pServerConfig->m_iReportInterval, this, &CacheServerLoop::_ReportState);
+	m_pAlarm->RegisterEvent(_T("SaveData"), m_dwCurrTime, g_pServerConfig->m_iSaveDBInterval, this, &CacheServerLoop::_SaveDataToDB);
+
 	return 0;
 }
 
@@ -118,9 +123,31 @@ void CacheServerLoop::DeletePlayer(CachePlayerContext* pPlayerContext)
 		m_mPlayerContextBySessionId.erase(mit);
 	}
 
+	stdext::hash_map<uint64, CachePlayerContext*>::iterator mit2 = m_mPlayerContextByAvatarId.find(pPlayerContext->m_AvatarContext.m_iAvatarId);
+	if (mit2 != m_mPlayerContextByAvatarId.end())
+	{
+		m_mPlayerContextByAvatarId.erase(mit2);
+	}
+
 	// put context to pool
 	pPlayerContext->Clear();
 	m_PlayerContextPool.Free(pPlayerContext);
+}
+
+CachePlayerContext* CacheServerLoop::GetPlayerContextByAvatarId(uint64 iAvatarId)
+{
+	stdext::hash_map<uint64, CachePlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.find(iAvatarId);
+	if (mit != m_mPlayerContextByAvatarId.end())
+	{
+		return mit->second;
+	}
+
+	return NULL;
+}
+
+void CacheServerLoop::AddPlayerContextByAvatarId(CachePlayerContext* pPlayerContext)
+{
+	m_mPlayerContextByAvatarId.insert(std::make_pair(pPlayerContext->m_AvatarContext.m_iAvatarId, pPlayerContext));
 }
 
 DWORD CacheServerLoop::_Loop()
@@ -154,6 +181,8 @@ void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
 	case DB_EVENT_AVATARSELECTDATA:
 	case DB_EVENT_AVATARENTERREGION:
 	case DB_EVENT_AVATARFINALIZE:
+	case DB_EVENT_AVATARSAVEDATA:
+	case DB_EVENT_AVATARLOGOUT:
 		_OnPlayerEventResult((PlayerDBEvent*)pEvent);
 		break;
 
@@ -193,6 +222,14 @@ void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
 
 	case DB_EVENT_AVATARFINALIZE:
 		pCachePlayerContext->OnPlayerEventAvatarFinalizeResult((PlayerDBEventAvatarFinalize*)pEvent);
+		break;
+
+	case DB_EVENT_AVATARSAVEDATA:
+		pCachePlayerContext->OnPlayerEventAvatarSaveDataResult((PlayerDBEventAvatarSaveData*)pEvent);
+		break;
+
+	case DB_EVENT_AVATARLOGOUT:
+		pCachePlayerContext->OnPlayerEventAvatarLogoutResult((PlayerDBEventAvatarLogout*)pEvent);
 		break;
 
 	default:
@@ -304,5 +341,32 @@ void CacheServerLoop::_ReportState()
 	{
 		_ASSERT(false && _T("CacheReportState failed"));
 		LOG_ERR(LOG_SERVER, _T("CacheReportState failed"));
+	}
+}
+
+void CacheServerLoop::_SaveDataToDB()
+{
+	int32 iRet = 0;
+	CachePlayerContext* pPlayerContext = NULL;
+
+	if (m_iShutdownStatus >= START_SHUTDOWN)
+	{
+		return;
+	}
+
+	DWORD dwCurrTime = GetCurrTime();
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit = m_mPlayerContextBySessionId.begin();
+	stdext::hash_map<uint32, CachePlayerContext*>::iterator mit_end = m_mPlayerContextBySessionId.end();
+	while (mit != mit_end)
+	{
+		pPlayerContext = mit->second;
+		if (!pPlayerContext->m_bFinalizing &&
+			pPlayerContext->m_iNextSaveDataTime <= dwCurrTime)
+		{
+			LOG_DBG(LOG_DB, _T("name=%s aid=%llu sid=%08x save data"), pPlayerContext->m_AvatarContext.m_strAvatarName, pPlayerContext->m_AvatarContext.m_iAvatarId, pPlayerContext->m_iSessionId);
+			pPlayerContext->OnSaveDataReq();
+		}
+
+		++mit;
 	}
 }

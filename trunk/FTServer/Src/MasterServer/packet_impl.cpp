@@ -166,3 +166,9 @@ void GateServerRecv::ChannelSelectAck(void* pClient, int32 iReturn)
 	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
 }
+
+void GateServerRecv::ChannelLeaveAck(void *pClient)
+{
+	_ASSERT(false);
+	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+}

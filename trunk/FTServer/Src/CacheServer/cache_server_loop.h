@@ -47,6 +47,10 @@ public:
 	void AddPlayerToFinalizingQueue(CachePlayerContext*);
 	// totally delete a player
 	void DeletePlayer(CachePlayerContext*);
+	// get player context by avatar id
+	CachePlayerContext* GetPlayerContextByAvatarId(uint64 iAvatarId);
+	// add player context by avatar id
+	void AddPlayerContextByAvatarId(CachePlayerContext*);
 
 private:
 	DWORD _Loop();
@@ -71,11 +75,14 @@ private:
 
 	// report own state to master server
 	void _ReportState();
+	// save data to db
+	void _SaveDataToDB();
 	
 private:
 	int32 m_iShutdownStatus;
 	ObjectPool<CachePlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint32, CachePlayerContext*> m_mPlayerContextBySessionId;
+	stdext::hash_map<uint64, CachePlayerContext*> m_mPlayerContextByAvatarId;
 	std::queue<CachePlayerContext*> m_PlayerFinalizingQueue;
 
 public:

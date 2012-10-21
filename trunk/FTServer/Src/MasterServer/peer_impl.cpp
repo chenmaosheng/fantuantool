@@ -122,6 +122,21 @@ void MasterPeerRecv::OnRegionAllocAck(PEER_CLIENT pPeerClient, uint32 iSessionId
 	g_pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
+void MasterPeerRecv::OnRegionLeaveReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint8 iServerId)
+{
+	LogicCommandOnRegionLeaveReq* pCommand = FT_NEW(LogicCommandOnRegionLeaveReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnRegionLeaveReq) failed"));
+		return;
+	}
+
+	pCommand->m_iSessionId = iSessionId;
+	pCommand->m_iRegionServerId = iServerId;
+
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
 void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
 {
 	LogicCommandOnSessionDisconnect* pCommand = FT_NEW(LogicCommandOnSessionDisconnect);

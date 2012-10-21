@@ -80,9 +80,28 @@ void GateSession::InitStateMachine()
 	}
 
 	pState->AddTransition(SESSION_EVENT_DISCONNECT, SESSION_STATE_DISCONNECT);
-	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
+	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_HOLDCONNECTION);
 	pState->AddTransition(SESSION_EVENT_ONDATA, SESSION_STATE_GATELOGINREQ);
 	pState->AddTransition(SESSION_EVENT_SEND, SESSION_STATE_GATELOGINREQ);
 	pState->AddTransition(SESSION_EVENT_ONMASTERDISCONNECT, SESSION_STATE_ONMASTERDISCONNECT);
 
+	// when state is hold connection
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_HOLDCONNECTION);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(SESSION_EVENT_SESSIONDISCONNECTREQ, SESSION_STATE_ONDISCONNECT);
+
+	// when state is on master disconnect
+	pState = m_StateMachine.ForceGetFSMState(SESSION_STATE_ONMASTERDISCONNECT);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
+	pState->AddTransition(SESSION_EVENT_ONDISCONNECT, SESSION_STATE_ONDISCONNECT);
 }

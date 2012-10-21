@@ -16,6 +16,8 @@
 #include <queue>
 
 class MasterPlayerContext;
+struct LogicCommandOnLoginReport;
+struct LogicCommandOnGateReport;
 struct LogicCommandOnLoginReq;
 struct LogicCommandGateAllocAck;
 struct LogicCommandOnGateLoginReq;
@@ -68,6 +70,10 @@ private:
 	void _OnCommandShutdown();
 
 private:
+	// receive login server's report
+	void _OnCommandOnLoginReport(LogicCommandOnLoginReport*);
+	// receive gate server's report
+	void _OnCommandOnGateReport(LogicCommandOnGateReport*);
 	// receive request about login
 	void _OnCommandOnLoginReq(LogicCommandOnLoginReq*);
 	// acknowledge response about allocate a gate session

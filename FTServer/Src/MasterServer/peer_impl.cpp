@@ -8,6 +8,60 @@
 
 #include "memory_object.h"
 
+void MasterPeerRecv::LoginReportState(PEER_CLIENT pPeerClient, uint8 iServerId)
+{
+	LogicCommandOnLoginReport* pCommand = FT_NEW(LogicCommandOnLoginReport);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnLoginReport) failed"));
+		return;
+	}
+
+	pCommand->m_iServerId = iServerId;
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void MasterPeerRecv::GateReportState(PEER_CLIENT pPeerClient, uint8 iServerId, uint16 iSessionCount)
+{
+	LogicCommandOnGateReport* pCommand = FT_NEW(LogicCommandOnGateReport);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnGateReport) failed"));
+		return;
+	}
+
+	pCommand->m_iServerId = iServerId;
+	pCommand->m_iSessionCount = iSessionCount;
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void MasterPeerRecv::CacheReportState(PEER_CLIENT pPeerClient, uint8 iServerId)
+{
+	LogicCommandOnCacheReport* pCommand = FT_NEW(LogicCommandOnCacheReport);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnCacheReport) failed"));
+		return;
+	}
+
+	pCommand->m_iServerId = iServerId;
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
+void MasterPeerRecv::RegionReportState(PEER_CLIENT pPeerClient, uint8 iServerId, uint16 iPlayerCount)
+{
+	LogicCommandOnRegionReport* pCommand = FT_NEW(LogicCommandOnRegionReport);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandOnRegionReport) failed"));
+		return;
+	}
+
+	pCommand->m_iServerId = iServerId;
+	pCommand->m_iPlayerCount = iPlayerCount;
+	g_pServer->m_pMainLoop->PushCommand(pCommand);
+}
+
 void MasterPeerRecv::OnLoginReq(PEER_CLIENT pPeerClient, uint32 iSessionId, uint16 iAccountNameLen, const TCHAR* strAccountName)
 {
 	LogicCommandOnLoginReq* pCommand = FT_NEW(LogicCommandOnLoginReq);

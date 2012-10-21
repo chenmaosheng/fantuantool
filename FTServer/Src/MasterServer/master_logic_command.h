@@ -13,10 +13,58 @@
 
 enum
 {
-	COMMAND_ONLOGINREQ = COMMAND_APPSTART+1,		// receive login request
+	COMMAND_ONLOGINREPORT = COMMAND_APPSTART + 1,
+	COMMAND_ONGATEREPORT,
+	COMMAND_ONCACHEREPORT,
+	COMMAND_ONREGIONREPORT,
+	COMMAND_ONLOGINREQ,		// receive login request
 	COMMAND_GATEALLOCACK,	// acknowledge gate session alloc request
 	COMMAND_ONGATELOGINREQ,	// receive gate login request
 	COMMAND_ONREGIONALLOCACK, // acknowledge region alloc
+};
+
+struct LogicCommandOnLoginReport : public LogicCommandT<COMMAND_ONLOGINREPORT>
+{
+	LogicCommandOnLoginReport()
+	{
+		m_iServerId = 0;
+	}
+
+	uint8 m_iServerId;
+};
+
+struct LogicCommandOnGateReport : public LogicCommandT<COMMAND_ONGATEREPORT>
+{
+	LogicCommandOnGateReport()
+	{
+		m_iServerId = 0;
+		m_iSessionCount = 0;
+	}
+
+	uint8 m_iServerId;
+	uint16 m_iSessionCount;
+};
+
+struct LogicCommandOnCacheReport : public LogicCommandT<COMMAND_ONCACHEREPORT>
+{
+	LogicCommandOnCacheReport()
+	{
+		m_iServerId = 0;
+	}
+
+	uint8 m_iServerId;
+};
+
+struct LogicCommandOnRegionReport : public LogicCommandT<COMMAND_ONREGIONREPORT>
+{
+	LogicCommandOnRegionReport()
+	{
+		m_iServerId = 0;
+		m_iPlayerCount = 0;
+	}
+
+	uint8 m_iServerId;
+	uint16 m_iPlayerCount;
 };
 
 struct LogicCommandOnLoginReq : public LogicCommandT<COMMAND_ONLOGINREQ>

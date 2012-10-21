@@ -18,6 +18,7 @@ class Session;
 struct LogicCommand;
 struct LogicCommandOnConnect;
 struct LogicCommandOnDisconnect;
+struct LogicCommandDisconnect;
 struct LogicCommandOnData;
 struct LogicCommandSendData;
 struct LogicCommandBroadcastData;
@@ -39,14 +40,16 @@ public:
 	virtual void ClearSession(T* pSession);
 
 	bool IsReadyForShutdown() const;
+	bool IsStartShutdown() const;
 
 protected:
 	T* GetSession(uint32 iSessionId);
 	void _ReadyForShutdown();
 	virtual bool _OnCommand(LogicCommand*);
 
-	void _OnCommandOnConnect(LogicCommandOnConnect*);
+	virtual void _OnCommandOnConnect(LogicCommandOnConnect*);
 	virtual void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
+	virtual void _OnCommandDisconnect(LogicCommandDisconnect*);
 	virtual void _OnCommandOnData(LogicCommandOnData*);
 	virtual void _OnCommandSendData(LogicCommandSendData*);
 	virtual void _OnCommandBroadcastData(LogicCommandBroadcastData*);

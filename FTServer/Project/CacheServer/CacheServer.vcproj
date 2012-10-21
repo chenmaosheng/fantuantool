@@ -177,6 +177,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\Src\CacheServer\cache_avatar_context.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\CacheServer\cache_db_event.cpp"
 				>
 			</File>
@@ -226,6 +230,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\Src\CacheServer\cache_avatar_context.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\Src\CacheServer\cache_db_event.h"
 				>
@@ -290,6 +298,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\FTCommon\Src\GenFiles\cache_peer_recv.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\FTCommon\Src\GenFiles\master_peer_send.h"
 				>
 			</File>
 			<File

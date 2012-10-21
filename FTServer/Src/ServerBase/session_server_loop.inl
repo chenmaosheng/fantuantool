@@ -109,6 +109,12 @@ bool SessionServerLoop<T>::IsReadyForShutdown() const
 }
 
 template<typename T>
+bool SessionServerLoop<T>::IsStartShutdown() const
+{
+	return m_iShutdownStatus == START_SHUTDOWN;
+}
+
+template<typename T>
 bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 {
 	switch(pCommand->m_iCmdId)
@@ -122,6 +128,10 @@ bool SessionServerLoop<T>::_OnCommand(LogicCommand* pCommand)
 
 	case COMMAND_ONDISCONNECT:
 		_OnCommandOnDisconnect((LogicCommandOnDisconnect*)pCommand);
+		break;
+
+	case COMMAND_DISCONNECT:
+		_OnCommandDisconnect((LogicCommandDisconnect*)pCommand);
 		break;
 
 	case COMMAND_ONDATA:
@@ -195,6 +205,16 @@ void SessionServerLoop<T>::_OnCommandOnDisconnect(LogicCommandOnDisconnect* pCom
 
 		pSession->OnDisconnect();
 		m_SessionPool.Free(pSession);
+	}
+}
+
+template<typename T>
+void SessionServerLoop<T>::_OnCommandDisconnect(LogicCommandDisconnect* pCommand)
+{
+	T* pSession = (T*)GetSession(pCommand->m_iSessionId);
+	if (pSession)
+	{
+		pSession->Disconnect();
 	}
 }
 

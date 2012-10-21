@@ -6,6 +6,7 @@
 
 #include "db_conn_pool.h"
 
+#include "master_peer_send.h"
 #include "packet.h"
 
 CacheServerLoop::CacheServerLoop() :
@@ -13,6 +14,11 @@ m_iShutdownStatus(NOT_SHUTDOWN),
 m_PlayerContextPool(5000),
 m_pDBConnPool(new DBConnPool)
 {
+}
+
+CacheServerLoop::~CacheServerLoop()
+{
+	SAFE_DELETE(m_pDBConnPool);
 }
 
 int32 CacheServerLoop::Init()
@@ -147,6 +153,7 @@ void CacheServerLoop::_OnDBEventResult(DBEvent* pEvent)
 	case DB_EVENT_AVATARCREATE:
 	case DB_EVENT_AVATARSELECTDATA:
 	case DB_EVENT_AVATARENTERREGION:
+	case DB_EVENT_AVATARFINALIZE:
 		_OnPlayerEventResult((PlayerDBEvent*)pEvent);
 		break;
 
@@ -182,6 +189,10 @@ void CacheServerLoop::_OnPlayerEventResult(PlayerDBEvent* pEvent)
 		
 	case DB_EVENT_AVATARENTERREGION:
 		pCachePlayerContext->OnPlayerEventAvatarEnterRegionResult((PlayerDBEventAvatarEnterRegion*)pEvent);
+		break;
+
+	case DB_EVENT_AVATARFINALIZE:
+		pCachePlayerContext->OnPlayerEventAvatarFinalizeResult((PlayerDBEventAvatarFinalize*)pEvent);
 		break;
 
 	default:
@@ -276,5 +287,22 @@ void CacheServerLoop::_OnCommandPacketForward(LogicCommandPacketForward* pComman
 		{
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x on packet received failed"), mit->second->m_strAccountName, pCommand->m_iSessionId);
 		}
+	}
+}
+
+void CacheServerLoop::_ReportState()
+{
+	int32 iRet = 0;
+
+	if (m_iShutdownStatus >= START_SHUTDOWN)
+	{
+		return;
+	}
+
+	iRet = MasterPeerSend::CacheReportState(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId);
+	if (iRet != 0)
+	{
+		_ASSERT(false && _T("CacheReportState failed"));
+		LOG_ERR(LOG_SERVER, _T("CacheReportState failed"));
 	}
 }

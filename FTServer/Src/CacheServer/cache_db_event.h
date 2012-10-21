@@ -18,6 +18,8 @@ enum
 	DB_EVENT_AVATARCREATE,
 	DB_EVENT_AVATARSELECTDATA,
 	DB_EVENT_AVATARENTERREGION,
+
+	DB_EVENT_AVATARFINALIZE = 999,
 };
 
 class PlayerDBEvent : public DBEvent
@@ -78,7 +80,25 @@ public:
 public:
 	uint64 m_iAvatarId;
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
+};
 
+
+
+
+
+class PlayerDBEventAvatarFinalize : public PlayerDBEvent
+{
+public:
+	PlayerDBEventAvatarFinalize()
+	{
+		m_iEventId = DB_EVENT_AVATARFINALIZE;
+	}
+
+	int32 FireEvent(DBConn*)
+	{
+		// do nothing, just follow other events during this flow
+		return 0;
+	}
 };
 
 #endif

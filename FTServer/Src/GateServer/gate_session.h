@@ -18,6 +18,7 @@ enum
 	SESSION_STATE_GATEALLOCACK, // send gate allocate ack
 	SESSION_STATE_GATERELEASEREQ, // receive gate release req
 	SESSION_STATE_GATELOGINREQ, // send gate login to master
+	SESSION_STATE_HOLDCONNECTION, // disconnect but hold the connection
 	SESSION_STATE_ONMASTERDISCONNECT, // receive force disconnect from master server
 };
 
@@ -29,6 +30,7 @@ enum
 	SESSION_EVENT_GATERELEASEREQ,
 	SESSION_EVENT_GATELOGINREQ,
 	SESSION_EVENT_ONMASTERDISCONNECT,
+	SESSION_EVENT_SESSIONDISCONNECTREQ,
 };
 
 class GateServerLoop;
@@ -71,6 +73,7 @@ public:
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	uint32 m_iLoginSessionId;
 	bool m_bFinalizing;
+	bool m_bTempSession;	// before finished login, the session is allocated as temp session
 
 	// each session may have their own region server
 	PEER_SERVER m_pRegionServer;
@@ -79,9 +82,6 @@ public:
 	static uint16 m_iDelayTypeId;
 	static uint16 m_iDelayLen;
 	static char m_DelayBuf[MAX_INPUT_BUFFER];
-
-private:
-	bool m_bTempSession;	// before finished login, the session is allocated as temp session
 };
 
 #endif

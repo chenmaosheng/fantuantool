@@ -85,6 +85,8 @@ public:
 	void SendChatMessage(const TCHAR* strMessage);
 
 public:
+	// receive login failed
+	void LoginFailedAck(int32 iReason);
 	// receive login ntf from master server
 	void LoginNtf(uint32 iGateIP, uint16 iGatePort);
 	// receive avatar list from db
@@ -125,6 +127,7 @@ private:
 	uint32 m_iRecvBufLen;	// already received buffer length
 	char m_RecvBuf[MAX_OUTPUT_BUFFER];	// the whole received buffer
 	bool m_bInLogin;
+	bool m_bLoginFailed;
 
 	TokenPacket m_TokenPacket;
 	rsa_st* m_pRSA;

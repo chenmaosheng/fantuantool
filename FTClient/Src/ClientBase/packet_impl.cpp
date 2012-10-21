@@ -6,7 +6,8 @@
 
 void LoginServerRecv::LoginFailedAck(void* pClient, int32 iReason)
 {
-
+	ClientBase* pClientBase = (ClientBase*)pClient;
+	pClientBase->LoginFailedAck(iReason);
 }
 
 void LoginServerRecv::LoginNtf(void* pClient, uint32 iGateIP, uint16 iGatePort)

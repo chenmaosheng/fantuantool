@@ -12,16 +12,18 @@
 #include "server_common.h"
 #include "state_machine.h"
 #include "cache_db_event.h"
+#include "cache_avatar_context.h"
 
 enum
 {
 	PLAYER_STATE_NONE,
-	PLAYER_STATE_ONLOGINREQ,
-	PLAYER_STATE_ONAVATARLISTREQ,
-	PLAYER_STATE_AVATARLISTACK,
-	PLAYER_STATE_ONAVATARSELECTREQ,
-	PLAYER_STATE_AVATARSELECTACK,
-	PLAYER_STATE_ONREGIONENTERREQ,
+	PLAYER_STATE_ONLOGINREQ,	// receive login req
+	PLAYER_STATE_ONAVATARLISTREQ, // receive avatar list req
+	PLAYER_STATE_AVATARLISTACK, // send avatar list
+	PLAYER_STATE_ONAVATARSELECTREQ, // receive avatar select req
+	PLAYER_STATE_AVATARSELECTACK, // send avatar select ack
+	PLAYER_STATE_ONREGIONENTERREQ, // receive region enter req
+	PLAYER_STATE_REGIONENTERACK, // send region enter ack
 	PLAYER_STATE_ONLOGOUTREQ,
 };
 
@@ -33,6 +35,7 @@ enum
 	PLAYER_EVENT_ONAVATARSELECTREQ,
 	PLAYER_EVENT_AVATARSELECTACK,
 	PLAYER_EVENT_ONREGIONENTERREQ,
+	PLAYER_EVENT_REGIONENTERACK,
 	PLAYER_EVENT_ONLOGOUTREQ,
 };
 
@@ -67,6 +70,7 @@ public: // receive db event result
 	void OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCreate*);
 	void OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSelectData*);
 	void OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvatarEnterRegion*);
+	void OnPlayerEventAvatarFinalizeResult(PlayerDBEventAvatarFinalize*);
 
 private:
 	// initialize state machine
@@ -74,6 +78,7 @@ private:
 
 public:
 	uint32 m_iSessionId;
+	uint8 m_iRegionServerId;
 	TCHAR m_strAccountName[ACCOUNTNAME_MAX+1];
 	StateMachine m_StateMachine;
 	bool m_bFinalizing; // almost leave or not
@@ -81,7 +86,7 @@ public:
 	// avatar info list
 	uint8 m_iAvatarCount;
 	prdAvatar m_arrayAvatar[AVATARCOUNT_MAX];
-	uint8 m_iRegionServerId;
+	CacheAvatarContext m_AvatarContext; // selected avatar context
 
 	static CacheServerLoop* m_pMainLoop;
 
@@ -92,4 +97,4 @@ private:
 	static char m_DelayBuf[MAX_INPUT_BUFFER];
 };
 
-#endif
+#endif ml;

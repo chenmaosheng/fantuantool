@@ -27,8 +27,9 @@ class CacheServerLoop : public LogicLoop
 public:
 	typedef LogicLoop super;
 
-	// cstr
+	// cstr and dstr
 	CacheServerLoop();
+	~CacheServerLoop();
 
 	// initialize cache server loop
 	int32 Init();
@@ -67,6 +68,9 @@ private:
 	// get result from result queue
 	void _OnDBEventResult(DBEvent* pEvent);
 	void _OnPlayerEventResult(PlayerDBEvent* pEvent);
+
+	// report own state to master server
+	void _ReportState();
 	
 private:
 	int32 m_iShutdownStatus;

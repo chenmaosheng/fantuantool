@@ -18,9 +18,13 @@ struct LoginServerContext
 	LoginServerContext()
 	{
 		m_iServerId = 0;
+		m_dwLastReportTime = 0;
+		m_bIsConnected = false;
 	}
 
 	uint8 m_iServerId;
+	DWORD m_dwLastReportTime;
+	bool m_bIsConnected;
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContext;
 };
 
@@ -29,11 +33,15 @@ struct GateServerContext
 	GateServerContext()
 	{
 		m_iServerId = 0;
+		m_dwLastReportTime = 0;
+		m_bIsConnected = false;
 		m_iSessionMax = 0;
 		m_iSessionCount = 0;
 	}
 
 	uint8 m_iServerId;
+	DWORD m_dwLastReportTime;
+	bool m_bIsConnected;
 	uint16 m_iSessionMax;
 	uint16 m_iSessionCount;
 	stdext::hash_map<uint32, MasterPlayerContext*> m_mPlayerContext;

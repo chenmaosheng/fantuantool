@@ -81,6 +81,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RegionServer", "Project\Reg
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openssl", "..\FTCommon\External\openssl\openssl.vcproj", "{FCF3C1AB-8454-4573-854D-6E9C84048433}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{2FC42175-87E8-45B4-ACF3-50E441B4D110}"
+	ProjectSection(SolutionItems) = preProject
+		Config\cache_config.xml = Config\cache_config.xml
+		Config\common_config.xml = Config\common_config.xml
+		Config\gate_config.xml = Config\gate_config.xml
+		Config\login_config.xml = Config\login_config.xml
+		Config\master_config.xml = Config\master_config.xml
+		Config\region_config.xml = Config\region_config.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -165,6 +175,7 @@ Global
 		{B7CB19AC-2A23-4E94-B693-8573B23C8C75} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 		{363059E5-E404-454D-BA0E-AE8BC4E937B0} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 		{B723F567-128D-4157-B91E-A9A486FBCBBB} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
+		{2FC42175-87E8-45B4-ACF3-50E441B4D110} = {C84DB7B4-7BDD-488E-BB56-1F8F1C79DA80}
 		{CF49E545-3112-4CBA-86EB-DE65E4038399} = {7CEE57DF-2387-45C0-9B85-D648B13E5DFD}
 		{1F759FB4-847E-45F9-BC70-6DD5CA6F76F3} = {7CEE57DF-2387-45C0-9B85-D648B13E5DFD}
 		{BA29F956-5D99-44FA-A38C-FC24174ABBAE} = {7CEE57DF-2387-45C0-9B85-D648B13E5DFD}

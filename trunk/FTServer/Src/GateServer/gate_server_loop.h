@@ -47,6 +47,7 @@ private:
 	bool _OnCommand(LogicCommand*);
 
 private:
+	void _OnCommandOnConnect(LogicCommandOnConnect*);
 	void _OnCommandOnData(LogicCommandOnData*);
 	void _OnCommandOnDisconnect(LogicCommandOnDisconnect*);
 	void _OnCommandDisconnect(LogicCommandDisconnect*);
@@ -58,9 +59,18 @@ private:
 	void _OnCommandGateReleaseReq(LogicCommandGateReleaseReq*);
 	void _OnCommandRegionBindReq(LogicCommandRegionBindReq*);
 
+	// check if any session disconnect, it's a heart beat test
+	void _CheckSessionState();
+	void _ReportState();
+
 private:
 	stdext::hash_map<std::wstring, GateSession*> m_mSessionMapByName;
 	std::queue<GateSession*> m_SessionFinalizingQueue;
+
+	uint16 m_iSessionMax;
+	uint16 m_iTempSessionMax;
+	uint16 m_iSessionCount;
+	uint16 m_iTempSessionCount;
 };
 
 #endif

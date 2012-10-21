@@ -38,6 +38,9 @@ bool GateServerConfig::_LoadConfig()
 	// thread count
 	m_iThreadCount = atoi(pServerElement->Attribute("ThreadCount"));
 
+	// report interval
+	m_iReportInterval = (uint32)atoi(pServerElement->Attribute("ReportInterval"));
+
 	TiXmlElement* pSessionElement = pRootElement->FirstChildElement("Session");
 	if (!pSessionElement)
 	{
@@ -47,6 +50,12 @@ bool GateServerConfig::_LoadConfig()
 
 	// session max
 	m_iSessionMax = (uint16)atoi(pSessionElement->Attribute("Max"));
+
+	// check session interval
+	m_iCheckSessionInterval = (uint32)atoi(pSessionElement->Attribute("CheckSessionInterval"));
+
+	// connection timeout
+	m_iConnectionTimeout = (uint32)atoi(pSessionElement->Attribute("ConnectionTimeout"));
 
 	TiXmlElement* pSecurityElement = pRootElement->FirstChildElement("Security");
 	if (!pSecurityElement)

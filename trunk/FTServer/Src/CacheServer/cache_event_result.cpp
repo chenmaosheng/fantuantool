@@ -162,4 +162,15 @@ void CachePlayerContext::OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvata
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x RegionEnterAck failed"), m_strAccountName, m_iSessionId);
 		return;
 	}
+
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONENTERACK) != PLAYER_STATE_REGIONENTERACK)
+	{
+		_ASSERT(false && _T("state error"));
+		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+	}
+}
+
+void CachePlayerContext::OnPlayerEventAvatarFinalizeResult(PlayerDBEventAvatarFinalize* pEvent)
+{
+	m_pMainLoop->AddPlayerToFinalizingQueue(this);
 }

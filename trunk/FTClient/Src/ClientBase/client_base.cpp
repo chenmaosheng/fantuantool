@@ -43,6 +43,7 @@ void ClientBase::Clear()
 {
 	m_ConnId = NULL;
 	m_bInLogin = true;
+	m_bLoginFailed = false;
 	m_iRecvBufLen = 0;
 	memset(m_RecvBuf, 0, sizeof(m_RecvBuf));
 	memset(&m_TokenPacket, 0, sizeof(m_TokenPacket));
@@ -246,6 +247,12 @@ void ClientBase::OnClientDisconnect(ConnID connId)
 {
 	m_iState = ClientBase::DISCONNECTED;
 
+	if (m_bLoginFailed)
+	{
+		Clear();
+		return;
+	}
+
 	if (m_bInLogin)
 	{
 		LOG_DBG(LOG_SERVER, _T("Finish disconnect on login server"));
@@ -407,6 +414,11 @@ ClientEvent* ClientBase::PopClientEvent()
 	}
 	LeaveCriticalSection(&m_csClientEvent);
 	return pEvent;
+}
+
+void ClientBase::LoginFailedAck(int32 iReason)
+{
+	m_bLoginFailed = true;
 }
 
 void ClientBase::LoginNtf(uint32 iGateIP, uint16 iGatePort)

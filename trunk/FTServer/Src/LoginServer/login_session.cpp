@@ -137,7 +137,7 @@ void LoginSession::OnVersionReq(uint32 iVersion)
 		return;
 	}
 
-	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ, false) != SESSION_STATE_ONLOGINREQ)
+	if (m_StateMachine.StateTransition(SESSION_EVENT_ONLOGINREQ) != SESSION_STATE_ONLOGINREQ)
 	{
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d Session state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
 		return;

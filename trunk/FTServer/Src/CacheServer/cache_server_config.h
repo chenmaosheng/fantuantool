@@ -26,6 +26,7 @@ public:
 	char m_strDBPassword[MAX_PATH];
 	uint16 m_iDBPort;
 	uint16 m_iDBConnCount;
+	uint32 m_iReportInterval;	// interval of reporting to master server
 };
 
 #endif

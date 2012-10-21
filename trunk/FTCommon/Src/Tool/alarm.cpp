@@ -31,7 +31,7 @@ void Alarm::Tick(DWORD dwCurrTime)
 	for (std::list<AlarmEvent>::iterator it = m_AlarmEventList.begin(); it != m_AlarmEventList.end(); ++it)
 	{
 		AlarmEvent& event = (*it);
-		if (event.m_dwStartTime + event.m_dwInterval >= m_dwCurrTime)
+		if (m_dwCurrTime - event.m_dwStartTime >= event.m_dwInterval)
 		{
 			event.m_dwStartTime += (m_dwCurrTime - event.m_dwStartTime);
 			(*(event.m_pListener))();

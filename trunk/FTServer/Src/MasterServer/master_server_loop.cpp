@@ -426,6 +426,14 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandShutdown();
 		break;
 
+	case COMMAND_ONLOGINREPORT:
+		_OnCommandOnLoginReport((LogicCommandOnLoginReport*)pCommand);
+		break;
+
+	case COMMAND_ONGATEREPORT:
+		_OnCommandOnGateReport((LogicCommandOnGateReport*)pCommand);
+		break;
+
 	case COMMAND_ONLOGINREQ:
 		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
 		break;
@@ -468,10 +476,48 @@ void MasterServerLoop::_OnCommandShutdown()
 	}
 }
 
+void MasterServerLoop::_OnCommandOnLoginReport(LogicCommandOnLoginReport* pCommand)
+{
+	m_LoginServerContext.m_bIsConnected = true;
+	m_LoginServerContext.m_iServerId = pCommand->m_iServerId;
+	m_LoginServerContext.m_dwLastReportTime = GetCurrTime();
+}
+
+void MasterServerLoop::_OnCommandOnGateReport(LogicCommandOnGateReport* pCommand)
+{
+	GateServerContext* pContext = NULL;
+
+	if (pCommand->m_iServerId > SERVERCOUNT_MAX ||
+		!m_arrayGateServerContext[pCommand->m_iServerId])
+	{
+		_ASSERT(false && _T("invalid server id"));
+		LOG_ERR(LOG_SERVER, _T("invalid server id=%d"), pCommand->m_iServerId);
+		return;
+	}
+
+	pContext = m_arrayGateServerContext[pCommand->m_iServerId];
+	pContext->m_bIsConnected = true;
+	pContext->m_dwLastReportTime = GetCurrTime();
+	pContext->m_iSessionCount = pCommand->m_iSessionCount;
+}
+
 void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 {
 	MasterPlayerContext* pPlayerContext = NULL;
 	int32 iRet = 0;
+
+	// check if login server is connected
+	if (!m_LoginServerContext.m_bIsConnected)
+	{
+		LOG_ERR(LOG_SERVER, _T("login server is not connected"));
+		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 1);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginFailedAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);
+		}
+
+		return;
+	}
 
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pCommand->m_strAccountName);
 	if (mit != m_mPlayerContextByName.end())
@@ -479,7 +525,7 @@ void MasterServerLoop::_OnCommandOnLoginReq(LogicCommandOnLoginReq* pCommand)
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x This account is already logged in"), pCommand->m_strAccountName, pCommand->m_iSessionId);
 		pPlayerContext = mit->second;
 
-		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 1);
+		iRet = LoginPeerSend::OnLoginFailedAck(g_pServer->m_pLoginServer, pCommand->m_iSessionId, 2);
 		if (iRet != 0)
 		{
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x OnLoginFailedAck failed"), pCommand->m_strAccountName, pCommand->m_iSessionId);

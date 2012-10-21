@@ -76,5 +76,16 @@ void CachePlayerContext::_InitStateMachine()
 		return;
 	}
 
+	pState->AddTransition(PLAYER_EVENT_REGIONENTERACK, PLAYER_STATE_REGIONENTERACK);
+	pState->AddTransition(PLAYER_EVENT_ONLOGOUTREQ, PLAYER_STATE_ONLOGOUTREQ);
+
+	// when state is send region enter ack
+	pState = m_StateMachine.ForceGetFSMState(PLAYER_STATE_REGIONENTERACK);
+	if (!pState)
+	{
+		LOG_ERR(LOG_SERVER, _T("Can't get fsm state"));
+		return;
+	}
+
 	pState->AddTransition(PLAYER_EVENT_ONLOGOUTREQ, PLAYER_STATE_ONLOGOUTREQ);
 }

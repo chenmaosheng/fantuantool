@@ -32,6 +32,8 @@ struct LogicCommandOnRegionEnterReq;
 struct LogicCommandOnRegionEnterAck;
 struct LogicCommandOnRegionLeaveReq;
 struct LogicCommandPacketForward;
+class RegionLogicLoop;
+class Map;
 class RegionServerLoop : public LogicLoop
 {
 public:
@@ -57,6 +59,11 @@ public:
 	// get player by sessionid/avatarid
 	RegionPlayerContext* GetPlayerContextBySessionId(uint32 iSessionId);
 	RegionPlayerContext* GetPlayerContextByAvatarId(uint64 iAvatarId);
+
+	// get logic loop by map
+	RegionLogicLoop* GetLogicLoopByMap(uint16 iMapId);
+	void BindNewMap(uint16 iMapId, Map* pMap);
+	void ReleaseMap(uint16 iMapId);
 
 	// todo: temp function
 	void BroadcastData(uint16 iTypeId, uint16 iLen, const char* pBuf);
@@ -93,10 +100,13 @@ private:
 
 	ObjectPool<RegionPlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint64, RegionPlayerContext*> m_mPlayerContextByAvatarId;
+	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 
 	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on region server
 	
-	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
+	// map related
+	RegionLogicLoop* m_arrayLogicLoop[LOGICLOOP_MAX];
+	stdext::hash_map<uint16, Map*> m_mMapById;
 
 	BroadcastHelper m_BroadcastHelper;
 };

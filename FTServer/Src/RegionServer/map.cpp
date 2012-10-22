@@ -42,3 +42,33 @@ Map::Map() : m_iMapId(0), m_pRegionLogicLoop(NULL), m_iActorMax(0),
 Map::~Map()
 {
 }
+
+int32 Map::Init(uint16 iMapId)
+{
+	m_iMapId = iMapId;
+	return 0;
+}
+
+void Map::Destroy()
+{
+}
+
+Map* Map::Create(uint16 iMapId)
+{
+	Map* pMap = FT_NEW(Map);
+	if (pMap)
+	{
+		if (pMap->Init(iMapId))
+		{
+			return pMap;
+		}
+	}
+
+	return NULL;
+}
+
+void Map::Delete(Map* pMap)
+{
+	pMap->Destroy();
+	FT_DELETE(pMap);
+}

@@ -16,6 +16,7 @@
 #define INVALID_SERVER_ID 0xff
 #define SERVERCOUNT_MAX 128
 #define BROADCAST_SESSION_MAX 128
+#define LOGICLOOP_MAX 10
 
 enum
 {

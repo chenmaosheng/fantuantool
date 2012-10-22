@@ -18,6 +18,13 @@ enum
 	COMMAND_ONREGIONENTERREQ,
 	COMMAND_ONREGIONENTERACK,
 	COMMAND_ONREGIONLEAVEREQ,
+
+
+
+
+
+
+	COMMAND_MAPENTERREQ,
 };
 
 struct LogicCommandOnRegionAllocReq : public LogicCommandT<COMMAND_ONREGIONALLOCREQ>
@@ -74,6 +81,58 @@ struct LogicCommandOnRegionLeaveReq : public LogicCommandT<COMMAND_ONREGIONLEAVE
 	}
 
 	uint32 m_iSessionId;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct LogicCommandMapEnterReq : public LogicCommandT<COMMAND_MAPENTERREQ>
+{
+public:
+	LogicCommandMapEnterReq()
+	{
+		m_pPlayerContext = NULL;
+		m_iMapId = 0;
+	}
+
+	RegionPlayerContext* m_pPlayerContext;
+	uint16 m_iMapId;
 };
 
 #endif

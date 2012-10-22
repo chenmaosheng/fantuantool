@@ -11,6 +11,8 @@
 #include "gate_peer_send.h"
 #include "session.h"
 
+#include "auto_locker.h"
+
 RegionServerLoop* RegionPlayerContext::m_pMainLoop = NULL;
 uint16 RegionPlayerContext::m_iDelayTypeId = 0;
 uint16 RegionPlayerContext::m_iDelayLen = 0;
@@ -19,6 +21,7 @@ char RegionPlayerContext::m_DelayBuf[MAX_INPUT_BUFFER] = {0};
 RegionPlayerContext::RegionPlayerContext() :
 m_StateMachine(PLAYER_STATE_NONE)
 {
+	InitializeCriticalSectionAndSpinCount(&m_csContext, 4000);
 	Clear();
 	_InitStateMachine();
 }
@@ -26,6 +29,7 @@ m_StateMachine(PLAYER_STATE_NONE)
 RegionPlayerContext::~RegionPlayerContext()
 {
 	Clear();
+	DeleteCriticalSection(&m_csContext);
 }
 
 void RegionPlayerContext::Clear()
@@ -41,7 +45,10 @@ void RegionPlayerContext::Clear()
 	m_iMapId = 0;
 	m_pMap = NULL;
 	m_pLogicLoop = NULL;
-	m_pAvatar = NULL;
+	if (m_pAvatar)
+	{
+		FT_DELETE(m_pAvatar);
+	}
 }
 
 int32 RegionPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
@@ -56,7 +63,9 @@ int32 RegionPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char
 void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, const TCHAR* strAvatarName)
 {
 	int32 iRet = 0;
-	uint8 iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
+	uint8 iServerId = 0;
+
+	AutoLocker locker(&m_csContext);
 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCREQ) != PLAYER_STATE_ONREGIONALLOCREQ)
@@ -72,6 +81,7 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 	m_iAvatarId = iAvatarId;
 	wcscpy_s(m_strAvatarName, _countof(m_strAvatarName), strAvatarName);
 
+	iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
 	m_pGateServer = g_pServer->GetPeerServer(iServerId);
 	
 	iRet = MasterPeerSend::OnRegionAllocAck(g_pServer->m_pMasterServer, m_iSessionId, g_pServerConfig->m_iServerId, 0);
@@ -92,6 +102,8 @@ void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, 
 
 void RegionPlayerContext::OnRegionReleaseReq()
 {
+	AutoLocker locker(&m_csContext);
+
 	// check if shutdown
 	if (m_bFinalizing)
 	{
@@ -114,6 +126,8 @@ void RegionPlayerContext::OnRegionReleaseReq()
 void RegionPlayerContext::OnRegionEnterReq()
 {
 	int32 iRet = 0;
+
+	AutoLocker locker(&m_csContext);
 
 	// check if shutdown
 	if (m_bFinalizing)
@@ -171,6 +185,8 @@ void RegionPlayerContext::OnRegionEnterAck()
 {
 	int32 iRet = 0;
 
+	AutoLocker locker(&m_csContext);
+
 	// check if shutdown
 	if (m_bFinalizing)
 	{
@@ -225,6 +241,8 @@ void RegionPlayerContext::OnRegionLeaveReq()
 {
 	int32 iRet = 0;
 
+	AutoLocker locker(&m_csContext);
+
 	// check if shutdown
 	if (m_bFinalizing)
 	{
@@ -250,7 +268,9 @@ void RegionPlayerContext::OnRegionLeaveReq()
 void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 {
 	int32 iRet = 0;
-	uint32 iCurrTime = m_pMainLoop->GetCurrTime();
+	uint32 iCurrTime = 0;
+
+	AutoLocker locker(&m_csContext);
 
 	// check if shutdown
 	if (m_bFinalizing)
@@ -267,6 +287,9 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 		_ASSERT(false && _T("state error"));
 		return;
 	}
+
+	// get current time
+	iCurrTime = m_pMainLoop->GetCurrTime();
 
 	// send time synchronization, add RTT
 	iRet = RegionServerSend::ServerTimeNtf(this, iCurrTime + abs((iCurrTime - iClientTime) / 2));
@@ -292,9 +315,12 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 		_ASSERT(false && _T("state error"));
 	}
 
-	//_SendInitialAvatarData();
-	_BroadcastAvatarEnterNtf();
-	_SendRegionAvatars();
+	// send initial data to client
+	_SendInitialAvatarData();
+	// avatar enter map
+	_InitialMapEnter();
+	/*_BroadcastAvatarEnterNtf();
+	_SendRegionAvatars();*/
 }
 
 void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext)
@@ -386,6 +412,37 @@ void RegionPlayerContext::_SendInitialAvatarData()
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
+
+	// check state
+	if (m_StateMachine.StateTransition(PLAYER_EVENT_INITAVATARNTF) != PLAYER_STATE_INITAVATARNTF)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
+	}
+}
+
+void RegionPlayerContext::_InitialMapEnter()
+{
+	RegionLogicLoop* pLogicLoop = NULL;
+	int32 iRet = 0;
+
+	// never enter map before
+	if (m_pAvatar->m_iTeleportMapId == 0)
+	{
+		m_pAvatar->m_iTeleportMapId = 1; // todo:
+	}
+
+	pLogicLoop = m_pMainLoop->GetLogicLoopByMap(m_pAvatar->m_iTeleportMapId);
+	if (!pLogicLoop)
+	{
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x GetLogicLoopByMap failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+		m_pMainLoop->ShutdownPlayer(this);
+		return;
+	}
+
+	// update logic loop
+	m_pLogicLoop = pLogicLoop;
+	m_iMapId = m_pAvatar->m_iTeleportMapId;
 }
 
 void RegionPlayerContext::_BroadcastAvatarEnterNtf()

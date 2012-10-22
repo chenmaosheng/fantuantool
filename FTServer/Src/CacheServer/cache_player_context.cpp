@@ -77,8 +77,8 @@ void CachePlayerContext::Shutdown()
 	PlayerDBEventAvatarFinalize* pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarFinalize>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 		return;
 	}
 	pDBEvent->m_iSessionId = m_iSessionId;
@@ -89,8 +89,8 @@ void CachePlayerContext::OnLoginReq(uint32 iSessionId, TCHAR *strAccountName)
 {
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONLOGINREQ) != PLAYER_STATE_ONLOGINREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -104,8 +104,8 @@ void CachePlayerContext::OnLogoutReq()
 {
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONLOGOUTREQ) != PLAYER_STATE_ONLOGOUTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -128,8 +128,8 @@ void CachePlayerContext::OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONENTERREQ) != PLAYER_STATE_ONREGIONENTERREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -138,8 +138,8 @@ void CachePlayerContext::OnRegionEnterReq(uint8 iServerId, TCHAR* strAvatarName)
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarEnterRegion>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 
 		// todo:
 		return;
@@ -162,8 +162,8 @@ void CachePlayerContext::OnAvatarListReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTREQ) != PLAYER_STATE_ONAVATARLISTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -172,8 +172,8 @@ void CachePlayerContext::OnAvatarListReq()
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventGetAvatarList>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 
 		// send avatar list to client
 		iRet = GateServerSend::AvatarListAck(this, 0, 0, NULL);
@@ -208,9 +208,9 @@ void CachePlayerContext::OnAvatarCreateReq(prdAvatarCreateData& data)
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarCreate>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
-		
+		_ASSERT(false && _T("failed to allocate event"));
+
 		// send avatar new to client
 		iRet = GateServerSend::AvatarCreateAck(this, 0, avatar);
 		if (iRet != 0)
@@ -245,8 +245,8 @@ void CachePlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTREQ) != PLAYER_STATE_ONAVATARSELECTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -272,8 +272,8 @@ void CachePlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarSelectData>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 
 		// send avatar new to client
 		ftdAvatarSelectData data;
@@ -308,8 +308,8 @@ void CachePlayerContext::OnSaveDataReq(bool bSendNtf)
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarSaveData>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 		return;
 	}
 
@@ -335,8 +335,8 @@ void CachePlayerContext::OnAvatarLogoutReq()
 	pDBEvent = m_pMainLoop->m_pDBConnPool->AllocateEvent<PlayerDBEventAvatarLogout>();
 	if (!pDBEvent)
 	{
-		_ASSERT(false && _T("failed to allocate event"));
 		LOG_ERR(LOG_DB, _T("acc=%s sid=%08x failed to allocate event"), m_strAccountName, m_iSessionId);
+		_ASSERT(false && _T("failed to allocate event"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}

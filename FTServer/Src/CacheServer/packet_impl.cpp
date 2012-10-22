@@ -22,8 +22,8 @@ void GateClientRecv::AvatarCreateReq(void *pClient, const ftdAvatarCreateData& d
 	iRet = ftdAvatarCreateData2prdAvatarCreateData(&data, &prdData);
 	if (iRet != 0)
 	{
-		_ASSERT( false && "ftdAvatarCreateData2prdAvatarCreateData failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ftdAvatarCreateData2prdAvatarCreateData failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "ftdAvatarCreateData2prdAvatarCreateData failed" );
 		return;
 	}
 
@@ -41,8 +41,8 @@ void GateClientRecv::AvatarSelectReq(void* pClient, const char* strAvatarName)
 	iRet = Char2WChar(strAvatarName, strTAvatarName, AVATARNAME_MAX+1);
 	if (iRet == 0)
 	{
-		_ASSERT( false && "Char2WChar failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "Char2WChar failed" );
 		return;
 	}
 	strTAvatarName[iRet] = _T('\0');

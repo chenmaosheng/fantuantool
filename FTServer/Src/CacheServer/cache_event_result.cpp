@@ -18,8 +18,8 @@ void CachePlayerContext::OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatar
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTACK) != PLAYER_STATE_AVATARLISTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -37,8 +37,8 @@ void CachePlayerContext::OnPlayerEventGetAvatarListResult(PlayerDBEventGetAvatar
 		iRet = prdAvatar2ftdAvatar(&pEvent->m_arrayAvatar[i], &arrayAvatar[i]);
 		if (iRet != 0)
 		{
-			_ASSERT( false && "prdAvatar2ftdAvatar failed" );
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x prdAvatar2ftdAvatar failed"), m_strAccountName, m_iSessionId);
+			_ASSERT( false && "prdAvatar2ftdAvatar failed" );
 			return;
 		}
 	}
@@ -71,8 +71,8 @@ void CachePlayerContext::OnPlayerEventAvatarCreateResult(PlayerDBEventAvatarCrea
 		iRet = prdAvatar2ftdAvatar(&pEvent->m_Avatar, &avatar);
 		if (iRet != 0)
 		{
-			_ASSERT( false && "prdAvatar2ftdAvatar failed" );
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x prdAvatar2ftdAvatar failed"), m_strAccountName, m_iSessionId);
+			_ASSERT( false && "prdAvatar2ftdAvatar failed" );
 			return;
 		}
 
@@ -127,8 +127,8 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 		iRet = WChar2Char(pEvent->m_strAvatarName, data.m_strAvatarName, AVATARNAME_MAX+1);
 		if (iRet == 0)
 		{
-			_ASSERT( false && "WChar2Char failed" );
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x WChar2Char failed"), m_strAccountName, m_iSessionId);
+			_ASSERT( false && "WChar2Char failed" );
 			return;
 		}
 		data.m_strAvatarName[iRet] = '\0';
@@ -152,8 +152,8 @@ void CachePlayerContext::OnPlayerEventAvatarSelectResult(PlayerDBEventAvatarSele
 
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 	}
 }
@@ -181,8 +181,8 @@ void CachePlayerContext::OnPlayerEventAvatarEnterRegionResult(PlayerDBEventAvata
 
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONENTERACK) != PLAYER_STATE_REGIONENTERACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 

@@ -19,7 +19,7 @@ void LogDeviceConsole::Init(HANDLE pHandle)
 	m_pHandle = pHandle;
 }
 
-void LogDeviceConsole::LogOutput(TCHAR* strBuffer)
+void LogDeviceConsole::LogOutput(TCHAR* strBuffer, uint16 iCount)
 {
 	_SetColor(strBuffer);
 	wprintf_s(_T("%s"), strBuffer);

@@ -45,7 +45,7 @@ public:
 private:
 	static uint32 WINAPI _LogOutput(PVOID);
 	void _Tick();
-	void _Output(TCHAR* strBuffer);
+	void _Output(TCHAR* strBuffer, uint16 iCount);
 	LogDevice* _AddLogDevice(LogDevice*);
 
 	// get string of loglevel
@@ -187,25 +187,27 @@ void Log_Impl::_Tick()
 		{
 			::EnterCriticalSection(&m_cs);
 			uint16 iCurrSize = (uint16)m_pBuffer->GetCurrSize();
+			uint16 iLength = 0;
 			memset(m_strBuffer, 0, sizeof(m_strBuffer));
-			if (m_pBuffer->Pop(m_strBuffer, iCurrSize))
+			iLength = m_pBuffer->Pop(m_strBuffer, iCurrSize);
+			if (iLength)
 			{
 				ResetEvent(m_hOutputEvent);
-				_Output(m_strBuffer);
+				_Output(m_strBuffer, iLength);
 			}
 			::LeaveCriticalSection(&m_cs);
 		}
 	}
 }
 
-void Log_Impl::_Output(TCHAR* strBuffer)
+void Log_Impl::_Output(TCHAR* strBuffer, uint16 iCount)
 {
 	std::vector<LogDevice*>::iterator it = m_vLogDeviceList.begin();
 	while (it != m_vLogDeviceList.end())
 	{
 		if ((*it)->IsRunning())
 		{
-			(*it)->LogOutput(strBuffer);
+			(*it)->LogOutput(strBuffer, iCount);
 		}
 
 		++it;

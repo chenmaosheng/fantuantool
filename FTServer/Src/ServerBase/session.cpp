@@ -22,8 +22,8 @@ int32 Session::Initialize(const TCHAR* strPrivateKey, ServerBase* pServer)
 	FILE* fp = _wfopen(strPrivateKey, _T("rt"));
 	if (!fp)
 	{
-		_ASSERT(false && _T("open private key failed"));
 		LOG_ERR(LOG_SERVER, _T("open private key failed"));
+		_ASSERT(false && _T("open private key failed"));
 		return -1;
 	}
 
@@ -31,8 +31,8 @@ int32 Session::Initialize(const TCHAR* strPrivateKey, ServerBase* pServer)
 	fclose(fp);
 	if (!m_pPrivateKey)
 	{
-		_ASSERT(false && _T("m_pPrivateKey=NULL"));
 		LOG_ERR(LOG_SERVER, _T("m_pPrivateKey=NULL"));
+		_ASSERT(false && _T("m_pPrivateKey=NULL"));
 		return -2;
 	}
 
@@ -81,9 +81,8 @@ int32 Session::OnConnection(ConnID connId)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION, false) != SESSION_STATE_ONCONNECTION)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("Session state error, state=%d"), m_StateMachine.GetCurrState());
-		_ASSERT(false);
+		_ASSERT(false && _T("state error"));
 		return -1;
 	}
 
@@ -99,9 +98,8 @@ int32 Session::OnConnection(ConnID connId)
 	// set new state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONCONNECTION) < 0)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), m_iSessionId, m_StateMachine.GetCurrState());
-		_ASSERT(false);
+		_ASSERT(false && _T("state error"));
 		return -1;
 	}
 
@@ -115,9 +113,8 @@ void Session::OnDisconnect()
 	// check and set state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDISCONNECT) != SESSION_STATE_ONDISCONNECT)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), m_iSessionId, m_StateMachine.GetCurrState());
-		_ASSERT(false);
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -141,9 +138,8 @@ void Session::OnData(uint16 iLen, char* pBuf)
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_ONDATA, false) != m_StateMachine.GetCurrState())
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x, Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
-		_ASSERT(false);
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -350,9 +346,8 @@ int32 Session::LoggedInNtf()
 	// check state
 	if (m_StateMachine.StateTransition(SESSION_EVENT_LOGGEDIN) != SESSION_STATE_LOGGEDIN)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("sid=%08x Session state error, state=%d"), m_iSessionId, m_StateMachine.GetCurrState());
-		_ASSERT(false);
+		_ASSERT(false && _T("state error"));
 		return -1;
 	}
 	

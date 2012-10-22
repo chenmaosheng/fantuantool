@@ -3,13 +3,13 @@
 #include <io.h>
 
 LogDeviceFile::LogDeviceFile()
-: m_pFile(NULL)
+: m_hFile(NULL)
 {
 	ZeroMemory(m_strFileName, sizeof(m_strFileName));
 }
 
 LogDeviceFile::LogDeviceFile(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize)
-: m_pFile(NULL)
+: m_hFile(NULL)
 {
 	ZeroMemory(m_strFileName, sizeof(m_strFileName));
 
@@ -38,15 +38,17 @@ void LogDeviceFile::Init(const TCHAR* strPath, const TCHAR* strFileNamePrefix, c
 	_FileOpen(strPath, m_strFileName);
 }
 
-void LogDeviceFile::LogOutput(TCHAR *strBuffer)
+void LogDeviceFile::LogOutput(TCHAR *strBuffer, uint16 iCount)
 {
-	if (!m_pFile)
+	DWORD dwBytesWritten = 0;
+
+	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
 		return;
 	}
 
-	fprintf_s(m_pFile, "%ls", strBuffer);
-	fflush(m_pFile);
+	WriteFile(m_hFile, strBuffer, sizeof(TCHAR)*iCount, &dwBytesWritten, NULL);
+	FlushFileBuffers(m_hFile);
 }
 
 void LogDeviceFile::_FileOpen(const TCHAR *strPath, const TCHAR *strFileName)
@@ -65,18 +67,18 @@ void LogDeviceFile::_FileOpen(const TCHAR *strPath, const TCHAR *strFileName)
 	}
 
 	_stprintf_s(fullFileName, _T("%s/%s"), strPath, strFileName);
-	iRet = _wfopen_s(&m_pFile, fullFileName, _T("a+"));
-	if (iRet != 0)
+	m_hFile = CreateFile(fullFileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, 0, NULL);
+	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
-		return;
+		_ASSERT(false);
 	}
 }
 
 void LogDeviceFile::_FileClose()
 {
-	if (m_pFile)
+	if (m_hFile != INVALID_HANDLE_VALUE)
 	{
-		fclose(m_pFile);
+		CloseHandle(m_hFile);
 	}
 }
 

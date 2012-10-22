@@ -19,7 +19,7 @@ public:
 	~LogDeviceFile();
 
 	void Init(const TCHAR* strPath, const TCHAR* strFileNamePrefix, const int32 iMaxFileSize /* = 1<20 */);
-	void LogOutput(TCHAR* strBuffer);
+	void LogOutput(TCHAR* strBuffer, uint16 iCount);
 	
 private:
 	void _FileOpen(const TCHAR* strPath, const TCHAR* strFileName);
@@ -27,7 +27,7 @@ private:
 
 private:
 	TCHAR m_strFileName[MAX_PATH + 1];
-	FILE* m_pFile;
+	HANDLE m_hFile;
 };
 
 #endif

@@ -18,7 +18,7 @@ public:
 	~LogDeviceDebug();
 
 	void Init();
-	void LogOutput(TCHAR* strBuffer);
+	void LogOutput(TCHAR* strBuffer, uint16 iCount);
 };
 
 #endif

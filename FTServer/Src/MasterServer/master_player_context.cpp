@@ -59,8 +59,8 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONLOGINREQ) != PLAYER_STATE_ONLOGINREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -89,8 +89,8 @@ void MasterPlayerContext::OnLoginReq(uint32 iSessionId, const TCHAR* strAccountN
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCREQ) != PLAYER_STATE_GATEALLOCREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), strAccountName, iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -108,8 +108,8 @@ void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionI
 	{
 		if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCFAILACK) != PLAYER_STATE_GATEALLOCFAILACK)
 		{
-			_ASSERT(false && _T("state error"));
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+			_ASSERT(false && _T("state error"));
 		}
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
@@ -118,8 +118,8 @@ void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionI
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCACK) != PLAYER_STATE_GATEALLOCACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -155,8 +155,8 @@ void MasterPlayerContext::GateAllocAck(uint8 iGateServerId, uint32 iGateSessionI
 	// set state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_GATEALLOCNTF) != PLAYER_STATE_GATEALLOCNTF)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -177,8 +177,8 @@ void MasterPlayerContext::OnGateLoginReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONGATELOGINREQ) != PLAYER_STATE_ONGATELOGINREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -196,8 +196,8 @@ void MasterPlayerContext::OnGateLoginReq()
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_CACHELOGINREQ) != PLAYER_STATE_CACHELOGINREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 
 }
@@ -225,8 +225,8 @@ void MasterPlayerContext::OnAvatarListReq()
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTREQ) != PLAYER_STATE_ONAVATARLISTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -246,8 +246,8 @@ void MasterPlayerContext::OnAvatarListReq()
 	// check state again
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTREQ) != PLAYER_STATE_AVATARLISTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -266,8 +266,8 @@ void MasterPlayerContext::OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, con
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARLISTACK) != PLAYER_STATE_ONAVATARLISTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -296,8 +296,8 @@ void MasterPlayerContext::OnAvatarListAck(int32 iReturn, uint8 iAvatarCount, con
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARLISTACK) != PLAYER_STATE_AVATARLISTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 
@@ -314,8 +314,8 @@ void MasterPlayerContext::OnAvatarCreateReq(prdAvatarCreateData &data)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARCREATEREQ) != PLAYER_STATE_ONAVATARCREATEREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -343,8 +343,8 @@ void MasterPlayerContext::OnAvatarCreateReq(prdAvatarCreateData &data)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEREQ) != PLAYER_STATE_AVATARCREATEREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 
@@ -361,8 +361,8 @@ void MasterPlayerContext::OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARCREATEACK) != PLAYER_STATE_ONAVATARCREATEACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -397,8 +397,8 @@ void MasterPlayerContext::OnAvatarCreateAck(int32 iReturn, prdAvatar& newAvatar)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARCREATEACK) != PLAYER_STATE_AVATARLISTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 
@@ -416,8 +416,8 @@ void MasterPlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTREQ) != PLAYER_STATE_ONAVATARSELECTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -454,8 +454,8 @@ void MasterPlayerContext::OnAvatarSelectReq(const TCHAR* strAvatarName)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTREQ) != PLAYER_STATE_AVATARSELECTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 
@@ -472,8 +472,8 @@ void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONAVATARSELECTACK) != PLAYER_STATE_ONAVATARSELECTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -501,8 +501,8 @@ void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_AVATARSELECTACK) != PLAYER_STATE_AVATARSELECTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -518,8 +518,8 @@ void MasterPlayerContext::OnAvatarSelectAck(int32 iReturn, prdAvatarSelectData& 
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELLISTNTF) != PLAYER_STATE_CHANNELLISTNTF)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 	}
 }
 
@@ -560,8 +560,8 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONCHANNELSELECTREQ) != PLAYER_STATE_ONCHANNELSELECTREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -612,8 +612,8 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONALLOCREQ) != PLAYER_STATE_REGIONALLOCREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 }
@@ -636,8 +636,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCACK) != PLAYER_STATE_ONREGIONALLOCACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -649,8 +649,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 		// check state
 		if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCFAILACK) != PLAYER_STATE_ONREGIONALLOCFAILACK)
 		{
-			_ASSERT(false && _T("state error"));
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+			_ASSERT(false && _T("state error"));
 		}
 
 		iRet = GateServerSend::ChannelSelectAck(this, iReturn);
@@ -672,8 +672,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 		// check state
 		if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELSELECTACK) != PLAYER_STATE_CHANNELSELECTFAILACK)
 		{
-			_ASSERT(false && _T("state error"));
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+			_ASSERT(false && _T("state error"));
 		}
 
 		// send channel info
@@ -688,8 +688,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 		// check state
 		if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELLISTNTF) != PLAYER_STATE_CHANNELLISTNTF)
 		{
-			_ASSERT(false && _T("state error"));
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+			_ASSERT(false && _T("state error"));
 		}
 
 		return;
@@ -717,8 +717,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELSELECTACK) != PLAYER_STATE_CHANNELSELECTACK)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -736,8 +736,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_REGIONENTERREQ) != PLAYER_STATE_REGIONENTERREQ)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -752,8 +752,8 @@ void MasterPlayerContext::OnRegionLeaveReq(uint8 iRegionServerId)
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONLEAVEREQ) < 0)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
@@ -788,8 +788,8 @@ void MasterPlayerContext::OnRegionLeaveReq(uint8 iRegionServerId)
 			// check state
 			if (m_StateMachine.StateTransition(PLAYER_EVENT_CHANNELLISTNTF) != PLAYER_STATE_CHANNELLISTNTF)
 			{
-				_ASSERT(false && _T("state error"));
 				LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+				_ASSERT(false && _T("state error"));
 			}
 
 			return;
@@ -812,8 +812,8 @@ void MasterPlayerContext::OnRegionLeaveReq(uint8 iRegionServerId)
 			// check state
 			if (m_StateMachine.StateTransition(PLAYER_EVENT_LOGOUT) != PLAYER_STATE_LOGOUT)
 			{
-				_ASSERT(false && _T("state error"));
 				LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), m_strAccountName, m_iSessionId, m_StateMachine.GetCurrState());
+				_ASSERT(false && _T("state error"));
 			}
 
 			m_pMainLoop->ShutdownPlayer(this);

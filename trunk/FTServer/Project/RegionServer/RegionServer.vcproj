@@ -203,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Src\RegionServer\region_logic_loop.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Src\RegionServer\region_player_context.cpp"
 				>
 			</File>

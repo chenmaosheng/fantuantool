@@ -27,6 +27,9 @@ public:
 	std::vector<MapDesc*>& GetAllMapDesc();
 
 private:
+	int32 _LoadMapDesc(const TCHAR* strPath);
+
+private:
 	std::vector<MapDesc*> m_vMapDesc;
 };
 

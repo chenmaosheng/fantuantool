@@ -11,11 +11,14 @@
 
 #include "logic_loop.h"
 #include "object_pool.h"
+#include "server_helper.h"
 #include <queue>
 #include <hash_map>
 
 class RegionPlayerContext;
-
+class Map;
+class RegionServerLoop;
+struct LogicCommandMapEnterReq;
 class RegionLogicLoop : public LogicLoop
 {
 public:
@@ -38,6 +41,11 @@ public:
 	void AddPlayerToFinalizingQueue(RegionPlayerContext*);
 	// totally delete a player
 	void DeletePlayer(RegionPlayerContext*);
+	// get map
+	Map* GetMapById(uint16 iMapId);
+
+	// map enter
+	void PushMapEnterCommand(RegionPlayerContext*, uint16 iMapId);
 
 private:
 	DWORD _Loop();
@@ -45,8 +53,12 @@ private:
 	bool _OnCommand(LogicCommand*);
 	void _OnCommandShutdown();
 	
+	void _OnCommandMapEnterReq(LogicCommandMapEnterReq*);
+
 private:
-	
+	// map related
+	stdext::hash_map<uint16, Map*> m_mMapById;
+
 public:
 	static RegionServerLoop* m_pMainLoop;
 	uint32 m_iLoopId;
@@ -54,6 +66,7 @@ public:
 private:
 	int32 m_iShutdownStatus;
 	uint32 m_iPlayerCount;
+	BroadcastHelper m_BroadcastHelper;
 
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 };

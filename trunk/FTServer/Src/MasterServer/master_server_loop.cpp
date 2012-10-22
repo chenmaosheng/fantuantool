@@ -187,6 +187,10 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 		bSendGateReleaseReq = true;
 		break;
 
+	case PLAYER_STATE_GATEALLOCFAILACK:
+		bSendOnLoginFailedAck = true;
+		break;
+
 	case PLAYER_STATE_GATEALLOCNTF:
 		bSendGateReleaseReq = true;
 		break;
@@ -209,6 +213,10 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 	case PLAYER_STATE_AVATARSELECTACK:
 	case PLAYER_STATE_CHANNELLISTNTF:
 	case PLAYER_STATE_ONCHANNELSELECTREQ:
+	case PLAYER_STATE_ONREGIONALLOCFAILACK:
+	case PLAYER_STATE_CHANNELSELECTFAILACK:
+	case PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ:
+	case PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ:
 		bSendGateDisconnect = true;
 		bSendCacheDisconnect = true;
 		break;
@@ -222,23 +230,46 @@ void MasterServerLoop::ShutdownPlayer(MasterPlayerContext* pPlayerContext)
 		break;
 
 	case PLAYER_STATE_REGIONENTERREQ:
-	case PLAYER_STATE_ONCHANNELLEAVEREQ:
+		pPlayerContext->m_StateMachine.StateTransition(PLAYER_EVENT_FINALIZE);
+
 		bSendGateDisconnect = true;
 		bSendCacheDisconnect = true;
 		bSendRegionLeave = true;
+		break;
+
+	case PLAYER_STATE_ONCHANNELLEAVEREQ:
+	case PLAYER_STATE_FINALIZING:
+		bSendGateDisconnect = true;
+		bSendCacheDisconnect = true;
+		bSendRegionLeave = true;
+		break;
+
+	case PLAYER_STATE_LOGOUT:
+		bSendGateDisconnect = true;
 		break;
 	}
 
 	if (bSendRegionRelease && !IsReadyForShutdown())
 	{
 		RegionPeerSend::RegionReleaseReq(g_pServer->GetPeerServer(pPlayerContext->m_iRegionServerId), pPlayerContext->m_iSessionId);
+		DeletePlayerFromRegionServerContext(pPlayerContext);
 	}
 
 	if (bSendRegionLeave)
 	{
 		if (!IsReadyForShutdown())
 		{
-			RegionPeerSend::RegionLeaveReq(g_pServer->GetPeerServer(pPlayerContext->m_iRegionServerId), pPlayerContext->m_iSessionId);
+			iRet = RegionPeerSend::RegionLeaveReq(g_pServer->GetPeerServer(pPlayerContext->m_iRegionServerId), pPlayerContext->m_iSessionId);
+			if (iRet != 0)
+			{
+				LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x RegionLeaveReq failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+			}
+			else
+			{
+				// need leave region first, it will shutdown later
+				pPlayerContext->m_StateMachine.StateTransition(PLAYER_EVENT_REGIONLEAVEACK);
+				return;
+			}
 		}
 	}
 
@@ -275,19 +306,51 @@ void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
 {
 	bool bNeedDeleteLoginServerContext = false;
 	bool bNeedDeleteGateServerContext = false;
+	bool bNeedDeleteRegionServerContext = false;
 
 	switch(pPlayerContext->m_StateMachine.GetCurrState())
 	{
 	case PLAYER_STATE_ONLOGINREQ:
 	case PLAYER_STATE_GATEALLOCREQ:
+	case PLAYER_STATE_GATEALLOCFAILACK:
 		bNeedDeleteLoginServerContext = true;
 		break;
 
 	case PLAYER_STATE_GATEALLOCACK:
 	case PLAYER_STATE_GATEALLOCNTF:
 	case PLAYER_STATE_ONGATELOGINREQ:
+	case PLAYER_STATE_CACHELOGINREQ:
+	case PLAYER_STATE_ONAVATARLISTREQ:
+	case PLAYER_STATE_AVATARLISTREQ:
+	case PLAYER_STATE_ONAVATARLISTACK:
+	case PLAYER_STATE_AVATARLISTACK:
+	case PLAYER_STATE_ONAVATARCREATEREQ:
+	case PLAYER_STATE_AVATARCREATEREQ:
+	case PLAYER_STATE_ONAVATARCREATEACK:
+	case PLAYER_STATE_ONAVATARSELECTREQ:
+	case PLAYER_STATE_AVATARSELECTREQ:
+	case PLAYER_STATE_ONAVATARSELECTACK:
+	case PLAYER_STATE_AVATARSELECTACK:
+	case PLAYER_STATE_CHANNELLISTNTF:
+	case PLAYER_STATE_ONCHANNELSELECTREQ:
 		bNeedDeleteGateServerContext = true;
 		break;
+
+	case PLAYER_STATE_ONREGIONALLOCFAILACK:
+	case PLAYER_STATE_CHANNELSELECTFAILACK:
+	case PLAYER_STATE_ONCHANNELLEAVE_ONREGIONLEAVEREQ:
+	case PLAYER_STATE_ONCHANNELLEAVE_REGIONLEAVEACK:
+	case PLAYER_STATE_FINALIZING_ONREGIONLEAVEREQ:
+	case PLAYER_STATE_REGIONALLOCREQ:
+	case PLAYER_STATE_ONREGIONALLOCACK:
+	case PLAYER_STATE_CHANNELSELECTACK:
+	case PLAYER_STATE_REGIONENTERREQ:
+	case PLAYER_STATE_ONCHANNELLEAVEREQ:
+	case PLAYER_STATE_FINALIZING:
+	case PLAYER_STATE_FINALIZING_REGIONLEAVEACK:
+	case PLAYER_STATE_LOGOUT:
+		bNeedDeleteGateServerContext = true;
+		bNeedDeleteRegionServerContext = true;
 
 	default:
 		break;
@@ -301,6 +364,11 @@ void MasterServerLoop::DeletePlayer(MasterPlayerContext* pPlayerContext)
 	if (bNeedDeleteGateServerContext)
 	{
 		DeletePlayerFromGateServerContext(pPlayerContext);
+	}
+
+	if (bNeedDeleteRegionServerContext)
+	{
+		DeletePlayerFromRegionServerContext(pPlayerContext);
 	}
 
 	stdext::hash_map<std::wstring, MasterPlayerContext*>::iterator mit = m_mPlayerContextByName.find(pPlayerContext->m_strAccountName);

@@ -3,6 +3,8 @@
 #include "region_server_config.h"
 #include "region_server.h"
 #include "region_logic_command.h"
+#include "map.h"
+#include "region_logic_loop.h"
 
 #include "session.h"
 
@@ -176,6 +178,31 @@ RegionPlayerContext* RegionServerLoop::GetPlayerContextByAvatarId(uint64 iAvatar
 	return NULL;
 }
 
+RegionLogicLoop* RegionServerLoop::GetLogicLoopByMap(uint16 iMapId)
+{
+	stdext::hash_map<uint16, Map*>::iterator mit = m_mMapById.find(iMapId);
+	if (mit != m_mMapById.end())
+	{
+		return mit->second->m_pRegionLogicLoop;
+	}
+
+	return NULL;
+}
+
+void RegionServerLoop::BindNewMap(uint16 iMapId, Map* pMap)
+{
+	m_mMapById.insert(std::make_pair(iMapId, pMap));
+}
+
+void RegionServerLoop::ReleaseMap(uint16 iMapId)
+{
+	stdext::hash_map<uint16, Map*>::iterator mit = m_mMapById.find(iMapId);
+	if (mit != m_mMapById.end())
+	{
+		m_mMapById.erase(mit);
+	}
+}
+
 void RegionServerLoop::BroadcastData(uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
 	m_BroadcastHelper.Clear();
@@ -212,6 +239,13 @@ bool RegionServerLoop::_OnCommand(LogicCommand* pCommand)
 {
 	switch(pCommand->m_iCmdId)
 	{
+	case COMMAND_SHUTDOWN:
+		if (m_iShutdownStatus < START_SHUTDOWN)
+		{
+			_OnCommandShutdown();
+		}
+		break;
+
 	case COMMAND_ONREGIONALLOCREQ:
 		if (m_iShutdownStatus < START_SHUTDOWN)
 		{

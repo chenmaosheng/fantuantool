@@ -14,6 +14,7 @@
 #include <list>
 
 class RegionPlayerContext;
+class Map;
 class Avatar : public Actor
 {
 public:
@@ -21,9 +22,14 @@ public:
 	Avatar();
 	~Avatar();
 
+	// enter map
+	void OnMapEnterReq(Map* pMap);
+
 private:
 	// initialize state machine
 	void _InitStateMachine();
+	// enter map helper function
+	int32 _OnMapEnterReq(Map* pMap);
 
 public:
 	RegionPlayerContext* m_pPlayerContext;
@@ -33,6 +39,9 @@ public:
 	// avatar info
 	TCHAR m_strAvatarName[AVATARNAME_MAX+1];
 	uint64 m_iAvatarId;
+
+	// map info
+	uint16 m_iTeleportMapId;
 
 	std::list<Actor*> m_AvatarInterestList;
 };

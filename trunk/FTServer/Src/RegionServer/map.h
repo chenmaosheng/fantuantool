@@ -45,6 +45,13 @@ public:
 	Map();
 	~Map();
 
+	// initialize map
+	int32 Init(uint16 iMapId);
+	void Destroy();
+
+	static Map* Create(uint16 iMapId);
+	static void Delete(Map*);
+
 public:
 	uint32 m_iMapId;
 	RegionLogicLoop* m_pRegionLogicLoop;

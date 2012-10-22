@@ -73,9 +73,13 @@ private:
 	// initialize state machine
 	void _InitStateMachine();
 
-	// todo: temporary 
 	// send initial data to client
 	void _SendInitialAvatarData();
+
+	// first time enter map
+	void _InitialMapEnter();
+	
+	
 	// broadcast avatar enter
 	void _BroadcastAvatarEnterNtf();
 	// send others to client
@@ -90,8 +94,9 @@ public:
 	bool m_bFinalizing; // almost leave or not
 	StateMachine m_StateMachine;
 	PEER_SERVER m_pGateServer;	// related gate server
+	CRITICAL_SECTION m_csContext;
 
-	// map info
+	// map info, need thread control
 	uint32 m_iMapId;
 	Map* m_pMap;
 	RegionLogicLoop* m_pLogicLoop;

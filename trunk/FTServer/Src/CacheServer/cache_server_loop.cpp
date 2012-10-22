@@ -246,6 +246,10 @@ bool CacheServerLoop::_OnCommand(LogicCommand* pCommand)
 
 	switch(pCommand->m_iCmdId)
 	{
+	case COMMAND_SHUTDOWN:
+		_OnCommandShutdown();
+		break;
+
 	case COMMAND_ONLOGINREQ:
 		_OnCommandOnLoginReq((LogicCommandOnLoginReq*)pCommand);
 		break;

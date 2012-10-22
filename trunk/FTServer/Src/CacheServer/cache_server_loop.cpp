@@ -339,8 +339,8 @@ void CacheServerLoop::_ReportState()
 	iRet = MasterPeerSend::CacheReportState(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId);
 	if (iRet != 0)
 	{
-		_ASSERT(false && _T("CacheReportState failed"));
 		LOG_ERR(LOG_SERVER, _T("CacheReportState failed"));
+		_ASSERT(false && _T("CacheReportState failed"));
 	}
 }
 

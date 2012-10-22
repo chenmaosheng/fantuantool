@@ -193,8 +193,8 @@ uint32 WINAPI DBConn::_HandleDBConn(PVOID pParam)
 		iRet = pEvent->FireEvent(pDBConn);
 		if (iRet < 0)
 		{
-			_ASSERT( false && _T("FireEvent failed") );
 			LOG_ERR(LOG_DB, _T("FireEvent failed"));
+			_ASSERT( false && _T("FireEvent failed") );
 			pDBConn->DeleteConnector();
 		}
 

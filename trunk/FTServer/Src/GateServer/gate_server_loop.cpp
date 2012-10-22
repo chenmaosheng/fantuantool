@@ -303,8 +303,8 @@ void GateServerLoop::_OnCommandSendData(LogicCommandSendData* pCommand)
 
 	if (pSession->m_StateMachine.StateTransition(SESSION_EVENT_SEND, false) < 0)
 	{
-		_ASSERT(false && _T("state error"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x state=%d state error"), pSession->m_strAccountName, pSession->m_iSessionId, pSession->m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
 		return;
 	}
 
@@ -327,8 +327,8 @@ void GateServerLoop::_OnCommandBroadcastData(LogicCommandBroadcastData* pCommand
 		// check state
 		if (pSession->m_StateMachine.StateTransition(SESSION_EVENT_SEND, false) < 0)
 		{
-			_ASSERT(false && _T("state error"));
 			LOG_ERR(LOG_SERVER, _T("sid=%08x state=%d state error"), pSession->m_iSessionId, pSession->m_StateMachine.GetCurrState());
+			_ASSERT(false && _T("state error"));
 			continue;
 		}
 
@@ -366,8 +366,8 @@ void GateServerLoop::_OnCommandGateAllocReq(LogicCommandGateAllocReq* pCommand)
 	stdext::hash_map<std::wstring, GateSession*>::iterator mit = m_mSessionMapByName.find(pCommand->m_strAccountName);
 	if (mit != m_mSessionMapByName.end())
 	{
-		_ASSERT(false && _T("Find a duplicate account on server"));
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Find a duplicate account on server"), pCommand->m_strAccountName, pCommand->m_iLoginSessionId);
+		_ASSERT(false && _T("Find a duplicate account on server"));
 		return;
 	}
 
@@ -458,7 +458,7 @@ void GateServerLoop::_ReportState()
 	iRet = MasterPeerSend::GateReportState(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId, m_iSessionCount);
 	if (iRet != 0)
 	{
-		_ASSERT(false && _T("GateReportState failed"));
 		LOG_ERR(LOG_SERVER, _T("GateReportState failed"));
+		_ASSERT(false && _T("GateReportState failed"));
 	}
 }

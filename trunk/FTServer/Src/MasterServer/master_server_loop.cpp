@@ -518,8 +518,8 @@ void MasterServerLoop::_OnCommandOnGateReport(LogicCommandOnGateReport* pCommand
 	if (pCommand->m_iServerId > SERVERCOUNT_MAX ||
 		!m_arrayGateServerContext[pCommand->m_iServerId])
 	{
-		_ASSERT(false && _T("invalid server id"));
 		LOG_ERR(LOG_SERVER, _T("invalid server id=%d"), pCommand->m_iServerId);
+		_ASSERT(false && _T("invalid server id"));
 		return;
 	}
 

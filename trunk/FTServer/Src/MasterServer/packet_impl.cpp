@@ -25,8 +25,8 @@ void GateServerRecv::AvatarListAck(void* pClient, int32 iReturn, uint8 iAvatarCo
 		iRet = ftdAvatar2prdAvatar(&arrayAvatar[i], &arrayPrdAvatar[i]);
 		if (iRet != 0)
 		{
-			_ASSERT( false && "ftdAvatar2prdAvatar failed" );
 			LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ftdAvatar2prdAvatar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+			_ASSERT( false && "ftdAvatar2prdAvatar failed" );
 			return;
 		}
 	}
@@ -45,8 +45,8 @@ void GateClientRecv::AvatarCreateReq(void *pClient, const ftdAvatarCreateData& d
 	iRet = ftdAvatarCreateData2prdAvatarCreateData(&data, &prdData);
 	if (iRet != 0)
 	{
-		_ASSERT( false && "ftdAvatarCreateData2prdAvatarCreateData failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ftdAvatarCreateData2prdAvatarCreateData failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "ftdAvatarCreateData2prdAvatarCreateData failed" );
 		return;
 	}
 	
@@ -64,8 +64,8 @@ void GateServerRecv::AvatarCreateAck(void* pClient, int32 iReturn, const ftdAvat
 	iRet = ftdAvatar2prdAvatar(&newAvatar, &prdData);
 	if (iRet != 0)
 	{
-		_ASSERT( false && "ftdAvatar2prdAvatar failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ftdAvatar2prdAvatar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "ftdAvatar2prdAvatar failed" );
 		return;
 	}
 	
@@ -83,8 +83,8 @@ void GateClientRecv::AvatarSelectReq(void *pClient, const char* strAvatarName)
 	iRet = Char2WChar(strAvatarName, strTAvatarName, AVATARNAME_MAX+1);
 	if (iRet == 0)
 	{
-		_ASSERT( false && "Char2WChar failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "Char2WChar failed" );
 		return;
 	}
 	strTAvatarName[iRet] = _T('\0');
@@ -103,8 +103,8 @@ void GateServerRecv::AvatarSelectAck(void* pClient, int32 iReturn, const ftdAvat
 	iRet = ftdAvatarSelectData2prdAvatarSelectData(&data, &prdData);
 	if (iRet != 0)
 	{
-		_ASSERT( false && "ftdAvatarSelectData2prdAvatarSelectData failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x ftdAvatarSelectData2prdAvatarSelectData failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "ftdAvatarSelectData2prdAvatarSelectData failed" );
 		return;
 	}
 
@@ -122,8 +122,8 @@ void GateClientRecv::ChannelSelectReq(void* pClient, const char* strChannelName)
 	iRet = Char2WChar(strChannelName, strTChannelName, CHANNELNAME_MAX+1);
 	if (iRet == 0)
 	{
-		_ASSERT( false && "Char2WChar failed" );
 		LOG_ERR(LOG_SERVER, _T("acc=%s sid=%08x Char2WChar failed"), pPlayerContext->m_strAccountName, pPlayerContext->m_iSessionId);
+		_ASSERT( false && "Char2WChar failed" );
 		return;
 	}
 	strTChannelName[iRet] = _T('\0');
@@ -157,18 +157,18 @@ void GateClientRecv::ChannelLeaveReq(void* pClient)
 
 void GateServerRecv::ChannelListNtf(void *pClient, uint8 iChannelCount, const ftdChannelData *arrayChannelData)
 {
-	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+	_ASSERT(false);
 }
 
 void GateServerRecv::ChannelSelectAck(void* pClient, int32 iReturn)
 {
-	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+	_ASSERT(false);
 }
 
 void GateServerRecv::ChannelLeaveAck(void *pClient)
 {
-	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+	_ASSERT(false);
 }

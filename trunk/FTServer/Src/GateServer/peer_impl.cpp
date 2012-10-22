@@ -157,6 +157,6 @@ void SessionPeerRecv::SendData(PEER_CLIENT pPeerClient, uint32 iSessionId, uint1
 
 void SessionPeerRecv::OnSessionDisconnect(PEER_CLIENT pPeerClient, uint32 iSessionId)
 {
-	_ASSERT(false);
 	LOG_ERR(LOG_SERVER, _T("Impossible to arrive here"));
+	_ASSERT(false);
 }

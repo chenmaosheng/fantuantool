@@ -160,7 +160,7 @@ void LoginServerLoop::_ReportState()
 	iRet = MasterPeerSend::LoginReportState(g_pServer->m_pMasterServer, g_pServerConfig->m_iServerId);
 	if (iRet != 0)
 	{
-		_ASSERT(false && _T("LoginReportState failed"));
 		LOG_ERR(LOG_SERVER, _T("LoginReportState failed"));
+		_ASSERT(false && _T("LoginReportState failed"));
 	}
 }

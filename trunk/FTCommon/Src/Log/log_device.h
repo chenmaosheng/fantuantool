@@ -22,7 +22,7 @@ public:
 	virtual void Start() = 0;
 	virtual void Stop() = 0;
 	virtual bool IsRunning() const = 0;
-	virtual void LogOutput(TCHAR* strBuffer) = 0;
+	virtual void LogOutput(TCHAR* strBuffer, uint16 iCount) = 0;
 };
 
 #endif

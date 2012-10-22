@@ -18,7 +18,7 @@ public:
 	~LogDeviceConsole();
 
 	void Init(HANDLE pHandle);
-	void LogOutput(TCHAR* strBuffer);
+	void LogOutput(TCHAR* strBuffer, uint16 iCount);
 
 private:
 	void _SetColor(TCHAR* strBuffer);

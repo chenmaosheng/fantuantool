@@ -281,8 +281,8 @@ bool RegionServerLoop::_PushPlayerToGateServerContext(uint32 iSessionId, RegionP
 	// if session index is allocated
 	if (pContext->m_arrayPlayerContext[iSessionIndex])
 	{
-		_ASSERT(false);
 		LOG_ERR(LOG_PLAYER, _T("sid=%08x session index is allocated"), iSessionId);
+		_ASSERT(false);
 		return false;
 	}
 
@@ -318,8 +318,8 @@ void RegionServerLoop::_OnCommandOnRegionAllocReq(LogicCommandOnRegionAllocReq* 
 	// check session id is valid
 	if (iServerId >= SERVERCOUNT_MAX || iSessionIndex >= g_pServerConfig->GetGateSessionIndexMax())
 	{
-		_ASSERT(false);
 		LOG_ERR(LOG_PLAYER, _T("sid=%08x serverId=%d or session index=%d invalid"), pCommand->m_iSessionId, iServerId, iSessionIndex);
+		_ASSERT(false);
 		return;
 	}
 

@@ -12,7 +12,7 @@ void LogDeviceDebug::Init()
 {
 }
 
-void LogDeviceDebug::LogOutput(TCHAR* strBuffer)
+void LogDeviceDebug::LogOutput(TCHAR* strBuffer, uint16 iCount)
 {
 	OutputDebugString(strBuffer);
 }

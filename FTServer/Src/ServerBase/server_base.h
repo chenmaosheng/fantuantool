@@ -18,6 +18,7 @@ struct Handler;
 class Log;
 class LogicLoop;
 class ServerConfig;
+class DataCenter;
 class ServerBase
 {
 public:
@@ -49,6 +50,10 @@ protected:
 	int32 InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR* strLogFileName, uint32 iMaxFileSize);
 	void DestroyLog();
 
+	// initialize and destroy data
+	int32 InitData();
+	void DestroyData();
+
 	// initialize and destroy network host
 	int32 InitAcceptor(uint32 ip, uint16 port, Handler* pHandler, uint32 iThreadCount);
 	void DestroyAcceptor();
@@ -76,6 +81,7 @@ private:
 
 	ServerConfig* m_pServerConfig;
 	Log* m_pLogSystem;
+	DataCenter* m_pDataCenter;
 
 public:
 	LogicLoop* m_pMainLoop;

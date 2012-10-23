@@ -53,7 +53,7 @@ public:
 	static void Delete(Map*);
 
 public:
-	uint32 m_iMapId;
+	uint16 m_iMapId;
 	RegionLogicLoop* m_pRegionLogicLoop;
 
 private:

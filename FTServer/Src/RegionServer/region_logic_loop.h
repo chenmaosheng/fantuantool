@@ -28,7 +28,7 @@ public:
 	RegionLogicLoop(uint32 iLoopId);
 	
 	// initialize region logic loop
-	int32 Init(const std::vector<uint32>& vMapId, uint16 iInstanceCount);
+	int32 Init(const std::vector<uint16>& vMapId, uint16 iInstanceCount);
 	// destroy region logic loop
 	void Destroy();
 	// start region logic loop

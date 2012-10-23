@@ -64,8 +64,8 @@ bool RegionServerConfig::_LoadConfig()
 		SpawnPointDesc desc;
 
 		// map id
-		desc.m_iMapId = (uint32)atoi(pSpawnPointElement->Attribute("MapId"));
-		desc.m_iPointId = (uint32)atoi(pSpawnPointElement->Attribute("PointId"));
+		desc.m_iMapId = (uint16)atoi(pSpawnPointElement->Attribute("MapId"));
+		desc.m_iPointId = (uint16)atoi(pSpawnPointElement->Attribute("PointId"));
 
 		m_vSpawnPointDesc.push_back(desc);
 	}

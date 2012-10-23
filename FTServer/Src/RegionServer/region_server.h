@@ -13,6 +13,7 @@
 #include "singleton.h"
 
 class RegionServerConfig;
+class DataCenter;
 class RegionServer : public ServerBase,
 					public Singleton<RegionServer>
 {
@@ -45,5 +46,6 @@ public:
 
 extern RegionServer* g_pServer;
 extern RegionServerConfig* g_pServerConfig;
+extern DataCenter* g_pDataCenter;
 
 #endif

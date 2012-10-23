@@ -106,6 +106,7 @@ private:
 	
 	// map related
 	RegionLogicLoop* m_arrayLogicLoop[LOGICLOOP_MAX];
+	uint32 m_iLogicLoopCount;
 	stdext::hash_map<uint16, Map*> m_mMapById;
 
 	BroadcastHelper m_BroadcastHelper;

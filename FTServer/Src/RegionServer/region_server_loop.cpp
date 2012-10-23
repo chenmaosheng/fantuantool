@@ -10,9 +10,8 @@
 
 GateServerContext::GateServerContext()
 {
-	// todo:
-	m_arrayPlayerContext = new RegionPlayerContext*[1000];
-	memset(m_arrayPlayerContext, 0, sizeof(RegionPlayerContext*)*1000);
+	m_arrayPlayerContext = new RegionPlayerContext*[g_pServerConfig->GetGateSessionIndexMax()];
+	memset(m_arrayPlayerContext, 0, sizeof(RegionPlayerContext*)*g_pServerConfig->GetGateSessionIndexMax());
 }
 
 GateServerContext::~GateServerContext()
@@ -28,11 +27,14 @@ m_PlayerContextPool(g_pServerConfig->m_iPlayerMax + g_pServerConfig->m_iPlayerMa
 	memset(m_arrayGateServerContext, 0, sizeof(m_arrayGateServerContext));
 	m_iPlayerCount = 0;
 	m_iPlayerMax = g_pServerConfig->m_iPlayerMax;
+	memset(m_arrayLogicLoop, 0, sizeof(m_arrayLogicLoop));
+	m_iLogicLoopCount = 0;
 }
 
 int32 RegionServerLoop::Init()
 {
 	int32 iRet = 0;
+	const std::vector<MapDesc*>& vMapDesc = g_pDataCenter->GetAllMapDesc();
 	
 	iRet = super::Init();
 	if (iRet != 0)
@@ -41,6 +43,28 @@ int32 RegionServerLoop::Init()
 	}
 
 	RegionPlayerContext::m_pMainLoop = this;
+	m_iLogicLoopCount = g_pServerConfig->m_vRegionDesc.size();
+	for (uint32 i = 0; i < m_iLogicLoopCount; ++i)
+	{
+		m_arrayLogicLoop[i] = new RegionLogicLoop(i);
+		iRet = m_arrayLogicLoop[i]->Init(g_pServerConfig->m_vRegionDesc.at(i).m_arrayMapList, g_pServerConfig->m_vRegionDesc.at(i).m_iInstanceCount);
+		if (iRet != 0)
+		{
+			return iRet;
+		}
+		LOG_DBG(LOG_SERVER, _T("Initialize logic loop%d success"), i);
+	}
+
+	// check each map
+	for (uint32 i = 0; i < vMapDesc.size(); ++i)
+	{
+		MapDesc* pMapDesc = vMapDesc.at(i);
+		if (!GetLogicLoopByMap(pMapDesc->m_iMapId))
+		{
+			LOG_ERR(LOG_SERVER, _T("Map is not included in logic loop, id=%d"), pMapDesc->m_iMapId);
+			return -1;
+		}
+	}
 
 	// initialize broadcast helper
 	for(uint32 i = 0; i < SERVERCOUNT_MAX; ++i)
@@ -53,6 +77,19 @@ int32 RegionServerLoop::Init()
 
 void RegionServerLoop::Destroy()
 {
+	for (uint32 i = 0; i < m_iLogicLoopCount; ++i)
+	{
+		m_arrayLogicLoop[i]->Destroy();
+	}
+
+	for (uint32 i = 0; i < SERVERCOUNT_MAX; ++i)
+	{
+		if (m_arrayGateServerContext[i])
+		{
+			SAFE_DELETE(m_arrayGateServerContext[i]);
+		}
+	}
+
 	super::Destroy();
 }
 
@@ -64,6 +101,12 @@ int32 RegionServerLoop::Start()
 	if (iRet != 0)
 	{
 		return iRet;
+	}
+
+	for (uint32 i = 0; i < m_iLogicLoopCount; ++i)
+	{
+		m_arrayLogicLoop[i]->Start();
+		LOG_DBG(LOG_SERVER, _T("Logic loop%d started"), i)
 	}
 
 	return 0;
@@ -131,7 +174,7 @@ void RegionServerLoop::DeletePlayer(RegionPlayerContext* pPlayerContext)
 	stdext::hash_map<uint64, RegionPlayerContext*>::iterator mit = m_mPlayerContextByAvatarId.find(pPlayerContext->m_iAvatarId);
 	if (mit != m_mPlayerContextByAvatarId.end())
 	{
-		// can't garantee two avatars with same charid have same sessionid
+		// can't guarantee two avatars with same charid have same sessionid
 		if (mit->second->m_iSessionId == iSessionId)
 		{
 			m_mPlayerContextByAvatarId.erase(mit);

@@ -81,6 +81,8 @@ private:
 
 	ServerConfig* m_pServerConfig;
 	Log* m_pLogSystem;
+
+protected:
 	DataCenter* m_pDataCenter;
 
 public:

@@ -34,6 +34,27 @@ void DataCenter::Destroy()
 	}
 }
 
+MapDesc* DataCenter::GetMapDesc(uint32 iMapId)
+{
+	std::vector<MapDesc*>::iterator it = m_vMapDesc.begin();
+	while (it != m_vMapDesc.end())
+	{
+		if ((*it)->m_iMapId == iMapId)
+		{
+			return (*it);
+		}
+
+		++it;
+	}
+
+	return NULL;
+}
+
+std::vector<MapDesc*>& DataCenter::GetAllMapDesc()
+{
+	return m_vMapDesc;
+}
+
 int32 DataCenter::_LoadMapDesc(const TCHAR *strPath)
 {
 	int32 iRet = 0;

@@ -1,6 +1,6 @@
 #include "actor.h"
 
-Actor::Actor() : m_iActorId(0), m_iActorType(0)
+Actor::Actor() : m_iActorId(0), m_iActorType(0), m_pMap(NULL), m_pMapGrid(NULL)
 {
 
 }

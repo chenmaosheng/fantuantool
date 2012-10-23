@@ -7,6 +7,8 @@
 #include "region_logic_loop.h"
 
 #include "session.h"
+#include "data_center.h"
+#include "map_desc.h"
 
 GateServerContext::GateServerContext()
 {

@@ -18,7 +18,7 @@ RegionLogicLoop::RegionLogicLoop(uint32 iLoopId)
 	m_iPlayerCount = 0;
 }
 
-int32 RegionLogicLoop::Init(const std::vector<uint32> &vMapId, uint16 iInstanceCount)
+int32 RegionLogicLoop::Init(const std::vector<uint16> &vMapId, uint16 iInstanceCount)
 {
 	int32 iRet = 0;
 	Map* pMap = NULL;

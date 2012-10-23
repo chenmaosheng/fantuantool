@@ -12,6 +12,7 @@
 #include "minidump.h"
 #include "memory_pool.h"
 #include "auto_locker.h"
+#include "data_center.h"
 // logic
 #include "logic_loop.h"
 #include "session.h"
@@ -69,6 +70,16 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 
 	LOG_STT(LOG_SERVER, _T("Initialize log system success"));
 
+	// initialize data
+	iRet = InitData();
+	if (iRet != 0)
+	{
+		_ASSERT(false &&_T("Init data error"));
+		return -3;
+	}
+
+	LOG_STT(LOG_SERVER, _T("Initialize data success"));
+
 	// set the min and max of memory pool object
 	MEMORY_POOL_INIT(MEMORY_OBJECT_MIN, MEMORY_OBJECT_MAX);
 
@@ -79,7 +90,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("Initialize StarNet failed"));
-		return -3;
+		return -4;
 	}
 
 	LOG_STT(LOG_SERVER, _T("Initialize StarNet success"));
@@ -89,7 +100,7 @@ int32 ServerBase::Init(const TCHAR* strServerName)
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("Initialize main loop failed"));
-		return -4;
+		return -5;
 	}
 
 	LOG_STT(LOG_SERVER, _T("Initialize main loop success"));
@@ -105,6 +116,7 @@ void ServerBase::Destroy()
 	DestroyMainLoop();
 	StarNet::Destroy();
 	DestroyLog();
+	DestroyData();
 	DestroyConfig();
 }
 
@@ -209,6 +221,17 @@ int32 ServerBase::InitLog(int32 iLowLogLevel, const TCHAR* strPath, const TCHAR*
 void ServerBase::DestroyLog()
 {
 	m_pLogSystem->Destroy();
+}
+
+int32 ServerBase::InitData()
+{
+	m_pDataCenter = new DataCenter;
+	return m_pDataCenter->Init(DATA_PATH);
+}
+
+void ServerBase::DestroyData()
+{
+	m_pDataCenter->Destroy();
 }
 
 int32 ServerBase::InitAcceptor(uint32 ip, uint16 port, Handler *pHandler, uint32 iThreadCount)

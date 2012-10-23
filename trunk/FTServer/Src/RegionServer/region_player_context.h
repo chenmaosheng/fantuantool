@@ -97,7 +97,7 @@ public:
 	CRITICAL_SECTION m_csContext;
 
 	// map info, need thread control
-	uint32 m_iMapId;
+	uint16 m_iMapId;
 	Map* m_pMap;
 	RegionLogicLoop* m_pLogicLoop;
 	Avatar* m_pAvatar;

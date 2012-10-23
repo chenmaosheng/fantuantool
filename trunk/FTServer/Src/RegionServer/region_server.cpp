@@ -2,8 +2,11 @@
 #include "region_server_loop.h"
 #include "region_server_config.h"
 
+#include "data_center.h"
+
 RegionServer* g_pServer = NULL;
 RegionServerConfig* g_pServerConfig = NULL;
+DataCenter* g_pDataCenter = NULL;
 
 RegionServer::RegionServer()
 {
@@ -92,6 +95,7 @@ int32 RegionServer::InitMainLoop()
 	}
 
 	m_pMainLoop = new RegionServerLoop;
+	g_pDataCenter = m_pDataCenter;
 
 	return m_pMainLoop->Init();
 }

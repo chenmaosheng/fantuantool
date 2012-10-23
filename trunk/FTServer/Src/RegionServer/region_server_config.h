@@ -15,13 +15,13 @@
 struct RegionDesc
 {
 	uint16 m_iInstanceCount;	// max instance count in this region
-	std::vector<uint32> m_arrayMapList; // list of map in this region
+	std::vector<uint16> m_arrayMapList; // list of map in this region
 };
 
 struct SpawnPointDesc
 {
-	uint32 m_iMapId;
-	uint32 m_iPointId;
+	uint16 m_iMapId;
+	uint16 m_iPointId;
 };
 
 class RegionServerConfig : public ServerConfig

@@ -19,8 +19,9 @@ uint16 Session::m_iPrivateKeyLen = 0;
 int32 Session::Initialize(const TCHAR* strPrivateKey, ServerBase* pServer)
 {
 	m_pServer = pServer;
-	FILE* fp = _wfopen(strPrivateKey, _T("rt"));
-	if (!fp)
+	FILE* fp = NULL;
+	errno_t error = _wfopen_s(&fp, strPrivateKey, _T("rt"));
+	if (error != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("open private key failed"));
 		_ASSERT(false && _T("open private key failed"));

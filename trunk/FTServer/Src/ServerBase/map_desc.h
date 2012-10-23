@@ -28,7 +28,7 @@ struct AreaDesc
 	{
 	}
 
-	uint32 m_iAreaId;
+	uint16 m_iAreaId;
 	float32 m_fMinX;	// left
 	float32 m_fMaxX;	// right
 	float32 m_fMinY;	// top
@@ -39,10 +39,11 @@ struct MapDesc
 {
 	MapDesc() : m_iMapId(0), m_fMinX(0.0f), m_fMaxX(0.0f), m_fMinY(0.0f), m_fMaxY(0.0f)
 	{
+		m_strMapName[0] = _T('\0');
 	}
 
-	uint32 m_iMapId;
-	std::wstring m_strMapName;
+	uint16 m_iMapId;
+	TCHAR m_strMapName[MAX_PATH+1];
 	float32 m_fMinX;	// left
 	float32 m_fMaxX;	// right
 	float32 m_fMinY;	// top

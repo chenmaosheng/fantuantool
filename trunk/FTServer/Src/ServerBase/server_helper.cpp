@@ -71,3 +71,15 @@ void BroadcastHelper::SendData(uint16 iTypeId, uint16 iLen, const char* pBuf)
 
 	Clear();
 }
+
+DelaySendData::DelaySendData() : m_iDelayTypeId(0), m_iDelayLen(0)
+{
+	memset(m_DelayBuf, 0, sizeof(m_DelayBuf));
+}
+
+void DelaySendData::Save(uint16 iDelayTypeId, uint16 iDelayLen, const char *pDelayBuf)
+{
+	m_iDelayTypeId = iDelayTypeId;
+	m_iDelayLen = iDelayLen;
+	memcpy(m_DelayBuf, pDelayBuf, iDelayLen);
+}

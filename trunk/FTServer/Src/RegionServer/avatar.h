@@ -25,6 +25,11 @@ public:
 	// enter map
 	void OnMapEnterReq(Map* pMap);
 
+	// add avatar to interest
+	void AddAvatarToInterestList(Avatar* pAvatar, bool bSendNtf=false);
+	// notify map enter to client
+	int32 SendAvatarEnterNtf(Avatar*);
+
 private:
 	// initialize state machine
 	void _InitStateMachine();

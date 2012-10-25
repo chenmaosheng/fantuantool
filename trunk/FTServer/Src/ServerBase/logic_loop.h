@@ -25,7 +25,7 @@ public:
 	virtual ~LogicLoop();
 
 	// initialize the logic loop
-	virtual int32 Init();
+	virtual int32 Init(bool bMainLoop=true);
 	// destroy the logic loop
 	virtual void Destroy();
 

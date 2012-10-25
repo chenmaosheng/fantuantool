@@ -50,6 +50,17 @@ public:
 	int32 Start();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
+	// get delay data
+	DelaySendData& GetDelaySendData()
+	{
+		return m_DelaySendData;
+	}
+	// get broadcast helper
+	BroadcastHelper& GetBroadcastHelper()
+	{
+		return m_BroadcastHelper;
+	}
+
 	// shutdown one player in region server
 	void ShutdownPlayer(RegionPlayerContext*);
 	// add player to finalizing queue
@@ -98,9 +109,11 @@ private:
 	uint16 m_iPlayerCount;
 	uint16 m_iPlayerMax;
 
+	// player related
 	ObjectPool<RegionPlayerContext> m_PlayerContextPool;
 	stdext::hash_map<uint64, RegionPlayerContext*> m_mPlayerContextByAvatarId;
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
+	CRITICAL_SECTION m_csPlayerContext;
 
 	GateServerContext* m_arrayGateServerContext[SERVERCOUNT_MAX]; // gate server's context on region server
 	
@@ -110,6 +123,7 @@ private:
 	stdext::hash_map<uint16, Map*> m_mMapById;
 
 	BroadcastHelper m_BroadcastHelper;
+	DelaySendData m_DelaySendData;
 };
 
 #endif

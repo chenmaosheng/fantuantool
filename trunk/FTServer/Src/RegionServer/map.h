@@ -42,6 +42,7 @@ public:
 
 class RegionLogicLoop;
 struct MapDesc;
+class Avatar;
 class Map : public MemoryObject
 {
 public:
@@ -59,6 +60,10 @@ public:
 	void UnbindActor(Actor* pActor);
 	// get grid by position
 	MapGrid* GetGridByPosition(const Vector3& pos);
+	// get nearby grids
+	uint32 GetNearbyGrids(MapGrid* pGrid, MapGrid** ppNearbyGrids);
+	// update the area of interest lit
+	int32 UpdateAOI(Avatar*, uint32 iGridCount, MapGrid** arrayGrid);
 
 	static Map* Create(uint16 iMapId);
 	static void Delete(Map*);

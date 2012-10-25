@@ -1,11 +1,14 @@
 #include "map.h"
 #include "map_desc.h"
-#include "actor.h"
+#include "avatar.h"
+#include "region_player_context.h"
 #include "region_server.h"
 #include "region_server_config.h"
 #include "data_center.h"
 #include <algorithm>
 #include <cmath>
+
+#include "region_server_send.h"
 
 float32 MapGrid::m_fGridSize = 0.0f;
 
@@ -193,6 +196,73 @@ MapGrid* Map::GetGridByPosition(const Vector3& pos)
 	uint32 iGridY = (uint32)floor((pos.m_fY - m_pMapDesc->m_fMinY) / MapGrid::m_fGridSize);
 
 	return m_array2dMapGrid[iGridX][iGridY];
+}
+
+uint32 Map::GetNearbyGrids(MapGrid* pGrid, MapGrid** ppNearbyGrids)
+{
+	uint32 iCount = 0;
+
+	for (uint32 i = pGrid->m_iGridY - 1; i <= pGrid->m_iGridY + 1; ++i)
+	{
+		for (uint32 j = pGrid->m_iGridX - 1; j <= pGrid->m_iGridX + 1; ++j)
+		{
+			if (i >= 0 && i < m_iVerticalGridCount && j >= 0 && j < m_iHorizonGridCount)
+			{
+				ppNearbyGrids[iCount] = m_array2dMapGrid[i][j];
+				++iCount;
+			}
+		}
+	}
+
+	return iCount;
+}
+
+int32 Map::UpdateAOI(Avatar* pAvatar, uint32 iGridCount, MapGrid** arrayGrid)
+{
+	int32 iRet = 0;
+	char strUtf8[AVATARNAME_MAX+1] = {0};
+	uint32 iAddAvatarCount = 0;
+	Avatar** arrayAddAvatar = new Avatar*[100]; // todo:
+
+	iRet = WChar2Char(pAvatar->m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
+	if (iRet == 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x WChar2Char failed"), pAvatar->m_strAvatarName, pAvatar->m_iAvatarId, pAvatar->m_pPlayerContext->m_iSessionId);
+		_ASSERT( false && "WChar2Char failed" );
+		return -1;
+	}
+	strUtf8[iRet] = '\0';
+
+	// todo: check avatar leave
+
+	// check avatar enter
+	for (uint32 i = 0; i < iGridCount; ++i)
+	{
+		for (std::list<Actor*>::iterator it = arrayGrid[i]->m_ActorList.begin(); it != arrayGrid[i]->m_ActorList.end(); ++it)
+		{
+			Avatar* pSrcAvatar = (Avatar*)(*it);
+			pAvatar->AddAvatarToInterestList(pSrcAvatar, true);
+			pSrcAvatar->AddAvatarToInterestList(pAvatar);
+
+			arrayAddAvatar[iAddAvatarCount++] = pSrcAvatar;
+		}
+	}
+
+	if (iAddAvatarCount)
+	{
+		iRet = RegionServerSend::RegionAvatarEnterNtf(this, pAvatar->m_iAvatarId, strUtf8);
+		if (iRet != 0)
+		{
+			LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarEnterNtf failed"), pAvatar->m_strAvatarName, pAvatar->m_iAvatarId, pAvatar->m_pPlayerContext->m_iSessionId);
+			return -1;
+		}
+		else
+		{
+
+		}
+	}
+
+	return 0;
 }
 
 Map* Map::Create(uint16 iMapId)

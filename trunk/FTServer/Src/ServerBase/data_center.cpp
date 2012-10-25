@@ -11,7 +11,7 @@ DataCenter::~DataCenter()
 	Destroy();
 }
 
-int32 DataCenter::Init(const TCHAR *strPath)
+int32 DataCenter::Init(const char *strPath)
 {
 	if (_LoadMapDesc(strPath) < 0)
 	{
@@ -55,14 +55,14 @@ std::vector<MapDesc*>& DataCenter::GetAllMapDesc()
 	return m_vMapDesc;
 }
 
-int32 DataCenter::_LoadMapDesc(const TCHAR *strPath)
+int32 DataCenter::_LoadMapDesc(const char *strPath)
 {
 	int32 iRet = 0;
 	char mapDescFile[MAX_PATH + 1] = {0};
 	TiXmlDocument xmlDoc;
 
 	// combine the filename and load xml file
-	_snprintf_s(mapDescFile, MAX_PATH + 1, "%s\\%s.xml", strPath, _T("MapDesc.xml"));
+	_snprintf_s(mapDescFile, MAX_PATH + 1, "%s\\MapDesc.xml", strPath);
 	if (!xmlDoc.LoadFile(mapDescFile))
 	{
 		_ASSERT(false);
@@ -105,7 +105,7 @@ int32 DataCenter::_LoadMapDesc(const TCHAR *strPath)
 		pMapDesc->m_fMaxY = (float)atof(pMapDescElement->Attribute("MaxY"));
 
 		// point list
-		TiXmlElement* pPointListElement = pRootElement->FirstChildElement("PointDescList");
+		TiXmlElement* pPointListElement = pMapDescElement->FirstChildElement("PointDescList");
 		_ASSERT(pPointListElement);
 		if (!pPointListElement)
 		{
@@ -129,7 +129,7 @@ int32 DataCenter::_LoadMapDesc(const TCHAR *strPath)
 		}
 
 		// area desc list
-		TiXmlElement* pAreaListElement = pRootElement->FirstChildElement("AreaDescList");
+		TiXmlElement* pAreaListElement = pMapDescElement->FirstChildElement("AreaDescList");
 		_ASSERT(pAreaListElement);
 		if (!pAreaListElement)
 		{

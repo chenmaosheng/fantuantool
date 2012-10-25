@@ -10,6 +10,7 @@
 #define _H_ACCEPTOR
 
 #include "handler.h"
+#include "context.h"
 
 class Worker;
 class ContextPool;
@@ -43,7 +44,7 @@ public:
 	Worker*	worker_;				// worker thread
 	ContextPool* context_pool_;		// related context pool
 	void*	server_;				// related server
-	Context* context_;				// initial context
+	Context context_;				// initial context
 	
 	LONG	iorefs_;				// reference count to record the number of io, if start, add one, if finished, minus one
 	LONG	running_;				// is running or not

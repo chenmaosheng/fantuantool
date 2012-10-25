@@ -103,12 +103,6 @@ public:
 	Avatar* m_pAvatar;
 
 	static RegionServerLoop* m_pMainLoop;
-
-private:
-	// restore delayed send data, only for single thread condition
-	static uint16 m_iDelayTypeId;
-	static uint16 m_iDelayLen;
-	static char m_DelayBuf[MAX_INPUT_BUFFER];
 };
 
 #endif 

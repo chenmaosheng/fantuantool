@@ -1,5 +1,5 @@
 <MapDescList>
-	<MapDesc MapId="1" Name="Fantuan" MinX="-1000" MaxX="1000" MinY="-1000" MinY="1000">
+	<MapDesc MapId="1" Name="Fantuan" MinX="-1000" MaxX="1000" MinY="-1000" MaxY="1000">
 		<PointDescList>
 			<PointDesc id="1" PositionX="-500" PositionY="500" PositionZ="10" />
 		</PointDescList>

@@ -18,6 +18,7 @@
 class RegionPlayerContext;
 class Map;
 class RegionServerLoop;
+class Avatar;
 struct LogicCommandMapEnterReq;
 class RegionLogicLoop : public LogicLoop
 {
@@ -26,6 +27,7 @@ public:
 
 	// cstr
 	RegionLogicLoop(uint32 iLoopId);
+	~RegionLogicLoop();
 	
 	// initialize region logic loop
 	int32 Init(const std::vector<uint16>& vMapId, uint16 iInstanceCount);
@@ -35,6 +37,18 @@ public:
 	int32 Start();
 	// check if is ready for shutdown
 	bool IsReadyForShutdown() const;
+	// get delay data
+	DelaySendData& GetDelaySendData()
+	{
+		return m_DelaySendData;
+	}
+	// get broadcast helper
+	BroadcastHelper& GetBroadcastHelper()
+	{
+		return m_BroadcastHelper;
+	}
+
+
 	// shutdown one player in region server
 	void ShutdownPlayer(RegionPlayerContext*);
 	// add player to finalizing queue
@@ -67,7 +81,9 @@ private:
 	int32 m_iShutdownStatus;
 	uint32 m_iPlayerCount;
 	BroadcastHelper m_BroadcastHelper;
+	DelaySendData m_DelaySendData;
 
+	Avatar** m_arrayAvatarHelper;
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 };
 

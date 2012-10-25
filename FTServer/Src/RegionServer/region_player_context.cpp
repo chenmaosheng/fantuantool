@@ -14,9 +14,6 @@
 #include "auto_locker.h"
 
 RegionServerLoop* RegionPlayerContext::m_pMainLoop = NULL;
-uint16 RegionPlayerContext::m_iDelayTypeId = 0;
-uint16 RegionPlayerContext::m_iDelayLen = 0;
-char RegionPlayerContext::m_DelayBuf[MAX_INPUT_BUFFER] = {0};
 
 RegionPlayerContext::RegionPlayerContext() :
 m_StateMachine(PLAYER_STATE_NONE)
@@ -49,15 +46,6 @@ void RegionPlayerContext::Clear()
 	{
 		FT_DELETE(m_pAvatar);
 	}
-}
-
-int32 RegionPlayerContext::DelaySendData(uint16 iTypeId, uint16 iLen, const char *pBuf)
-{
-	m_iDelayTypeId = iTypeId;
-	m_iDelayLen = iLen;
-	memcpy(m_DelayBuf, pBuf, iLen);
-
-	return 0;
 }
 
 void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, const TCHAR* strAvatarName)
@@ -213,7 +201,7 @@ void RegionPlayerContext::OnRegionEnterAck()
 	}
 
 	// send time synchronization
-	iRet = RegionServerSend::ServerTimeNtf(this, m_pMainLoop->GetCurrTime());
+	iRet = RegionServerSend::ServerTimeNtf(&m_pMainLoop->GetDelaySendData(), m_pMainLoop->GetCurrTime());
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x ServerTimeNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -221,7 +209,7 @@ void RegionPlayerContext::OnRegionEnterAck()
 		return;
 	}
 
-	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -292,7 +280,7 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	iCurrTime = m_pMainLoop->GetCurrTime();
 
 	// send time synchronization, add RTT
-	iRet = RegionServerSend::ServerTimeNtf(this, iCurrTime + abs((iCurrTime - iClientTime) / 2));
+	iRet = RegionServerSend::ServerTimeNtf(&m_pMainLoop->GetDelaySendData(), iCurrTime + abs((iCurrTime - iClientTime) / 2));
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x ServerTimeNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -300,7 +288,7 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 		return;
 	}
 
-	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -339,7 +327,7 @@ void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext
 	}
 	strUtf8[iRet] = '\0';
 
-	iRet = RegionServerSend::RegionAvatarEnterNtf(this, pPlayerContext->m_iAvatarId, strUtf8);
+	iRet = RegionServerSend::RegionAvatarEnterNtf(&m_pMainLoop->GetDelaySendData(), pPlayerContext->m_iAvatarId, strUtf8);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarEnterNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -347,7 +335,7 @@ void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext
 		return;
 	}
 
-	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -370,7 +358,7 @@ void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
 	}
 	strUtf8[iRet] = '\0';
 
-	iRet = RegionServerSend::RegionChatNtf(this, m_iAvatarId, strMessage);
+	iRet = RegionServerSend::RegionChatNtf(&m_pMainLoop->GetDelaySendData(), m_iAvatarId, strMessage);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionChatNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -378,7 +366,7 @@ void RegionPlayerContext::OnRegionChatReq(const char *strMessage)
 		return;
 	}
 
-	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	m_pMainLoop->BroadcastData(m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 }
 
 void RegionPlayerContext::_SendInitialAvatarData()
@@ -397,7 +385,7 @@ void RegionPlayerContext::_SendInitialAvatarData()
 	}
 	strUtf8[iRet] = '\0';
 
-	iRet = RegionServerSend::InitialAvatarDataNtf(this, m_iAvatarId, strUtf8);
+	iRet = RegionServerSend::InitialAvatarDataNtf(&m_pMainLoop->GetDelaySendData(), m_iAvatarId, strUtf8);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x InitialAvatarDataNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -405,7 +393,7 @@ void RegionPlayerContext::_SendInitialAvatarData()
 		return;
 	}
 
-	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	iRet = SessionPeerSend::SendData(m_pGateServer, m_iSessionId, m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -461,7 +449,7 @@ void RegionPlayerContext::_BroadcastAvatarEnterNtf()
 	}
 	strUtf8[iRet] = '\0';
 
-	iRet = RegionServerSend::RegionAvatarEnterNtf(this, m_iAvatarId, strUtf8);
+	iRet = RegionServerSend::RegionAvatarEnterNtf(&m_pMainLoop->GetDelaySendData(), m_iAvatarId, strUtf8);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarEnterNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -469,7 +457,7 @@ void RegionPlayerContext::_BroadcastAvatarEnterNtf()
 		return;
 	}
 
-	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	m_pMainLoop->BroadcastData(m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 }
 
 void RegionPlayerContext::_SendRegionAvatars()
@@ -483,7 +471,7 @@ void RegionPlayerContext::_BroadcastAvatarLeaveNtf()
 	
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x BroadcastAvatarLeave"), m_strAvatarName, m_iAvatarId, m_iSessionId);
 
-	iRet = RegionServerSend::RegionAvatarLeaveNtf(this, m_iAvatarId);
+	iRet = RegionServerSend::RegionAvatarLeaveNtf(&m_pMainLoop->GetDelaySendData(), m_iAvatarId);
 	if (iRet != 0)
 	{
 		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x RegionAvatarLeaveNtf failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
@@ -491,7 +479,7 @@ void RegionPlayerContext::_BroadcastAvatarLeaveNtf()
 		return;
 	}
 
-	m_pMainLoop->BroadcastData(m_iDelayTypeId, m_iDelayLen, m_DelayBuf);
+	m_pMainLoop->BroadcastData(m_pMainLoop->GetDelaySendData().m_iDelayTypeId, m_pMainLoop->GetDelaySendData().m_iDelayLen, m_pMainLoop->GetDelaySendData().m_DelayBuf);
 }
 
 
@@ -517,5 +505,6 @@ void RegionPlayerContext::_BroadcastAvatarLeaveNtf()
 
 int32 Sender::SendPacket(void* pClient, uint16 iTypeId, uint16 iLen, const char* pBuf)
 {
-	return ((RegionPlayerContext*)pClient)->DelaySendData(iTypeId, iLen, pBuf);
+	((DelaySendData*)pClient)->Save(iTypeId, iLen, pBuf);
+	return 0;
 }

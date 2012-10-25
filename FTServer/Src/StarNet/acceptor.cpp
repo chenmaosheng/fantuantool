@@ -47,18 +47,9 @@ int32 Acceptor::Init(PSOCKADDR_IN addr, Worker* pWorker, ContextPool* pContextPo
 
 	SN_LOG_STT(_T("Create and initialize SList of free connection"));
 	
-	// create initial acceptor context, necessary
-	context_ = (Context*)_aligned_malloc(sizeof(Context), MEMORY_ALLOCATION_ALIGNMENT);
-	_ASSERT(context_);
-	if (!context_)
-	{
-		SN_LOG_ERR(_T("Create initial acceptor context failed, err=%d"), GetLastError());
-		return -3;
-	}
-
 	// initialize the context and set io type to accept
-	ZeroMemory(&context_->overlapped_, sizeof(WSAOVERLAPPED));
-	context_->operation_type_ = OPERATION_ACCEPT;
+	ZeroMemory(&context_.overlapped_, sizeof(WSAOVERLAPPED));
+	context_.operation_type_ = OPERATION_ACCEPT;
 
 	// bind acceptor's socket to iocp handle
 	if (!CreateIoCompletionPort((HANDLE)socket_, pWorker->iocp_, (ULONG_PTR)this, 0))
@@ -157,14 +148,14 @@ void Acceptor::Accept()
 	SN_LOG_DBG(_T("Get a new connection and wait for incoming connect"));
 
 	pConnection->client_ = NULL;
-	context_->connection_ = pConnection;
+	context_.connection_ = pConnection;
 
 	InterlockedIncrement(&iorefs_);
 	DWORD dwXfer;
 
 	// post an asychronous accept
-	if (!StarNet::acceptex_(socket_, pConnection->socket_, context_->buffer_, 0, sizeof(SOCKADDR_IN)+16,
-		sizeof(SOCKADDR_IN)+16, &dwXfer, &context_->overlapped_))
+	if (!StarNet::acceptex_(socket_, pConnection->socket_, context_.buffer_, 0, sizeof(SOCKADDR_IN)+16,
+		sizeof(SOCKADDR_IN)+16, &dwXfer, &context_.overlapped_))
 	{
 		int32 iLastError = WSAGetLastError();
 		_ASSERT(iLastError == ERROR_IO_PENDING);

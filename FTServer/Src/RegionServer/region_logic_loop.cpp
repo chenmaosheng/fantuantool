@@ -6,6 +6,7 @@
 #include "region_logic_command.h"
 #include "region_player_context.h"
 #include "avatar.h"
+#include "region_server_config.h"
 
 #include "auto_locker.h"
 
@@ -16,6 +17,12 @@ RegionLogicLoop::RegionLogicLoop(uint32 iLoopId)
 	m_iLoopId = iLoopId;
 	m_iShutdownStatus = NOT_SHUTDOWN;
 	m_iPlayerCount = 0;
+	m_arrayAvatarHelper = new Avatar*[g_pServerConfig->m_iPlayerMax];
+}
+
+RegionLogicLoop::~RegionLogicLoop()
+{
+	SAFE_DELETE_ARRAY(m_arrayAvatarHelper);
 }
 
 int32 RegionLogicLoop::Init(const std::vector<uint16> &vMapId, uint16 iInstanceCount)
@@ -24,7 +31,7 @@ int32 RegionLogicLoop::Init(const std::vector<uint16> &vMapId, uint16 iInstanceC
 	Map* pMap = NULL;
 	MapDesc* pMapDesc = NULL;
 
-	iRet = super::Init();
+	iRet = super::Init(false);
 	if (iRet != 0)
 	{
 		return iRet;

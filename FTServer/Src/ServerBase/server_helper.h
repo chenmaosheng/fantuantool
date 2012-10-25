@@ -34,4 +34,17 @@ public:
 private:
 	GateServerSessionDesc m_arrayGateServerSessionDesc[SERVERCOUNT_MAX];
 };
+
+class DelaySendData
+{
+public:
+	DelaySendData();
+	void Save(uint16 iDelayTypeId, uint16 iDelayLen, const char* pDelayBuf);
+
+public:
+	uint16 m_iDelayTypeId;
+	uint16 m_iDelayLen;
+	char m_DelayBuf[MAX_INPUT_BUFFER];
+};
+
 #endif

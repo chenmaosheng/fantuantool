@@ -29,16 +29,21 @@ LogicLoop::~LogicLoop()
 	CloseHandle(m_hThread);
 }
 
-int32 LogicLoop::Init()
+int32 LogicLoop::Init(bool bMainLoop)
 {
-	_ASSERT(m_pMainLoop == NULL);
-	if (!m_pMainLoop)
+	if (bMainLoop)
 	{
+		_ASSERT(m_pMainLoop == NULL);
+		if (m_pMainLoop)
+		{
+			return -1;
+		}
+
 		m_pMainLoop = this;
 		return 0;
 	}
 
-	return -1;
+	return 0;
 }
 
 void LogicLoop::Destroy()

@@ -20,14 +20,14 @@ public:
 	DataCenter();
 	~DataCenter();
 
-	int32 Init(const TCHAR* strPath);
+	int32 Init(const char* strPath);
 	void Destroy();
 
 	MapDesc* GetMapDesc(uint32 iMapId);
 	std::vector<MapDesc*>& GetAllMapDesc();
 
 private:
-	int32 _LoadMapDesc(const TCHAR* strPath);
+	int32 _LoadMapDesc(const char* strPath);
 
 private:
 	std::vector<MapDesc*> m_vMapDesc;

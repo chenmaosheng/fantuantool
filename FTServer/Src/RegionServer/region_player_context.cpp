@@ -48,6 +48,18 @@ void RegionPlayerContext::Clear()
 	}
 }
 
+void RegionPlayerContext::SendPlayerFailToMaster()
+{
+	int32 iRet = 0;
+	// todo: consider map leave issue
+
+	iRet = MasterPeerSend::OnRegionPlayerFailReq(g_pServer->m_pMasterServer, m_iSessionId, 0);
+	if (iRet != 0)
+	{
+		LOG_ERR(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x OnRegionPlayerFailReq failed"), m_strAvatarName, m_iAvatarId, m_iSessionId);
+	}
+}
+
 void RegionPlayerContext::OnRegionAllocReq(uint32 iSessionId, uint64 iAvatarId, const TCHAR* strAvatarName)
 {
 	int32 iRet = 0;

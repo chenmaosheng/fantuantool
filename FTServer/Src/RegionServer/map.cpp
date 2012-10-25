@@ -5,6 +5,7 @@
 #include "region_server.h"
 #include "region_server_config.h"
 #include "data_center.h"
+#include "region_logic_loop.h"
 #include <algorithm>
 #include <cmath>
 
@@ -222,8 +223,7 @@ int32 Map::UpdateAOI(Avatar* pAvatar, uint32 iGridCount, MapGrid** arrayGrid)
 	int32 iRet = 0;
 	char strUtf8[AVATARNAME_MAX+1] = {0};
 	uint32 iAddAvatarCount = 0;
-	Avatar** arrayAddAvatar = new Avatar*[100]; // todo:
-
+	
 	iRet = WChar2Char(pAvatar->m_strAvatarName, strUtf8, AVATARNAME_MAX+1);
 	if (iRet == 0)
 	{
@@ -244,7 +244,8 @@ int32 Map::UpdateAOI(Avatar* pAvatar, uint32 iGridCount, MapGrid** arrayGrid)
 			pAvatar->AddAvatarToInterestList(pSrcAvatar, true);
 			pSrcAvatar->AddAvatarToInterestList(pAvatar);
 
-			arrayAddAvatar[iAddAvatarCount++] = pSrcAvatar;
+			// put avatar to temp array
+			iAddAvatarCount = m_pRegionLogicLoop->AddAvatarToTemp(pSrcAvatar);
 		}
 	}
 
@@ -258,7 +259,8 @@ int32 Map::UpdateAOI(Avatar* pAvatar, uint32 iGridCount, MapGrid** arrayGrid)
 		}
 		else
 		{
-
+			// notify all players in temp array
+			m_pRegionLogicLoop->BroadcastToTemp();
 		}
 	}
 

@@ -22,6 +22,7 @@ enum
 	COMMAND_ONGATELOGINREQ,	// receive gate login request
 	COMMAND_ONREGIONALLOCACK, // acknowledge region alloc
 	COMMAND_ONREGIONLEAVEREQ, // receive region leave request
+	COMMAND_ONREGIONPLAYERFAILREQ, // receive player fail request
 };
 
 struct LogicCommandOnLoginReport : public LogicCommandT<COMMAND_ONLOGINREPORT>
@@ -132,6 +133,18 @@ struct LogicCommandOnRegionLeaveReq : public LogicCommandT<COMMAND_ONREGIONLEAVE
 
 	uint32 m_iSessionId;
 	uint8 m_iRegionServerId;
+};
+
+struct LogicCommandOnRegionPlayerFailReq : public LogicCommandT<COMMAND_ONREGIONPLAYERFAILREQ>
+{
+	LogicCommandOnRegionPlayerFailReq()
+	{
+		m_iSessionId = 0;
+		m_iReason = 0;
+	}
+
+	uint32 m_iSessionId;
+	int32 m_iReason;
 };
 
 #endif

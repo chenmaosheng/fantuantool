@@ -13,6 +13,21 @@
 #include "state_machine.h"
 #include <list>
 
+enum
+{
+	AVATAR_STATE_NONE,
+	AVATAR_STATE_ONMAPENTERREQ,	// receive map enter
+	AVATAR_STATE_ONMAPLEAVEREQ,	// receive map leave
+	AVATAR_STATE_MAPLEAVEACK,	// send map leave ack
+};
+
+enum
+{
+	AVATAR_EVENT_ONMAPENTERREQ,
+	AVATAR_EVENT_ONMAPLEAVEREQ,
+	AVATAR_EVENT_MAPLEAVEACK,
+};
+
 class RegionPlayerContext;
 class Map;
 class Avatar : public Actor

@@ -23,6 +23,7 @@ struct LogicCommandGateAllocAck;
 struct LogicCommandOnGateLoginReq;
 struct LogicCommandOnRegionAllocAck;
 struct LogicCommandOnRegionLeaveReq;
+struct LogicCommandOnRegionPlayerFailReq;
 struct LogicCommandOnSessionDisconnect;
 struct LogicCommandPacketForward;
 class MasterServerLoop : public LogicLoop
@@ -89,6 +90,8 @@ private:
 	void _OnCommandOnRegionAllocAck(LogicCommandOnRegionAllocAck*);
 	// receive region leave req from region server
 	void _OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq*);
+	// receive player fail request from region server
+	void _OnCommandOnRegionPlayerFailReq(LogicCommandOnRegionPlayerFailReq*);
 	// receive disconnect from session server
 	void _OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect*);
 	// handle packet forwarding to other server

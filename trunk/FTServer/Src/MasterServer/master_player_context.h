@@ -130,6 +130,8 @@ public:
 	void OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn);
 	// receive region leave req
 	void OnRegionLeaveReq(uint8 iRegionServerId);
+	// receive player fail req from region
+	void OnRegionPlayerFailReq(int32 iReason);
 
 private:
 	// initialize state machine

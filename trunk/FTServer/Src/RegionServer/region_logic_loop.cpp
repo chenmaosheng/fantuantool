@@ -17,12 +17,13 @@ RegionLogicLoop::RegionLogicLoop(uint32 iLoopId)
 	m_iLoopId = iLoopId;
 	m_iShutdownStatus = NOT_SHUTDOWN;
 	m_iPlayerCount = 0;
-	m_arrayAvatarHelper = new Avatar*[g_pServerConfig->m_iPlayerMax];
+	m_arrayTempAvatar = new Avatar*[g_pServerConfig->m_iPlayerMax];
+	m_iTempAvatarCount = 0;
 }
 
 RegionLogicLoop::~RegionLogicLoop()
 {
-	SAFE_DELETE_ARRAY(m_arrayAvatarHelper);
+	SAFE_DELETE_ARRAY(m_arrayTempAvatar);
 }
 
 int32 RegionLogicLoop::Init(const std::vector<uint16> &vMapId, uint16 iInstanceCount)
@@ -94,6 +95,25 @@ Map* RegionLogicLoop::GetMapById(uint16 iMapId)
 	}
 
 	return NULL;
+}
+
+uint32 RegionLogicLoop::AddAvatarToTemp(Avatar* pAvatar)
+{
+	m_arrayTempAvatar[m_iTempAvatarCount++] = pAvatar;
+	return m_iTempAvatarCount;
+}
+
+void RegionLogicLoop::BroadcastToTemp()
+{
+	m_BroadcastHelper.Clear();
+	for (uint32 i = 0; i < m_iTempAvatarCount; ++i)
+	{
+		m_BroadcastHelper.AddGateSession(m_arrayTempAvatar[i]->m_pPlayerContext->m_iSessionId);
+	}
+	m_BroadcastHelper.SendData(m_DelaySendData.m_iDelayTypeId, m_DelaySendData.m_iDelayLen, m_DelaySendData.m_DelayBuf);
+
+	// clear temp array
+	m_iTempAvatarCount = 0;
 }
 
 void RegionLogicLoop::PushMapEnterCommand(RegionPlayerContext* pPlayerContext, uint16 iMapId)

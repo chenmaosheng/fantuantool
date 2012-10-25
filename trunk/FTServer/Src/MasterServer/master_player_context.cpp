@@ -551,6 +551,8 @@ void MasterPlayerContext::OnChannelSelectReq(const TCHAR* strChannelName)
 	uint8 iChannelId = 0;
 	uint8 iRegionServerId = 0;
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x receive channel select req"), m_strAccountName, m_iSessionId);
+
 	// check whether player will disconnect
 	if (m_bFinalizing)
 	{
@@ -633,6 +635,8 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 		return;
 	}
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x region=%d Record player region info"), m_strAccountName, m_iSessionId, iRegionServerId);
+
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONALLOCACK) != PLAYER_STATE_ONREGIONALLOCACK)
 	{
@@ -641,8 +645,6 @@ void MasterPlayerContext::OnRegionAllocAck(uint8 iRegionServerId, int32 iReturn)
 		m_pMainLoop->ShutdownPlayer(this);
 		return;
 	}
-
-	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x region=%d Record player region info"), m_strAccountName, m_iSessionId, iRegionServerId);
 
 	if (iReturn != 0)
 	{
@@ -749,6 +751,8 @@ void MasterPlayerContext::OnRegionLeaveReq(uint8 iRegionServerId)
 {
 	int32 iRet = 0;
 
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x region=%d on region leave"), m_strAccountName, m_iSessionId, iRegionServerId);
+
 	// check state
 	if (m_StateMachine.StateTransition(PLAYER_EVENT_ONREGIONLEAVEREQ) < 0)
 	{
@@ -822,6 +826,56 @@ void MasterPlayerContext::OnRegionLeaveReq(uint8 iRegionServerId)
 		break;
 	}
 }
+
+void MasterPlayerContext::OnRegionPlayerFailReq(int32 iReason)
+{
+	int32 iRet = 0;
+
+	// check whether player will disconnect
+	if (m_bFinalizing)
+	{
+		return;
+	}
+
+	LOG_DBG(LOG_SERVER, _T("acc=%s sid=%08x on region player fail"), m_strAccountName, m_iSessionId);
+	
+	iRet = SessionPeerSend::Disconnect(g_pServer->GetPeerServer(m_iGateServerId), m_iSessionId, 0);
+	if (iRet != 0)
+	{
+		// todo:
+	}
+
+	iRet = CachePeerSend::OnLogoutReq(g_pServer->m_pCacheServer, m_iSessionId);
+	if (iRet != 0)
+	{
+		// todo:
+	}
+
+	m_pMainLoop->AddPlayerToFinalizingQueue(this);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

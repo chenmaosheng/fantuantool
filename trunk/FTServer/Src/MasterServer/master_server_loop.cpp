@@ -546,6 +546,10 @@ bool MasterServerLoop::_OnCommand(LogicCommand* pCommand)
 		_OnCommandOnRegionLeaveReq((LogicCommandOnRegionLeaveReq*)pCommand);
 		break;
 
+	case COMMAND_ONREGIONPLAYERFAILREQ:
+		_OnCommandOnRegionPlayerFailReq((LogicCommandOnRegionPlayerFailReq*)pCommand);
+		break;
+
 	case COMMAND_ONSESSIONDISCONNECT:
 		_OnCommandOnSessionDisconnect((LogicCommandOnSessionDisconnect*)pCommand);
 		break;
@@ -708,6 +712,18 @@ void MasterServerLoop::_OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq* 
 	}
 
 	mit->second->OnRegionLeaveReq(pCommand->m_iRegionServerId);
+}
+
+void MasterServerLoop::_OnCommandOnRegionPlayerFailReq(LogicCommandOnRegionPlayerFailReq* pCommand)
+{
+	stdext::hash_map<uint32, MasterPlayerContext*>::iterator mit = m_mPlayerContextBySessionId.find(pCommand->m_iSessionId);
+	if (mit == m_mPlayerContextBySessionId.end())
+	{
+		LOG_WAR(LOG_SERVER, _T("acc=? sid=%08x can't find context"), pCommand->m_iSessionId);
+		return;
+	}
+
+	mit->second->OnRegionPlayerFailReq(pCommand->m_iReason);
 }
 
 void MasterServerLoop::_OnCommandOnSessionDisconnect(LogicCommandOnSessionDisconnect* pCommand)

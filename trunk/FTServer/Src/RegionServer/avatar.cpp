@@ -2,11 +2,12 @@
 #include "map.h"
 #include "region_player_context.h"
 #include "region_logic_loop.h"
+#include "auto_locker.h"
 
 #include "region_server_send.h"
 #include "session_peer_send.h"
 
-Avatar::Avatar() : m_StateMachine(0)
+Avatar::Avatar() : m_StateMachine(AVATAR_STATE_NONE)
 {
 	m_iActorType = ACTOR_TYPE_AVATAR;
 	m_pPlayerContext = NULL;
@@ -28,7 +29,17 @@ void Avatar::OnMapEnterReq(Map *pMap)
 {
 	int32 iRet = 0;
 
+	AutoLocker locker(&m_pPlayerContext->m_csContext);
+	
 	LOG_DBG(LOG_PLAYER, _T("name=%s aid=%llu sid=%08x mapId=%d"), m_strAvatarName, m_iAvatarId, m_pPlayerContext->m_iSessionId, pMap->m_iMapId);
+
+	// check state
+	if (m_StateMachine.StateTransition(AVATAR_STATE_ONMAPENTERREQ) < 0)
+	{
+		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x state=%d state error"), m_strAvatarName, m_iAvatarId, m_pPlayerContext->m_iSessionId, m_StateMachine.GetCurrState());
+		_ASSERT(false && _T("state error"));
+		return;
+	}
 
 	iRet = _OnMapEnterReq(pMap);
 	if (iRet != 0)
@@ -78,6 +89,8 @@ int32 Avatar::SendAvatarEnterNtf(Avatar* pAvatar)
 		LOG_ERR(LOG_SERVER, _T("name=%s aid=%llu sid=%08x SendData failed"), m_strAvatarName, m_iAvatarId, m_pPlayerContext->m_iSessionId);
 		return -1;
 	}
+
+	return 0;
 }
 
 int32 Avatar::_OnMapEnterReq(Map* pMap)

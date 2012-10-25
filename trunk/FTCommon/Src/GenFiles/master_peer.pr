@@ -21,4 +21,7 @@ filter (MasterPeer, PEER_FILTER_MASTER)
 	
 	// region notifies master that it finished leaving
 	OnRegionLeaveReq(uint32 iSessionId, uint8 iServerId);
+	
+	// region notifies master that player failed
+	OnRegionPlayerFailReq(uint32 iSessionId, int32 iReason);
 }

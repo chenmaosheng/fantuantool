@@ -48,7 +48,6 @@ public:
 		return m_BroadcastHelper;
 	}
 
-
 	// shutdown one player in region server
 	void ShutdownPlayer(RegionPlayerContext*);
 	// add player to finalizing queue
@@ -57,6 +56,10 @@ public:
 	void DeletePlayer(RegionPlayerContext*);
 	// get map
 	Map* GetMapById(uint16 iMapId);
+	// add avatar to temp array, return new count of array
+	uint32 AddAvatarToTemp(Avatar*);
+	// broadcast data by temp array
+	void BroadcastToTemp();
 
 	// map enter
 	void PushMapEnterCommand(RegionPlayerContext*, uint16 iMapId);
@@ -83,7 +86,8 @@ private:
 	BroadcastHelper m_BroadcastHelper;
 	DelaySendData m_DelaySendData;
 
-	Avatar** m_arrayAvatarHelper;
+	Avatar** m_arrayTempAvatar;
+	uint32 m_iTempAvatarCount;
 	std::queue<RegionPlayerContext*> m_PlayerFinalizingQueue;
 };
 

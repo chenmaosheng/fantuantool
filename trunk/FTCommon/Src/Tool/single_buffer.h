@@ -69,8 +69,8 @@ public:
 		return m_iCurrSize;
 	}
 
-	// get the last length of buffer
-	size_t	GetLastSize()	const
+	// get the remain length of buffer
+	size_t	GetRemainSize()	const
 	{
 		return m_iSize - m_iCurrSize;
 	}

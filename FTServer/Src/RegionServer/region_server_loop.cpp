@@ -9,6 +9,7 @@
 #include "session.h"
 #include "data_center.h"
 #include "map_desc.h"
+#include "auto_locker.h"
 
 GateServerContext::GateServerContext()
 {
@@ -192,6 +193,19 @@ void RegionServerLoop::DeletePlayer(RegionPlayerContext* pPlayerContext)
 	m_PlayerContextPool.Free(pPlayerContext);
 }
 
+void RegionServerLoop::PushShutdownPlayerCommand(RegionPlayerContext* pPlayerContext)
+{
+	LogicCommandShutdownPlayerReq* pCommand = FT_NEW(LogicCommandShutdownPlayerReq);
+	if (!pCommand)
+	{
+		LOG_ERR(LOG_SERVER, _T("FT_NEW(LogicCommandShutdownPlayerReq) failed"));
+		return;
+	}
+
+	pCommand->m_pPlayerContext = pPlayerContext;
+	PushCommand(pCommand);
+}
+
 RegionPlayerContext* RegionServerLoop::GetPlayerContextBySessionId(uint32 iSessionId)
 {
 	uint8 iServerId = ((SessionId*)&iSessionId)->sValue_.serverId_;
@@ -331,6 +345,10 @@ bool RegionServerLoop::_OnCommand(LogicCommand* pCommand)
 		{
 			_OnCommandPacketForward((LogicCommandPacketForward*)pCommand);
 		}
+		break;
+
+	case COMMAND_SHUTDOWNPLAYERREQ:
+		_OnCommandShutdownPlayerReq((LogicCommandShutdownPlayerReq*)pCommand);
 		break;
 
 	default:
@@ -489,4 +507,11 @@ void RegionServerLoop::_OnCommandPacketForward(LogicCommandPacketForward* pComma
 	{
 		LOG_ERR(LOG_SERVER, _T("sid=%08x on packet received failed"), pCommand->m_iSessionId);
 	}
+}
+
+void RegionServerLoop::_OnCommandShutdownPlayerReq(LogicCommandShutdownPlayerReq* pCommand)
+{
+	LOG_DBG(LOG_PLAYER, _T("name=%s sid=%08x"), pCommand->m_pPlayerContext->m_strAvatarName, pCommand->m_pPlayerContext->m_iSessionId)
+	AutoLocker locker(&pCommand->m_pPlayerContext->m_csContext);
+	ShutdownPlayer(pCommand->m_pPlayerContext);
 }

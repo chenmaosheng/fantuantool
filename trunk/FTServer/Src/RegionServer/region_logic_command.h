@@ -25,6 +25,7 @@ enum
 
 
 	COMMAND_MAPENTERREQ,
+	COMMAND_SHUTDOWNPLAYERREQ,
 };
 
 struct LogicCommandOnRegionAllocReq : public LogicCommandT<COMMAND_ONREGIONALLOCREQ>
@@ -133,6 +134,17 @@ public:
 
 	RegionPlayerContext* m_pPlayerContext;
 	uint16 m_iMapId;
+};
+
+struct LogicCommandShutdownPlayerReq : public LogicCommandT<COMMAND_SHUTDOWNPLAYERREQ>
+{
+public:
+	LogicCommandShutdownPlayerReq()
+	{
+		m_pPlayerContext = NULL;
+	}
+
+	RegionPlayerContext* m_pPlayerContext;
 };
 
 #endif

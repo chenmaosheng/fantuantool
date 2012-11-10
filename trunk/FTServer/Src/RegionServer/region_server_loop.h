@@ -32,6 +32,7 @@ struct LogicCommandOnRegionEnterReq;
 struct LogicCommandOnRegionEnterAck;
 struct LogicCommandOnRegionLeaveReq;
 struct LogicCommandPacketForward;
+struct LogicCommandShutdownPlayerReq;
 class RegionLogicLoop;
 class Map;
 class RegionServerLoop : public LogicLoop
@@ -67,6 +68,8 @@ public:
 	void AddPlayerToFinalizingQueue(RegionPlayerContext*);
 	// totally delete a player
 	void DeletePlayer(RegionPlayerContext*);
+	// create a shutdownplayer command and push to queue
+	void PushShutdownPlayerCommand(RegionPlayerContext*);
 	// get player by sessionid/avatarid
 	RegionPlayerContext* GetPlayerContextBySessionId(uint32 iSessionId);
 	RegionPlayerContext* GetPlayerContextByAvatarId(uint64 iAvatarId);
@@ -103,6 +106,8 @@ private:
 	void _OnCommandOnRegionLeaveReq(LogicCommandOnRegionLeaveReq*);
 	// handle packet forwarding to other server
 	void _OnCommandPacketForward(LogicCommandPacketForward*);
+	// receive shutdown player req
+	void _OnCommandShutdownPlayerReq(LogicCommandShutdownPlayerReq*);
 
 private:
 	int32 m_iShutdownStatus;

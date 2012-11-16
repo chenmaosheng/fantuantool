@@ -111,7 +111,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
 					{
 						bNeedLength = true;
-						fprintf(fp, "    char* %s;\n", filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    char %s[MAX_OUTPUT_BUFFER] = {0};\n", filter->node[j].paramSet[k].paramName);
 					}
 					else
 					{
@@ -149,14 +149,14 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 					{
 						fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
 						fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
-						fprintf(fp, "    %s = (ftd%s*)_malloca(sizeof(ftd%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						//fprintf(fp, "    %s = (ftd%s*)_malloca(sizeof(ftd%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 						fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 					}
 					else
 					{
 						fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
 						fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
-						fprintf(fp, "    %s = (%s*)_malloca(sizeof(%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						//fprintf(fp, "    %s = (%s*)_malloca(sizeof(%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 						fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 					}
 				}
@@ -165,7 +165,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 					if (strcmp(filter->node[j].paramSet[k].paramType, "string") == 0)
 					{
 						fprintf(fp, "    if (!stream.Serialize(iLength)) return false;\n");
-						fprintf(fp, "    %s = (char*)_malloca(iLength + 1);\n", filter->node[j].paramSet[k].paramName);
+						//fprintf(fp, "    %s = (char*)_malloca(iLength + 1);\n", filter->node[j].paramSet[k].paramName);
 						fprintf(fp, "    if (!stream.Serialize(iLength, %s)) return false;\n", filter->node[j].paramSet[k].paramName);
 						fprintf(fp, "    %s[iLength] = '\\0';\n", filter->node[j].paramSet[k].paramName);
 					}

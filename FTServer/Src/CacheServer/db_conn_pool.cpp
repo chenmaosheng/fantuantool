@@ -79,6 +79,11 @@ void DBConnPool::Destroy()
 
 	m_mEventProcessingSequenceMap.clear();
 
+	DeleteCriticalSection(&m_csEventReturnList);
+	DeleteCriticalSection(&m_csEventProcessingList);
+	CloseHandle(m_hWaitingList);
+	DeleteCriticalSection(&m_csEventWaitingList);
+
 	LOG_STT(LOG_DB, _T("Destroy DBPool"));
 }
 

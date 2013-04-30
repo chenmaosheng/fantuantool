@@ -15,8 +15,7 @@ DELETE FROM `test`;
 INSERT INTO `test` (`id`, `name`) VALUES
 	(1, 'test'),
 	(2, 'abc'),
-	(3, 'def'),
-	(4, 'ucd');
+	(3, 'def');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

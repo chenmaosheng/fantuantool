@@ -19,7 +19,7 @@ GateServerLoop::~GateServerLoop()
 {
 }
 
-int32 GateServerLoop::Init()
+int32 GateServerLoop::Init(bool bMainLoop)
 {
 	int32 iRet = 0;
 

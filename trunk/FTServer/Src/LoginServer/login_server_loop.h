@@ -21,7 +21,7 @@ public:
 	LoginServerLoop();
 	~LoginServerLoop();
 
-	int32 Init();
+	int32 Init(bool bMainLoop=true);
 	void Destroy();
 
 	int32 Start();

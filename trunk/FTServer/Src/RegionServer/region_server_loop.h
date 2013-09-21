@@ -44,7 +44,7 @@ public:
 	RegionServerLoop();
 	
 	// initialize region server loop
-	int32 Init();
+	int32 Init(bool bMainLoop=true);
 	// destroy region server loop
 	void Destroy();
 	// start region server loop

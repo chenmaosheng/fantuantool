@@ -22,7 +22,7 @@ CacheServerLoop::~CacheServerLoop()
 	SAFE_DELETE(m_pDBConnPool);
 }
 
-int32 CacheServerLoop::Init()
+int32 CacheServerLoop::Init(bool bMainLoop)
 {
 	int32 iRet = 0;
 

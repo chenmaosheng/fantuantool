@@ -149,7 +149,7 @@ void GenerateRecvCpp(const char* name, FILE* fp)
 					{
 						fprintf(fp, "    %s_length = %s;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramSize);
 						fprintf(fp, "    if (!stream.Serialize(%s_length)) return false;\n", filter->node[j].paramSet[k].paramName);
-						//fprintf(fp, "    %s = (ftd%s*)_malloca(sizeof(ftd%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
+						fprintf(fp, "    %s = (ftd%s*)_malloca(sizeof(ftd%s)*%s_length);\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramType, filter->node[j].paramSet[k].paramName);
 						fprintf(fp, "    if (!stream.Serialize(%s_length, %s)) return false;\n", filter->node[j].paramSet[k].paramName, filter->node[j].paramSet[k].paramName);
 					}
 					else

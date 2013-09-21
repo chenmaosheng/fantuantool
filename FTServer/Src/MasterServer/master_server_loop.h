@@ -35,7 +35,7 @@ public:
 	MasterServerLoop();
 	
 	// initialize master server loop
-	int32 Init();
+	int32 Init(bool bMainLoop=true);
 	// destroy master server loop
 	void Destroy();
 	// start master server loop

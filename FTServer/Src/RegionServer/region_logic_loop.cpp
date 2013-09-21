@@ -19,6 +19,8 @@ RegionLogicLoop::RegionLogicLoop(uint32 iLoopId)
 	m_iPlayerCount = 0;
 	m_arrayTempAvatar = new Avatar*[g_pServerConfig->m_iPlayerMax];
 	m_iTempAvatarCount = 0;
+
+	m_pMainLoop = (RegionServerLoop*)g_pServer->m_pMainLoop;
 }
 
 RegionLogicLoop::~RegionLogicLoop()
@@ -54,6 +56,8 @@ int32 RegionLogicLoop::Init(const std::vector<uint16> &vMapId, uint16 iInstanceC
 
 		pMap->m_pRegionLogicLoop = this;
 		m_mMapById.insert(std::make_pair(vMapId[i], pMap));
+
+		m_pMainLoop->BindNewMap(vMapId[i], pMap);
 	}
 
 	return 0;

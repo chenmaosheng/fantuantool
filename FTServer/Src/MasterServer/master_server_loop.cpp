@@ -22,7 +22,7 @@ m_PlayerContextPool(5000) // todo:
 	m_iChannelCount = 0;
 }
 
-int32 MasterServerLoop::Init()
+int32 MasterServerLoop::Init(bool bMainLoop)
 {
 	int32 iRet = 0;
 

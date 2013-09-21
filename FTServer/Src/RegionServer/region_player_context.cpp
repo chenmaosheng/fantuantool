@@ -16,7 +16,8 @@
 RegionServerLoop* RegionPlayerContext::m_pMainLoop = NULL;
 
 RegionPlayerContext::RegionPlayerContext() :
-m_StateMachine(PLAYER_STATE_NONE)
+m_StateMachine(PLAYER_STATE_NONE),
+m_pAvatar(NULL)
 {
 	InitializeCriticalSectionAndSpinCount(&m_csContext, 4000);
 	Clear();
@@ -26,6 +27,10 @@ m_StateMachine(PLAYER_STATE_NONE)
 RegionPlayerContext::~RegionPlayerContext()
 {
 	Clear();
+	if (m_pAvatar)
+	{
+		FT_DELETE(m_pAvatar);
+	}
 	DeleteCriticalSection(&m_csContext);
 }
 
@@ -42,10 +47,6 @@ void RegionPlayerContext::Clear()
 	m_iMapId = 0;
 	m_pMap = NULL;
 	m_pLogicLoop = NULL;
-	if (m_pAvatar)
-	{
-		FT_DELETE(m_pAvatar);
-	}
 }
 
 void RegionPlayerContext::SendPlayerFailToMaster()
@@ -319,8 +320,8 @@ void RegionPlayerContext::OnClientTimeReq(uint32 iClientTime)
 	_SendInitialAvatarData();
 	// avatar enter map
 	_InitialMapEnter();
-	/*_BroadcastAvatarEnterNtf();
-	_SendRegionAvatars();*/
+	_BroadcastAvatarEnterNtf();
+	_SendRegionAvatars();
 }
 
 void RegionPlayerContext::SendAvatarEnterNtf(RegionPlayerContext* pPlayerContext)

@@ -34,7 +34,7 @@ m_PlayerContextPool(g_pServerConfig->m_iPlayerMax + g_pServerConfig->m_iPlayerMa
 	m_iLogicLoopCount = 0;
 }
 
-int32 RegionServerLoop::Init()
+int32 RegionServerLoop::Init(bool bMainLoop)
 {
 	int32 iRet = 0;
 	const std::vector<MapDesc*>& vMapDesc = g_pDataCenter->GetAllMapDesc();

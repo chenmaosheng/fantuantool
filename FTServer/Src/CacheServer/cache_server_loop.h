@@ -32,7 +32,7 @@ public:
 	~CacheServerLoop();
 
 	// initialize cache server loop
-	int32 Init();
+	int32 Init(bool bMainLoop=true);
 	// destroy cache server loop
 	void Destroy();
 	// start cache server loop

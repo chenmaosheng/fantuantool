@@ -16,7 +16,7 @@ LoginServerLoop::~LoginServerLoop()
 {
 }
 
-int32 LoginServerLoop::Init()
+int32 LoginServerLoop::Init(bool bMainLoop)
 {
 	//PERF_PROFILER;
 

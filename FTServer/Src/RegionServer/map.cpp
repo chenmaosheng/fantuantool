@@ -90,7 +90,7 @@ int32 Map::Init(uint16 iMapId)
 		m_array2dMapGrid[i] = ppMapGrid + i * m_iHorizonGridCount;
 		for (uint32 j = 0; j < m_iHorizonGridCount; ++j)
 		{
-			m_array2dMapGrid[i][j] = new MapGrid;
+			m_array2dMapGrid[i][j] = FT_NEW(MapGrid);
 			m_array2dMapGrid[i][j]->SetGridPosition(j, i);
 			m_array2dMapGrid[i][j]->m_fMinPositionX = m_pMapDesc->m_fMinX + j * MapGrid::m_fGridSize;
 			m_array2dMapGrid[i][j]->m_fMaxPositionX = m_array2dMapGrid[i][j]->m_fMinPositionX + MapGrid::m_fGridSize;
@@ -272,7 +272,7 @@ Map* Map::Create(uint16 iMapId)
 	Map* pMap = FT_NEW(Map);
 	if (pMap)
 	{
-		if (pMap->Init(iMapId))
+		if (pMap->Init(iMapId) == 0)
 		{
 			return pMap;
 		}

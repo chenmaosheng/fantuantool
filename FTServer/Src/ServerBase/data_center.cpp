@@ -156,6 +156,8 @@ int32 DataCenter::_LoadMapDesc(const char *strPath)
 
 			pMapDesc->m_vAreaDesc.push_back(desc);
 		}
+
+		m_vMapDesc.push_back(pMapDesc);
 	}
 
 	return 0;

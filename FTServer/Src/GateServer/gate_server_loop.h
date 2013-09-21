@@ -29,7 +29,7 @@ public:
 	GateServerLoop();
 	~GateServerLoop();
 
-	int32 Init();
+	int32 Init(bool bMainLoop=true);
 	void Destroy();
 
 	// start gate server's loop

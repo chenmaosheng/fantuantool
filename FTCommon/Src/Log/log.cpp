@@ -142,7 +142,7 @@ bool Log_Impl::Push(int32 iLogLevel, TCHAR* strFormat, ...)
 		::_vstprintf_s(Buffer, iLength, strFormat, Args);
 		SYSTEMTIME now;
 		GetLocalTime(&now);
-		_stprintf_s(RealBuffer, _T("[%02d.%02d.%02d %02d:%02d:%02d][%s]%s\n"), 
+		_stprintf_s(RealBuffer, BUFFER_MAX_SIZE, _T("[%02d.%02d.%02d %02d:%02d:%02d][%s]%s\n"), 
 			now.wYear, now.wMonth, now.wDay, now.wHour, now.wMinute, now.wSecond,
 			_Level2String(iLogLevel), Buffer);
 		return _Push(RealBuffer, (int32)wcslen(RealBuffer));

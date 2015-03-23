@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyNet", "EasyNetwork\EasyNetwork.vcxproj", "{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyServer", "EasyServer\EasyServer.vcxproj", "{CDA6C945-021F-43C2-B7C2-800335E35A40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE} = {28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}.Debug|Win32.Build.0 = Debug|Win32
+		{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}.Release|Win32.ActiveCfg = Release|Win32
+		{28645C6C-17C3-4E00-ABE0-BCF80EE34CDE}.Release|Win32.Build.0 = Release|Win32
+		{CDA6C945-021F-43C2-B7C2-800335E35A40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CDA6C945-021F-43C2-B7C2-800335E35A40}.Debug|Win32.Build.0 = Debug|Win32
+		{CDA6C945-021F-43C2-B7C2-800335E35A40}.Release|Win32.ActiveCfg = Release|Win32
+		{CDA6C945-021F-43C2-B7C2-800335E35A40}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

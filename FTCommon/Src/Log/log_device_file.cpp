@@ -47,7 +47,7 @@ void LogDeviceFile::LogOutput(TCHAR *strBuffer, uint16 iCount)
 		return;
 	}
 
-	WriteFile(m_hFile, strBuffer, sizeof(TCHAR)*iCount, &dwBytesWritten, NULL);
+	WriteFile(m_hFile, strBuffer, iCount, &dwBytesWritten, NULL);
 	FlushFileBuffers(m_hFile);
 }
 

@@ -190,6 +190,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			>
 			<Tool

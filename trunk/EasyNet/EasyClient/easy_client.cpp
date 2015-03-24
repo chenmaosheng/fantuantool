@@ -9,6 +9,7 @@
 #include "easy_context.h"
 #include "easy_packethandler.h"
 #include "util.h"
+#include "easy_log.h"
 
 EasyClient* g_pClient = NULL;
 
@@ -40,6 +41,7 @@ int32 EasyClient::Init()
 {
 	int32 iRet = 0;
 
+	StartEasyLog(LOG_DEBUG_LEVEL);
 	InitNet();
 
 	// create worker with 1 thread and context pool
@@ -60,7 +62,7 @@ void EasyClient::Destroy()
 
 void EasyClient::Login(uint32 iIP, uint16 iPort)
 {
-	LOG_DBG(LOG_SERVER, _T("Start to login"));
+	LOG_DBG(_T("Start to login"));
 	if (m_ConnId)
 	{
 		CloseConnection((EasyConnection*)m_ConnId);
@@ -81,7 +83,7 @@ void EasyClient::Login(uint32 iIP, uint16 iPort)
 
 void EasyClient::Logout()
 {
-	LOG_DBG(LOG_SERVER, _T("Start to logout"));
+	LOG_DBG(_T("Start to logout"));
 	if (m_ConnId)
 	{
 		AsyncDisconnect((EasyConnection*)m_ConnId);
@@ -93,7 +95,7 @@ bool EasyClient::OnClientConnection(ConnID connId)
 	m_ConnId = connId;
 	m_iState = CONNECTED;
 
-	LOG_DBG(LOG_SERVER, _T("Connect success"));
+	LOG_DBG(_T("Connect success"));
         
 	return true;
 }

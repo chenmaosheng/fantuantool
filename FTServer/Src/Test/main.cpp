@@ -1,34 +1,71 @@
-#include "common.h"
-#include "log.h"
-#include "..\..\external\mysql\include\mysql.h"
+#include "worker.h"
+#include "starnet.h"
+#include "context_pool.h"
+#include "acceptor.h"
+#include "peer_packet.h"
+#include "connection.h"
+
+bool CALLBACK OnConnection(ConnID connId)
+{
+	return true;
+}
+
+void CALLBACK OnDisconnect(ConnID connId)
+{
+}
+
+void CALLBACK OnData(ConnID connId, uint32& iAvailLen, char* pBuf, uint32& iOffset)
+{
+	char* recvBuf = pBuf + iOffset;
+}
+
+void CALLBACK OnConnectFailed(void*)
+{
+}
+
 
 int main()
 {
-	//Log* m_pLogSystem = Log::GetInstance();
-	//m_pLogSystem->Init(0);
+	StarNet::Init();
 
-	//LogDevice* pDevice = NULL;
-	//// screen log
-	//pDevice = m_pLogSystem->CreateAndAddLogDevice(Log::LOG_DEVICE_CONSOLE);
+	// set the event handler
+	static Handler handler;
+	handler.OnConnection = &OnConnection;
+	handler.OnDisconnect = &OnDisconnect;
+	handler.OnData = &OnData;
+	handler.OnConnectFailed = &OnConnectFailed;
 
-	//// start log system
-	//m_pLogSystem->Start();
+	// create iocp worker
+	Worker* m_pWorker = Worker::CreateWorker(1);
+	if (!m_pWorker)
+	{
+		return -1;
+	}
 
-	//m_pLogSystem->SetLogTypeString(LOG_SERVER, _T("Server"));
+	// create pool of context
+	ContextPool* m_pContextPool = ContextPool::CreateContextPool(MAX_INPUT_BUFFER, MAX_OUTPUT_BUFFER);
+	if (!m_pContextPool)
+	{
+		return -2;
+	}
 
-	//LOG_STT(LOG_SERVER, _T("Initialize log system success"));
+	SOCKADDR_IN addr;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(0);
+	addr.sin_port = htons(8082);
+	// create acceptor to receive connection
+	Acceptor* m_pAcceptor = Acceptor::CreateAcceptor(&addr, m_pWorker, m_pContextPool, &handler);
+	if (!m_pAcceptor)
+	{
+		return -3;
+	}
 
-	//for (int i = 0; i < 5; ++i)
-	//{
-	//	LOG_ERR(LOG_SERVER, _T("Error"));
-	//	LOG_WAR(LOG_SERVER, _T("Warning"));
-	//	LOG_DBG(LOG_SERVER, _T("Debug"));
-	//}
+	m_pAcceptor->Start();
 
-	MYSQL* m_pMySQL = mysql_init(NULL);
-	m_pMySQL = mysql_real_connect(m_pMySQL, "127.0.0.1", "root", "passw0rD", NULL, 3306, NULL, 0);
-	int rc = mysql_select_db(m_pMySQL, "fantuan");
-
-	system("pause");
+	while (true)
+	{
+		Sleep(1000);
+	}
+	
 	return 0;
 }

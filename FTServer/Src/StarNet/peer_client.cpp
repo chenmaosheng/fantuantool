@@ -208,7 +208,7 @@ void CALLBACK PeerClientSet::OnDisconnect(ConnID connId)
 	Connection::Close(pConnection);
 }
 
-void CALLBACK PeerClientSet::OnData(ConnID connId, uint32 iLen, char* pBuf)
+void CALLBACK PeerClientSet::OnData(ConnID connId, uint32& iLen, char* pBuf, uint32&)
 {
 	Connection* pConnection = (Connection*)connId;
 	PeerClient* pConnector = (PeerClient*)pConnection->GetClient();

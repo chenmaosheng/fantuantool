@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA7BE62D-B5C3-4F0B-B716-8829C2D98BBB}</ProjectGuid>
+    <RootNamespace>FrontEndServer</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <IntDir>..\..\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <IntDir>..\..\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\Src\StarNet;..\..\Src\ServerBase;..\..\..\FTCommon\Src\GenFiles;..\..\..\FTCommon\external\tinyxml;..\..\..\FTCommon\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Dbghelp.lib;Psapi.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\..\FTCommon\src\Tool;..\..\..\FTCommon\src\Log;..\..\Src\StarNet;..\..\Src\ServerBase;..\..\..\FTCommon\Src\GenFiles;..\..\..\FTCommon\external\tinyxml;..\..\..\FTCommon\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Dbghelp.lib;Psapi.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Src\GateServer\gate_server.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\gate_server_config.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\gate_server_loop.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\gate_session.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\gate_session_state.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\main.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\packet_impl.cpp" />
+    <ClCompile Include="..\..\Src\GateServer\peer_impl.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\gate_peer_recv.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\master_peer_send.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\session_peer_send.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.cpp" />
+    <ClCompile Include="..\..\..\FTCommon\Src\GenFiles\region_client_recv.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Src\GateServer\gate_logic_command.h" />
+    <ClInclude Include="..\..\Src\GateServer\gate_server.h" />
+    <ClInclude Include="..\..\Src\GateServer\gate_server_config.h" />
+    <ClInclude Include="..\..\Src\GateServer\gate_server_loop.h" />
+    <ClInclude Include="..\..\Src\GateServer\gate_session.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\gate_peer_recv.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\master_peer_send.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\session_peer_recv.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\session_peer_send.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\gate_client_recv.h" />
+    <ClInclude Include="..\..\..\FTCommon\Src\GenFiles\region_client_recv.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FTCommon\External\openssl\openssl.vcxproj">
+      <Project>{fcf3c1ab-8454-4573-854d-6e9c84048433}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\FTCommon\Project\Log\Log.vcxproj">
+      <Project>{2db1461c-af09-4a54-91dc-3d9028dbd685}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\FTCommon\Project\Tool\Tool.vcxproj">
+      <Project>{82252e1b-455a-4f5d-84d7-ce989de040bd}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerBase\ServerBase.vcxproj">
+      <Project>{ddf13b26-3d16-4802-b5f1-862ac7a64438}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\StarNet\StarNet.vcxproj">
+      <Project>{d0f1863d-c9ef-46cc-b8aa-a133466c8cac}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

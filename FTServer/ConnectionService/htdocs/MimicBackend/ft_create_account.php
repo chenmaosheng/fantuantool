@@ -22,7 +22,7 @@ $iv="1234567812345678";
 
 $encryptString = openssl_encrypt($password, $method, $encryptPass, true, $iv);
 
-$con=mysql_connect("localhost:3306", "root", "passw0rD");
+$con=mysql_connect('127.0.0.1', 'root', 'jingbaobao');
 if (!$con)
 {
 	echo "Connect to DB failed";

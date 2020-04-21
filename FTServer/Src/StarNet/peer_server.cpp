@@ -88,7 +88,7 @@ ConnID PeerServer::GetConnId()
 	return NULL;
 }
 
-void PeerServer::OnPeerData(uint32 iLen, char* pBuf)
+void PeerServer::OnPeerData(uint32 iLen, char* pBuf, uint32)
 {
 	uint32 iCopyLen = 0;
 	bool bRet = false;
@@ -172,7 +172,7 @@ void CALLBACK PeerServer::OnDisconnect(ConnID connId)
 	pConnector->m_iState = DISCONNECTED;
 }
 
-void CALLBACK PeerServer::OnData(ConnID connId, uint32 iLen, char* pBuf)
+void CALLBACK PeerServer::OnData(ConnID connId, uint32& iLen, char* pBuf, uint32&)
 {
 	Connection* pConnection = (Connection*)connId;
 	PeerServer* pConnector = (PeerServer*)pConnection->GetClient();

@@ -13,7 +13,7 @@
 
 typedef bool (CALLBACK* ON_CONNECTION)(ConnID);
 typedef void (CALLBACK* ON_DISCONNECT)(ConnID);
-typedef void (CALLBACK* ON_DATA)(ConnID, uint32, char*);
+typedef void (CALLBACK* ON_DATA)(ConnID, uint32&, char*, uint32&);
 typedef void (CALLBACK* ON_CONNECT_FAILED)(void*);
 
 struct Handler

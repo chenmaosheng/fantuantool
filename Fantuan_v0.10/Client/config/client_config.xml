@@ -1,0 +1,5 @@
+<Config>
+    <Log Path="..\LogFolder" Level="0" />
+    <Login Host="192.168.1.229" Port="5001" PublicKey="..\Config\rsa.pub" Account="test" Password="test" />
+    <ConnectionService CreateAccountPage="http://192.168.1.229:8081/mimicfrontend/create_account.php" />
+</Config>

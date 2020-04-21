@@ -25,4 +25,11 @@ private:
 template<typename T>
 T*	Singleton<T>::m_pInstance = 0;
 
+#include <tchar.h>
+// multibyte and unicode transfer
+int32 Char2WChar(const char*, int32, TCHAR*, int32);
+int32 Char2WChar(const char*, TCHAR*, int32);
+int32 WChar2Char(const TCHAR*, int32, char*, int32);
+int32 WChar2Char(const TCHAR*, char*, int32);
+
 #endif

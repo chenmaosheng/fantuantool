@@ -1,0 +1,18 @@
+<Config>
+  <Log Path="..\..\LogFolder" Level="0" />
+  <Misc GateSessionIndexMax="1000" />
+  <Realm>
+	<ServerList>
+		<Server name="Login" id="0" PeerIP="127.0.0.1" PeerPort="4001" config="login_config" exe="LoginServer" />
+		<Server name="Master" id="1" PeerIP="127.0.0.1" PeerPort="4101" config="master_config" exe="MasterServer" />
+		<Server name="Cache" id="2" PeerIP="127.0.0.1" PeerPort="4201" config="cache_config" exe="CacheServer" />
+		<Server name="Gate" id="3" PeerIP="127.0.0.1" PeerPort="4301" config="gate_config" exe="GateServer" />
+		<Server name="Region" id="4" PeerIP="127.0.0.1" PeerPort="4401" config="region_config" exe="RegionServer" />
+	</ServerList>
+	<ChannelList>
+		<Channel name="Fantuan" id="0" PlayerMax="1000" InitialRegion="4">
+			<Region id="4" PlayerMax="500" />
+		</Channel>
+	</ChannelList>
+  </Realm>
+</Config>

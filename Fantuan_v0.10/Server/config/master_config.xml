@@ -1,0 +1,5 @@
+<Config>
+	<GateServerList>
+		<GateServer id="3" ServerIP="127.0.0.1" ServerPort="8001" SessionMax="500" />
+	</GateServerList>
+</Config>

@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{59F59BEA-4FFD-4659-957C-DF4FE47C525A}</ProjectGuid>
+    <RootNamespace>Common</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\FTCommon\bin\$(Configuration)\</OutDir>
+    <IntDir>..\..\..\FTCommon\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <NMakeBuildCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe clean</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\FTCommon\bin\$(Configuration)\</OutDir>
+    <IntDir>..\..\..\FTCommon\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <NMakeBuildCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>cd $(SolutionDir)..\FTCommon\src\GenFiles 
+nmake ftdgen=$(OutDir)ftdgen.exe ftgen=$(OutDir)ftgen.exe prgen=$(OutDir)prgen.exe tolua=$(OutDir)tolua++.exe clean</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Src\GenFiles\cache_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\cache_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\gate_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\gate_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\master_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\master_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\region_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\region_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\session_peer_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\session_peer_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\gate_client_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\gate_client_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_client_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_client_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_server_recv.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\login_server_send.cpp" />
+    <ClCompile Include="..\..\Src\GenFiles\ftd_impl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Src\GenFiles\cache_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\cache_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\gate_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\gate_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\master_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\master_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\region_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\region_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\session_peer_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\session_peer_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\gate_client_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\gate_client_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_client_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_client_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_server_recv.h" />
+    <ClInclude Include="..\..\Src\GenFiles\login_server_send.h" />
+    <ClInclude Include="..\..\Src\GenFiles\ftd_define.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Src\GenFiles\gate_client.ft" />
+    <None Include="..\..\Src\GenFiles\gate_server.ft" />
+    <None Include="..\..\Src\GenFiles\login_client.ft" />
+    <None Include="..\..\Src\GenFiles\login_server.ft" />
+    <None Include="..\..\Src\GenFiles\region_client.ft" />
+    <None Include="..\..\Src\GenFiles\region_server.ft" />
+    <None Include="..\..\Src\GenFiles\cache_peer.pr" />
+    <None Include="..\..\Src\GenFiles\gate_peer.pr" />
+    <None Include="..\..\Src\GenFiles\login_peer.pr" />
+    <None Include="..\..\Src\GenFiles\master_peer.pr" />
+    <None Include="..\..\Src\GenFiles\region_peer.pr" />
+    <None Include="..\..\Src\GenFiles\session_peer.pr" />
+    <None Include="..\..\Src\GenFiles\ftd.ftd" />
+    <None Include="..\..\Src\GenFiles\test.pkg" />
+    <None Include="..\..\Src\GenFiles\Makefile" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

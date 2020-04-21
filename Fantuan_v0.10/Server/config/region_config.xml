@@ -1,0 +1,13 @@
+<Config>
+	<RegionServer PlayerMax="500" />
+	<RegionDescList>
+		<RegionDesc InstanceCount="1">
+			<MapIdList>
+				<MapId value="1" />
+			</MapIdList>
+		</RegionDesc>
+	</RegionDescList>
+	<SpawnPointList>
+		<SpawnPoint MapId="1" PointId="1" />
+	</SpawnPointList>
+</Config>

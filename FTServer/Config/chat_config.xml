@@ -1,0 +1,4 @@
+<Config>
+	<Server IP="0.0.0.0" Port="5001" ThreadCount="1" />
+	<Session Max="500" CheckSessionInterval="600000" ConnectionTimeout="300000" ChatTimeout="300000" />
+</Config>

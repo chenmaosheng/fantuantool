@@ -45,7 +45,7 @@ Context* ContextPool::PopInputContext()
 	Context* pContext = (Context*)InterlockedPopEntrySList(&input_context_pool_);
 	if (!pContext)
 	{
-		pContext = (Context*)_aligned_malloc(sizeof(Context)+input_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
+		pContext = (Context*)_aligned_malloc(sizeof(Context)+input_buffer_size_+BUFEXTENT, MEMORY_ALLOCATION_ALIGNMENT);
 		_ASSERT(pContext);
 		if (!pContext)
 		{
@@ -57,6 +57,8 @@ Context* ContextPool::PopInputContext()
 		pContext->operation_type_ = OPERATION_RECV;
 		pContext->context_pool_ = this;
 		pContext->wsabuf_.buf = (char*)pContext->buffer_;
+		pContext->avail_len_ = 0;
+		pContext->offset_ = 0;
 		InterlockedIncrement((LONG*)&input_context_count_);
 	}
 
@@ -68,7 +70,7 @@ Context* ContextPool::PopOutputContext()
 	Context* pContext = (Context*)InterlockedPopEntrySList(&output_context_pool_);
 	if (!pContext)
 	{
-		pContext = (Context*)_aligned_malloc(sizeof(Context)+output_buffer_size_, MEMORY_ALLOCATION_ALIGNMENT);
+		pContext = (Context*)_aligned_malloc(sizeof(Context)+output_buffer_size_+BUFEXTENT, MEMORY_ALLOCATION_ALIGNMENT);
 		_ASSERT(pContext);
 		if (!pContext)
 		{
@@ -80,6 +82,8 @@ Context* ContextPool::PopOutputContext()
 		pContext->operation_type_ = OPERATION_SEND;
 		pContext->context_pool_ = this;
 		pContext->wsabuf_.buf = (char*)pContext->buffer_;
+		pContext->avail_len_ = 0;
+		pContext->offset_ = 0;
 		InterlockedIncrement((LONG*)&output_context_count_);
 	}
 

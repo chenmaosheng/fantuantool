@@ -37,7 +37,7 @@ public:
 	// connect to peer server
 	bool Connect();
 	// receive data from peer server
-	void OnPeerData(uint32 iLen, char* pBuf);
+	void OnPeerData(uint32 iLen, char* pBuf, uint32=0);
 	// dispatch received data
 	bool Dispatch(PeerPacket*);
 	bool Dispatch(uint16 iFilterId, uint16 iFuncId, uint32 iLen, char* pBuf);
@@ -45,7 +45,7 @@ public:
 	// connection handler
 	static bool CALLBACK OnConnection(ConnID connId);
 	static void CALLBACK OnDisconnect(ConnID connId);
-	static void CALLBACK OnData(ConnID connId, uint32 iLen, char* pBuf);
+	static void CALLBACK OnData(ConnID connId, uint32& iLen, char* pBuf, uint32&);
 	static void CALLBACK OnConnectFailed(void*);
 
 private:

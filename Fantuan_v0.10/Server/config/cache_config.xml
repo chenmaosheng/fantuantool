@@ -1,0 +1,4 @@
+<Config>
+	<CacheServer DBName="Fantuan" DBHost="127.0.0.1" DBPort="3306" DBUser="root" DBPassword="jingbaobao" DBConnCount="1" 
+               ReportInterval="15000" SaveDBInterval="120000" />
+</Config>

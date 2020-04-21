@@ -4,6 +4,7 @@
 #include <process.h>
 #include "acceptor.h"
 #include "context_pool.h"
+#include <cstdio>
 
 void Worker::Init(uint32 iThreadCount)
 {
@@ -58,6 +59,7 @@ void Worker::DestroyWorker(Worker* pWorker)
 	_aligned_free(pWorker);
 }
 
+int x = 0;
 uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 {
 	BOOL bResult;
@@ -108,7 +110,8 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 								pConnection->AsyncDisconnect();
 							}
 						}
-
+						x++;
+						printf("conn: %d\n", x);
 						InterlockedDecrement(&pAcceptor->iorefs_);
 					}
 				}
@@ -172,10 +175,16 @@ uint32 WINAPI Worker::WorkerThread(PVOID pParam)
 						SN_LOG_DBG(_T("Client post a disconnect request"));
 						pConnection->context_pool_->PushInputContext(pContext);
 						pConnection->AsyncDisconnect();
+						printf("Connection: %d\n", pConnection->acceptor_->total_connection_);
+						x--;
+						printf("conn: %d\n", x);
 					}
 					else
 					{
-						pConnection->handler_.OnData((ConnID)pConnection, (uint32)dwNumRead, pContext->buffer_);
+						//pContext->avail_len_ += (uint32)dwNumRead;
+						//pConnection->handler_.OnData((ConnID)pConnection, (uint32)dwNumRead, pContext->buffer_);
+						//pConnection->handler_.OnData((ConnID)pConnection, pContext->avail_len_, pContext->buffer_, pContext->offset_);
+
 						SN_LOG_DBG(_T("Post a WSARecv after recv"));
 						pConnection->AsyncRecv(pContext);
 					}

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\tool;..\..\..\log"
+				AdditionalIncludeDirectories="..\..\Src\StarNet;..\..\..\FTCommon\Src\Tool\;..\..\..\FTCommon\Src\Log"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libmysql.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\bin\debug"
 				GenerateDebugInformation="true"

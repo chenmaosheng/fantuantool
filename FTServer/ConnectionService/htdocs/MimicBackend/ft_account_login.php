@@ -9,7 +9,7 @@ $iv="1234567812345678";
 
 $encryptString = openssl_encrypt($password, $method, $encryptPass, true, $iv);
 
-$con=mysql_connect("localhost:3306", "root", "passw0rD");
+$con=mysql_connect("localhost:3306", "root", "jingbaobao");
 if (!$con)
 {
 	echo "-1";

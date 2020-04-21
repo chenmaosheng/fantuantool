@@ -104,7 +104,13 @@ void Connection::AsyncSend(Context* pContext)
 void Connection::AsyncRecv(Context* pContext)
 {
 	pContext->connection_ = this;
-	pContext->wsabuf_.len = context_pool_->input_buffer_size_;
+	if (pContext->offset_ + pContext->avail_len_ >= pContext->context_pool_->input_buffer_size_)
+	{
+		memmove(pContext->buffer_, pContext->buffer_ + pContext->offset_, pContext->avail_len_);
+		pContext->offset_ = 0;
+	}
+	pContext->wsabuf_.len = context_pool_->input_buffer_size_ - pContext->offset_ - pContext->avail_len_;
+	pContext->wsabuf_.buf = pContext->buffer_ + pContext->offset_ + pContext->avail_len_;
 	InterlockedIncrement(&iorefs_);
 	DWORD dwXfer, dwFlag = 0;
 	// post an asychronous receive

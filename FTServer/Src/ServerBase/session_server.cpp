@@ -49,7 +49,7 @@ void CALLBACK SessionServer::OnDisconnect(ConnID connId)
 	pServer->m_pMainLoop->PushCommand(pCommand);
 }
 
-void CALLBACK SessionServer::OnData(ConnID connId, uint32 iLen, char* pBuf)
+void CALLBACK SessionServer::OnData(ConnID connId, uint32& iLen, char* pBuf, uint32&)
 {
 	SessionServer* pServer = (SessionServer*)((Connection*)connId)->acceptor_->server_;
 	LogicCommandOnData* pCommand = NULL;
@@ -131,7 +131,7 @@ int32 SessionServer::Init(const TCHAR* strServerName)
 	iRet = InitAcceptor(iServerIP, iServerPort, &handler, iThreadCount);
 	if (iRet != 0)
 	{
-		LOG_ERR(LOG_SERVER, _T("InitAcceptor failed, ip=%d, port=%d"), iPeerIP, iPeerPort);
+		LOG_ERR(LOG_SERVER, _T("InitAcceptor failed, ip=%d, port=%d"), iServerIP, iServerPort);
 		return -4;
 	}
 

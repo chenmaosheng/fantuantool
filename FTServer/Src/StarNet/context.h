@@ -23,6 +23,7 @@ enum
 
 #define CTXOFFSET	FIELD_OFFSET(Context, overlapped_)	// overlapped_ offset
 #define BUFOFFSET	FIELD_OFFSET(Context, buffer_)		// buffer_ offset
+#define BUFEXTENT	1024
 
 struct Connection;
 class ContextPool;
@@ -34,6 +35,8 @@ struct Context : SLIST_ENTRY
 	Connection*		connection_;		// context's connection
 	ContextPool*	context_pool_;		// the pool which is based on
 
+	uint32			offset_;
+	uint32			avail_len_;
 	char			buffer_[(sizeof(SOCKADDR)+16)*2];		// received buffer, at least save 2 sockaddrs(acceptex needed)
 };
 
